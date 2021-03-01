@@ -1,5 +1,5 @@
 {
-  "name": "gpujs-real-renderer",
+  "name": "svg-real-renderer",
   "version": "0.8.0",
   "description": "A Real Time 2D Graphical Rendering Engine Made With GPU.js",
   "main": "build/index.js",
@@ -20,7 +20,6 @@
   },
   "devDependencies": {
     "@types/node": "^14.6.0",
-    "gpu.js": "^2.11.2",
     "typescript": "^4.0.2"
   }
 }

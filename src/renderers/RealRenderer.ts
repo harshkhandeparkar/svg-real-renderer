@@ -1,7 +1,4 @@
-import { getDisplayKernel } from '../kernels/display';
-import { getBlankGraphKernel } from '../kernels/blankGraph';
-import { getCloneTextureKernel } from '../kernels/cloneTexture';
-import { getLoadDataKernel } from '../kernels/loadData';
+import { getBlankGraphPath } from '../pathHandlers/blankGraph';
 
 import { GraphDimensions, Color, RealRendererOptions } from '../types/RealRendererTypes';
 export * as RealRendererTypes from '../types/RealRendererTypes';
@@ -9,12 +6,10 @@ export * as RealRendererTypes from '../types/RealRendererTypes';
 import { RealRendererDefaults } from '../constants/defaults/RealRendererDefaults';
 export * from '../constants/defaults/RealRendererDefaults';
 
-import { GPU, Texture, IKernelRunShortcut } from 'gpu.js';
-
 export class RealRenderer {
-  canvas: HTMLCanvasElement;
-  _canvas: HTMLCanvasElement;
+  svg: SVGSVGElement;
   dimensions: GraphDimensions;
+  paths: string[] = [];
   xScaleFactor: number;
   yScaleFactor: number;
   bgColor: Color;
@@ -25,14 +20,7 @@ export class RealRenderer {
   time: number;
   xOffset: number;
   yOffset: number;
-  gpu: GPU;
-  graphPixels: Texture;
-  _blankGraph: IKernelRunShortcut;
-  _cloneTexture: IKernelRunShortcut;
-  _loadData: IKernelRunShortcut;
-  _display: IKernelRunShortcut;
   _doRender: boolean;
-
 
   constructor(options: RealRendererOptions) {
     // *****DEFAULTS*****
@@ -41,7 +29,7 @@ export class RealRenderer {
       ...options
     }
 
-    this.canvas = this._canvas = options.canvas;
+    this.svg = options.svg;
     this.dimensions = options.dimensions;
     this.xScaleFactor = options.xScaleFactor;
     this.yScaleFactor = options.yScaleFactor;
@@ -55,70 +43,54 @@ export class RealRenderer {
     this.xOffset = options.xOffset; // %age offset
     this.yOffset = options.yOffset; // %age offset
 
-    options.GPU = options.GPU;
-
     this.xOffset = Math.max(0, Math.min(100, this.xOffset)) // Between 0 and 100
     this.yOffset = Math.max(0, Math.min(100, this.yOffset)) // Between 0 and 100
     // *****DEFAULTS*****
 
-    if (this.canvas === undefined) {
-      throw 'No Canvas Element Found';
+    if (this.svg === undefined) {
+      throw 'No SVG Element Found';
     }
 
-    this.gpu = new (options.GPU as any)({
-      canvas: this._canvas,
-      mode: 'gpu'
-    })
+    this.svg.setAttribute('width', this.dimensions[0].toString());
+    this.svg.setAttribute('height', this.dimensions[1].toString());
 
-    this._blankGraph = getBlankGraphKernel(
-      this.gpu,
-      this.dimensions,
-      this.xOffset,
-      this.yOffset,
-      this.bgColor,
-      this.axesColor,
-      this.drawAxes
+    this.svg.style.backgroundColor = `rgb(${this.bgColor[0] * 255}, ${this.bgColor[1] * 255}, ${this.bgColor[2] * 255})`;
+
+    this.paths.push(
+      getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)
     )
-    this._cloneTexture = getCloneTextureKernel(this.gpu, this.dimensions);
-
-    this.graphPixels = this._blankGraph() as Texture;
-
-    this._loadData = getLoadDataKernel(this.gpu, this.dimensions);
-
-    this._display = getDisplayKernel(this.gpu, this.dimensions);
+    this.svg.innerHTML = this.paths.join('\n');
 
     this._doRender = false;
   }
 
-  _drawFunc(graphPixels: Texture, time: number) { // Can be overridden
-    return graphPixels;
-  }
-
-  _overlayFunc(graphPixels: Texture) { // Non-persistent overlays at the end of a frame
-    return graphPixels;
+  _drawFunc(time: number) { // Can be overridden
+    return this;
   }
 
   _draw() {
     this.time += this.timeStep;
 
-    this.graphPixels = this._drawFunc(this.graphPixels, this.time);
-    return this.graphPixels;
+    this._drawFunc(this.time);
+    return this;
   }
 
   draw(numDraws: number = 1) {
     for (let i = 0; i < numDraws; i++) this._draw();
-
-    this._display(this._overlayFunc(this.graphPixels));
-
     return this;
   }
 
   _render() {
     if (this._doRender) {
       this.draw(this.drawsPerFrame);
+      this._display(this.paths);
 
       window.requestAnimationFrame(() => {this._render()});
     }
+  }
+
+  _display(paths: string[]) {
+    this.svg.innerHTML = paths.join('\n');
   }
 
   startRender() {
@@ -145,20 +117,17 @@ export class RealRenderer {
     return this;
   }
 
-  getData() {
-    return <number[][][]>this.graphPixels.toArray();
-  }
-
-  loadData(pixels: number[][][]) {
-    this.graphPixels = <Texture>this._loadData(pixels);
-    this._display(this.graphPixels);
-  }
-
   reset() {
-    this.graphPixels = this._blankGraph() as Texture;
+    this.paths = [getBlankGraphPath(
+      this.dimensions,
+      this.xOffset,
+      this.yOffset,
+      this.axesColor,
+      this.drawAxes
+    )]
     this.resetTime();
 
-    this._display(this.graphPixels);
+    this._display(this.paths);
 
     return this;
   }
