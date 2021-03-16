@@ -4,12 +4,17 @@ import { GraphDimensions, Color, RealRendererOptions } from '../types/RealRender
 export * as RealRendererTypes from '../types/RealRendererTypes';
 
 import { RealRendererDefaults } from '../constants/defaults/RealRendererDefaults';
+import { getRGBColorString } from '../util/getRGBColorString';
+
 export * from '../constants/defaults/RealRendererDefaults';
+
+import { Path } from '../util/_path';
 
 export class RealRenderer {
   svg: SVGSVGElement;
   dimensions: GraphDimensions;
-  paths: string[] = [];
+  paths: Path[] = [];
+  _pathIndex: number = -1;
   xScaleFactor: number;
   yScaleFactor: number;
   bgColor: Color;
@@ -54,12 +59,13 @@ export class RealRenderer {
     this.svg.setAttribute('width', this.dimensions[0].toString());
     this.svg.setAttribute('height', this.dimensions[1].toString());
 
-    this.svg.style.backgroundColor = `rgb(${this.bgColor[0] * 255}, ${this.bgColor[1] * 255}, ${this.bgColor[2] * 255})`;
+    this.svg.style.backgroundColor = `${getRGBColorString(this.bgColor)}`;
 
-    this.paths.push(
+    this._addPath(
       getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)
     )
-    this.svg.innerHTML = this.paths.join('\n');
+    this._pathIndex = 0;
+    this._display(this.paths);
 
     this._doRender = false;
   }
@@ -73,6 +79,11 @@ export class RealRenderer {
 
     this._drawFunc(this.time);
     return this;
+  }
+
+  _addPath(path: Path) {
+    if (this.paths.length > this._pathIndex + 1) this.paths.splice(this._pathIndex + 1, this.paths.length - this._pathIndex);
+    this.paths[++this._pathIndex] = path;
   }
 
   draw(numDraws: number = 1) {
@@ -89,8 +100,8 @@ export class RealRenderer {
     }
   }
 
-  _display(paths: string[]) {
-    this.svg.innerHTML = paths.join('\n');
+  _display(paths: Path[]) {
+    this.svg.appendChild(paths[this._pathIndex].node);
   }
 
   startRender() {
@@ -125,6 +136,7 @@ export class RealRenderer {
       this.axesColor,
       this.drawAxes
     )]
+    this._pathIndex = 0;
     this.resetTime();
 
     this._display(this.paths);

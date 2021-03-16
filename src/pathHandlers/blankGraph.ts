@@ -1,4 +1,6 @@
 import { GraphDimensions, Color } from "../types/RealRendererTypes";
+import { getRGBColorString } from "../util/getRGBColorString";
+import { Path } from '../util/_path';
 
 /**
  * @param gpu GPU.js instance
@@ -14,15 +16,22 @@ export function getBlankGraphPath(
   yOffset: number,
   axesColor: Color,
   drawAxes: boolean
-): string {
+): Path {
   const outX = dimensions[0], outY = dimensions[1];
 
   const X = Math.floor(outY * (xOffset / 100));
   const Y = Math.floor(outX * (yOffset / 100));
 
+  let d: string;
+
   if (drawAxes) {
-    return  `<line x1="0" y1="${Y}" x2="${dimensions[0] - 1}" y2=${Y} stroke="rgb(${axesColor[0] * 255}, ${axesColor[1] * 255}, ${axesColor[2] * 255})" />` +
-      `<line x1="${X}" y1="0" x2="${X}" y2="${dimensions[1] - 1}" stroke="rgb(${axesColor[0] * 255}, ${axesColor[1] * 255}, ${axesColor[2] * 255})" />`;
+    d = `M 0,${Y} H ${dimensions[0] - 1} \n`
+    d += `M ${X},0 V ${dimensions[1] - 1}`
   }
-  else '';
+  else d = '';
+
+  const path = new Path(d);
+  path.setStroke(getRGBColorString(axesColor));
+
+  return path;
 }

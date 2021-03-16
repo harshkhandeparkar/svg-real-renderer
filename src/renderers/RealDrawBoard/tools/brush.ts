@@ -1,5 +1,4 @@
 import { RealDrawBoard } from '../RealDrawBoard';
-import { Texture } from 'gpu.js';
 import { Color } from '../../../types/RealRendererTypes';
 
 export const name = 'brush';
@@ -45,12 +44,11 @@ export function _toolPreview(
   this: RealDrawBoard,
   coords: [number, number],
   identifier: string
-): Texture {
-  return <Texture>this._previewPlot(
-    this.graphPixels,
-    coords[0],
-    coords[1],
-    this.toolSettings.brushSize,
-    this.toolSettings.brushColor
-  )
+) {
+  // return <Texture>this._previewPlot(
+  //   coords[0],
+  //   coords[1],
+  //   this.toolSettings.brushSize,
+  //   this.toolSettings.brushColor
+  // )
 }

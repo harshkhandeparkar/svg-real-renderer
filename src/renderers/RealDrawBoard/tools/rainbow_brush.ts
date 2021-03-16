@@ -1,5 +1,4 @@
 import { RealDrawBoard } from '../RealDrawBoard';
-import { Texture } from 'gpu.js';
 import { convertHSLToRGB } from '../../../util/convertHSLToRGB';
 
 let hue: number = 0;
@@ -52,12 +51,12 @@ export function _toolPreview(
   this: RealDrawBoard,
   coords: [number, number],
   identifier: string
-): Texture {
-  return <Texture>this._previewPlot(
-    this.graphPixels,
-    coords[0],
-    coords[1],
-    this.toolSettings.brushSize,
-    gradientColors
-  )
+) {
+  // return <Texture>this._previewPlot(
+  //   this.graphPixels,
+  //   coords[0],
+  //   coords[1],
+  //   this.toolSettings.brushSize,
+  //   gradientColors
+  // )
 }

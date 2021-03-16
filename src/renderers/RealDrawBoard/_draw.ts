@@ -1,6 +1,7 @@
 import { RealDrawBoard } from './RealDrawBoard';
-import { Texture } from 'gpu.js';
 import { Color } from '../../types/RealRendererTypes';
+import { getPlotPath } from '../../pathHandlers/plot';
+import { getInterpolatePath } from '../../pathHandlers/interpolate';
 
 export function _plot(
   this: RealDrawBoard,
@@ -9,12 +10,18 @@ export function _plot(
   size: number,
   color: Color
 ) {
-  this.graphPixels = <Texture>this._plotKernel(
-    this._cloneTexture(this.graphPixels),
-    x,
-    y,
-    size,
-    color
+  this._addPath(
+    getPlotPath(
+      this.dimensions,
+      this.xScaleFactor,
+      this.yScaleFactor,
+      this.xOffset,
+      this.yOffset,
+      x,
+      y,
+      size,
+      color
+    )
   )
 
   return this;
@@ -30,11 +37,15 @@ export function _stroke(
 ) {
   if (!this._lastCoords.has(identifier)) this._lastCoords.set(identifier, [x, y]);
 
-  this.graphPixels = <Texture>this._strokeKernel(
-    this._cloneTexture(this.graphPixels),
+  return this._addPath(getInterpolatePath(
+    this.dimensions,
+    this.xScaleFactor,
+    this.yScaleFactor,
+    this.xOffset,
+    this.yOffset,
     this._lastCoords.get(identifier),
     [x, y],
     size,
     color
-  )
+  ))
 }

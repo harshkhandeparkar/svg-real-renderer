@@ -1,5 +1,4 @@
 import { RealDrawBoard } from '../RealDrawBoard';
-import { Texture } from 'gpu.js';
 
 export const name = 'eraser';
 
@@ -42,12 +41,12 @@ export function _toolPreview(
   this: RealDrawBoard,
   coords: [number, number],
   identifier: string
-): Texture {
-  return <Texture>this._previewPlot(
-    this.graphPixels,
-    coords[0],
-    coords[1],
-    this.toolSettings.eraserSize,
-    this.bgColor
-  )
+ ) {
+  // return <Texture>this._previewPlot(
+  //   this.graphPixels,
+  //   coords[0],
+  //   coords[1],
+  //   this.toolSettings.eraserSize,
+  //   this.bgColor
+  // )
 }

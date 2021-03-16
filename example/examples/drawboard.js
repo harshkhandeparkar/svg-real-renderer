@@ -1,6 +1,6 @@
 // Draw Board
 const drawBoardOptions = {
-  canvas: document.getElementById('drawboard-canvas'),
+  svg: document.getElementById('drawboard-svg'),
   dimensions: [420, 360],
 
   xScaleFactor: 1,

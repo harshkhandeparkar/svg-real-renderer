@@ -1,6 +1,6 @@
 import { RealDrawBoard } from '../RealDrawBoard';
-import { Texture } from 'gpu.js';
 import { Color } from '../../../types/RealRendererTypes';
+import { getInterpolatePath } from '../../../pathHandlers/interpolate';
 
 export const name = 'line';
 
@@ -33,12 +33,18 @@ export function _endStroke(
   endCoords: [number, number],
   identifier: string
 ) {
-  this.graphPixels = <Texture>this._strokeKernel(
-    this._cloneTexture(this.graphPixels),
-    _startCoords.get(identifier),
-    endCoords,
-    this.toolSettings.lineThickness,
-    this.toolSettings.lineColor
+  this._addPath(
+    getInterpolatePath(
+      this.dimensions,
+      this.xScaleFactor,
+      this.yScaleFactor,
+      this.xOffset,
+      this.yOffset,
+      _startCoords.get(identifier),
+      endCoords,
+      this.toolSettings.lineThickness,
+      this.toolSettings.lineColor
+    )
   )
   this._plot(endCoords[0], endCoords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
   _startCoords.delete(identifier);
@@ -55,27 +61,27 @@ export function _toolPreview(
   this: RealDrawBoard,
   coords: [number, number],
   identifier: string
-): Texture {
-  if (_startCoords.has(identifier)) {
-    return <Texture>this._previewPlot(
-      this._strokeKernel(
-        this._cloneTexture(this.graphPixels),
-        _startCoords.get(identifier),
-        coords,
-        this.toolSettings.lineThickness,
-        this.toolSettings.lineColor
-      ),
-      coords[0],
-      coords[1],
-      this.toolSettings.lineThickness,
-      this.toolSettings.lineColor
-    )
-  }
-  else return <Texture>this._previewPlot(
-    this.graphPixels,
-    coords[0],
-    coords[1],
-    this.toolSettings.lineThickness,
-    this.toolSettings.lineColor
-  )
+) {
+  // if (_startCoords.has(identifier)) {
+  //   return <Texture>this._previewPlot(
+  //     this._strokeKernel(
+  //       this._cloneTexture(this.graphPixels),
+  //       _startCoords.get(identifier),
+  //       coords,
+  //       this.toolSettings.lineThickness,
+  //       this.toolSettings.lineColor
+  //     ),
+  //     coords[0],
+  //     coords[1],
+  //     this.toolSettings.lineThickness,
+  //     this.toolSettings.lineColor
+  //   )
+  // }
+  // else return <Texture>this._previewPlot(
+  //   this.graphPixels,
+  //   coords[0],
+  //   coords[1],
+  //   this.toolSettings.lineThickness,
+  //   this.toolSettings.lineColor
+  // )
 }

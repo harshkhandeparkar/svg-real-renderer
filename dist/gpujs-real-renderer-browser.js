@@ -24,9 +24,42 @@
 		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
 	}
 
+	var getRGBColorString_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.getRGBColorString = void 0;
+	function getRGBColorString(color) {
+	    return "rgb(" + color[0] * 255 + ", " + color[1] * 255 + ", " + color[2] * 255 + ")";
+	}
+	exports.getRGBColorString = getRGBColorString;
+	});
+
+	var _path = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Path = void 0;
+	var Path = /** @class */ (function () {
+	    function Path(initialD) {
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	        path.setAttribute('d', initialD);
+	        this.pathD = initialD;
+	        this.node = path;
+	    }
+	    Path.prototype.updatePath = function (newD) {
+	        this.node.setAttribute('d', newD);
+	        this.pathD = newD;
+	    };
+	    Path.prototype.setStroke = function (stroke) {
+	        this.node.setAttribute('stroke', stroke);
+	    };
+	    return Path;
+	}());
+	exports.Path = Path;
+	});
+
 	var blankGraph = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.getBlankGraphPath = void 0;
+
+
 	/**
 	 * @param gpu GPU.js instance
 	 * @param dimensions Dimensions of Graph
@@ -39,10 +72,16 @@
 	    var outX = dimensions[0], outY = dimensions[1];
 	    var X = Math.floor(outY * (xOffset / 100));
 	    var Y = Math.floor(outX * (yOffset / 100));
+	    var d;
 	    if (drawAxes) {
-	        return "<line x1=\"0\" y1=\"" + Y + "\" x2=\"" + (dimensions[0] - 1) + "\" y2=" + Y + " stroke=\"rgb(" + axesColor[0] * 255 + ", " + axesColor[1] * 255 + ", " + axesColor[2] * 255 + ")\" />" +
-	            ("<line x1=\"" + X + "\" y1=\"0\" x2=\"" + X + "\" y2=\"" + (dimensions[1] - 1) + "\" stroke=\"rgb(" + axesColor[0] * 255 + ", " + axesColor[1] * 255 + ", " + axesColor[2] * 255 + ")\" />");
+	        d = "M 0," + Y + " H " + (dimensions[0] - 1) + " \n";
+	        d += "M " + X + ",0 V " + (dimensions[1] - 1);
 	    }
+	    else
+	        d = '';
+	    var path = new _path.Path(d);
+	    path.setStroke(getRGBColorString_1.getRGBColorString(axesColor));
+	    return path;
 	}
 	exports.getBlankGraphPath = getBlankGraphPath;
 	});
@@ -96,10 +135,12 @@
 
 	exports.RealRendererTypes = RealRendererTypes;
 
+
 	__exportStar(RealRendererDefaults, exports);
 	var RealRenderer = /** @class */ (function () {
 	    function RealRenderer(options) {
 	        this.paths = [];
+	        this._pathIndex = -1;
 	        // *****DEFAULTS*****
 	        options = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), options);
 	        this.svg = options.svg;
@@ -122,9 +163,10 @@
 	        }
 	        this.svg.setAttribute('width', this.dimensions[0].toString());
 	        this.svg.setAttribute('height', this.dimensions[1].toString());
-	        this.svg.style.backgroundColor = "rgb(" + this.bgColor[0] * 255 + ", " + this.bgColor[1] * 255 + ", " + this.bgColor[2] * 255 + ")";
-	        this.paths.push(blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes));
-	        this.svg.innerHTML = this.paths.join('\n');
+	        this.svg.style.backgroundColor = "" + getRGBColorString_1.getRGBColorString(this.bgColor);
+	        this._addPath(blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes));
+	        this._pathIndex = 0;
+	        this._display(this.paths);
 	        this._doRender = false;
 	    }
 	    RealRenderer.prototype._drawFunc = function (time) {
@@ -134,6 +176,11 @@
 	        this.time += this.timeStep;
 	        this._drawFunc(this.time);
 	        return this;
+	    };
+	    RealRenderer.prototype._addPath = function (path) {
+	        if (this.paths.length > this._pathIndex + 1)
+	            this.paths.splice(this._pathIndex + 1, this.paths.length - this._pathIndex);
+	        this.paths[++this._pathIndex] = path;
 	    };
 	    RealRenderer.prototype.draw = function (numDraws) {
 	        if (numDraws === void 0) { numDraws = 1; }
@@ -150,7 +197,7 @@
 	        }
 	    };
 	    RealRenderer.prototype._display = function (paths) {
-	        this.svg.innerHTML = paths.join('\n');
+	        this.svg.appendChild(paths[this._pathIndex].node);
 	    };
 	    RealRenderer.prototype.startRender = function () {
 	        if (!this._doRender) {
@@ -175,6 +222,7 @@
 	    };
 	    RealRenderer.prototype.reset = function () {
 	        this.paths = [blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)];
+	        this._pathIndex = 0;
 	        this.resetTime();
 	        this._display(this.paths);
 	        return this;

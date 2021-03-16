@@ -1,6 +1,6 @@
 import { RealDrawBoard } from './RealDrawBoard';
-import { Texture } from 'gpu.js';
 import { Tool, tools, ToolSettings } from './tools/tools';
+import { getBlankGraphPath } from '../../pathHandlers/blankGraph';
 
 export function changeTool(this: RealDrawBoard, newTool: Tool) {
   this.tool = newTool;
@@ -22,13 +22,19 @@ export function changeToolSetting(
 }
 
 export function clear(this: RealDrawBoard) {
-  this._snapshots = [];
-  this._currentSnapshotIndex = 0;
+  this._pathIndex = 0;
   this._lastCoords.clear();
 
-  this.graphPixels = <Texture>this._blankGraph();
-  if (this._maxSnapshots > 0) this._snapshots[0] = this.getData();
-  this._display(this.graphPixels);
+  this.paths = [
+    getBlankGraphPath(
+      this.dimensions,
+      this.xOffset,
+      this.yOffset,
+      this.axesColor,
+      this.drawAxes
+    )
+  ]
+  this._display(this.paths);
 
   return this;
 }
@@ -41,8 +47,6 @@ export function _resetBoard(this: RealDrawBoard) {
   this.toolSettings = this.options.toolSettings;
 
   this._isDrawing = false;
-  this._currentSnapshotIndex = 0;
-  if (this._maxSnapshots > 0) this._snapshots = [this.getData()];
   this._lastCoords.clear();
 
   this.stopRender();

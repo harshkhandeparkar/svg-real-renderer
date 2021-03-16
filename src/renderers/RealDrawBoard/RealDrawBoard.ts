@@ -1,16 +1,12 @@
 import { RealRenderer } from '../RealRenderer';
 
-import { Color } from '../../types/RealRendererTypes';
 import { RealDrawBoardOptions } from '../../types/RealDrawBoardTypes';
 import { RealDrawBoardDefaults } from '../../constants/defaults/RealDrawBoardDefaults';
-
-import { IKernelRunShortcut } from 'gpu.js';
 
 export * as RealRendererTypes from '../../types/RealRendererTypes';
 export * as RealDrawBoardTypes from '../../types/RealDrawBoardTypes';
 export * from '../../constants/defaults/RealDrawBoardDefaults';
 
-import { _initializeKernels } from './_initializeKernels';
 import { _plot, _stroke } from './_draw';
 import { undo, redo } from './undo';
 import {
@@ -28,6 +24,8 @@ import {
   _getTouchCoords
 } from './_coords';
 
+import { Path } from '../../util/_path';
+
 import { tools, Tool, ToolSettings } from './tools/tools';
 
 export class RealDrawBoard extends RealRenderer {
@@ -35,19 +33,13 @@ export class RealDrawBoard extends RealRenderer {
   tool: Tool = RealDrawBoardDefaults.tool;
   toolSettings: ToolSettings;
   _isDrawing: boolean = false;
-  _snapshots: (number[][][])[] = []; // Undo snapshots
-  _currentSnapshotIndex = 0; // Current snapshot
-  _maxSnapshots: number;
-  _plotKernel: IKernelRunShortcut;
-  _previewPlot: IKernelRunShortcut;
-  _strokeKernel: IKernelRunShortcut;
   /** key -> identifier, value -> coordinate
    *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
    */
   _lastCoords: Map<string, [number, number]> = new Map(); /* key -> identifier, value -> coordinate*/
   _doPreview: boolean = true; // If a preview should be drawn
+  _strokes: Path[];
 
-  protected _initializeKernels = _initializeKernels;
   protected _stroke = _stroke;
   protected _plot = _plot;
   protected _resetBoard = _resetBoard;
@@ -78,22 +70,17 @@ export class RealDrawBoard extends RealRenderer {
     this.options = options;
 
     this.toolSettings = options.toolSettings;
-    this._maxSnapshots = options.allowUndo ? Math.max(options.maxUndos + 1, 0) : 0;
 
     this.changeTool(options.tool);
     // *****DEFAULTS*****
-
-    this._initializeKernels();
-    if (this._maxSnapshots > 0) this._snapshots[0] = this.getData();
   }
   // --- DOM Event Listeners ---
 
   // --- Mouse Events ---
   _mouseDownEventListener = (e: MouseEvent) => {
     if (e.button === 0 /* Left Click */) {
-      this.canvas.addEventListener('mousemove', this._mouseMoveEventListener);
+      this.svg.addEventListener('mousemove', this._mouseMoveEventListener);
 
-      if (this._currentSnapshotIndex < this._snapshots.length - 1 && this._maxSnapshots > 0) this._snapshots.splice(this._currentSnapshotIndex + 1); // Delete all redo snapshots
       const coords = this._getMouseCoords(e);
 
       this._startStroke(
@@ -107,46 +94,24 @@ export class RealDrawBoard extends RealRenderer {
   _mouseUpEventListener = (e: MouseEvent) => {
     if (e.button === 0 /* Left Click */) {
       const endCoords = this._getMouseCoords(e);
-      this.canvas.removeEventListener('mousemove', this._mouseMoveEventListener);
-      this._removeDOMEvents();
+      this.svg.removeEventListener('mousemove', this._mouseMoveEventListener);
 
       if(this._lastCoords.has('mouse')) {
         this._endStroke(endCoords, 'mouse');
         this._lastCoords.delete('mouse');
       }
 
-      this._display(this.graphPixels);
-
-      setTimeout(() => {
-        if (this._maxSnapshots > 0) this._snapshots[++this._currentSnapshotIndex] = this.getData(); // Take snapshot
-        if (this._snapshots.length > this._maxSnapshots) {
-          this._snapshots.shift();
-          this._currentSnapshotIndex--;
-        }
-
-        this._addDOMEvents();
-      }, 20)
+      this._display(this.paths);
     }
   }
 
   _mouseLeaveEventListener = (e: MouseEvent) => {
-    this.canvas.removeEventListener('mousemove', this._mouseMoveEventListener);
+    this.svg.removeEventListener('mousemove', this._mouseMoveEventListener);
 
     if(this._lastCoords.has('mouse')) {
-      this._removeDOMEvents();
       this._endStroke(this._getMouseCoords(e), 'mouse');
       this._lastCoords.delete('mouse');
-      this._display(this.graphPixels);
-
-      setTimeout(() => { // Delay to let the canvas 'settle'
-        if (this._maxSnapshots > 0) this._snapshots[++this._currentSnapshotIndex] = this.getData(); // Take snapshot
-        if (this._snapshots.length > this._maxSnapshots) {
-          this._snapshots.shift();
-          this._currentSnapshotIndex--;
-        }
-
-        this._addDOMEvents();
-      }, 20)
+      this._display(this.paths);
     }
   }
 
@@ -159,10 +124,11 @@ export class RealDrawBoard extends RealRenderer {
   _previewMouseMoveEventListener = (e: MouseEvent) => {
     const coords = this._getMouseCoords(e);
 
-    if (this._doPreview) {
-      this._display(this._toolPreview(coords, 'mouse'));
-    }
-    else this._display(this.graphPixels);
+    // if (this._doPreview) {
+      // this._display(this._toolPreview(coords, 'mouse'));
+
+    // }
+    this._display(this.paths);
   }
   // --- Mouse Events ---
 
@@ -171,8 +137,6 @@ export class RealDrawBoard extends RealRenderer {
     e.preventDefault();
 
     for (let i = 0; i < e.touches.length; i++) {
-      if (this._currentSnapshotIndex < this._snapshots.length - 1 && this._maxSnapshots > 0) this._snapshots.splice(this._currentSnapshotIndex + 1); // Delete all redo snapshots
-
       const coords = this._getTouchCoords(e.touches.item(i));
       this._startStroke(
         coords,
@@ -196,16 +160,6 @@ export class RealDrawBoard extends RealRenderer {
         e.changedTouches.item(i).identifier.toString()
       )
     }
-
-    setTimeout(() => {
-      if (this._maxSnapshots > 0) this._snapshots[++this._currentSnapshotIndex] = this.getData(); // Take snapshot
-      if (this._snapshots.length > this._maxSnapshots) {
-        this._snapshots.shift();
-        this._currentSnapshotIndex--;
-      }
-
-      this._addDOMEvents();
-    }, 20)
   }
 
   _touchMoveEventListener = (e: TouchEvent) => {
@@ -224,10 +178,10 @@ export class RealDrawBoard extends RealRenderer {
 
   _previewTouchMoveEventListener = (e: TouchEvent) => {
     for (let i = 0; i < e.touches.length; i++) {
-      if (!this._doPreview) {
-        this._display(this._toolPreview(this._getTouchCoords(e.touches.item(i)), e.touches.item(i).identifier.toString()));
-      }
-      else this._display(this.graphPixels);
+      // if (!this._doPreview) {
+        // this._display(this._toolPreview(this._getTouchCoords(e.touches.item(i)), e.touches.item(i).identifier.toString()));
+      // }
+      this._display(this.paths);
     }
   }
   // --- Touch Events ---
