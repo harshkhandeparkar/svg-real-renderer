@@ -2,6 +2,7 @@ import { RealDrawBoard } from './RealDrawBoard';
 import { Color } from '../../types/RealRendererTypes';
 import { getPlotPath } from '../../pathHandlers/plot';
 import { getInterpolatePath } from '../../pathHandlers/interpolate';
+import { Path } from '../../util/_path';
 
 export function _plot(
   this: RealDrawBoard,
@@ -10,19 +11,21 @@ export function _plot(
   size: number,
   color: Color
 ) {
-  this._addPath(
-    getPlotPath(
-      this.dimensions,
-      this.xScaleFactor,
-      this.yScaleFactor,
-      this.xOffset,
-      this.yOffset,
-      x,
-      y,
-      size,
-      color
-    )
+  const plotPath = getPlotPath(
+    this.dimensions,
+    this.xScaleFactor,
+    this.yScaleFactor,
+    this.xOffset,
+    this.yOffset,
+    x,
+    y,
+    size,
+    color
   )
+  const path = new Path(plotPath.d);
+  path.setFill(plotPath.fill);
+
+  this._addPath(path);
 
   return this;
 }

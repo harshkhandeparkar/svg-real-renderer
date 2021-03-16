@@ -64,7 +64,6 @@ export class RealRenderer {
     this._addPath(
       getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)
     )
-    this._pathIndex = 0;
     this._display(this.paths);
 
     this._doRender = false;
