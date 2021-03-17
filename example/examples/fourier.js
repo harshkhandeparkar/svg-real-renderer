@@ -1,5 +1,5 @@
 // Fourier Series
-const ComplexGraph = new GPUjsRealRenderer.RealComplexSpace({
+const ComplexGraph = new SVGRealRenderer.RealComplexSpace({
   canvas: document.getElementById('complex-canvas'),
   xScaleFactor: 2,
   yScaleFactor: 2,

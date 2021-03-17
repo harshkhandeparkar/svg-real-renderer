@@ -27,7 +27,7 @@ const drawBoardOptions = {
   allowUndo: true
 }
 
-const DrawBoard = new GPUjsRealRenderer.RealDrawBoard(drawBoardOptions);
+const DrawBoard = new SVGRealRenderer.RealDrawBoard(drawBoardOptions);
 DrawBoard.draw().startRender();
 
 const colorWheel = new iro.ColorPicker("#drawboard-colorwheel", {

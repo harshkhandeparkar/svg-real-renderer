@@ -25,4 +25,4 @@ const options = {
   lineColor: [0.1, 0.2, 0.8]
 }
 
-const renderer = new GPUjsRealRenderer.RealRenderer(options).draw();
+const renderer = new SVGRealRenderer.RealRenderer(options).draw();

@@ -26,7 +26,7 @@ const lineGraphOptions = {
   lineColor: [0.1, 0.2, 0.8]
 }
 
-const LineGraph = new GPUjsRealRenderer.RealLineGraph(lineGraphOptions);
+const LineGraph = new SVGRealRenderer.RealLineGraph(lineGraphOptions);
 const progressModeSelector = document.querySelector('#progress-mode');
 progressModeSelector.oninput = e => {
   e.preventDefault();

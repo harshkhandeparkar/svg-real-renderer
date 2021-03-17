@@ -1,10 +1,10 @@
 {
   "name": "svg-real-renderer",
   "version": "0.8.0",
-  "description": "A Real Time 2D Graphical Rendering Engine Made With GPU.js",
+  "description": "A Real Time 2D Graphical Rendering Engine Made With SVG",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
-  "repository": "https://github.com/HarshKhandeparkar/gpujs-real-renderer.git",
+  "repository": "https://github.com/HarshKhandeparkar/svg-real-renderer.git",
   "author": "Harsh Khandeparkar",
   "license": "MIT",
   "private": false,
