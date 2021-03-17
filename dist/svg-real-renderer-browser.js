@@ -115,28 +115,20 @@
 	exports.redo = exports.undo = void 0;
 	function undo(numUndo) {
 	    if (numUndo === void 0) { numUndo = 1; }
-	    var wasRendering = this._doRender;
-	    this.stopRender();
 	    this._strokeIndex = Math.min(Math.max(this._strokeIndex - numUndo, 0), this.strokes.length - 1);
 	    for (var i = this._strokeIndex + 1; i < this.strokes.length; i++) {
 	        this.strokes[i].forEach(function (strokeNode) { return strokeNode.delete(); });
 	    }
-	    if (wasRendering)
-	        this.startRender();
 	    return this;
 	}
 	exports.undo = undo;
 	function redo(numRedo) {
 	    if (numRedo === void 0) { numRedo = 1; }
-	    var wasRendering = this._doRender;
-	    this.stopRender();
 	    var doRedo = Math.min(numRedo, this.strokes.length - this._strokeIndex - 1, numRedo);
 	    for (var i = 0; i < doRedo; i++) {
 	        this._strokeIndex++;
 	        this._display(this.strokes[this._strokeIndex]);
 	    }
-	    if (wasRendering)
-	        this.startRender();
 	    return this;
 	}
 	exports.redo = redo;
@@ -645,6 +637,9 @@
 	function clear() {
 	    this._strokeIndex = 0;
 	    this._lastCoords.clear();
+	    this.strokes.forEach(function (stroke) {
+	        stroke.forEach(function (strokeNode) { return strokeNode.delete(); });
+	    });
 	    this.strokes = [
 	        [
 	            blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)

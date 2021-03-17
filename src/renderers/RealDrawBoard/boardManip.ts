@@ -25,6 +25,10 @@ export function clear(this: RealDrawBoard) {
   this._strokeIndex = 0;
   this._lastCoords.clear();
 
+  this.strokes.forEach((stroke) => {
+    stroke.forEach((strokeNode) => strokeNode.delete());
+  })
+
   this.strokes = [
     [
       getBlankGraphPath(
