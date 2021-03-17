@@ -104,7 +104,7 @@ export class RealRenderer {
 
   _display(stroke: Stroke) {
     stroke.forEach((strokeNode) => {
-      this.svg.appendChild(strokeNode.node);
+      if (strokeNode.node.parentElement == null) this.svg.appendChild(strokeNode.node);
     })
   }
 
