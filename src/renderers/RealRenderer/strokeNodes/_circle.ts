@@ -19,6 +19,11 @@ export class Circle {
     this.node.setAttribute('r', newRadius.toString());
   }
 
+  updateCenter(newCenter: Coordinate) {
+    this.node.setAttribute('cx', newCenter[0].toString());
+    this.node.setAttribute('cy', newCenter[1].toString());
+  }
+
   setStroke(stroke: string) {
     this.node.setAttribute('stroke', stroke);
   }

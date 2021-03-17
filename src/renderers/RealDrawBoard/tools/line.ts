@@ -1,5 +1,10 @@
 import { RealDrawBoard } from '../RealDrawBoard';
 import { Color } from '../../../types/RealRendererTypes';
+import { getCircleNode } from '../../../pathMakers/circle';
+import { getRGBColorString } from '../../../util/getRGBColorString';
+import { Path } from '../../RealRenderer/strokeNodes/_path';
+import { getLinePathCommand } from '../../../pathMakers/line';
+import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 
 export const name = 'line';
 
@@ -23,7 +28,30 @@ export function _startStroke(
   coords: [number, number],
   identifier: string
 ) {
-  // this._plot(coords[0], coords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
+  this._doPreview = false;
+
+  const brushPath = new Path('');
+  brushPath.setStroke(getRGBColorString(this.toolSettings.brushColor));
+  brushPath.setStrokeWidth(this.toolSettings.brushSize);
+
+  this._addStroke([brushPath]);
+
+  this.strokes[this._strokeIndex].push(
+    getCircleNode(
+      coords,
+      this.toolSettings.brushSize / 2,
+      this.toolSettings.brushColor
+    )
+  )
+
+  this.strokes[this._strokeIndex].push(
+    getCircleNode(
+      coords,
+      this.toolSettings.brushSize / 2,
+      this.toolSettings.brushColor
+    )
+  )
+
   _startCoords.set(identifier, coords);
 }
 
@@ -32,20 +60,15 @@ export function _endStroke(
   endCoords: [number, number],
   identifier: string
 ) {
-  // this._addPath(
-  //   getInterpolatePath(
-  //     this.dimensions,
-  //     this.xScaleFactor,
-  //     this.yScaleFactor,
-  //     this.xOffset,
-  //     this.yOffset,
-  //     _startCoords.get(identifier),
-  //     endCoords,
-  //     this.toolSettings.lineThickness,
-  //     this.toolSettings.lineColor
-  //   )
-  // )
-  // this._plot(endCoords[0], endCoords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
+  (<Path>this.strokes[this._strokeIndex][0]).updatePath(
+    getLinePathCommand(
+      _startCoords.get(identifier),
+      endCoords
+    )
+  );
+
+  (<Circle>this.strokes[this._strokeIndex][2]).updateCenter(endCoords);
+
   _startCoords.delete(identifier);
 }
 
@@ -54,6 +77,14 @@ export function _doStroke(
   coords: [number, number],
   identifier: string
 ) {
+  (<Path>this.strokes[this._strokeIndex][0]).updatePath(
+    getLinePathCommand(
+      _startCoords.get(identifier),
+      coords
+    )
+  );
+
+  (<Circle>this.strokes[this._strokeIndex][2]).updateCenter(coords);
 }
 
 export function _toolPreview(
@@ -61,26 +92,4 @@ export function _toolPreview(
   coords: [number, number],
   identifier: string
 ) {
-  // if (_startCoords.has(identifier)) {
-  //   return <Texture>this._previewPlot(
-  //     this._strokeKernel(
-  //       this._cloneTexture(this.graphPixels),
-  //       _startCoords.get(identifier),
-  //       coords,
-  //       this.toolSettings.lineThickness,
-  //       this.toolSettings.lineColor
-  //     ),
-  //     coords[0],
-  //     coords[1],
-  //     this.toolSettings.lineThickness,
-  //     this.toolSettings.lineColor
-  //   )
-  // }
-  // else return <Texture>this._previewPlot(
-  //   this.graphPixels,
-  //   coords[0],
-  //   coords[1],
-  //   this.toolSettings.lineThickness,
-  //   this.toolSettings.lineColor
-  // )
 }

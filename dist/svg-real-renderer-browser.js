@@ -281,6 +281,10 @@
 	    Circle.prototype.updateRadius = function (newRadius) {
 	        this.node.setAttribute('r', newRadius.toString());
 	    };
+	    Circle.prototype.updateCenter = function (newCenter) {
+	        this.node.setAttribute('cx', newCenter[0].toString());
+	        this.node.setAttribute('cy', newCenter[1].toString());
+	    };
 	    Circle.prototype.setStroke = function (stroke) {
 	        this.node.setAttribute('stroke', stroke);
 	    };
@@ -411,6 +415,10 @@
 	var line$1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.LineDefaults = exports.name = void 0;
+
+
+
+
 	exports.name = 'line';
 	exports.LineDefaults = {
 	    lineThickness: 1,
@@ -421,54 +429,28 @@
 	   */
 	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
 	function _startStroke(coords, identifier) {
-	    // this._plot(coords[0], coords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
+	    this._doPreview = false;
+	    var brushPath = new _path.Path('');
+	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
+	    brushPath.setStrokeWidth(this.toolSettings.brushSize);
+	    this._addStroke([brushPath]);
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
 	    _startCoords.set(identifier, coords);
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    // this._addPath(
-	    //   getInterpolatePath(
-	    //     this.dimensions,
-	    //     this.xScaleFactor,
-	    //     this.yScaleFactor,
-	    //     this.xOffset,
-	    //     this.yOffset,
-	    //     _startCoords.get(identifier),
-	    //     endCoords,
-	    //     this.toolSettings.lineThickness,
-	    //     this.toolSettings.lineColor
-	    //   )
-	    // )
-	    // this._plot(endCoords[0], endCoords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
+	    this.strokes[this._strokeIndex][0].updatePath(line.getLinePathCommand(_startCoords.get(identifier), endCoords));
+	    this.strokes[this._strokeIndex][2].updateCenter(endCoords);
 	    _startCoords.delete(identifier);
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
+	    this.strokes[this._strokeIndex][0].updatePath(line.getLinePathCommand(_startCoords.get(identifier), coords));
+	    this.strokes[this._strokeIndex][2].updateCenter(coords);
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
-	    // if (_startCoords.has(identifier)) {
-	    //   return <Texture>this._previewPlot(
-	    //     this._strokeKernel(
-	    //       this._cloneTexture(this.graphPixels),
-	    //       _startCoords.get(identifier),
-	    //       coords,
-	    //       this.toolSettings.lineThickness,
-	    //       this.toolSettings.lineColor
-	    //     ),
-	    //     coords[0],
-	    //     coords[1],
-	    //     this.toolSettings.lineThickness,
-	    //     this.toolSettings.lineColor
-	    //   )
-	    // }
-	    // else return <Texture>this._previewPlot(
-	    //   this.graphPixels,
-	    //   coords[0],
-	    //   coords[1],
-	    //   this.toolSettings.lineThickness,
-	    //   this.toolSettings.lineColor
-	    // )
 	}
 	exports._toolPreview = _toolPreview;
 	});
