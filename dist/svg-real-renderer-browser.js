@@ -377,19 +377,31 @@
 	var eraser = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.EraserDefaults = exports.name = void 0;
+
+
+
+
 	exports.name = 'eraser';
 	exports.EraserDefaults = {
 	    eraserSize: 2
 	};
 	function _startStroke(coords, identifier) {
 	    this._doPreview = false;
+	    var brushPath = new _path.Path('');
+	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
+	    brushPath.setStrokeWidth(this.toolSettings.eraserSize);
+	    this._addStroke([brushPath]);
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2, this.bgColor));
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
 	    this._doPreview = true;
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.eraserSize / 2, this.bgColor));
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2, this.bgColor));
+	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
