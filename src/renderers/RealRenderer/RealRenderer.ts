@@ -8,6 +8,8 @@ import { getRGBColorString } from '../../util/getRGBColorString';
 
 export * from '../../constants/defaults/RealRendererDefaults';
 
+import { undo, redo } from './undo';
+
 export class RealRenderer {
   svg: SVGSVGElement;
   dimensions: GraphDimensions;
@@ -24,6 +26,9 @@ export class RealRenderer {
   xOffset: number;
   yOffset: number;
   _doRender: boolean;
+
+  public undo = undo;
+  public redo = redo;
 
   constructor(options: RealRendererOptions) {
     // *****DEFAULTS*****

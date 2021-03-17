@@ -8,7 +8,6 @@ export * as RealDrawBoardTypes from '../../types/RealDrawBoardTypes';
 export * from '../../constants/defaults/RealDrawBoardDefaults';
 
 import { _plot, _stroke } from './_draw';
-import { undo, redo } from './undo';
 import {
   changeTool,
   changeToolSetting,
@@ -32,7 +31,6 @@ export class RealDrawBoard extends RealRenderer {
   options: RealDrawBoardOptions;
   tool: Tool = RealDrawBoardDefaults.tool;
   toolSettings: ToolSettings;
-  _isDrawing: boolean = false;
   /** key -> identifier, value -> coordinate
    *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
    */
@@ -52,8 +50,6 @@ export class RealDrawBoard extends RealRenderer {
   protected _getMouseCoords = _getMouseCoords;
   protected _getTouchCoords = _getTouchCoords;
 
-  public undo = undo;
-  public redo = redo;
   public changeToolSetting = changeToolSetting;
   public changeTool = changeTool;
   public clear = clear;
@@ -189,14 +185,12 @@ export class RealDrawBoard extends RealRenderer {
   // --- DOM Event Listeners ---
   startRender() {
     this._addDOMEvents();
-    this._isDrawing = true;
 
     return this;
   }
 
   stopRender() {
     this._removeDOMEvents();
-    this._isDrawing = false;
 
     return this;
   }

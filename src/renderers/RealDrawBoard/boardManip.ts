@@ -46,7 +46,6 @@ export function _resetBoard(this: RealDrawBoard) {
   this.tool = this.options.tool;
   this.toolSettings = this.options.toolSettings;
 
-  this._isDrawing = false;
   this._lastCoords.clear();
 
   this.stopRender();
