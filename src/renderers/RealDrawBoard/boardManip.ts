@@ -8,6 +8,15 @@ export function changeTool(this: RealDrawBoard, newTool: Tool) {
   this._doStroke = tools[this.tool]._doStroke;
   this._endStroke = tools[this.tool]._endStroke;
   this._toolPreview = tools[this.tool]._toolPreview;
+
+  this._previewStroke.forEach((stroke) => {
+    stroke.forEach((node) => {
+      node.delete();
+    })
+  })
+
+  this._previewStroke.clear();
+
   return this;
 }
 

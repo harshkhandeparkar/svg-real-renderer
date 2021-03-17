@@ -70,6 +70,7 @@ export function _endStroke(
   (<Circle>this.strokes[this._strokeIndex][2]).updateCenter(endCoords);
 
   _startCoords.delete(identifier);
+  this._doPreview = true;
 }
 
 export function _doStroke(
@@ -92,4 +93,21 @@ export function _toolPreview(
   coords: [number, number],
   identifier: string
 ) {
+  if (this._previewStroke.get(identifier).length == 0) {
+    const circleNode = getCircleNode(
+      coords,
+      this.toolSettings.lineThickness / 2,
+      this.toolSettings.brushColor
+    )
+
+    circleNode.setFill(getRGBColorString(this.toolSettings.brushColor));
+    circleNode.setStroke(getRGBColorString(this.toolSettings.brushColor));
+
+    this._previewStroke.get(identifier).push(circleNode);
+  }
+  else {
+    const circleNode = <Circle>this._previewStroke.get(identifier)[0]
+    circleNode.updateCenter(coords);
+    circleNode.updateRadius(this.toolSettings.lineThickness / 2);
+  }
 }

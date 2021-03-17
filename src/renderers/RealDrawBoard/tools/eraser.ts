@@ -1,6 +1,7 @@
 import { getCircleNode } from '../../../pathMakers/circle';
 import { getLinePathCommand } from '../../../pathMakers/line';
 import { getRGBColorString } from '../../../util/getRGBColorString';
+import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 import { Path } from '../../RealRenderer/strokeNodes/_path';
 import { RealDrawBoard } from '../RealDrawBoard';
 
@@ -40,7 +41,6 @@ export function _endStroke(
   endCoords: [number, number],
   identifier: string
 ) {
-  this._doPreview = true;
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       endCoords,
@@ -48,6 +48,8 @@ export function _endStroke(
       this.bgColor
     )
   )
+
+  this._doPreview = true;
 }
 
 export function _doStroke(
@@ -76,11 +78,21 @@ export function _toolPreview(
   coords: [number, number],
   identifier: string
  ) {
-  // return <Texture>this._previewPlot(
-  //   this.graphPixels,
-  //   coords[0],
-  //   coords[1],
-  //   this.toolSettings.eraserSize,
-  //   this.bgColor
-  // )
+  if (this._previewStroke.get(identifier).length == 0) {
+    const circleNode = getCircleNode(
+      coords,
+      this.toolSettings.eraserSize / 2,
+      this.bgColor
+    )
+
+    circleNode.setFill(getRGBColorString(this.bgColor));
+    circleNode.setStroke(getRGBColorString(this.bgColor));
+
+    this._previewStroke.get(identifier).push(circleNode);
+  }
+  else {
+    const circleNode = <Circle>this._previewStroke.get(identifier)[0]
+    circleNode.updateCenter(coords);
+    circleNode.updateRadius(this.toolSettings.eraserSize / 2);
+  }
 }

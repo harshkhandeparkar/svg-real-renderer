@@ -23,7 +23,7 @@ import {
 } from './_coords';
 
 import { tools, Tool, ToolSettings } from './tools/tools';
-import { Coordinate } from '../../types/RealRendererTypes';
+import { Coordinate, Stroke } from '../../types/RealRendererTypes';
 
 export class RealDrawBoard extends RealRenderer {
   options: RealDrawBoardOptions;
@@ -34,6 +34,10 @@ export class RealDrawBoard extends RealRenderer {
    */
   _lastCoords: Map<string, Coordinate> = new Map(); /* key -> identifier, value -> coordinate*/
   _doPreview: boolean = true; // If a preview should be drawn
+  /**
+   * The preview for the current stroke
+   */
+  _previewStroke: Map<string, Stroke> = new Map();
 
   protected _resetBoard = _resetBoard;
   protected _addDOMEvents = _addDOMEvents;
@@ -115,10 +119,13 @@ export class RealDrawBoard extends RealRenderer {
   _previewMouseMoveEventListener = (e: MouseEvent) => {
     const coords = this._getMouseCoords(e);
 
-    // if (this._doPreview) {
-      // this._display(this._toolPreview(coords, 'mouse'));
+    if (this._doPreview) {
+      if (!this._previewStroke.has('mouse')) this._previewStroke.set('mouse', []);
 
-    // }
+      this._toolPreview(coords, 'mouse');
+      this._display(this._previewStroke.get('mouse'));
+    }
+
     this._display(this.strokes[this._strokeIndex]);
   }
   // --- Mouse Events ---
@@ -129,12 +136,14 @@ export class RealDrawBoard extends RealRenderer {
 
     for (let i = 0; i < e.touches.length; i++) {
       const coords = this._getTouchCoords(e.touches.item(i));
+      const identifier = e.touches.item(i).identifier.toString();
+
       this._startStroke(
         coords,
-        e.touches.item(i).identifier.toString()
+        identifier
       )
       this._lastCoords.set(
-        e.touches.item(i).identifier.toString(),
+        identifier,
         coords
       )
     }
@@ -143,12 +152,14 @@ export class RealDrawBoard extends RealRenderer {
   _touchEndEventListener = (e: TouchEvent) => {
     for (let i = 0; i < e.changedTouches.length; i++) {
       const coords = this._getTouchCoords(e.changedTouches.item(i));
+      const identifier = e.changedTouches.item(i).identifier.toString();
+
       this._endStroke(
         coords,
-        e.changedTouches.item(i).identifier.toString()
+        identifier
       )
       this._lastCoords.delete(
-        e.changedTouches.item(i).identifier.toString()
+        identifier
       )
     }
   }
@@ -166,9 +177,15 @@ export class RealDrawBoard extends RealRenderer {
 
   _previewTouchMoveEventListener = (e: TouchEvent) => {
     for (let i = 0; i < e.touches.length; i++) {
-      // if (!this._doPreview) {
-        // this._display(this._toolPreview(this._getTouchCoords(e.touches.item(i)), e.touches.item(i).identifier.toString()));
-      // }
+      const coords = this._getTouchCoords(e.touches.item(i));
+      const identifier = e.touches.item(i).identifier.toString();
+
+      if (this._doPreview) {
+        if (!this._previewStroke.has(identifier)) this._previewStroke.set(identifier, []);
+        this._toolPreview(coords, identifier);
+        this._display(this._previewStroke.get(identifier));
+      }
+
       this._display(this.strokes[this._strokeIndex]);
     }
   }

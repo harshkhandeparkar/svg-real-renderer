@@ -351,8 +351,8 @@
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this._doPreview = true;
 	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
+	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
@@ -361,12 +361,17 @@
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
-	    // return <Texture>this._previewPlot(
-	    //   coords[0],
-	    //   coords[1],
-	    //   this.toolSettings.brushSize,
-	    //   this.toolSettings.brushColor
-	    // )
+	    if (this._previewStroke.get(identifier).length == 0) {
+	        var circleNode = circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor);
+	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
+	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
+	        this._previewStroke.get(identifier).push(circleNode);
+	    }
+	    else {
+	        var circleNode = this._previewStroke.get(identifier)[0];
+	        circleNode.updateCenter(coords);
+	        circleNode.updateRadius(this.toolSettings.brushSize / 2);
+	    }
 	}
 	exports._toolPreview = _toolPreview;
 	});
@@ -392,8 +397,8 @@
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this._doPreview = true;
 	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.eraserSize / 2, this.bgColor));
+	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
@@ -402,13 +407,17 @@
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
-	    // return <Texture>this._previewPlot(
-	    //   this.graphPixels,
-	    //   coords[0],
-	    //   coords[1],
-	    //   this.toolSettings.eraserSize,
-	    //   this.bgColor
-	    // )
+	    if (this._previewStroke.get(identifier).length == 0) {
+	        var circleNode = circle.getCircleNode(coords, this.toolSettings.eraserSize / 2, this.bgColor);
+	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.bgColor));
+	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
+	        this._previewStroke.get(identifier).push(circleNode);
+	    }
+	    else {
+	        var circleNode = this._previewStroke.get(identifier)[0];
+	        circleNode.updateCenter(coords);
+	        circleNode.updateRadius(this.toolSettings.eraserSize / 2);
+	    }
 	}
 	exports._toolPreview = _toolPreview;
 	});
@@ -444,6 +453,7 @@
 	    this.strokes[this._strokeIndex][0].updatePath(line.getLinePathCommand(_startCoords.get(identifier), endCoords));
 	    this.strokes[this._strokeIndex][2].updateCenter(endCoords);
 	    _startCoords.delete(identifier);
+	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
@@ -452,6 +462,17 @@
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
+	    if (this._previewStroke.get(identifier).length == 0) {
+	        var circleNode = circle.getCircleNode(coords, this.toolSettings.lineThickness / 2, this.toolSettings.brushColor);
+	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
+	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
+	        this._previewStroke.get(identifier).push(circleNode);
+	    }
+	    else {
+	        var circleNode = this._previewStroke.get(identifier)[0];
+	        circleNode.updateCenter(coords);
+	        circleNode.updateRadius(this.toolSettings.lineThickness / 2);
+	    }
 	}
 	exports._toolPreview = _toolPreview;
 	});
@@ -510,6 +531,12 @@
 	    this._doStroke = tools.tools[this.tool]._doStroke;
 	    this._endStroke = tools.tools[this.tool]._endStroke;
 	    this._toolPreview = tools.tools[this.tool]._toolPreview;
+	    this._previewStroke.forEach(function (stroke) {
+	        stroke.forEach(function (node) {
+	            node.delete();
+	        });
+	    });
+	    this._previewStroke.clear();
 	    return this;
 	}
 	exports.changeTool = changeTool;
@@ -647,6 +674,10 @@
 	         */
 	        _this._lastCoords = new Map(); /* key -> identifier, value -> coordinate*/
 	        _this._doPreview = true; // If a preview should be drawn
+	        /**
+	         * The preview for the current stroke
+	         */
+	        _this._previewStroke = new Map();
 	        _this._resetBoard = boardManip._resetBoard;
 	        _this._addDOMEvents = _DOMEvents._addDOMEvents;
 	        _this._removeDOMEvents = _DOMEvents._removeDOMEvents;
@@ -695,9 +726,12 @@
 	        };
 	        _this._previewMouseMoveEventListener = function (e) {
 	            var coords = _this._getMouseCoords(e);
-	            // if (this._doPreview) {
-	            // this._display(this._toolPreview(coords, 'mouse'));
-	            // }
+	            if (_this._doPreview) {
+	                if (!_this._previewStroke.has('mouse'))
+	                    _this._previewStroke.set('mouse', []);
+	                _this._toolPreview(coords, 'mouse');
+	                _this._display(_this._previewStroke.get('mouse'));
+	            }
 	            _this._display(_this.strokes[_this._strokeIndex]);
 	        };
 	        // --- Mouse Events ---
@@ -706,15 +740,17 @@
 	            e.preventDefault();
 	            for (var i = 0; i < e.touches.length; i++) {
 	                var coords = _this._getTouchCoords(e.touches.item(i));
-	                _this._startStroke(coords, e.touches.item(i).identifier.toString());
-	                _this._lastCoords.set(e.touches.item(i).identifier.toString(), coords);
+	                var identifier = e.touches.item(i).identifier.toString();
+	                _this._startStroke(coords, identifier);
+	                _this._lastCoords.set(identifier, coords);
 	            }
 	        };
 	        _this._touchEndEventListener = function (e) {
 	            for (var i = 0; i < e.changedTouches.length; i++) {
 	                var coords = _this._getTouchCoords(e.changedTouches.item(i));
-	                _this._endStroke(coords, e.changedTouches.item(i).identifier.toString());
-	                _this._lastCoords.delete(e.changedTouches.item(i).identifier.toString());
+	                var identifier = e.changedTouches.item(i).identifier.toString();
+	                _this._endStroke(coords, identifier);
+	                _this._lastCoords.delete(identifier);
 	            }
 	        };
 	        _this._touchMoveEventListener = function (e) {
@@ -726,9 +762,14 @@
 	        };
 	        _this._previewTouchMoveEventListener = function (e) {
 	            for (var i = 0; i < e.touches.length; i++) {
-	                // if (!this._doPreview) {
-	                // this._display(this._toolPreview(this._getTouchCoords(e.touches.item(i)), e.touches.item(i).identifier.toString()));
-	                // }
+	                var coords = _this._getTouchCoords(e.touches.item(i));
+	                var identifier = e.touches.item(i).identifier.toString();
+	                if (_this._doPreview) {
+	                    if (!_this._previewStroke.has(identifier))
+	                        _this._previewStroke.set(identifier, []);
+	                    _this._toolPreview(coords, identifier);
+	                    _this._display(_this._previewStroke.get(identifier));
+	                }
 	                _this._display(_this.strokes[_this._strokeIndex]);
 	            }
 	        };
