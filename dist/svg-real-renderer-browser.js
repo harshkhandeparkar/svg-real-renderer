@@ -603,14 +603,14 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._getTouchCoords = exports._getMouseCoords = void 0;
 	function _getMouseCoords(e) {
-	    var x = (e.offsetX * this.dimensions[0]) / this.svg.getBoundingClientRect().width; // Handle canvas resize
-	    var y = (e.offsetY * this.dimensions[1]) / this.svg.getBoundingClientRect().height;
+	    var x = e.offsetX;
+	    var y = e.offsetY;
 	    return [x, y]; // In graph coordinates
 	}
 	exports._getMouseCoords = _getMouseCoords;
 	function _getTouchCoords(touch) {
-	    var x = ((touch.clientX - this.svg.getBoundingClientRect().left) * this.dimensions[0]) / this.svg.getBoundingClientRect().width; // Handle canvas resize
-	    var y = ((touch.clientY - this.svg.getBoundingClientRect().top) * this.dimensions[1]) / this.svg.getBoundingClientRect().height;
+	    var x = (touch.clientX - this.svg.getBoundingClientRect().left);
+	    var y = (touch.clientY - this.svg.getBoundingClientRect().top);
 	    return [x, y];
 	}
 	exports._getTouchCoords = _getTouchCoords;
