@@ -57,7 +57,7 @@ const renderer = SVGRealRenderer.RealRenderer(options); // options is an object 
 ##### Options
 The constructor of the class takes an options javascript object as the only argument. The object can have the following properties.
 
-- `svg`(*SVGSvgElement*) (Required, No default):  The `svg` element on which the graph should be rendered.
+- `svg`([*SVGSVGElement*](https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement)) (Required, No default):  The `svg` element on which the graph should be rendered.
 - `dimensions`(*Array*) (Default: `[1000, 1000]`): An array which contains the x and y dimensions(in pixels) of graph.
 - `xScaleFactor`(*Number) (Default: `10`): This is a number that determines the scaling of the x-axis. A greater value zooms into the x-axis. Greater values provide more precision and lower values increase the limits of the x-axis.
 
@@ -117,25 +117,23 @@ Click and drag on the canvas to draw, change modes to erase. The brush color and
 See [example](https://harshkhandeparkar.github.io/svg-real-renderer).
 
 ##### Properties (Read-Only)
-- `tool` (`'brush'` | `'rainbow_brush'` | `'eraser'` | `'line'`): The current tool used on the board. This tool can be set in the options or using the `changeTool` method.
+- `tool` (`'brush'` | `'eraser'` | `'line'`): The current tool used on the board. This tool can be set in the options or using the `changeTool` method.
   - `brush`: Normal brush which uses the `brushColor` property as the color.
-  - `rainbow_brush`: Brush with continuously changing color.
   - `eraser`: Erases.
   - `line`: Draws a line with `brushColor` property as the color.
 - `toolSettings` (`Object`): Settings for all the different tools. It contains the following properties.
-  - `brushSize` (`number`): Size of the `brush` tool and `rainbow_brush` tool.
+  - `brushSize` (`number`): Size of the `brush` tool.
   - `brushColor` (`[number, number, number]`): Color of the `brush` tool.
   - `eraserSize` (`number`): Size of the `eraser` tool.
   - `lineThickness` (`number`): Thickness of the `line` tool.
   - `lineColor` (`[number, number, number]`): Color of the `line` tool.
-  - `changeRate` (`number`): Rate at which the `rainbow_brush` tool changes color.
 
 ##### Options
 Since this is a child class of `RealRenderer`, all the options of `RealRender` are applicable here as well.
 Apart from those, the following are additional options that can be passed on to the constructor.
 - `toolSettings` (`Object`): Settings for all the different tools. Same as described in the **properties** section above.
 
-- `tool` (*'brush' | 'rainbow_brush' | 'eraser' | 'line'*) (Default: `'brush'`): Determines which tool to use.
+- `tool` (*'brush' | 'eraser' | 'line'*) (Default: `'brush'`): Determines which tool to use.
 
 ##### Methods
 Since this is a child class of `RealRenderer`, all the methods of `RealRender` are available here as well.
