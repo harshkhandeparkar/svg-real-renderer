@@ -275,14 +275,606 @@
 	exports.RealRenderer = RealRenderer;
 	});
 
+	var _circle = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Circle = void 0;
+	var Circle = /** @class */ (function () {
+	    function Circle(center, initialRadius) {
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+	        path.setAttribute('cx', center[0].toString());
+	        path.setAttribute('cy', center[1].toString());
+	        path.setAttribute('r', initialRadius.toString());
+	        this.node = path;
+	    }
+	    Circle.prototype.updateRadius = function (newRadius) {
+	        this.node.setAttribute('r', newRadius.toString());
+	    };
+	    Circle.prototype.setStroke = function (stroke) {
+	        this.node.setAttribute('stroke', stroke);
+	    };
+	    Circle.prototype.setFill = function (fill) {
+	        this.node.setAttribute('fill', fill);
+	    };
+	    Circle.prototype.setStrokeWidth = function (width) {
+	        this.node.setAttribute('stroke-width', width.toString());
+	    };
+	    Circle.prototype.delete = function () {
+	        this.node.remove();
+	    };
+	    return Circle;
+	}());
+	exports.Circle = Circle;
+	});
+
+	var circle = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.getCircleNode = void 0;
+
+
+	function getCircleNode(center, radius, color) {
+	    var circleNode = new _circle.Circle(center, radius);
+	    circleNode.setFill(getRGBColorString_1.getRGBColorString(color));
+	    circleNode.setStroke(getRGBColorString_1.getRGBColorString(color));
+	    return circleNode;
+	}
+	exports.getCircleNode = getCircleNode;
+	});
+
+	var line = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.getLinePathCommand = void 0;
+	function getLinePathCommand(pt1, pt2) {
+	    var d;
+	    d = "M " + pt1[0] + "," + pt1[1] + '\n';
+	    d += "L " + pt2[0] + "," + pt2[1];
+	    return d;
+	}
+	exports.getLinePathCommand = getLinePathCommand;
+	});
+
+	var brush = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.BrushDefaults = exports.name = void 0;
+
+
+
+
+	exports.name = 'brush';
+	exports.BrushDefaults = {
+	    brushColor: [1, 1, 1],
+	    brushSize: 1
+	};
+	function _startStroke(coords, identifier) {
+	    this._doPreview = false;
+	    var brushPath = new _path.Path('');
+	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
+	    brushPath.setStrokeWidth(this.toolSettings.brushSize);
+	    this._addStroke([brushPath]);
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
+	}
+	exports._startStroke = _startStroke;
+	function _endStroke(endCoords, identifier) {
+	    this._doPreview = true;
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
+	}
+	exports._endStroke = _endStroke;
+	function _doStroke(coords, identifier) {
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
+	}
+	exports._doStroke = _doStroke;
+	function _toolPreview(coords, identifier) {
+	    // return <Texture>this._previewPlot(
+	    //   coords[0],
+	    //   coords[1],
+	    //   this.toolSettings.brushSize,
+	    //   this.toolSettings.brushColor
+	    // )
+	}
+	exports._toolPreview = _toolPreview;
+	});
+
+	var eraser = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.EraserDefaults = exports.name = void 0;
+	exports.name = 'eraser';
+	exports.EraserDefaults = {
+	    eraserSize: 2
+	};
+	function _startStroke(coords, identifier) {
+	    this._doPreview = false;
+	}
+	exports._startStroke = _startStroke;
+	function _endStroke(endCoords, identifier) {
+	    this._doPreview = true;
+	}
+	exports._endStroke = _endStroke;
+	function _doStroke(coords, identifier) {
+	}
+	exports._doStroke = _doStroke;
+	function _toolPreview(coords, identifier) {
+	    // return <Texture>this._previewPlot(
+	    //   this.graphPixels,
+	    //   coords[0],
+	    //   coords[1],
+	    //   this.toolSettings.eraserSize,
+	    //   this.bgColor
+	    // )
+	}
+	exports._toolPreview = _toolPreview;
+	});
+
+	var line$1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.LineDefaults = exports.name = void 0;
+	exports.name = 'line';
+	exports.LineDefaults = {
+	    lineThickness: 1,
+	    lineColor: [1, 1, 1]
+	};
+	/** key -> identifier, value -> coordinate
+	   *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+	   */
+	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
+	function _startStroke(coords, identifier) {
+	    // this._plot(coords[0], coords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
+	    _startCoords.set(identifier, coords);
+	}
+	exports._startStroke = _startStroke;
+	function _endStroke(endCoords, identifier) {
+	    // this._addPath(
+	    //   getInterpolatePath(
+	    //     this.dimensions,
+	    //     this.xScaleFactor,
+	    //     this.yScaleFactor,
+	    //     this.xOffset,
+	    //     this.yOffset,
+	    //     _startCoords.get(identifier),
+	    //     endCoords,
+	    //     this.toolSettings.lineThickness,
+	    //     this.toolSettings.lineColor
+	    //   )
+	    // )
+	    // this._plot(endCoords[0], endCoords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
+	    _startCoords.delete(identifier);
+	}
+	exports._endStroke = _endStroke;
+	function _doStroke(coords, identifier) {
+	}
+	exports._doStroke = _doStroke;
+	function _toolPreview(coords, identifier) {
+	    // if (_startCoords.has(identifier)) {
+	    //   return <Texture>this._previewPlot(
+	    //     this._strokeKernel(
+	    //       this._cloneTexture(this.graphPixels),
+	    //       _startCoords.get(identifier),
+	    //       coords,
+	    //       this.toolSettings.lineThickness,
+	    //       this.toolSettings.lineColor
+	    //     ),
+	    //     coords[0],
+	    //     coords[1],
+	    //     this.toolSettings.lineThickness,
+	    //     this.toolSettings.lineColor
+	    //   )
+	    // }
+	    // else return <Texture>this._previewPlot(
+	    //   this.graphPixels,
+	    //   coords[0],
+	    //   coords[1],
+	    //   this.toolSettings.lineThickness,
+	    //   this.toolSettings.lineColor
+	    // )
+	}
+	exports._toolPreview = _toolPreview;
+	});
+
+	var convertHSLToRGB_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.convertHSLToRGB = void 0;
+	/**
+	 * Convert hsl Color into RGB color.
+	 * @param h color value ranges from 0 to 360.
+	 * @param s saturation value.
+	 * @param l brightness level.
+	 * @return array containing r g and b value
+	 */
+	function convertHSLToRGB(h, s, l) {
+	    s /= 100;
+	    l /= 100;
+	    var c = (1 - Math.abs(2 * l - 1)) * s;
+	    var x = c * (1 - Math.abs((h / 60) % 2 - 1));
+	    var m = l - c / 2;
+	    var r = 0;
+	    var g = 0;
+	    var b = 0;
+	    if (0 <= h && h < 60) {
+	        r = c;
+	        g = x;
+	        b = 0;
+	    }
+	    else if (60 <= h && h < 120) {
+	        r = x;
+	        g = c;
+	        b = 0;
+	    }
+	    else if (120 <= h && h < 180) {
+	        r = 0;
+	        g = c;
+	        b = x;
+	    }
+	    else if (180 <= h && h < 240) {
+	        r = 0;
+	        g = x;
+	        b = c;
+	    }
+	    else if (240 <= h && h < 300) {
+	        r = x;
+	        g = 0;
+	        b = c;
+	    }
+	    else if (300 <= h && h < 360) {
+	        r = c;
+	        g = 0;
+	        b = x;
+	    }
+	    r = (r + m);
+	    g = (g + m);
+	    b = (b + m);
+	    return [r, g, b];
+	}
+	exports.convertHSLToRGB = convertHSLToRGB;
+	});
+
+	var rainbow_brush = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.RainbowBrushDefaults = exports.name = void 0;
+
+	var hue = 0;
+	var gradientColors = [1, 1, 1];
+	exports.name = 'rainbow_brush';
+	exports.RainbowBrushDefaults = {
+	    brushSize: 1,
+	    changeRate: 1
+	};
+	function _startStroke(coords, identifier) {
+	    gradientColors = convertHSLToRGB_1.convertHSLToRGB(hue, 90, 40);
+	    this._doPreview = false;
+	    // this._plot(coords[0], coords[1], this.toolSettings.brushSize, gradientColors);
+	}
+	exports._startStroke = _startStroke;
+	function _endStroke(endCoords, identifier) {
+	    gradientColors = convertHSLToRGB_1.convertHSLToRGB(hue, 90, 40);
+	    // this._plot(endCoords[0], endCoords[1], this.toolSettings.brushSize, gradientColors);
+	    this._doPreview = true;
+	}
+	exports._endStroke = _endStroke;
+	function _doStroke(coords, identifier) {
+	    hue = (hue + this.toolSettings.changeRate) % 360;
+	    gradientColors = convertHSLToRGB_1.convertHSLToRGB(hue, 90, 40);
+	    // this._plot(coords[0], coords[1], this.toolSettings.brushSize, gradientColors);
+	    // this._stroke(coords[0], coords[1], this.toolSettings.brushSize, gradientColors, identifier);
+	}
+	exports._doStroke = _doStroke;
+	function _toolPreview(coords, identifier) {
+	    // return <Texture>this._previewPlot(
+	    //   this.graphPixels,
+	    //   coords[0],
+	    //   coords[1],
+	    //   this.toolSettings.brushSize,
+	    //   gradientColors
+	    // )
+	}
+	exports._toolPreview = _toolPreview;
+	});
+
+	var tools = createCommonjsModule(function (module, exports) {
+	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
+	    __assign = Object.assign || function(t) {
+	        for (var s, i = 1, n = arguments.length; i < n; i++) {
+	            s = arguments[i];
+	            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	                t[p] = s[p];
+	        }
+	        return t;
+	    };
+	    return __assign.apply(this, arguments);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.ToolDefaults = exports.tools = void 0;
+
+
+
+
+	exports.tools = {
+	    brush: brush,
+	    rainbow_brush: rainbow_brush,
+	    eraser: eraser,
+	    line: line$1
+	};
+	exports.ToolDefaults = __assign(__assign(__assign(__assign({}, brush.BrushDefaults), line$1.LineDefaults), eraser.EraserDefaults), rainbow_brush.RainbowBrushDefaults);
+	});
+
+	var RealDrawBoardDefaults = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.RealDrawBoardDefaults = void 0;
+
+	exports.RealDrawBoardDefaults = {
+	    toolSettings: tools.ToolDefaults,
+	    allowUndo: false,
+	    maxUndos: 10,
+	    tool: 'brush'
+	};
+	});
+
+	var RealDrawBoardTypes = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	});
+
+	var boardManip = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._resetBoard = exports.clear = exports.changeToolSetting = exports.changeTool = void 0;
+
+
+	function changeTool(newTool) {
+	    this.tool = newTool;
+	    this._startStroke = tools.tools[this.tool]._startStroke;
+	    this._doStroke = tools.tools[this.tool]._doStroke;
+	    this._endStroke = tools.tools[this.tool]._endStroke;
+	    this._toolPreview = tools.tools[this.tool]._toolPreview;
+	    return this;
+	}
+	exports.changeTool = changeTool;
+	function changeToolSetting(settingName, value) {
+	    this.toolSettings[settingName] = value;
+	    return this;
+	}
+	exports.changeToolSetting = changeToolSetting;
+	function clear() {
+	    this._strokeIndex = 0;
+	    this._lastCoords.clear();
+	    this.strokes = [
+	        [
+	            blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)
+	        ]
+	    ];
+	    this._display(this.strokes[this._strokeIndex]);
+	    return this;
+	}
+	exports.clear = clear;
+	function _resetBoard() {
+	    this.xScaleFactor = this.options.xScaleFactor;
+	    this.yScaleFactor = this.options.yScaleFactor;
+	    this.bgColor = this.options.bgColor;
+	    this.tool = this.options.tool;
+	    this.toolSettings = this.options.toolSettings;
+	    this._lastCoords.clear();
+	    this.stopRender();
+	}
+	exports._resetBoard = _resetBoard;
+	});
+
+	var _DOMEvents = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._removeDOMEvents = exports._addDOMEvents = void 0;
+	function _addDOMEvents() {
+	    this.svg.addEventListener('mousedown', this._mouseDownEventListener);
+	    this.svg.addEventListener('mouseup', this._mouseUpEventListener);
+	    this.svg.addEventListener('mouseleave', this._mouseLeaveEventListener);
+	    this.svg.addEventListener('mousemove', this._previewMouseMoveEventListener);
+	    this.svg.addEventListener('touchstart', this._touchStartEventListener);
+	    this.svg.addEventListener('touchmove', this._touchMoveEventListener);
+	    this.svg.addEventListener('touchend', this._touchEndEventListener);
+	    this.svg.addEventListener('touchmove', this._previewTouchMoveEventListener);
+	}
+	exports._addDOMEvents = _addDOMEvents;
+	function _removeDOMEvents() {
+	    this.svg.removeEventListener('mousedown', this._mouseDownEventListener);
+	    this.svg.removeEventListener('mouseup', this._mouseUpEventListener);
+	    this.svg.removeEventListener('mouseexit', this._mouseLeaveEventListener);
+	    this.svg.removeEventListener('mousemove', this._previewMouseMoveEventListener);
+	    this.svg.removeEventListener('touchstart', this._touchStartEventListener);
+	    this.svg.removeEventListener('touchmove', this._touchMoveEventListener);
+	    this.svg.removeEventListener('touchend', this._touchEndEventListener);
+	    this.svg.removeEventListener('touchmove', this._previewTouchMoveEventListener);
+	}
+	exports._removeDOMEvents = _removeDOMEvents;
+	});
+
+	var _coords = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._getTouchCoords = exports._getMouseCoords = void 0;
+	function _getMouseCoords(e) {
+	    var x = (e.offsetX * this.dimensions[0]) / this.svg.getBoundingClientRect().width; // Handle canvas resize
+	    var y = (e.offsetY * this.dimensions[1]) / this.svg.getBoundingClientRect().height;
+	    return [x, y]; // In graph coordinates
+	}
+	exports._getMouseCoords = _getMouseCoords;
+	function _getTouchCoords(touch) {
+	    var x = ((touch.clientX - this.svg.getBoundingClientRect().left) * this.dimensions[0]) / this.svg.getBoundingClientRect().width; // Handle canvas resize
+	    var y = ((touch.clientY - this.svg.getBoundingClientRect().top) * this.dimensions[1]) / this.svg.getBoundingClientRect().height;
+	    return [x, y];
+	}
+	exports._getTouchCoords = _getTouchCoords;
+	});
+
+	var RealDrawBoard_1 = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
+	    __assign = Object.assign || function(t) {
+	        for (var s, i = 1, n = arguments.length; i < n; i++) {
+	            s = arguments[i];
+	            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	                t[p] = s[p];
+	        }
+	        return t;
+	    };
+	    return __assign.apply(this, arguments);
+	};
+	var __createBinding = (commonjsGlobal && commonjsGlobal.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+	}) : (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    o[k2] = m[k];
+	}));
+	var __exportStar = (commonjsGlobal && commonjsGlobal.__exportStar) || function(m, exports) {
+	    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.RealDrawBoard = exports.RealDrawBoardTypes = exports.RealRendererTypes = void 0;
+
+
+	exports.RealRendererTypes = RealRendererTypes;
+	exports.RealDrawBoardTypes = RealDrawBoardTypes;
+	__exportStar(RealDrawBoardDefaults, exports);
+
+
+
+
+	var RealDrawBoard = /** @class */ (function (_super) {
+	    __extends(RealDrawBoard, _super);
+	    function RealDrawBoard(options) {
+	        var _this = 
+	        // *****DEFAULTS*****
+	        _super.call(this, options) || this;
+	        _this.tool = RealDrawBoardDefaults.RealDrawBoardDefaults.tool;
+	        /** key -> identifier, value -> coordinate
+	         *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+	         */
+	        _this._lastCoords = new Map(); /* key -> identifier, value -> coordinate*/
+	        _this._doPreview = true; // If a preview should be drawn
+	        _this._resetBoard = boardManip._resetBoard;
+	        _this._addDOMEvents = _DOMEvents._addDOMEvents;
+	        _this._removeDOMEvents = _DOMEvents._removeDOMEvents;
+	        _this._startStroke = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._startStroke;
+	        _this._endStroke = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._endStroke;
+	        _this._doStroke = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._doStroke;
+	        _this._toolPreview = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._toolPreview;
+	        _this._getMouseCoords = _coords._getMouseCoords;
+	        _this._getTouchCoords = _coords._getTouchCoords;
+	        _this.changeToolSetting = boardManip.changeToolSetting;
+	        _this.changeTool = boardManip.changeTool;
+	        _this.clear = boardManip.clear;
+	        // --- DOM Event Listeners ---
+	        // --- Mouse Events ---
+	        _this._mouseDownEventListener = function (e) {
+	            if (e.button === 0 /* Left Click */) {
+	                _this.svg.addEventListener('mousemove', _this._mouseMoveEventListener);
+	                var coords = _this._getMouseCoords(e);
+	                _this._startStroke(coords, 'mouse');
+	                _this._lastCoords.set('mouse', coords);
+	            }
+	        };
+	        _this._mouseUpEventListener = function (e) {
+	            if (e.button === 0 /* Left Click */) {
+	                var endCoords = _this._getMouseCoords(e);
+	                _this.svg.removeEventListener('mousemove', _this._mouseMoveEventListener);
+	                if (_this._lastCoords.has('mouse')) {
+	                    _this._endStroke(endCoords, 'mouse');
+	                    _this._lastCoords.delete('mouse');
+	                }
+	                _this._display(_this.strokes[_this._strokeIndex]);
+	            }
+	        };
+	        _this._mouseLeaveEventListener = function (e) {
+	            _this.svg.removeEventListener('mousemove', _this._mouseMoveEventListener);
+	            if (_this._lastCoords.has('mouse')) {
+	                _this._endStroke(_this._getMouseCoords(e), 'mouse');
+	                _this._lastCoords.delete('mouse');
+	                _this._display(_this.strokes[_this._strokeIndex]);
+	            }
+	        };
+	        _this._mouseMoveEventListener = function (e) {
+	            var coords = _this._getMouseCoords(e);
+	            _this._doStroke(coords, 'mouse');
+	            _this._lastCoords.set('mouse', coords);
+	        };
+	        _this._previewMouseMoveEventListener = function (e) {
+	            var coords = _this._getMouseCoords(e);
+	            // if (this._doPreview) {
+	            // this._display(this._toolPreview(coords, 'mouse'));
+	            // }
+	            _this._display(_this.strokes[_this._strokeIndex]);
+	        };
+	        // --- Mouse Events ---
+	        // --- Touch Events ---
+	        _this._touchStartEventListener = function (e) {
+	            e.preventDefault();
+	            for (var i = 0; i < e.touches.length; i++) {
+	                var coords = _this._getTouchCoords(e.touches.item(i));
+	                _this._startStroke(coords, e.touches.item(i).identifier.toString());
+	                _this._lastCoords.set(e.touches.item(i).identifier.toString(), coords);
+	            }
+	        };
+	        _this._touchEndEventListener = function (e) {
+	            for (var i = 0; i < e.changedTouches.length; i++) {
+	                var coords = _this._getTouchCoords(e.changedTouches.item(i));
+	                _this._endStroke(coords, e.changedTouches.item(i).identifier.toString());
+	                _this._lastCoords.delete(e.changedTouches.item(i).identifier.toString());
+	            }
+	        };
+	        _this._touchMoveEventListener = function (e) {
+	            for (var i = 0; i < e.touches.length; i++) {
+	                var coords = _this._getTouchCoords(e.touches.item(i));
+	                _this._doStroke(coords, e.touches.item(i).identifier.toString());
+	                _this._lastCoords.set(e.touches.item(i).identifier.toString(), coords);
+	            }
+	        };
+	        _this._previewTouchMoveEventListener = function (e) {
+	            for (var i = 0; i < e.touches.length; i++) {
+	                // if (!this._doPreview) {
+	                // this._display(this._toolPreview(this._getTouchCoords(e.touches.item(i)), e.touches.item(i).identifier.toString()));
+	                // }
+	                _this._display(_this.strokes[_this._strokeIndex]);
+	            }
+	        };
+	        options = __assign(__assign({}, RealDrawBoardDefaults.RealDrawBoardDefaults), options);
+	        _this.options = options;
+	        _this.toolSettings = options.toolSettings;
+	        _this.changeTool(options.tool);
+	        return _this;
+	        // *****DEFAULTS*****
+	    }
+	    // --- Touch Events ---
+	    // --- DOM Event Listeners ---
+	    RealDrawBoard.prototype.startRender = function () {
+	        this._addDOMEvents();
+	        return this;
+	    };
+	    RealDrawBoard.prototype.stopRender = function () {
+	        this._removeDOMEvents();
+	        return this;
+	    };
+	    RealDrawBoard.prototype.reset = function () {
+	        this._resetBoard();
+	        _super.prototype.reset.call(this);
+	        return this;
+	    };
+	    return RealDrawBoard;
+	}(RealRenderer_1.RealRenderer));
+	exports.RealDrawBoard = RealDrawBoard;
+	});
+
 	var build = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.RealRenderer = void 0;
+	exports.RealDrawBoard = exports.RealRenderer = void 0;
 
 	Object.defineProperty(exports, "RealRenderer", { enumerable: true, get: function () { return RealRenderer_1.RealRenderer; } });
-	// export { RealLineGraph } from './src/renderers/RealLineGraph';
-	// export { RealComplexSpace } from './src/renderers/RealComplexSpace';
-	// export { RealDrawBoard } from './src/renderers/RealDrawBoard/RealDrawBoard';
+
+	Object.defineProperty(exports, "RealDrawBoard", { enumerable: true, get: function () { return RealDrawBoard_1.RealDrawBoard; } });
 	});
 
 	var index = /*@__PURE__*/getDefaultExportFromCjs(build);

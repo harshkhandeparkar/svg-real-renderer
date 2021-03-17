@@ -1,6 +1,5 @@
 import { RealDrawBoard } from '../RealDrawBoard';
 import { Color } from '../../../types/RealRendererTypes';
-import { getInterpolatePath } from '../../../pathHandlers/interpolate';
 
 export const name = 'line';
 
@@ -24,7 +23,7 @@ export function _startStroke(
   coords: [number, number],
   identifier: string
 ) {
-  this._plot(coords[0], coords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
+  // this._plot(coords[0], coords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
   _startCoords.set(identifier, coords);
 }
 
@@ -33,20 +32,20 @@ export function _endStroke(
   endCoords: [number, number],
   identifier: string
 ) {
-  this._addPath(
-    getInterpolatePath(
-      this.dimensions,
-      this.xScaleFactor,
-      this.yScaleFactor,
-      this.xOffset,
-      this.yOffset,
-      _startCoords.get(identifier),
-      endCoords,
-      this.toolSettings.lineThickness,
-      this.toolSettings.lineColor
-    )
-  )
-  this._plot(endCoords[0], endCoords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
+  // this._addPath(
+  //   getInterpolatePath(
+  //     this.dimensions,
+  //     this.xScaleFactor,
+  //     this.yScaleFactor,
+  //     this.xOffset,
+  //     this.yOffset,
+  //     _startCoords.get(identifier),
+  //     endCoords,
+  //     this.toolSettings.lineThickness,
+  //     this.toolSettings.lineColor
+  //   )
+  // )
+  // this._plot(endCoords[0], endCoords[1], this.toolSettings.lineThickness, this.toolSettings.lineColor);
   _startCoords.delete(identifier);
 }
 

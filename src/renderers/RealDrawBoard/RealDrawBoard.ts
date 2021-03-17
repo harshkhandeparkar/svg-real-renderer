@@ -7,7 +7,6 @@ export * as RealRendererTypes from '../../types/RealRendererTypes';
 export * as RealDrawBoardTypes from '../../types/RealDrawBoardTypes';
 export * from '../../constants/defaults/RealDrawBoardDefaults';
 
-import { _plot, _stroke } from './_draw';
 import {
   changeTool,
   changeToolSetting,
@@ -23,9 +22,8 @@ import {
   _getTouchCoords
 } from './_coords';
 
-import { Path } from '../RealRenderer/strokeNodes/_path';
-
 import { tools, Tool, ToolSettings } from './tools/tools';
+import { Coordinate } from '../../types/RealRendererTypes';
 
 export class RealDrawBoard extends RealRenderer {
   options: RealDrawBoardOptions;
@@ -34,12 +32,9 @@ export class RealDrawBoard extends RealRenderer {
   /** key -> identifier, value -> coordinate
    *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
    */
-  _lastCoords: Map<string, [number, number]> = new Map(); /* key -> identifier, value -> coordinate*/
+  _lastCoords: Map<string, Coordinate> = new Map(); /* key -> identifier, value -> coordinate*/
   _doPreview: boolean = true; // If a preview should be drawn
-  _strokes: Path[];
 
-  protected _stroke = _stroke;
-  protected _plot = _plot;
   protected _resetBoard = _resetBoard;
   protected _addDOMEvents = _addDOMEvents;
   protected _removeDOMEvents = _removeDOMEvents;
@@ -97,7 +92,7 @@ export class RealDrawBoard extends RealRenderer {
         this._lastCoords.delete('mouse');
       }
 
-      this._display(this.paths);
+      this._display(this.strokes[this._strokeIndex]);
     }
   }
 
@@ -107,7 +102,7 @@ export class RealDrawBoard extends RealRenderer {
     if(this._lastCoords.has('mouse')) {
       this._endStroke(this._getMouseCoords(e), 'mouse');
       this._lastCoords.delete('mouse');
-      this._display(this.paths);
+      this._display(this.strokes[this._strokeIndex]);
     }
   }
 
@@ -124,7 +119,7 @@ export class RealDrawBoard extends RealRenderer {
       // this._display(this._toolPreview(coords, 'mouse'));
 
     // }
-    this._display(this.paths);
+    this._display(this.strokes[this._strokeIndex]);
   }
   // --- Mouse Events ---
 
@@ -165,10 +160,7 @@ export class RealDrawBoard extends RealRenderer {
         coords,
         e.touches.item(i).identifier.toString()
       )
-      this._lastCoords.set(
-        e.touches.item(i).identifier.toString(),
-        coords
-      )
+      this._lastCoords.set(e.touches.item(i).identifier.toString(), coords);
     }
   }
 
@@ -177,7 +169,7 @@ export class RealDrawBoard extends RealRenderer {
       // if (!this._doPreview) {
         // this._display(this._toolPreview(this._getTouchCoords(e.touches.item(i)), e.touches.item(i).identifier.toString()));
       // }
-      this._display(this.paths);
+      this._display(this.strokes[this._strokeIndex]);
     }
   }
   // --- Touch Events ---

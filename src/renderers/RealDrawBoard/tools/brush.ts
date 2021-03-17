@@ -1,5 +1,9 @@
 import { RealDrawBoard } from '../RealDrawBoard';
 import { Color } from '../../../types/RealRendererTypes';
+import { Path } from '../../RealRenderer/strokeNodes/_path';
+import { getRGBColorString } from '../../../util/getRGBColorString';
+import { getCircleNode } from '../../../pathMakers/circle';
+import { getLinePathCommand } from '../../../pathMakers/line';
 
 export const name = 'brush';
 
@@ -19,7 +23,19 @@ export function _startStroke(
   identifier: string
 ) {
   this._doPreview = false;
-  this._plot(coords[0], coords[1], this.toolSettings.brushSize, this.toolSettings.brushColor);
+
+  const brushPath = new Path('');
+  brushPath.setStroke(getRGBColorString(this.toolSettings.brushColor));
+  brushPath.setStrokeWidth(this.toolSettings.brushSize);
+
+  this._addStroke([brushPath]);
+  this.strokes[this._strokeIndex].push(
+    getCircleNode(
+      coords,
+      this.toolSettings.brushSize / 2,
+      this.toolSettings.brushColor
+    )
+  )
 }
 
 export function _endStroke(
@@ -27,8 +43,14 @@ export function _endStroke(
   endCoords: [number, number],
   identifier: string
 ) {
-  this._plot(endCoords[0], endCoords[1], this.toolSettings.brushSize, this.toolSettings.brushColor);
   this._doPreview = true;
+  this.strokes[this._strokeIndex].push(
+    getCircleNode(
+      endCoords,
+      this.toolSettings.brushSize / 2,
+      this.toolSettings.brushColor
+    )
+  )
 }
 
 export function _doStroke(
@@ -36,8 +58,20 @@ export function _doStroke(
   coords: [number, number],
   identifier: string
 ) {
-  this._plot(coords[0], coords[1], this.toolSettings.brushSize, this.toolSettings.brushColor);
-  this._stroke(coords[0], coords[1], this.toolSettings.brushSize, this.toolSettings.brushColor, identifier);
+  this.strokes[this._strokeIndex].push(
+    getCircleNode(
+      coords,
+      this.toolSettings.brushSize / 2,
+      this.toolSettings.brushColor
+    )
+  );
+
+  (<Path>this.strokes[this._strokeIndex][0]).appendPath(
+    getLinePathCommand(
+      this._lastCoords.get(identifier),
+      coords
+    )
+  )
 }
 
 export function _toolPreview(

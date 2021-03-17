@@ -272,11 +272,6 @@ path-parse@^1.0.6:
   resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
   integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
 
-perfect-freehand@^0.3.5:
-  version "0.3.5"
-  resolved "https://registry.yarnpkg.com/perfect-freehand/-/perfect-freehand-0.3.5.tgz#4204b4453dffc057edc9086996690c8d63ce9c99"
-  integrity sha512-FVMeDX//LCB1WFUZG3+Cd8oCxZSiH2l4Fm3vHQLnpbCfrM2JLk8PrJdGPwZ5TYdIrEZ1JfDuhL6AFJeurnuh4g==
-
 picomatch@^2.2.2:
   version "2.2.2"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.2.2.tgz#21f333e9b6b8eaff02468f5146ea406d345f4dad"

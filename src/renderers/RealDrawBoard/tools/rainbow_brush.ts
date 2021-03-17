@@ -23,7 +23,7 @@ export function _startStroke(
 ) {
   gradientColors = convertHSLToRGB(hue, 90, 40);
   this._doPreview = false;
-  this._plot(coords[0], coords[1], this.toolSettings.brushSize, gradientColors);
+  // this._plot(coords[0], coords[1], this.toolSettings.brushSize, gradientColors);
 }
 
 export function _endStroke(
@@ -32,7 +32,7 @@ export function _endStroke(
   identifier: string
 ) {
   gradientColors = convertHSLToRGB(hue, 90, 40);
-  this._plot(endCoords[0], endCoords[1], this.toolSettings.brushSize, gradientColors);
+  // this._plot(endCoords[0], endCoords[1], this.toolSettings.brushSize, gradientColors);
   this._doPreview = true;
 }
 
@@ -43,8 +43,8 @@ export function _doStroke(
 ) {
   hue = (hue + this.toolSettings.changeRate) % 360;
   gradientColors = convertHSLToRGB(hue, 90, 40);
-  this._plot(coords[0], coords[1], this.toolSettings.brushSize, gradientColors);
-  this._stroke(coords[0], coords[1], this.toolSettings.brushSize, gradientColors, identifier);
+  // this._plot(coords[0], coords[1], this.toolSettings.brushSize, gradientColors);
+  // this._stroke(coords[0], coords[1], this.toolSettings.brushSize, gradientColors, identifier);
 }
 
 export function _toolPreview(
