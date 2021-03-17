@@ -2,7 +2,7 @@ import { RealDrawBoard } from './RealDrawBoard';
 import { Color } from '../../types/RealRendererTypes';
 import { getPlotPath } from '../../pathHandlers/plot';
 import { getInterpolatePath } from '../../pathHandlers/interpolate';
-import { Path } from '../../util/_path';
+import { Path } from '../RealRenderer/strokeNodes/_path';
 
 export function _plot(
   this: RealDrawBoard,

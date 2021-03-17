@@ -1,4 +1,4 @@
-import { RealRenderer } from '../RealRenderer';
+import { RealRenderer } from '../RealRenderer/RealRenderer';
 
 import { RealDrawBoardOptions } from '../../types/RealDrawBoardTypes';
 import { RealDrawBoardDefaults } from '../../constants/defaults/RealDrawBoardDefaults';
@@ -24,7 +24,7 @@ import {
   _getTouchCoords
 } from './_coords';
 
-import { Path } from '../../util/_path';
+import { Path } from '../RealRenderer/strokeNodes/_path';
 
 import { tools, Tool, ToolSettings } from './tools/tools';
 

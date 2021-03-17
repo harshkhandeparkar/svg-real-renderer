@@ -40,15 +40,25 @@
 	    function Path(initialD) {
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 	        path.setAttribute('d', initialD);
-	        this.pathD = initialD;
 	        this.node = path;
 	    }
 	    Path.prototype.updatePath = function (newD) {
 	        this.node.setAttribute('d', newD);
-	        this.pathD = newD;
+	    };
+	    Path.prototype.appendPath = function (appendD) {
+	        this.node.setAttribute('d', this.node.getAttribute('d') + '\n' + appendD);
 	    };
 	    Path.prototype.setStroke = function (stroke) {
 	        this.node.setAttribute('stroke', stroke);
+	    };
+	    Path.prototype.setFill = function (fill) {
+	        this.node.setAttribute('fill', fill);
+	    };
+	    Path.prototype.setStrokeWidth = function (width) {
+	        this.node.setAttribute('stroke-width', width.toString());
+	    };
+	    Path.prototype.delete = function () {
+	        this.node.remove();
 	    };
 	    return Path;
 	}());
@@ -60,14 +70,6 @@
 	exports.getBlankGraphPath = void 0;
 
 
-	/**
-	 * @param gpu GPU.js instance
-	 * @param dimensions Dimensions of Graph
-	 * @param xOffset
-	 * @param yOffset
-	 * @param axesColor
-	 * @param drawAxes
-	 */
 	function getBlankGraphPath(dimensions, xOffset, yOffset, axesColor, drawAxes) {
 	    var outX = dimensions[0], outY = dimensions[1];
 	    var X = Math.floor(outY * (xOffset / 100));
@@ -139,8 +141,8 @@
 	__exportStar(RealRendererDefaults, exports);
 	var RealRenderer = /** @class */ (function () {
 	    function RealRenderer(options) {
-	        this.paths = [];
-	        this._pathIndex = -1;
+	        this.strokes = [];
+	        this._strokeIndex = -1;
 	        // *****DEFAULTS*****
 	        options = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), options);
 	        this.svg = options.svg;
@@ -164,9 +166,8 @@
 	        this.svg.setAttribute('width', this.dimensions[0].toString());
 	        this.svg.setAttribute('height', this.dimensions[1].toString());
 	        this.svg.style.backgroundColor = "" + getRGBColorString_1.getRGBColorString(this.bgColor);
-	        this._addPath(blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes));
-	        this._pathIndex = 0;
-	        this._display(this.paths);
+	        this._addStroke([blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)]);
+	        this._display(this.strokes[this._strokeIndex]);
 	        this._doRender = false;
 	    }
 	    RealRenderer.prototype._drawFunc = function (time) {
@@ -177,10 +178,10 @@
 	        this._drawFunc(this.time);
 	        return this;
 	    };
-	    RealRenderer.prototype._addPath = function (path) {
-	        if (this.paths.length > this._pathIndex + 1)
-	            this.paths.splice(this._pathIndex + 1, this.paths.length - this._pathIndex);
-	        this.paths[++this._pathIndex] = path;
+	    RealRenderer.prototype._addStroke = function (stroke) {
+	        if (this.strokes.length > this._strokeIndex + 1)
+	            this.strokes.splice(this._strokeIndex + 1, this.strokes.length - this._strokeIndex);
+	        this.strokes[++this._strokeIndex] = stroke;
 	    };
 	    RealRenderer.prototype.draw = function (numDraws) {
 	        if (numDraws === void 0) { numDraws = 1; }
@@ -192,12 +193,15 @@
 	        var _this = this;
 	        if (this._doRender) {
 	            this.draw(this.drawsPerFrame);
-	            this._display(this.paths);
+	            this._display(this.strokes[this._strokeIndex]);
 	            window.requestAnimationFrame(function () { _this._render(); });
 	        }
 	    };
-	    RealRenderer.prototype._display = function (paths) {
-	        this.svg.appendChild(paths[this._pathIndex].node);
+	    RealRenderer.prototype._display = function (stroke) {
+	        var _this = this;
+	        stroke.forEach(function (strokeNode) {
+	            _this.svg.appendChild(strokeNode.node);
+	        });
 	    };
 	    RealRenderer.prototype.startRender = function () {
 	        if (!this._doRender) {
@@ -221,10 +225,14 @@
 	        return this;
 	    };
 	    RealRenderer.prototype.reset = function () {
-	        this.paths = [blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)];
-	        this._pathIndex = 0;
+	        this.strokes = [
+	            [
+	                blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)
+	            ]
+	        ];
+	        this._strokeIndex = 0;
 	        this.resetTime();
-	        this._display(this.paths);
+	        this._display(this.strokes[this._strokeIndex]);
 	        return this;
 	    };
 	    return RealRenderer;

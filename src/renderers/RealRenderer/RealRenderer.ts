@@ -1,20 +1,18 @@
-import { getBlankGraphPath } from '../pathHandlers/blankGraph';
+import { getBlankGraphPath } from '../../pathMakers/blankGraph';
 
-import { GraphDimensions, Color, RealRendererOptions } from '../types/RealRendererTypes';
-export * as RealRendererTypes from '../types/RealRendererTypes';
+import { GraphDimensions, Color, RealRendererOptions, Stroke } from '../../types/RealRendererTypes';
+export * as RealRendererTypes from '../../types/RealRendererTypes';
 
-import { RealRendererDefaults } from '../constants/defaults/RealRendererDefaults';
-import { getRGBColorString } from '../util/getRGBColorString';
+import { RealRendererDefaults } from '../../constants/defaults/RealRendererDefaults';
+import { getRGBColorString } from '../../util/getRGBColorString';
 
-export * from '../constants/defaults/RealRendererDefaults';
-
-import { Path } from '../util/_path';
+export * from '../../constants/defaults/RealRendererDefaults';
 
 export class RealRenderer {
   svg: SVGSVGElement;
   dimensions: GraphDimensions;
-  paths: Path[] = [];
-  _pathIndex: number = -1;
+  strokes: Stroke[] = [];
+  _strokeIndex: number = -1;
   xScaleFactor: number;
   yScaleFactor: number;
   bgColor: Color;
@@ -61,10 +59,10 @@ export class RealRenderer {
 
     this.svg.style.backgroundColor = `${getRGBColorString(this.bgColor)}`;
 
-    this._addPath(
-      getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)
+    this._addStroke(
+      [getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)]
     )
-    this._display(this.paths);
+    this._display(this.strokes[this._strokeIndex]);
 
     this._doRender = false;
   }
@@ -80,9 +78,9 @@ export class RealRenderer {
     return this;
   }
 
-  _addPath(path: Path) {
-    if (this.paths.length > this._pathIndex + 1) this.paths.splice(this._pathIndex + 1, this.paths.length - this._pathIndex);
-    this.paths[++this._pathIndex] = path;
+  _addStroke(stroke: Stroke) {
+    if (this.strokes.length > this._strokeIndex + 1) this.strokes.splice(this._strokeIndex + 1, this.strokes.length - this._strokeIndex);
+    this.strokes[++this._strokeIndex] = stroke;
   }
 
   draw(numDraws: number = 1) {
@@ -93,14 +91,16 @@ export class RealRenderer {
   _render() {
     if (this._doRender) {
       this.draw(this.drawsPerFrame);
-      this._display(this.paths);
+      this._display(this.strokes[this._strokeIndex]);
 
       window.requestAnimationFrame(() => {this._render()});
     }
   }
 
-  _display(paths: Path[]) {
-    this.svg.appendChild(paths[this._pathIndex].node);
+  _display(stroke: Stroke) {
+    stroke.forEach((strokeNode) => {
+      this.svg.appendChild(strokeNode.node);
+    })
   }
 
   startRender() {
@@ -128,17 +128,21 @@ export class RealRenderer {
   }
 
   reset() {
-    this.paths = [getBlankGraphPath(
-      this.dimensions,
-      this.xOffset,
-      this.yOffset,
-      this.axesColor,
-      this.drawAxes
-    )]
-    this._pathIndex = 0;
+    this.strokes = [
+      [
+        getBlankGraphPath(
+          this.dimensions,
+          this.xOffset,
+          this.yOffset,
+          this.axesColor,
+          this.drawAxes
+        )
+      ]
+    ]
+    this._strokeIndex = 0;
     this.resetTime();
 
-    this._display(this.paths);
+    this._display(this.strokes[this._strokeIndex]);
 
     return this;
   }
