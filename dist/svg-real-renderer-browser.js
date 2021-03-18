@@ -347,22 +347,22 @@
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	    brushPath.setStrokeWidth(this.toolSettings.brushSize);
 	    this._addStroke([brushPath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor));
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor));
 	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor));
 	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
 	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor);
+	        var circleNode = circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor);
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        this._previewStroke.get(identifier).push(circleNode);
@@ -370,7 +370,7 @@
 	    else {
 	        var circleNode = this._previewStroke.get(identifier)[0];
 	        circleNode.updateCenter(coords);
-	        circleNode.updateRadius(this.toolSettings.brushSize / 2);
+	        circleNode.updateRadius(this.toolSettings.brushSize / 2 - 0.5);
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	    }
@@ -395,22 +395,22 @@
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
 	    brushPath.setStrokeWidth(this.toolSettings.eraserSize);
 	    this._addStroke([brushPath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2, this.bgColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor));
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.eraserSize / 2, this.bgColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor));
 	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2, this.bgColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor));
 	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
 	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, this.toolSettings.eraserSize / 2, this.bgColor);
+	        var circleNode = circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor);
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.bgColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
 	        this._previewStroke.get(identifier).push(circleNode);
@@ -418,7 +418,7 @@
 	    else {
 	        var circleNode = this._previewStroke.get(identifier)[0];
 	        circleNode.updateCenter(coords);
-	        circleNode.updateRadius(this.toolSettings.eraserSize / 2);
+	        circleNode.updateRadius(this.toolSettings.eraserSize / 2 - 0.5);
 	    }
 	}
 	exports._toolPreview = _toolPreview;
@@ -446,8 +446,8 @@
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	    brushPath.setStrokeWidth(this.toolSettings.brushSize);
 	    this._addStroke([brushPath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.brushColor));
 	    _startCoords.set(identifier, coords);
 	}
 	exports._startStroke = _startStroke;
@@ -465,7 +465,7 @@
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
 	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, this.toolSettings.lineThickness / 2, this.toolSettings.brushColor);
+	        var circleNode = circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.brushColor);
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        this._previewStroke.get(identifier).push(circleNode);
@@ -473,7 +473,7 @@
 	    else {
 	        var circleNode = this._previewStroke.get(identifier)[0];
 	        circleNode.updateCenter(coords);
-	        circleNode.updateRadius(this.toolSettings.lineThickness / 2);
+	        circleNode.updateRadius(this.toolSettings.lineThickness / 2 - 0.5);
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	    }

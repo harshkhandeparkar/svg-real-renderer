@@ -39,7 +39,7 @@ export function _startStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.brushSize / 2,
+      this.toolSettings.lineThickness / 2 - 0.5,
       this.toolSettings.brushColor
     )
   )
@@ -47,7 +47,7 @@ export function _startStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.brushSize / 2,
+      this.toolSettings.lineThickness / 2 - 0.5,
       this.toolSettings.brushColor
     )
   )
@@ -96,7 +96,7 @@ export function _toolPreview(
   if (this._previewStroke.get(identifier).length == 0) {
     const circleNode = getCircleNode(
       coords,
-      this.toolSettings.lineThickness / 2,
+      this.toolSettings.lineThickness / 2 - 0.5,
       this.toolSettings.brushColor
     )
 
@@ -108,7 +108,7 @@ export function _toolPreview(
   else {
     const circleNode = <Circle>this._previewStroke.get(identifier)[0]
     circleNode.updateCenter(coords);
-    circleNode.updateRadius(this.toolSettings.lineThickness / 2);
+    circleNode.updateRadius(this.toolSettings.lineThickness / 2 - 0.5);
     circleNode.setFill(getRGBColorString(this.toolSettings.brushColor));
     circleNode.setStroke(getRGBColorString(this.toolSettings.brushColor));
   }

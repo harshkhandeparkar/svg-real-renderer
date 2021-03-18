@@ -30,7 +30,7 @@ export function _startStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.eraserSize / 2,
+      this.toolSettings.eraserSize / 2 - 0.5,
       this.bgColor
     )
   )
@@ -44,7 +44,7 @@ export function _endStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       endCoords,
-      this.toolSettings.eraserSize / 2,
+      this.toolSettings.eraserSize / 2 - 0.5,
       this.bgColor
     )
   )
@@ -60,7 +60,7 @@ export function _doStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.eraserSize / 2,
+      this.toolSettings.eraserSize / 2 - 0.5,
       this.bgColor
     )
   );
@@ -81,7 +81,7 @@ export function _toolPreview(
   if (this._previewStroke.get(identifier).length == 0) {
     const circleNode = getCircleNode(
       coords,
-      this.toolSettings.eraserSize / 2,
+      this.toolSettings.eraserSize / 2 - 0.5,
       this.bgColor
     )
 
@@ -93,6 +93,6 @@ export function _toolPreview(
   else {
     const circleNode = <Circle>this._previewStroke.get(identifier)[0]
     circleNode.updateCenter(coords);
-    circleNode.updateRadius(this.toolSettings.eraserSize / 2);
+    circleNode.updateRadius(this.toolSettings.eraserSize / 2 - 0.5);
   }
 }
