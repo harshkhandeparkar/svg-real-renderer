@@ -355,7 +355,10 @@
 	        this.strokes.forEach(function (stroke) {
 	            strokeExport.push(stroke.map(function (node) { return node.export(); }));
 	        });
-	        return strokeExport;
+	        return {
+	            exportData: strokeExport,
+	            strokeIndex: this._strokeIndex
+	        };
 	    };
 	    RealRenderer.prototype.importData = function (data) {
 	        var _this = this;
@@ -363,7 +366,7 @@
 	            stroke.forEach(function (node) { return node.delete(); });
 	        });
 	        this.strokes = [];
-	        data.forEach(function (strokeExport) {
+	        data.exportData.forEach(function (strokeExport) {
 	            _this.strokes.push(strokeExport.map(function (strokeNodeData) {
 	                switch (strokeNodeData.type) {
 	                    case 'circle':
@@ -382,7 +385,7 @@
 	            }));
 	        });
 	        this.strokes.forEach(function (stroke) { return _this._display(stroke); });
-	        this._strokeIndex = this.strokes.length - 1;
+	        this._strokeIndex = data.strokeIndex;
 	    };
 	    RealRenderer.prototype.resetTime = function () {
 	        this.time = 0;
