@@ -182,8 +182,10 @@ export class RealRenderer {
       )
     })
 
-    this.strokes.forEach((stroke) => this._display(stroke));
     this._strokeIndex = data.strokeIndex;
+    for (let i = 0; i <= this._strokeIndex; i++) {
+      this._display(this.strokes[i]);
+    }
   }
 
   resetTime() {
