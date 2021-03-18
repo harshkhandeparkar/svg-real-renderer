@@ -19,7 +19,7 @@ const drawBoardOptions = {
     brushSize: 5, // The radius of one point of data, in coordinate units
     brushColor: [1, 1, 1], // Color of the brush
     lineColor: [1, 1, 1], // Color of the line
-    lineSize: 5,
+    lineThickness: 5,
     changeRate: 3,
     eraserSize: 5
   },
