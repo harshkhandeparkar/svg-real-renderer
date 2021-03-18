@@ -109,5 +109,7 @@ export function _toolPreview(
     const circleNode = <Circle>this._previewStroke.get(identifier)[0]
     circleNode.updateCenter(coords);
     circleNode.updateRadius(this.toolSettings.lineThickness / 2);
+    circleNode.setFill(getRGBColorString(this.toolSettings.brushColor));
+    circleNode.setStroke(getRGBColorString(this.toolSettings.brushColor));
   }
 }
