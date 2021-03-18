@@ -382,6 +382,7 @@
 	            }));
 	        });
 	        this.strokes.forEach(function (stroke) { return _this._display(stroke); });
+	        this._strokeIndex = this.strokes.length - 1;
 	    };
 	    RealRenderer.prototype.resetTime = function () {
 	        this.time = 0;
