@@ -43,8 +43,6 @@ A *Real Renderer* is a fancy name for a class that is exported by this package. 
 
 #### List of Real Renderers
 - [`RealRenderer`](#realrenderer)
-- [`RealLineGraph`](#reallinegraph)
-- [`RealComplexSpace`](#realcomplexspace)
 - [`RealDrawBoard`](#realdrawboard)
 
 #### `RealRenderer`
@@ -99,9 +97,9 @@ e.g.: `RealRenderer.draw().reset().startRender()`
 
 - `toggleRender()`: Toggles the rendering.
 
-- `getData()`: Returns a 3D array of the pixel values.
+- `exportData()`: Returns the data of the current whiteboard in an importable format. Saves undos and redos as well.
 
-- `loadData()`: Returns a 3D array of the pixels.
+- `importData(data)`: Import data exported by `exportData()`.
 
 - `undo(numUndos = 1)`: Undoes the specified number of brush strokes. (Defualt: undoes one stroke)
 
