@@ -130,7 +130,10 @@ export class RealRenderer {
     return this;
   }
 
-  exportData(): StrokeExport[] {
+  exportData(): {
+    exportData: StrokeExport[],
+    strokeIndex: number
+  } {
     const strokeExport: StrokeExport[] = [];
     this.strokes.forEach((stroke) => {
       strokeExport.push(
@@ -138,17 +141,25 @@ export class RealRenderer {
       )
     })
 
-    return strokeExport;
+    return {
+      exportData: strokeExport,
+      strokeIndex: this._strokeIndex
+    }
   }
 
-  importData(data: StrokeExport[]) {
+  importData(
+    data: {
+      exportData: StrokeExport[],
+      strokeIndex: number
+    }
+  ) {
     this.strokes.forEach((stroke) => {
       stroke.forEach((node) => node.delete());
     })
 
     this.strokes = [];
 
-    data.forEach((strokeExport) => {
+    data.exportData.forEach((strokeExport) => {
       this.strokes.push(
         strokeExport.map((strokeNodeData) => {
           switch(strokeNodeData.type) {
@@ -172,7 +183,7 @@ export class RealRenderer {
     })
 
     this.strokes.forEach((stroke) => this._display(stroke));
-    this._strokeIndex = this.strokes.length - 1;
+    this._strokeIndex = data.strokeIndex;
   }
 
   resetTime() {
