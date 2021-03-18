@@ -30,17 +30,17 @@ export function _startStroke(
 ) {
   this._doPreview = false;
 
-  const brushPath = new Path('');
-  brushPath.setStroke(getRGBColorString(this.toolSettings.brushColor));
-  brushPath.setStrokeWidth(this.toolSettings.brushSize);
+  const linePath = new Path('');
+  linePath.setStroke(getRGBColorString(this.toolSettings.lineColor));
+  linePath.setStrokeWidth(this.toolSettings.lineThickness);
 
-  this._addStroke([brushPath]);
+  this._addStroke([linePath]);
 
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
       this.toolSettings.lineThickness / 2 - 0.5,
-      this.toolSettings.brushColor
+      this.toolSettings.lineColor
     )
   )
 
@@ -48,7 +48,7 @@ export function _startStroke(
     getCircleNode(
       coords,
       this.toolSettings.lineThickness / 2 - 0.5,
-      this.toolSettings.brushColor
+      this.toolSettings.lineColor
     )
   )
 
@@ -97,11 +97,11 @@ export function _toolPreview(
     const circleNode = getCircleNode(
       coords,
       this.toolSettings.lineThickness / 2 - 0.5,
-      this.toolSettings.brushColor
+      this.toolSettings.lineColor
     )
 
-    circleNode.setFill(getRGBColorString(this.toolSettings.brushColor));
-    circleNode.setStroke(getRGBColorString(this.toolSettings.brushColor));
+    circleNode.setFill(getRGBColorString(this.toolSettings.lineColor));
+    circleNode.setStroke(getRGBColorString(this.toolSettings.lineColor));
 
     this._previewStroke.get(identifier).push(circleNode);
   }
@@ -109,7 +109,7 @@ export function _toolPreview(
     const circleNode = <Circle>this._previewStroke.get(identifier)[0]
     circleNode.updateCenter(coords);
     circleNode.updateRadius(this.toolSettings.lineThickness / 2 - 0.5);
-    circleNode.setFill(getRGBColorString(this.toolSettings.brushColor));
-    circleNode.setStroke(getRGBColorString(this.toolSettings.brushColor));
+    circleNode.setFill(getRGBColorString(this.toolSettings.lineColor));
+    circleNode.setStroke(getRGBColorString(this.toolSettings.lineColor));
   }
 }
