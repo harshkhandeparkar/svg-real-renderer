@@ -1,3 +1,5 @@
+import { StrokeNodeData } from '../../../types/RealRendererTypes';
+
 export class Path {
   node: SVGPathElement;
 
@@ -8,6 +10,22 @@ export class Path {
 
     path.setAttribute('d', initialD);
     this.node = path;
+  }
+
+  export(): StrokeNodeData {
+    return {
+      type: 'path',
+      data: this.node.outerHTML.toString()
+    }
+  }
+
+  import(data: string) {
+    const wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    wrapper.innerHTML = data;
+    this.node = <SVGPathElement>wrapper.firstChild;
+
+    wrapper.removeChild(this.node);
+    wrapper.remove();
   }
 
   updatePath(newD: string) {

@@ -42,6 +42,19 @@
 	        path.setAttribute('d', initialD);
 	        this.node = path;
 	    }
+	    Path.prototype.export = function () {
+	        return {
+	            type: 'path',
+	            data: this.node.outerHTML.toString()
+	        };
+	    };
+	    Path.prototype.import = function (data) {
+	        var wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	        wrapper.innerHTML = data;
+	        this.node = wrapper.firstChild;
+	        wrapper.removeChild(this.node);
+	        wrapper.remove();
+	    };
 	    Path.prototype.updatePath = function (newD) {
 	        this.node.setAttribute('d', newD);
 	    };
@@ -134,6 +147,92 @@
 	exports.redo = redo;
 	});
 
+	var _circle = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Circle = void 0;
+	var Circle = /** @class */ (function () {
+	    function Circle(center, initialRadius) {
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+	        path.setAttribute('cx', center[0].toString());
+	        path.setAttribute('cy', center[1].toString());
+	        path.setAttribute('r', initialRadius.toString());
+	        this.node = path;
+	    }
+	    Circle.prototype.export = function () {
+	        return {
+	            type: 'circle',
+	            data: this.node.outerHTML.toString()
+	        };
+	    };
+	    Circle.prototype.import = function (data) {
+	        var wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	        wrapper.innerHTML = data;
+	        this.node = wrapper.firstChild;
+	        wrapper.removeChild(this.node);
+	        wrapper.remove();
+	    };
+	    Circle.prototype.updateRadius = function (newRadius) {
+	        this.node.setAttribute('r', newRadius.toString());
+	    };
+	    Circle.prototype.updateCenter = function (newCenter) {
+	        this.node.setAttribute('cx', newCenter[0].toString());
+	        this.node.setAttribute('cy', newCenter[1].toString());
+	    };
+	    Circle.prototype.setStroke = function (stroke) {
+	        this.node.setAttribute('stroke', stroke);
+	    };
+	    Circle.prototype.setFill = function (fill) {
+	        this.node.setAttribute('fill', fill);
+	    };
+	    Circle.prototype.setStrokeWidth = function (width) {
+	        this.node.setAttribute('stroke-width', width.toString());
+	    };
+	    Circle.prototype.delete = function () {
+	        this.node.remove();
+	    };
+	    return Circle;
+	}());
+	exports.Circle = Circle;
+	});
+
+	var _text = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Text = void 0;
+	var Text = /** @class */ (function () {
+	    function Text(position, initialText) {
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+	        path.textContent = initialText;
+	        path.setAttribute('x', position[0].toString());
+	        path.setAttribute('y', position[1].toString());
+	        this.node = path;
+	    }
+	    Text.prototype.export = function () {
+	        return {
+	            type: 'text',
+	            data: this.node.outerHTML.toString()
+	        };
+	    };
+	    Text.prototype.import = function (data) {
+	        var wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	        wrapper.innerHTML = data;
+	        this.node = wrapper.firstChild;
+	        wrapper.removeChild(this.node);
+	        wrapper.remove();
+	    };
+	    Text.prototype.updateText = function (newText) {
+	        this.node.textContent = newText;
+	    };
+	    Text.prototype.setStyle = function (proprty, value) {
+	        this.node.style[proprty] = value;
+	    };
+	    Text.prototype.delete = function () {
+	        this.node.remove();
+	    };
+	    return Text;
+	}());
+	exports.Text = Text;
+	});
+
 	var RealRenderer_1 = createCommonjsModule(function (module, exports) {
 	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
 	    __assign = Object.assign || function(t) {
@@ -163,6 +262,9 @@
 
 
 	__exportStar(RealRendererDefaults, exports);
+
+
+
 
 	var RealRenderer = /** @class */ (function () {
 	    function RealRenderer(options) {
@@ -248,6 +350,39 @@
 	            this._render();
 	        return this;
 	    };
+	    RealRenderer.prototype.exportData = function () {
+	        var strokeExport = [];
+	        this.strokes.forEach(function (stroke) {
+	            strokeExport.push(stroke.map(function (node) { return node.export(); }));
+	        });
+	        return strokeExport;
+	    };
+	    RealRenderer.prototype.importData = function (data) {
+	        var _this = this;
+	        this.strokes.forEach(function (stroke) {
+	            stroke.forEach(function (node) { return node.delete(); });
+	        });
+	        this.strokes = [];
+	        data.forEach(function (strokeExport) {
+	            _this.strokes.push(strokeExport.map(function (strokeNodeData) {
+	                switch (strokeNodeData.type) {
+	                    case 'circle':
+	                        var circ = new _circle.Circle([0, 0], 0);
+	                        circ.import(strokeNodeData.data);
+	                        return circ;
+	                    case 'path':
+	                        var path = new _path.Path('');
+	                        path.import(strokeNodeData.data);
+	                        return path;
+	                    case 'text':
+	                        var text = new _text.Text([0, 0], '');
+	                        text.import(strokeNodeData.data);
+	                        return text;
+	                }
+	            }));
+	        });
+	        this.strokes.forEach(function (stroke) { return _this._display(stroke); });
+	    };
 	    RealRenderer.prototype.resetTime = function () {
 	        this.time = 0;
 	        return this;
@@ -266,41 +401,6 @@
 	    return RealRenderer;
 	}());
 	exports.RealRenderer = RealRenderer;
-	});
-
-	var _circle = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.Circle = void 0;
-	var Circle = /** @class */ (function () {
-	    function Circle(center, initialRadius) {
-	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-	        path.setAttribute('cx', center[0].toString());
-	        path.setAttribute('cy', center[1].toString());
-	        path.setAttribute('r', initialRadius.toString());
-	        this.node = path;
-	    }
-	    Circle.prototype.updateRadius = function (newRadius) {
-	        this.node.setAttribute('r', newRadius.toString());
-	    };
-	    Circle.prototype.updateCenter = function (newCenter) {
-	        this.node.setAttribute('cx', newCenter[0].toString());
-	        this.node.setAttribute('cy', newCenter[1].toString());
-	    };
-	    Circle.prototype.setStroke = function (stroke) {
-	        this.node.setAttribute('stroke', stroke);
-	    };
-	    Circle.prototype.setFill = function (fill) {
-	        this.node.setAttribute('fill', fill);
-	    };
-	    Circle.prototype.setStrokeWidth = function (width) {
-	        this.node.setAttribute('stroke-width', width.toString());
-	    };
-	    Circle.prototype.delete = function () {
-	        this.node.remove();
-	    };
-	    return Circle;
-	}());
-	exports.Circle = Circle;
 	});
 
 	var circle = createCommonjsModule(function (module, exports) {

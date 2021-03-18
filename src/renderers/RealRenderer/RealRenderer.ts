@@ -1,6 +1,6 @@
 import { getBlankGraphPath } from '../../pathMakers/blankGraph';
 
-import { GraphDimensions, Color, RealRendererOptions, Stroke } from '../../types/RealRendererTypes';
+import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport } from '../../types/RealRendererTypes';
 export * as RealRendererTypes from '../../types/RealRendererTypes';
 
 import { RealRendererDefaults } from '../../constants/defaults/RealRendererDefaults';
@@ -9,6 +9,9 @@ import { getRGBColorString } from '../../util/getRGBColorString';
 export * from '../../constants/defaults/RealRendererDefaults';
 
 import { undo, redo } from './undo';
+import { Circle } from './strokeNodes/_circle';
+import { Path } from './strokeNodes/_path';
+import { Text } from './strokeNodes/_text';
 
 export class RealRenderer {
   svg: SVGSVGElement;
@@ -125,6 +128,51 @@ export class RealRenderer {
     this._doRender = !this._doRender;
     if (this._doRender) this._render();
     return this;
+  }
+
+  exportData(): StrokeExport[] {
+    const strokeExport: StrokeExport[] = [];
+    this.strokes.forEach((stroke) => {
+      strokeExport.push(
+        stroke.map((node) => node.export())
+      )
+    })
+
+    return strokeExport;
+  }
+
+  importData(data: StrokeExport[]) {
+    this.strokes.forEach((stroke) => {
+      stroke.forEach((node) => node.delete());
+    })
+
+    this.strokes = [];
+
+    data.forEach((strokeExport) => {
+      this.strokes.push(
+        strokeExport.map((strokeNodeData) => {
+          switch(strokeNodeData.type) {
+            case 'circle':
+              const circ = new Circle([0, 0], 0);
+              circ.import(strokeNodeData.data);
+              return circ;
+
+            case 'path':
+              const path = new Path('');
+              path.import(strokeNodeData.data);
+              return path;
+
+            case 'text':
+              const text = new Text([0, 0], '');
+              text.import(strokeNodeData.data);
+              return text;
+          }
+        })
+      )
+    })
+
+    this.strokes.forEach((stroke) => this._display(stroke));
+    this._strokeIndex = this.strokes.length - 1;
   }
 
   resetTime() {

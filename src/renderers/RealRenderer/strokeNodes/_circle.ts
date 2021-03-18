@@ -1,4 +1,4 @@
-import { Coordinate } from '../../../types/RealRendererTypes';
+import { Coordinate, StrokeNodeData } from '../../../types/RealRendererTypes';
 
 export class Circle {
   node: SVGCircleElement;
@@ -13,6 +13,22 @@ export class Circle {
     path.setAttribute('cy', center[1].toString());
     path.setAttribute('r', initialRadius.toString());
     this.node = path;
+  }
+
+  export(): StrokeNodeData {
+    return {
+      type: 'circle',
+      data: this.node.outerHTML.toString()
+    }
+  }
+
+  import(data: string) {
+    const wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    wrapper.innerHTML = data;
+    this.node = <SVGCircleElement>wrapper.firstChild;
+
+    wrapper.removeChild(this.node);
+    wrapper.remove();
   }
 
   updateRadius(newRadius: number) {

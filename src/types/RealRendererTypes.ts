@@ -10,6 +10,11 @@ export type StrokeNode = Path | Circle | Text;
  * One stroke is an combination of multiple stroke nodes
  */
 export type Stroke = (Path | Circle | Text)[];
+export type StrokeNodeData = {
+  type: 'path' | 'circle' | 'text',
+  data: string
+}
+export type StrokeExport = StrokeNodeData[];
 
 export interface RealRendererOptions {
   svg?: SVGSVGElement,
