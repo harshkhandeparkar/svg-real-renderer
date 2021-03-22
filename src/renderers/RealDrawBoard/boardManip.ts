@@ -30,6 +30,18 @@ export function changeToolSetting(
   return this;
 }
 
+export function clearPreview(this: RealDrawBoard) {
+  this._previewStroke.forEach((stroke) => {
+    stroke.forEach((node) => {
+      node.delete();
+    })
+  })
+
+  this._previewStroke.clear();
+
+  return this;
+}
+
 export function clear(this: RealDrawBoard) {
   this._strokeIndex = 0;
   this._lastCoords.clear();
