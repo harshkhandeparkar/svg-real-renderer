@@ -147,6 +147,7 @@ Apart from these methods, the following new methods are also available and are c
 - `startRender()` and `stopRender()`: Slightly different compared to `RealRenderer` but they don't draw continously.
 - `changeTool(newTool)`: Change the tool.
 - `changeToolSetting(settingName, value)`: Changes a specific setting in the `toolSettings` *property*. See **properties** section above.
+- `clearPreview()`: Clears the tool preview.
 - `clear()`: Clears the board.
 - `reset()`: Clears the whole board and resets all options to original values.
 
