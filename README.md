@@ -6,11 +6,12 @@ A Real Time 2D Graphical Rendering Engine Made With [SVG](https://developer.mozi
 ### Table of Contents
 - [Usage](#usage)
 - [Example](https://harshkhandeparkar.github.io/svg-real-renderer)
+- [API](#api)
 - [Real Renderers](#real-renderers)
 - [License](LICENSE)
 
 ### Usage
-RealRenderer can only be used in the browser through a `canvas` element. The library can be directly used in the browser with the included dist files or can be compiled using a packager like webpack or a framework like react.
+RealRenderer can only be used in the browser through a `svg` element. The library can be directly used in the browser with the included dist files or can be compiled using a packager like webpack or a framework like react.
 
 #### Dist Files
 The browserified and minified dist files can be found in the `/dist` directory on github or in the npm package.
@@ -37,6 +38,12 @@ const DrawBoard = new require('svg-real-renderer').RealDrawBoard({svg: document.
 ```
 
 NOTE: It works with typescript
+
+### API
+The library exports some util functions(listed below) as well as some [Real Renderers](#real-renderers). In the browser, the library exports these under the global namespace variable `SVGRealRenderer`.
+
+#### Util Functions
+- `renderPreview(data, renderTo)`: Renders(static) given data(exported by the `exportData` method of [RealRenderer](#realrenderer)) to a given `svg` element, `renderTo`.
 
 ### Real Renderers
 A *Real Renderer* is a fancy name for a class that is exported by this package. Each of these classes can be used to render, manipulate and display specific things on a graph for specific purposes.
@@ -111,7 +118,7 @@ e.g.: `RealRenderer.draw().reset().startRender()`
 
 #### `RealDrawBoard`
 This Real Renderer extends the `RealRenderer` class and can be used as a general purpose drawing board!
-Click and drag on the canvas to draw, change modes to erase. The brush color and eraser/brush sized can be changed.
+Click and drag on the SVG to draw, change modes to erase. The brush color and eraser/brush sized can be changed.
 See [example](https://harshkhandeparkar.github.io/svg-real-renderer).
 
 ##### Properties (Read-Only)
