@@ -697,7 +697,7 @@
 
 	var boardManip = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._resetBoard = exports.clear = exports.changeToolSetting = exports.changeTool = void 0;
+	exports._resetBoard = exports.clear = exports.clearPreview = exports.changeToolSetting = exports.changeTool = void 0;
 
 
 	function changeTool(newTool) {
@@ -720,6 +720,16 @@
 	    return this;
 	}
 	exports.changeToolSetting = changeToolSetting;
+	function clearPreview() {
+	    this._previewStroke.forEach(function (stroke) {
+	        stroke.forEach(function (node) {
+	            node.delete();
+	        });
+	    });
+	    this._previewStroke.clear();
+	    return this;
+	}
+	exports.clearPreview = clearPreview;
 	function clear() {
 	    this._strokeIndex = 0;
 	    this._lastCoords.clear();
@@ -866,6 +876,7 @@
 	        _this._getTouchCoords = _coords._getTouchCoords;
 	        _this.changeToolSetting = boardManip.changeToolSetting;
 	        _this.changeTool = boardManip.changeTool;
+	        _this.clearPreview = boardManip.clearPreview;
 	        _this.clear = boardManip.clear;
 	        // --- DOM Event Listeners ---
 	        // --- Mouse Events ---
@@ -895,6 +906,7 @@
 	                _this._lastCoords.delete('mouse');
 	                _this._display(_this.strokes[_this._strokeIndex]);
 	            }
+	            _this.clearPreview();
 	        };
 	        _this._mouseMoveEventListener = function (e) {
 	            var coords = _this._getMouseCoords(e);
@@ -929,6 +941,7 @@
 	                _this._endStroke(coords, identifier);
 	                _this._lastCoords.delete(identifier);
 	            }
+	            _this.clearPreview();
 	        };
 	        _this._touchMoveEventListener = function (e) {
 	            for (var i = 0; i < e.touches.length; i++) {
