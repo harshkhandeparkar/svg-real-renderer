@@ -62,8 +62,8 @@ export class RealRenderer {
       throw 'No SVG Element Found';
     }
 
-    this.svg.setAttribute('width', this.dimensions[0].toString());
-    this.svg.setAttribute('height', this.dimensions[1].toString());
+    this.svg.setAttribute('viewBox', `0 0 ${this.dimensions[0]} ${this.dimensions[1]}`);
+    this.svg.setAttribute('preserveAspectRatio', 'none');
 
     this.svg.style.backgroundColor = `${getRGBColorString(this.bgColor)}`;
 
@@ -132,7 +132,8 @@ export class RealRenderer {
 
   exportData(): {
     exportData: StrokeExport[],
-    strokeIndex: number
+    strokeIndex: number,
+    dimensions: GraphDimensions
   } {
     const strokeExport: StrokeExport[] = [];
     this.strokes.forEach((stroke) => {
@@ -143,19 +144,23 @@ export class RealRenderer {
 
     return {
       exportData: strokeExport,
-      strokeIndex: this._strokeIndex
+      strokeIndex: this._strokeIndex,
+      dimensions: this.dimensions
     }
   }
 
   importData(
     data: {
       exportData: StrokeExport[],
-      strokeIndex: number
+      strokeIndex: number,
+      dimensions: GraphDimensions
     }
   ) {
     this.strokes.forEach((stroke) => {
       stroke.forEach((node) => node.delete());
     })
+
+    this.svg.setAttribute('viewBox', `0 0 ${this.dimensions[0]} ${this.dimensions[1]}`);
 
     this.strokes = [];
 

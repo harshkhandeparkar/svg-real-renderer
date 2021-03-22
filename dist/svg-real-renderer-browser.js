@@ -292,8 +292,8 @@
 	        if (this.svg === undefined) {
 	            throw 'No SVG Element Found';
 	        }
-	        this.svg.setAttribute('width', this.dimensions[0].toString());
-	        this.svg.setAttribute('height', this.dimensions[1].toString());
+	        this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
+	        this.svg.setAttribute('preserveAspectRatio', 'none');
 	        this.svg.style.backgroundColor = "" + getRGBColorString_1.getRGBColorString(this.bgColor);
 	        this._addStroke([blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)]);
 	        this._display(this.strokes[this._strokeIndex]);
@@ -357,7 +357,8 @@
 	        });
 	        return {
 	            exportData: strokeExport,
-	            strokeIndex: this._strokeIndex
+	            strokeIndex: this._strokeIndex,
+	            dimensions: this.dimensions
 	        };
 	    };
 	    RealRenderer.prototype.importData = function (data) {
@@ -365,6 +366,7 @@
 	        this.strokes.forEach(function (stroke) {
 	            stroke.forEach(function (node) { return node.delete(); });
 	        });
+	        this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
 	        this.strokes = [];
 	        data.exportData.forEach(function (strokeExport) {
 	            _this.strokes.push(strokeExport.map(function (strokeNodeData) {
@@ -713,14 +715,18 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._getTouchCoords = exports._getMouseCoords = void 0;
 	function _getMouseCoords(e) {
-	    var x = e.offsetX;
-	    var y = e.offsetY;
+	    var xScaleFactor = this.dimensions[0] / this.svg.clientWidth;
+	    var yScaleFactor = this.dimensions[1] / this.svg.clientHeight;
+	    var x = e.offsetX * xScaleFactor;
+	    var y = e.offsetY * yScaleFactor;
 	    return [x, y]; // In graph coordinates
 	}
 	exports._getMouseCoords = _getMouseCoords;
 	function _getTouchCoords(touch) {
-	    var x = (touch.clientX - this.svg.getBoundingClientRect().left);
-	    var y = (touch.clientY - this.svg.getBoundingClientRect().top);
+	    var xScaleFactor = this.dimensions[0] / this.svg.clientWidth;
+	    var yScaleFactor = this.dimensions[1] / this.svg.clientHeight;
+	    var x = (touch.clientX - this.svg.getBoundingClientRect().left) * xScaleFactor;
+	    var y = (touch.clientY - this.svg.getBoundingClientRect().top) * yScaleFactor;
 	    return [x, y];
 	}
 	exports._getTouchCoords = _getTouchCoords;
