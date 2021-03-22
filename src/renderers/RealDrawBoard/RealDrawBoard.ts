@@ -11,6 +11,7 @@ import {
   changeTool,
   changeToolSetting,
   clear,
+  clearPreview,
   _resetBoard
 } from './boardManip';
 import {
@@ -51,6 +52,7 @@ export class RealDrawBoard extends RealRenderer {
 
   public changeToolSetting = changeToolSetting;
   public changeTool = changeTool;
+  public clearPreview = clearPreview;
   public clear = clear;
 
   constructor(options: RealDrawBoardOptions) {
@@ -108,6 +110,8 @@ export class RealDrawBoard extends RealRenderer {
       this._lastCoords.delete('mouse');
       this._display(this.strokes[this._strokeIndex]);
     }
+
+    this.clearPreview();
   }
 
   _mouseMoveEventListener = (e: MouseEvent) => {
@@ -162,6 +166,8 @@ export class RealDrawBoard extends RealRenderer {
         identifier
       )
     }
+
+    this.clearPreview();
   }
 
   _touchMoveEventListener = (e: TouchEvent) => {
