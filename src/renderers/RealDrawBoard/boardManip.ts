@@ -1,6 +1,6 @@
 import { RealDrawBoard } from './RealDrawBoard';
 import { Tool, tools, ToolSettings } from './tools/tools';
-import { getBlankGraphPath } from '../../pathMakers/blankGraph';
+import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
 export function changeTool(this: RealDrawBoard, newTool: Tool) {
   this.tool = newTool;
@@ -39,15 +39,14 @@ export function clear(this: RealDrawBoard) {
   })
 
   this.strokes = [
-    [
-      getBlankGraphPath(
-        this.dimensions,
-        this.xOffset,
-        this.yOffset,
-        this.axesColor,
-        this.drawAxes
-      )
-    ]
+    getBlankGraphPaths(
+      this.dimensions,
+      this.xOffset,
+      this.yOffset,
+      this.axesColor,
+      this.bgColor,
+      this.drawAxes
+    )
   ]
   this._display(this.strokes[this._strokeIndex]);
 

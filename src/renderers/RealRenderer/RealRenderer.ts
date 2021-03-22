@@ -1,10 +1,9 @@
-import { getBlankGraphPath } from '../../pathMakers/blankGraph';
+import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
 import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport } from '../../types/RealRendererTypes';
 export * as RealRendererTypes from '../../types/RealRendererTypes';
 
 import { RealRendererDefaults } from '../../constants/defaults/RealRendererDefaults';
-import { getRGBColorString } from '../../util/getRGBColorString';
 
 export * from '../../constants/defaults/RealRendererDefaults';
 
@@ -12,6 +11,7 @@ import { undo, redo } from './undo';
 import { Circle } from './strokeNodes/_circle';
 import { Path } from './strokeNodes/_path';
 import { Text } from './strokeNodes/_text';
+import { Polygon } from './strokeNodes/_polygon';
 
 export class RealRenderer {
   svg: SVGSVGElement;
@@ -65,10 +65,15 @@ export class RealRenderer {
     this.svg.setAttribute('viewBox', `0 0 ${this.dimensions[0]} ${this.dimensions[1]}`);
     this.svg.setAttribute('preserveAspectRatio', 'none');
 
-    this.svg.style.backgroundColor = `${getRGBColorString(this.bgColor)}`;
-
     this._addStroke(
-      [getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)]
+      getBlankGraphPaths(
+        this.dimensions,
+        this.xOffset,
+        this.yOffset,
+        this.axesColor,
+        this.bgColor,
+        this.drawAxes
+      )
     )
     this._display(this.strokes[this._strokeIndex]);
 
@@ -182,6 +187,11 @@ export class RealRenderer {
               const text = new Text([0, 0], '');
               text.import(strokeNodeData.data);
               return text;
+
+            case 'polygon':
+              const polygon = new Polygon([]);
+              polygon.import(strokeNodeData.data);
+              return polygon;
           }
         })
       )
@@ -200,15 +210,14 @@ export class RealRenderer {
 
   reset() {
     this.strokes = [
-      [
-        getBlankGraphPath(
-          this.dimensions,
-          this.xOffset,
-          this.yOffset,
-          this.axesColor,
-          this.drawAxes
-        )
-      ]
+      getBlankGraphPaths(
+        this.dimensions,
+        this.xOffset,
+        this.yOffset,
+        this.axesColor,
+        this.bgColor,
+        this.drawAxes
+      )
     ]
     this._strokeIndex = 0;
     this.resetTime();

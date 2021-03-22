@@ -1,14 +1,16 @@
 import { GraphDimensions, Color } from '../types/RealRendererTypes';
 import { getRGBColorString } from '../util/getRGBColorString';
 import { Path } from '../renderers/RealRenderer/strokeNodes/_path';
+import { Polygon } from '../renderers/RealRenderer/strokeNodes/_polygon';
 
-export function getBlankGraphPath(
+export function getBlankGraphPaths(
   dimensions: GraphDimensions,
   xOffset: number,
   yOffset: number,
   axesColor: Color,
+  bgColor: Color,
   drawAxes: boolean
-): Path {
+): [Path, Polygon] {
   const outX = dimensions[0], outY = dimensions[1];
 
   const X = Math.floor(outY * (xOffset / 100));
@@ -22,8 +24,20 @@ export function getBlankGraphPath(
   }
   else d = '';
 
-  const path = new Path(d);
-  path.setStroke(getRGBColorString(axesColor));
+  const axesPath = new Path(d);
+  axesPath.setStroke(getRGBColorString(axesColor));
 
-  return path;
+  const bgPolygon = new Polygon(
+    [
+      [0, 0],
+      [0, dimensions[1]],
+      [dimensions[0], dimensions[1]],
+      [dimensions[0], 0]
+    ]
+  )
+
+  bgPolygon.setFill(getRGBColorString(bgColor));
+  bgPolygon.setStroke(getRGBColorString(bgColor));
+
+  return [axesPath, bgPolygon]
 }
