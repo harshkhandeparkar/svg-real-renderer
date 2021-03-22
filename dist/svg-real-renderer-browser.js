@@ -78,12 +78,66 @@
 	exports.Path = Path;
 	});
 
+	var _polygon = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Polygon = void 0;
+	var Polygon = /** @class */ (function () {
+	    function Polygon(points) {
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+	        var pointsString = '';
+	        points.forEach(function (point) {
+	            pointsString += point[0] + "," + point[1] + " ";
+	        });
+	        path.setAttribute('points', pointsString);
+	        this.node = path;
+	    }
+	    Polygon.prototype.export = function () {
+	        return {
+	            type: 'polygon',
+	            data: this.node.outerHTML.toString()
+	        };
+	    };
+	    Polygon.prototype.import = function (data) {
+	        var wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+	        wrapper.innerHTML = data;
+	        this.node = wrapper.firstChild;
+	        wrapper.removeChild(this.node);
+	        wrapper.remove();
+	    };
+	    Polygon.prototype.updatePoints = function (newPoints) {
+	        var pointsString = '';
+	        newPoints.forEach(function (point) {
+	            pointsString += point[0] + "," + point[1] + " ";
+	        });
+	        this.node.setAttribute('points', pointsString);
+	    };
+	    Polygon.prototype.addPoint = function (point) {
+	        this.node.setAttribute('points', this.node.getAttribute('points') + (point[0] + "," + point[1] + " "));
+	    };
+	    Polygon.prototype.setStroke = function (stroke) {
+	        this.node.setAttribute('stroke', stroke);
+	    };
+	    Polygon.prototype.setFill = function (fill) {
+	        this.node.setAttribute('fill', fill);
+	    };
+	    Polygon.prototype.setStrokeWidth = function (width) {
+	        this.node.setAttribute('stroke-width', width.toString());
+	    };
+	    Polygon.prototype.delete = function () {
+	        this.node.remove();
+	    };
+	    return Polygon;
+	}());
+	exports.Polygon = Polygon;
+	});
+
 	var blankGraph = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.getBlankGraphPath = void 0;
+	exports.getBlankGraphPaths = void 0;
 
 
-	function getBlankGraphPath(dimensions, xOffset, yOffset, axesColor, drawAxes) {
+
+	function getBlankGraphPaths(dimensions, xOffset, yOffset, axesColor, bgColor, drawAxes) {
 	    var outX = dimensions[0], outY = dimensions[1];
 	    var X = Math.floor(outY * (xOffset / 100));
 	    var Y = Math.floor(outX * (yOffset / 100));
@@ -94,11 +148,19 @@
 	    }
 	    else
 	        d = '';
-	    var path = new _path.Path(d);
-	    path.setStroke(getRGBColorString_1.getRGBColorString(axesColor));
-	    return path;
+	    var axesPath = new _path.Path(d);
+	    axesPath.setStroke(getRGBColorString_1.getRGBColorString(axesColor));
+	    var bgPolygon = new _polygon.Polygon([
+	        [0, 0],
+	        [0, dimensions[1]],
+	        [dimensions[0], dimensions[1]],
+	        [dimensions[0], 0]
+	    ]);
+	    bgPolygon.setFill(getRGBColorString_1.getRGBColorString(bgColor));
+	    bgPolygon.setStroke(getRGBColorString_1.getRGBColorString(bgColor));
+	    return [axesPath, bgPolygon];
 	}
-	exports.getBlankGraphPath = getBlankGraphPath;
+	exports.getBlankGraphPaths = getBlankGraphPaths;
 	});
 
 	var RealRendererTypes = createCommonjsModule(function (module, exports) {
@@ -260,8 +322,8 @@
 
 	exports.RealRendererTypes = RealRendererTypes;
 
-
 	__exportStar(RealRendererDefaults, exports);
+
 
 
 
@@ -294,8 +356,7 @@
 	        }
 	        this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
 	        this.svg.setAttribute('preserveAspectRatio', 'none');
-	        this.svg.style.backgroundColor = "" + getRGBColorString_1.getRGBColorString(this.bgColor);
-	        this._addStroke([blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)]);
+	        this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.bgColor, this.drawAxes));
 	        this._display(this.strokes[this._strokeIndex]);
 	        this._doRender = false;
 	    }
@@ -383,6 +444,10 @@
 	                        var text = new _text.Text([0, 0], '');
 	                        text.import(strokeNodeData.data);
 	                        return text;
+	                    case 'polygon':
+	                        var polygon = new _polygon.Polygon([]);
+	                        polygon.import(strokeNodeData.data);
+	                        return polygon;
 	                }
 	            }));
 	        });
@@ -397,9 +462,7 @@
 	    };
 	    RealRenderer.prototype.reset = function () {
 	        this.strokes = [
-	            [
-	                blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)
-	            ]
+	            blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.bgColor, this.drawAxes)
 	        ];
 	        this._strokeIndex = 0;
 	        this.resetTime();
@@ -664,9 +727,7 @@
 	        stroke.forEach(function (strokeNode) { return strokeNode.delete(); });
 	    });
 	    this.strokes = [
-	        [
-	            blankGraph.getBlankGraphPath(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.drawAxes)
-	        ]
+	        blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.bgColor, this.drawAxes)
 	    ];
 	    this._display(this.strokes[this._strokeIndex]);
 	    return this;
@@ -916,13 +977,35 @@
 	exports.RealDrawBoard = RealDrawBoard;
 	});
 
+	var renderPreview_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.renderPreview = void 0;
+	/**
+	 * Renders a preview of given data.
+	 * @param data Export Data
+	 * @param renderTo SVG Element to render to
+	 */
+	function renderPreview(data, renderTo) {
+	    var exportData = data.exportData, dimensions = data.dimensions;
+	    renderTo.setAttribute('viewBox', "0 0 " + dimensions[0] + " " + dimensions[1]);
+	    exportData.forEach(function (strokeExport) {
+	        strokeExport.forEach(function (strokeNodeData) {
+	            renderTo.innerHTML += strokeNodeData.data;
+	        });
+	    });
+	}
+	exports.renderPreview = renderPreview;
+	});
+
 	var build = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.RealDrawBoard = exports.RealRenderer = void 0;
+	exports.renderPreview = exports.RealDrawBoard = exports.RealRenderer = void 0;
 
 	Object.defineProperty(exports, "RealRenderer", { enumerable: true, get: function () { return RealRenderer_1.RealRenderer; } });
 
 	Object.defineProperty(exports, "RealDrawBoard", { enumerable: true, get: function () { return RealDrawBoard_1.RealDrawBoard; } });
+
+	Object.defineProperty(exports, "renderPreview", { enumerable: true, get: function () { return renderPreview_1.renderPreview; } });
 	});
 
 	var index = /*@__PURE__*/getDefaultExportFromCjs(build);
