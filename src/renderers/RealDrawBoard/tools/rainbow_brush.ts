@@ -7,8 +7,8 @@ let gradientColors: [number, number, number] = [1, 1, 1];
 export const name = 'rainbow_brush';
 
 export interface RainbowBrushSettings {
-  brushSize: number,
-  changeRate: number
+  brushSize?: number,
+  changeRate?: number
 }
 
 export const RainbowBrushDefaults: RainbowBrushSettings = {
