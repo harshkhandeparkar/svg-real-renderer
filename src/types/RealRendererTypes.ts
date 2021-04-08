@@ -17,6 +17,11 @@ export type StrokeNodeData = {
   data: string
 }
 export type StrokeExport = StrokeNodeData[];
+export type RealExport = {
+  exportData: StrokeExport[];
+  strokeIndex: number;
+  dimensions: GraphDimensions;
+}
 
 export interface IRealRendererOptionals {
   dimensions: GraphDimensions;

@@ -1,6 +1,6 @@
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
-import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport, RealRendererSettings, BGType } from '../../types/RealRendererTypes';
+import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport, RealRendererSettings, BGType, RealExport } from '../../types/RealRendererTypes';
 export * as RealRendererTypes from '../../types/RealRendererTypes';
 
 import { RealRendererDefaults } from '../../constants/defaults/RealRendererDefaults';
@@ -136,11 +136,7 @@ export class RealRenderer {
     return this;
   }
 
-  exportData(): {
-    exportData: StrokeExport[],
-    strokeIndex: number,
-    dimensions: GraphDimensions
-  } {
+  exportData(): RealExport {
     const strokeExport: StrokeExport[] = [];
     this.strokes.forEach((stroke) => {
       strokeExport.push(
@@ -156,11 +152,7 @@ export class RealRenderer {
   }
 
   importData(
-    data: {
-      exportData: StrokeExport[],
-      strokeIndex: number,
-      dimensions: GraphDimensions
-    }
+    data: RealExport
   ) {
     this.strokes.forEach((stroke) => {
       stroke.forEach((node) => node.delete());

@@ -1,4 +1,4 @@
-import { GraphDimensions, StrokeExport } from '../types/RealRendererTypes';
+import { GraphDimensions, RealExport, StrokeExport } from '../types/RealRendererTypes';
 
 /**
  * Renders a preview of given data.
@@ -6,11 +6,7 @@ import { GraphDimensions, StrokeExport } from '../types/RealRendererTypes';
  * @param renderTo SVG Element to render to
  */
 export function renderPreview(
-  data: {
-    exportData: StrokeExport[],
-    strokeIndex: number,
-    dimensions: GraphDimensions
-  },
+  data: RealExport,
   renderTo: SVGSVGElement
 ) {
   const { exportData, dimensions } = data;
