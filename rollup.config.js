@@ -3,34 +3,41 @@ const commonjs = require('@rollup/plugin-commonjs');
 const { terser } = require('rollup-plugin-terser');
 
 const exportName = 'SVGRealRenderer';
-const distName = 'svg-real-renderer'
+const distName = 'svg-real-renderer';
+
+const input = 'build/index.js';
+
+const output = {
+  name: exportName,
+  format: 'umd'
+}
+
+const plugins = [
+  nodeResolve(),
+  commonjs()
+]
 
 module.exports = [
   // browser-friendly UMD build
-	{
-		input: 'build/index.js',
-		output: {
-			name: exportName,
-			file: `dist/${distName}-browser.js`,
-			format: 'umd'
-		},
-		plugins: [
-			nodeResolve(),
-			commonjs()
-		]
-	},
-	// Minified Build
-	{
-		input: 'build/index.js',
-		output: {
-			name: exportName,
-			file: `dist/${distName}-browser.min.js`,
-			format: 'umd'
-		},
-		plugins: [
-			nodeResolve(),
-			commonjs(),
-			terser()
-		]
+  {
+    input,
+    output: {
+      ...output,
+      file: `dist/${distName}-browser.js`
+    },
+    plugins
+  },
+
+  // Minified Build
+  {
+    input,
+    output: {
+      ...output,
+      file: `dist/${distName}-browser.min.js`
+    },
+    plugins: [
+     ...plugins,
+      terser()
+    ]
   }
 ]
