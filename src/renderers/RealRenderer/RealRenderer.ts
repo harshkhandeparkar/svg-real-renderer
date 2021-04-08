@@ -1,6 +1,6 @@
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
-import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport } from '../../types/RealRendererTypes';
+import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport, RealRendererSettings, BGType } from '../../types/RealRendererTypes';
 export * as RealRendererTypes from '../../types/RealRendererTypes';
 
 import { RealRendererDefaults } from '../../constants/defaults/RealRendererDefaults';
@@ -17,11 +17,12 @@ export class RealRenderer {
   svg: SVGSVGElement;
   dimensions: GraphDimensions;
   strokes: Stroke[] = [];
+  settings: RealRendererSettings;
   _strokeIndex: number = -1;
   xScaleFactor: number;
   yScaleFactor: number;
   bgColor: Color;
-  drawAxes: boolean;
+  bgType: BGType;
   axesColor: Color;
   drawsPerFrame: number;
   timeStep: number;
@@ -35,24 +36,24 @@ export class RealRenderer {
 
   constructor(options: RealRendererOptions) {
     // *****DEFAULTS*****
-    options = {
+    this.settings = {
       ...RealRendererDefaults,
       ...options
     }
 
-    this.svg = options.svg;
-    this.dimensions = options.dimensions;
-    this.xScaleFactor = options.xScaleFactor;
-    this.yScaleFactor = options.yScaleFactor;
-    this.bgColor = options.bgColor;
-    this.drawAxes = options.drawAxes;
-    this.axesColor = options.axesColor;
-    this.drawsPerFrame = options.drawsPerFrame;
-    this.timeStep = options.timeStep;
-    this.time = options.initTime;
+    this.svg = this.settings.svg;
+    this.dimensions = this.settings.dimensions;
+    this.xScaleFactor = this.settings.xScaleFactor;
+    this.yScaleFactor = this.settings.yScaleFactor;
+    this.bgColor = this.settings.bgColor;
+    this.bgType = this.settings.bgType;
+    this.axesColor = this.settings.axesColor;
+    this.drawsPerFrame = this.settings.drawsPerFrame;
+    this.timeStep = this.settings.timeStep;
+    this.time = this.settings.initTime;
 
-    this.xOffset = options.xOffset; // %age offset
-    this.yOffset = options.yOffset; // %age offset
+    this.xOffset = this.settings.xOffset; // %age offset
+    this.yOffset = this.settings.yOffset; // %age offset
 
     this.xOffset = Math.max(0, Math.min(100, this.xOffset)) // Between 0 and 100
     this.yOffset = Math.max(0, Math.min(100, this.yOffset)) // Between 0 and 100
@@ -72,7 +73,7 @@ export class RealRenderer {
         this.yOffset,
         this.axesColor,
         this.bgColor,
-        this.drawAxes
+        this.bgType
       )
     )
     this._display(this.strokes[this._strokeIndex]);
@@ -216,7 +217,7 @@ export class RealRenderer {
         this.yOffset,
         this.axesColor,
         this.bgColor,
-        this.drawAxes
+        this.bgType
       )
     ]
     this._strokeIndex = 0;

@@ -8,12 +8,14 @@ import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 
 export const name = 'brush';
 
-export interface BrushSettings {
-  brushColor?: Color,
-  brushSize?: number
+export interface IBrushSettings {
+  brushColor: Color;
+  brushSize: number;
 }
 
-export const BrushDefaults: BrushSettings = {
+export type BrushOptions = IBrushSettings | {};
+
+export const BrushDefaults: IBrushSettings = {
   brushColor: [1, 1, 1],
   brushSize: 1
 }

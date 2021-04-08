@@ -8,12 +8,14 @@ import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 
 export const name = 'line';
 
-export interface LineSettings {
-  lineThickness?: number,
-  lineColor?: Color
+export interface ILineSettings {
+  lineThickness: number;
+  lineColor: Color;
 }
 
-export const LineDefaults: LineSettings = {
+export type LineOptions = ILineSettings | {};
+
+export const LineDefaults: ILineSettings = {
   lineThickness: 1,
   lineColor: [1, 1, 1]
 }

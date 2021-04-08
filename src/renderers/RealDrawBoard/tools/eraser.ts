@@ -7,11 +7,13 @@ import { RealDrawBoard } from '../RealDrawBoard';
 
 export const name = 'eraser';
 
-export interface EraserSettings {
-  eraserSize?: number
+export interface IEraserSettings {
+  eraserSize: number;
 }
 
-export const EraserDefaults: EraserSettings = {
+export type EraserOptions = IEraserSettings | {};
+
+export const EraserDefaults: IEraserSettings = {
   eraserSize: 2
 }
 

@@ -1,7 +1,9 @@
-import { RealDrawBoardOptions } from '../../types/RealDrawBoardTypes';
+import { IRealDrawBoardOptionals } from '../../types/RealDrawBoardTypes';
 import { ToolDefaults } from '../../renderers/RealDrawBoard/tools/tools';
+import { RealRendererDefaults } from './RealRendererDefaults';
 
-export const RealDrawBoardDefaults: RealDrawBoardOptions = {
+export const RealDrawBoardDefaults: IRealDrawBoardOptionals = {
+  ...RealRendererDefaults,
   toolSettings: ToolDefaults,
   allowUndo: false,
   maxUndos: 10,

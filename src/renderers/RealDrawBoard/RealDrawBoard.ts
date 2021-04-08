@@ -1,6 +1,6 @@
 import { RealRenderer } from '../RealRenderer/RealRenderer';
 
-import { RealDrawBoardOptions } from '../../types/RealDrawBoardTypes';
+import { RealDrawBoardOptions, RealDrawBoardSettings } from '../../types/RealDrawBoardTypes';
 import { RealDrawBoardDefaults } from '../../constants/defaults/RealDrawBoardDefaults';
 
 export * as RealRendererTypes from '../../types/RealRendererTypes';
@@ -23,11 +23,11 @@ import {
   _getTouchCoords
 } from './_coords';
 
-import { tools, Tool, ToolSettings } from './tools/tools';
+import { tools, Tool, ToolSettings, ToolDefaults } from './tools/tools';
 import { Coordinate, Stroke } from '../../types/RealRendererTypes';
 
 export class RealDrawBoard extends RealRenderer {
-  options: RealDrawBoardOptions;
+  settings: RealDrawBoardSettings;
   tool: Tool = RealDrawBoardDefaults.tool;
   toolSettings: ToolSettings;
   /** key -> identifier, value -> coordinate
@@ -59,16 +59,17 @@ export class RealDrawBoard extends RealRenderer {
     // *****DEFAULTS*****
     super(options);
 
-    options = {
+    this.settings = {
       ...RealDrawBoardDefaults,
       ...options
     }
 
-    this.options = options;
+    this.toolSettings = {
+      ...ToolDefaults,
+      ...this.settings.toolSettings
+    }
 
-    this.toolSettings = options.toolSettings;
-
-    this.changeTool(options.tool);
+    this.changeTool(this.settings.tool);
     // *****DEFAULTS*****
   }
   // --- DOM Event Listeners ---

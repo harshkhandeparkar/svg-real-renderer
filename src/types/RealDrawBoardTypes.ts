@@ -1,9 +1,17 @@
-import { RealRendererOptions } from './RealRendererTypes';
-import { Tool, ToolSettings } from '../renderers/RealDrawBoard/tools/tools';
+import { IRealRendererNonOptionals, IRealRendererOptionals } from './RealRendererTypes';
+import { Tool, ToolOptions } from '../renderers/RealDrawBoard/tools/tools';
 
-export interface RealDrawBoardOptions extends RealRendererOptions {
-  toolSettings?: ToolSettings,
-  allowUndo?: boolean,
-  maxUndos?: number,
-  tool?: Tool
+export interface IRealDrawBoardOptionals extends IRealRendererOptionals {
+  toolSettings: ToolOptions;
+  allowUndo: boolean;
+  maxUndos: number;
+  tool: Tool;
 }
+
+export interface IRealDrawBoardNonOptionals extends IRealRendererNonOptionals {
+
+}
+
+
+export type RealDrawBoardSettings = IRealDrawBoardNonOptionals & IRealDrawBoardOptionals;
+export type RealDrawBoardOptions = IRealDrawBoardNonOptionals & (IRealDrawBoardOptionals | {});
