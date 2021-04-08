@@ -33,7 +33,7 @@ export class Path {
   }
 
   appendPath(appendD: string) {
-    this.node.setAttribute('d', this.node.getAttribute('d') + '\n' + appendD);
+    this.node.setAttribute('d', this.node.getAttribute('d') + ' ' + appendD);
   }
 
   setStroke(stroke: string) {

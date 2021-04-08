@@ -13,8 +13,8 @@ export type StrokeNode = Path | Circle | Text | Polygon;
  */
 export type Stroke = StrokeNode[];
 export type StrokeNodeData = {
-  type: 'path' | 'circle' | 'text' | 'polygon',
-  data: string
+  type: 'path' | 'circle' | 'text' | 'polygon';
+  data: string;
 }
 export type StrokeExport = StrokeNodeData[];
 export type RealExport = {

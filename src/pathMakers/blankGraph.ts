@@ -23,8 +23,8 @@ export function getBlankGraphPaths(
       d = '';
       break;
     case 'axes':
-      d = `M 0,${Y} H ${dimensions[0] - 1} \n`
-      d += `M ${X},0 V ${dimensions[1] - 1}`
+      d = `M 0,${Y} H ${dimensions[0] - 1}`
+      d += ` M ${X},0 V ${dimensions[1] - 1}`
       break;
     case 'grid':
       d = '';
