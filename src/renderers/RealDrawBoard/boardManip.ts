@@ -63,7 +63,6 @@ export function clear(this: RealDrawBoard) {
 }
 
 export function _resetBoard(this: RealDrawBoard) {
-  this.yScaleFactor = this.settings.yScaleFactor;
   this.bgColor = this.settings.bgColor;
   this.tool = this.settings.tool;
   this.toolSettings = {

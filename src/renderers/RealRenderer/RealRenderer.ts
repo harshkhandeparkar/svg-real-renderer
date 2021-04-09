@@ -63,7 +63,6 @@ export class RealRenderer {
 
     this.svg = this.settings.svg;
     this.dimensions = this.settings.dimensions;
-    this.yScaleFactor = this.settings.yScaleFactor;
     this.bgColor = this.settings.bgColor;
     this.bgType = this.settings.bgType;
     this.drawsPerFrame = this.settings.drawsPerFrame;

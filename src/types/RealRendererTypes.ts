@@ -51,7 +51,6 @@ export type BGType = BGNone | BGRuled | BGGrid | BGAxes;
 
 export interface IRealRendererOptionals {
   dimensions: GraphDimensions;
-  yScaleFactor: number;
   bgColor: Color;
   bgType: BGType;
   drawsPerFrame: number;
