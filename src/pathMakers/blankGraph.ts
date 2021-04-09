@@ -10,7 +10,7 @@ export function getBlankGraphPaths(
   axesColor: Color,
   bgColor: Color,
   bgType: BGType
-): [Path, Polygon] {
+): [Polygon, Path] {
   const outX = dimensions[0], outY = dimensions[1];
 
   const X = Math.floor(outY * (xOffset / 100));
@@ -51,5 +51,5 @@ export function getBlankGraphPaths(
   bgPolygon.setFill(getRGBColorString(bgColor));
   bgPolygon.setStroke(getRGBColorString(bgColor));
 
-  return [axesPath, bgPolygon]
+  return [bgPolygon, axesPath];
 }
