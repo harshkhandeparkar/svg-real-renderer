@@ -23,8 +23,6 @@ export function _startStroke(
   coords: [number, number],
   identifier: string
 ) {
-  this._doPreview = false;
-
   const brushPath = new Path('');
   brushPath.setStroke(getRGBColorString(this.bgColor));
   brushPath.setStrokeWidth(this.toolSettings.eraserSize);

@@ -49,6 +49,12 @@ export type BGNone = {
 
 export type BGType = BGNone | BGRuled | BGGrid | BGAxes;
 
+export type SVGSections = {
+  bg: SVGGElement;
+  strokes: SVGGElement;
+  overlay: SVGGElement;
+}
+
 export interface IRealRendererOptionals {
   dimensions: GraphDimensions;
   bgColor: Color;

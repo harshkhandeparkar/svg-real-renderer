@@ -411,6 +411,14 @@
 	        }
 	        this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
 	        this.svg.setAttribute('preserveAspectRatio', 'none');
+	        this.svgSections = {
+	            bg: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+	            strokes: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+	            overlay: document.createElementNS('http://www.w3.org/2000/svg', 'g')
+	        };
+	        this.svg.appendChild(this.svgSections.bg);
+	        this.svg.appendChild(this.svgSections.strokes);
+	        this.svg.appendChild(this.svgSections.overlay);
 	        this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType));
 	        this._display(this.strokes[this._strokeIndex]);
 	        this._doRender = false;
@@ -442,11 +450,12 @@
 	            window.requestAnimationFrame(function () { _this._render(); });
 	        }
 	    };
-	    RealRenderer.prototype._display = function (stroke) {
+	    RealRenderer.prototype._display = function (stroke, section) {
 	        var _this = this;
+	        if (section === void 0) { section = 'strokes'; }
 	        stroke.forEach(function (strokeNode) {
 	            if (strokeNode.node.parentElement == null)
-	                _this.svg.appendChild(strokeNode.node);
+	                _this.svgSections[section].appendChild(strokeNode.node);
 	        });
 	    };
 	    RealRenderer.prototype.startRender = function () {
@@ -616,7 +625,6 @@
 	    eraserSize: 2
 	};
 	function _startStroke(coords, identifier) {
-	    this._doPreview = false;
 	    var brushPath = new _path.Path('');
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
 	    brushPath.setStrokeWidth(this.toolSettings.eraserSize);
@@ -991,7 +999,7 @@
 	                if (!_this._previewStroke.has('mouse'))
 	                    _this._previewStroke.set('mouse', []);
 	                _this._toolPreview(coords, 'mouse');
-	                _this._display(_this._previewStroke.get('mouse'));
+	                _this._display(_this._previewStroke.get('mouse'), 'overlay');
 	            }
 	            _this._display(_this.strokes[_this._strokeIndex]);
 	        };
@@ -1030,7 +1038,7 @@
 	                    if (!_this._previewStroke.has(identifier))
 	                        _this._previewStroke.set(identifier, []);
 	                    _this._toolPreview(coords, identifier);
-	                    _this._display(_this._previewStroke.get(identifier));
+	                    _this._display(_this._previewStroke.get(identifier), 'overlay');
 	                }
 	                _this._display(_this.strokes[_this._strokeIndex]);
 	            }

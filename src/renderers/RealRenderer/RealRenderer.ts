@@ -1,6 +1,6 @@
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
-import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport, RealRendererSettings, BGType, RealExport } from '../../types/RealRendererTypes';
+import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport, RealRendererSettings, BGType, RealExport, SVGSections } from '../../types/RealRendererTypes';
 export * as RealRendererTypes from '../../types/RealRendererTypes';
 
 import { RealRendererDefaults } from '../../constants/defaults/RealRendererDefaults';
@@ -17,6 +17,7 @@ import { clamp } from '../../util/clamp';
 
 export class RealRenderer {
   svg: SVGSVGElement;
+  svgSections: SVGSections;
   dimensions: GraphDimensions;
   strokes: Stroke[] = [];
   settings: RealRendererSettings;
@@ -81,6 +82,16 @@ export class RealRenderer {
     this.svg.setAttribute('viewBox', `0 0 ${this.dimensions[0]} ${this.dimensions[1]}`);
     this.svg.setAttribute('preserveAspectRatio', 'none');
 
+    this.svgSections = {
+      bg: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+      strokes: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+      overlay: document.createElementNS('http://www.w3.org/2000/svg', 'g')
+    }
+
+    this.svg.appendChild(this.svgSections.bg);
+    this.svg.appendChild(this.svgSections.strokes);
+    this.svg.appendChild(this.svgSections.overlay);
+
     this._addStroke(
       getBlankGraphPaths(
         this.dimensions,
@@ -123,9 +134,9 @@ export class RealRenderer {
     }
   }
 
-  _display(stroke: Stroke) {
+  _display(stroke: Stroke, section: 'bg' | 'strokes' | 'overlay' = 'strokes') {
     stroke.forEach((strokeNode) => {
-      if (strokeNode.node.parentElement == null) this.svg.appendChild(strokeNode.node);
+      if (strokeNode.node.parentElement == null) this.svgSections[section].appendChild(strokeNode.node);
     })
   }
 
