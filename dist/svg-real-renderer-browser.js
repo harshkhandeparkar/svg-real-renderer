@@ -150,6 +150,23 @@
 	            axesPath.appendPath("M 0," + Y + " H " + (dimensions[0] - 1));
 	            axesPath.appendPath("M " + X + ",0 V " + (dimensions[1] - 1));
 	            break;
+	        case 'grid':
+	            break;
+	        case 'ruled':
+	            var perpendicularDimension = bgType.orientation === 'horizontal' ? dimensions[1] : dimensions[0];
+	            var spacing = perpendicularDimension * (bgType.spacing / 100);
+	            if (spacing <= 0)
+	                spacing = 1;
+	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.lineColor));
+	            for (var dist = spacing; dist < perpendicularDimension; dist += spacing) {
+	                var d = void 0;
+	                if (bgType.orientation === 'horizontal')
+	                    d = "M 0," + dist + " H " + (dimensions[0] - 1);
+	                else
+	                    d = "M " + dist + ",0 V " + (dimensions[1] - 1);
+	                axesPath.appendPath(d);
+	            }
+	            break;
 	    }
 	    var bgPolygon = new _polygon.Polygon([
 	        [0, 0],
@@ -173,7 +190,6 @@
 	exports.RealRendererDefaults = void 0;
 	exports.RealRendererDefaults = {
 	    dimensions: [1000, 1000],
-	    yScaleFactor: 1,
 	    bgColor: [0, 0, 0],
 	    bgType: {
 	        type: 'axes',
@@ -187,12 +203,22 @@
 	};
 	});
 
+	var clamp_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.clamp = void 0;
+	function clamp(input, min, max) {
+	    return Math.min(Math.max(input, min), max);
+	}
+	exports.clamp = clamp;
+	});
+
 	var undo_1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.redo = exports.undo = void 0;
+
 	function undo(numUndo) {
 	    if (numUndo === void 0) { numUndo = 1; }
-	    this._strokeIndex = Math.min(Math.max(this._strokeIndex - numUndo, 0), this.strokes.length - 1);
+	    this._strokeIndex = clamp_1.clamp(this._strokeIndex - numUndo, 0, this.strokes.length - 1);
 	    for (var i = this._strokeIndex + 1; i < this.strokes.length; i++) {
 	        this.strokes[i].forEach(function (strokeNode) { return strokeNode.delete(); });
 	    }
@@ -201,7 +227,7 @@
 	exports.undo = undo;
 	function redo(numRedo) {
 	    if (numRedo === void 0) { numRedo = 1; }
-	    var doRedo = Math.min(numRedo, this.strokes.length - this._strokeIndex - 1, numRedo);
+	    var doRedo = clamp_1.clamp(numRedo, numRedo, this.strokes.length - this._strokeIndex - 1);
 	    for (var i = 0; i < doRedo; i++) {
 	        this._strokeIndex++;
 	        this._display(this.strokes[this._strokeIndex]);
@@ -297,15 +323,6 @@
 	exports.Text = Text;
 	});
 
-	var clamp_1 = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.clamp = void 0;
-	function clamp(input, min, max) {
-	    return Math.min(Math.max(input, min), max);
-	}
-	exports.clamp = clamp;
-	});
-
 	var RealRenderer_1 = createCommonjsModule(function (module, exports) {
 	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
 	    __assign = Object.assign || function(t) {
@@ -363,7 +380,6 @@
 	        }
 	        this.svg = this.settings.svg;
 	        this.dimensions = this.settings.dimensions;
-	        this.yScaleFactor = this.settings.yScaleFactor;
 	        this.bgColor = this.settings.bgColor;
 	        this.bgType = this.settings.bgType;
 	        this.drawsPerFrame = this.settings.drawsPerFrame;
@@ -781,7 +797,6 @@
 	}
 	exports.clear = clear;
 	function _resetBoard() {
-	    this.yScaleFactor = this.settings.yScaleFactor;
 	    this.bgColor = this.settings.bgColor;
 	    this.tool = this.settings.tool;
 	    this.toolSettings = __assign(__assign({}, tools.ToolDefaults), this.settings.toolSettings);

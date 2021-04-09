@@ -27,6 +27,20 @@ export function getBlankGraphPaths(
     case 'grid':
       break;
     case 'ruled':
+      const perpendicularDimension = bgType.orientation === 'horizontal' ? dimensions[1] : dimensions[0];
+      let spacing = perpendicularDimension * (bgType.spacing / 100);
+      if (spacing <= 0) spacing = 1;
+
+      axesPath.setStroke(getRGBColorString(bgType.lineColor));
+      for (let dist = spacing; dist < perpendicularDimension; dist += spacing) {
+        let d: string;
+
+        if (bgType.orientation === 'horizontal') d = `M 0,${dist} H ${dimensions[0] - 1}`;
+        else d = `M ${dist},0 V ${dimensions[1] - 1}`;
+
+        axesPath.appendPath(d);
+      }
+
       break;
     default:
       break;
