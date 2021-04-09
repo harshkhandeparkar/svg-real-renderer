@@ -1,8 +1,6 @@
 // Fourier Series
 const ComplexGraph = new SVGRealRenderer.RealComplexSpace({
   canvas: document.getElementById('complex-canvas'),
-  xScaleFactor: 2,
-  yScaleFactor: 2,
   brushSize: 1.5,
   timeStep: 1 / 1000,
   drawsPerFrame: 5,

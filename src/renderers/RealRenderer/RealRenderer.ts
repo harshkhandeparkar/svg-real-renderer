@@ -19,7 +19,6 @@ export class RealRenderer {
   strokes: Stroke[] = [];
   settings: RealRendererSettings;
   _strokeIndex: number = -1;
-  xScaleFactor: number;
   yScaleFactor: number;
   bgColor: Color;
   bgType: BGType;
@@ -43,7 +42,6 @@ export class RealRenderer {
 
     this.svg = this.settings.svg;
     this.dimensions = this.settings.dimensions;
-    this.xScaleFactor = this.settings.xScaleFactor;
     this.yScaleFactor = this.settings.yScaleFactor;
     this.bgColor = this.settings.bgColor;
     this.bgType = this.settings.bgType;

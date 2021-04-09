@@ -59,7 +59,7 @@
 	        this.node.setAttribute('d', newD);
 	    };
 	    Path.prototype.appendPath = function (appendD) {
-	        this.node.setAttribute('d', this.node.getAttribute('d') + '\n' + appendD);
+	        this.node.setAttribute('d', this.node.getAttribute('d') + ' ' + appendD);
 	    };
 	    Path.prototype.setStroke = function (stroke) {
 	        this.node.setAttribute('stroke', stroke);
@@ -147,8 +147,8 @@
 	            d = '';
 	            break;
 	        case 'axes':
-	            d = "M 0," + Y + " H " + (dimensions[0] - 1) + " \n";
-	            d += "M " + X + ",0 V " + (dimensions[1] - 1);
+	            d = "M 0," + Y + " H " + (dimensions[0] - 1);
+	            d += " M " + X + ",0 V " + (dimensions[1] - 1);
 	            break;
 	        case 'grid':
 	            d = '';
@@ -167,7 +167,7 @@
 	    ]);
 	    bgPolygon.setFill(getRGBColorString_1.getRGBColorString(bgColor));
 	    bgPolygon.setStroke(getRGBColorString_1.getRGBColorString(bgColor));
-	    return [axesPath, bgPolygon];
+	    return [bgPolygon, axesPath];
 	}
 	exports.getBlankGraphPaths = getBlankGraphPaths;
 	});
@@ -502,8 +502,8 @@
 	exports.getLinePathCommand = void 0;
 	function getLinePathCommand(pt1, pt2) {
 	    var d;
-	    d = "M " + pt1[0] + "," + pt1[1] + '\n';
-	    d += "L " + pt2[0] + "," + pt2[1];
+	    d = "M " + pt1[0] + "," + pt1[1];
+	    d += " L " + pt2[0] + "," + pt2[1];
 	    return d;
 	}
 	exports.getLinePathCommand = getLinePathCommand;

@@ -6,7 +6,6 @@ import { Polygon } from '../renderers/RealRenderer/strokeNodes/_polygon';
 export type GraphDimensions = [number, number];
 export type Color = [number, number, number];
 export type Coordinate = [number, number];
-export type BGType = 'none' | 'axes' | 'grid' | 'ruled';
 export type StrokeNode = Path | Circle | Text | Polygon;
 /**
  * One stroke is an combination of multiple stroke nodes
@@ -23,9 +22,24 @@ export type RealExport = {
   dimensions: GraphDimensions;
 }
 
+export type BGAxes = {
+  type: 'axes',
+  axesColor: Color,
+  xOffset: number,
+  yOffset: number
+}
+
+export type BGRuled = {
+  type: 'ruled',
+  orientation: 'vertical' | 'horizontal',
+  xSpacing: number,
+  ySpacing: number
+}
+
+export type BGType = 'none' | 'axes' | 'grid' | 'ruled';
+
 export interface IRealRendererOptionals {
   dimensions: GraphDimensions;
-  xScaleFactor: number;
   yScaleFactor: number;
   bgColor: Color;
   bgType: BGType;

@@ -3,9 +3,6 @@ const lineGraphOptions = {
   canvas: document.getElementById('line-canvas'),
   dimensions: [420, 360],
 
-  xScaleFactor: 20,
-  yScaleFactor: 0.2,
-
   bgColor: [0.2, 0.2, 0.2],
   axesColor: [0.2, 1, 1],
 

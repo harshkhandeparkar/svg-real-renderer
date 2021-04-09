@@ -3,9 +3,6 @@ const drawBoardOptions = {
   svg: document.getElementById('drawboard-svg'),
   dimensions: [420, 360],
 
-  xScaleFactor: 1,
-  yScaleFactor: 1,
-
   bgColor: [0.960784314, 0.870588235, 0.701960784], // CSS wheat color
   drawAxes: false,
 
