@@ -1,11 +1,13 @@
-import { Coordinate, StrokeNodeData } from '../../../types/RealRendererTypes';
+import { Coordinate, StrokeNodeData, SVGSection } from '../../../types/RealRendererTypes';
 
 export class Text {
   node: SVGTextElement;
+  section: SVGSection;
 
   constructor(
     position: Coordinate,
-    initialText: string
+    initialText: string,
+    section: SVGSection
   ) {
     const path: SVGTextElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 
@@ -13,12 +15,14 @@ export class Text {
     path.setAttribute('x', position[0].toString());
     path.setAttribute('y', position[1].toString());
     this.node = path;
+    this.section = section;
   }
 
   export(): StrokeNodeData {
     return {
       type: 'text',
-      data: this.node.outerHTML.toString()
+      data: this.node.outerHTML.toString(),
+      section: this.section
     }
   }
 

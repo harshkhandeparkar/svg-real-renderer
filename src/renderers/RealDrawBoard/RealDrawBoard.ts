@@ -128,7 +128,7 @@ export class RealDrawBoard extends RealRenderer {
       if (!this._previewStroke.has('mouse')) this._previewStroke.set('mouse', []);
 
       this._toolPreview(coords, 'mouse');
-      this._display(this._previewStroke.get('mouse'), 'overlay');
+      this._display(this._previewStroke.get('mouse'));
     }
 
     this._display(this.strokes[this._strokeIndex]);
@@ -190,7 +190,7 @@ export class RealDrawBoard extends RealRenderer {
       if (this._doPreview) {
         if (!this._previewStroke.has(identifier)) this._previewStroke.set(identifier, []);
         this._toolPreview(coords, identifier);
-        this._display(this._previewStroke.get(identifier), 'overlay');
+        this._display(this._previewStroke.get(identifier));
       }
 
       this._display(this.strokes[this._strokeIndex]);

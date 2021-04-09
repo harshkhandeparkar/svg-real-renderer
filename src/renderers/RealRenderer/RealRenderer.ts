@@ -1,6 +1,6 @@
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
-import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport, RealRendererSettings, BGType, RealExport, SVGSections } from '../../types/RealRendererTypes';
+import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport, RealRendererSettings, BGType, RealExport, SVGSections, SVGSection } from '../../types/RealRendererTypes';
 export * as RealRendererTypes from '../../types/RealRendererTypes';
 
 import { RealRendererDefaults } from '../../constants/defaults/RealRendererDefaults';
@@ -134,9 +134,9 @@ export class RealRenderer {
     }
   }
 
-  _display(stroke: Stroke, section: 'bg' | 'strokes' | 'overlay' = 'strokes') {
+  _display(stroke: Stroke) {
     stroke.forEach((strokeNode) => {
-      if (strokeNode.node.parentElement == null) this.svgSections[section].appendChild(strokeNode.node);
+      if (strokeNode.node.parentElement == null) this.svgSections[strokeNode.section].appendChild(strokeNode.node);
     })
   }
 
@@ -190,22 +190,22 @@ export class RealRenderer {
         strokeExport.map((strokeNodeData) => {
           switch(strokeNodeData.type) {
             case 'circle':
-              const circ = new Circle([0, 0], 0);
+              const circ = new Circle([0, 0], 0, strokeNodeData.section);
               circ.import(strokeNodeData.data);
               return circ;
 
             case 'path':
-              const path = new Path('');
+              const path = new Path('', strokeNodeData.section);
               path.import(strokeNodeData.data);
               return path;
 
             case 'text':
-              const text = new Text([0, 0], '');
+              const text = new Text([0, 0], '', strokeNodeData.section);
               text.import(strokeNodeData.data);
               return text;
 
             case 'polygon':
-              const polygon = new Polygon([]);
+              const polygon = new Polygon([], strokeNodeData.section);
               polygon.import(strokeNodeData.data);
               return polygon;
           }

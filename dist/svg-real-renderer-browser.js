@@ -37,15 +37,17 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Path = void 0;
 	var Path = /** @class */ (function () {
-	    function Path(initialD) {
+	    function Path(initialD, section) {
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 	        path.setAttribute('d', initialD);
 	        this.node = path;
+	        this.section = section;
 	    }
 	    Path.prototype.export = function () {
 	        return {
 	            type: 'path',
-	            data: this.node.outerHTML.toString()
+	            data: this.node.outerHTML.toString(),
+	            section: this.section
 	        };
 	    };
 	    Path.prototype.import = function (data) {
@@ -82,7 +84,7 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Polygon = void 0;
 	var Polygon = /** @class */ (function () {
-	    function Polygon(points) {
+	    function Polygon(points, section) {
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
 	        var pointsString = '';
 	        points.forEach(function (point) {
@@ -90,11 +92,13 @@
 	        });
 	        path.setAttribute('points', pointsString);
 	        this.node = path;
+	        this.section = section;
 	    }
 	    Polygon.prototype.export = function () {
 	        return {
 	            type: 'polygon',
-	            data: this.node.outerHTML.toString()
+	            data: this.node.outerHTML.toString(),
+	            section: this.section
 	        };
 	    };
 	    Polygon.prototype.import = function (data) {
@@ -139,7 +143,7 @@
 
 	function getBlankGraphPaths(dimensions, bgColor, bgType) {
 	    var outX = dimensions[0], outY = dimensions[1];
-	    var axesPath = new _path.Path('');
+	    var axesPath = new _path.Path('', 'bg');
 	    switch (bgType.type) {
 	        case 'none':
 	            break;
@@ -183,7 +187,7 @@
 	        [0, dimensions[1]],
 	        [dimensions[0], dimensions[1]],
 	        [dimensions[0], 0]
-	    ]);
+	    ], 'bg');
 	    bgPolygon.setFill(getRGBColorString_1.getRGBColorString(bgColor));
 	    bgPolygon.setStroke(getRGBColorString_1.getRGBColorString(bgColor));
 	    return [bgPolygon, axesPath];
@@ -251,17 +255,19 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Circle = void 0;
 	var Circle = /** @class */ (function () {
-	    function Circle(center, initialRadius) {
+	    function Circle(center, initialRadius, section) {
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 	        path.setAttribute('cx', center[0].toString());
 	        path.setAttribute('cy', center[1].toString());
 	        path.setAttribute('r', initialRadius.toString());
 	        this.node = path;
+	        this.section = section;
 	    }
 	    Circle.prototype.export = function () {
 	        return {
 	            type: 'circle',
-	            data: this.node.outerHTML.toString()
+	            data: this.node.outerHTML.toString(),
+	            section: this.section
 	        };
 	    };
 	    Circle.prototype.import = function (data) {
@@ -303,17 +309,19 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Text = void 0;
 	var Text = /** @class */ (function () {
-	    function Text(position, initialText) {
+	    function Text(position, initialText, section) {
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 	        path.textContent = initialText;
 	        path.setAttribute('x', position[0].toString());
 	        path.setAttribute('y', position[1].toString());
 	        this.node = path;
+	        this.section = section;
 	    }
 	    Text.prototype.export = function () {
 	        return {
 	            type: 'text',
-	            data: this.node.outerHTML.toString()
+	            data: this.node.outerHTML.toString(),
+	            section: this.section
 	        };
 	    };
 	    Text.prototype.import = function (data) {
@@ -450,12 +458,11 @@
 	            window.requestAnimationFrame(function () { _this._render(); });
 	        }
 	    };
-	    RealRenderer.prototype._display = function (stroke, section) {
+	    RealRenderer.prototype._display = function (stroke) {
 	        var _this = this;
-	        if (section === void 0) { section = 'strokes'; }
 	        stroke.forEach(function (strokeNode) {
 	            if (strokeNode.node.parentElement == null)
-	                _this.svgSections[section].appendChild(strokeNode.node);
+	                _this.svgSections[strokeNode.section].appendChild(strokeNode.node);
 	        });
 	    };
 	    RealRenderer.prototype.startRender = function () {
@@ -497,19 +504,19 @@
 	            _this.strokes.push(strokeExport.map(function (strokeNodeData) {
 	                switch (strokeNodeData.type) {
 	                    case 'circle':
-	                        var circ = new _circle.Circle([0, 0], 0);
+	                        var circ = new _circle.Circle([0, 0], 0, strokeNodeData.section);
 	                        circ.import(strokeNodeData.data);
 	                        return circ;
 	                    case 'path':
-	                        var path = new _path.Path('');
+	                        var path = new _path.Path('', strokeNodeData.section);
 	                        path.import(strokeNodeData.data);
 	                        return path;
 	                    case 'text':
-	                        var text = new _text.Text([0, 0], '');
+	                        var text = new _text.Text([0, 0], '', strokeNodeData.section);
 	                        text.import(strokeNodeData.data);
 	                        return text;
 	                    case 'polygon':
-	                        var polygon = new _polygon.Polygon([]);
+	                        var polygon = new _polygon.Polygon([], strokeNodeData.section);
 	                        polygon.import(strokeNodeData.data);
 	                        return polygon;
 	                }
@@ -543,8 +550,8 @@
 	exports.getCircleNode = void 0;
 
 
-	function getCircleNode(center, radius, color) {
-	    var circleNode = new _circle.Circle(center, radius);
+	function getCircleNode(center, radius, color, section) {
+	    var circleNode = new _circle.Circle(center, radius, section);
 	    circleNode.setFill(getRGBColorString_1.getRGBColorString(color));
 	    circleNode.setStroke(getRGBColorString_1.getRGBColorString(color));
 	    return circleNode;
@@ -578,26 +585,26 @@
 	};
 	function _startStroke(coords, identifier) {
 	    this._doPreview = false;
-	    var brushPath = new _path.Path('');
+	    var brushPath = new _path.Path('', 'strokes');
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	    brushPath.setStrokeWidth(this.toolSettings.brushSize);
 	    this._addStroke([brushPath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor, 'strokes'));
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor, 'strokes'));
 	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor, 'strokes'));
 	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
 	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor);
+	        var circleNode = circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor, 'overlay');
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        this._previewStroke.get(identifier).push(circleNode);
@@ -625,26 +632,26 @@
 	    eraserSize: 2
 	};
 	function _startStroke(coords, identifier) {
-	    var brushPath = new _path.Path('');
+	    var brushPath = new _path.Path('', 'strokes');
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
 	    brushPath.setStrokeWidth(this.toolSettings.eraserSize);
 	    this._addStroke([brushPath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor, 'strokes'));
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor, 'strokes'));
 	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor, 'strokes'));
 	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
 	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor);
+	        var circleNode = circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor, 'overlay');
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.bgColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
 	        circleNode.setDashed(getRGBColorString_1.getRGBColorString(this.bgColor.map(function (c) { return 1 - c; })));
@@ -677,12 +684,12 @@
 	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
 	function _startStroke(coords, identifier) {
 	    this._doPreview = false;
-	    var linePath = new _path.Path('');
+	    var linePath = new _path.Path('', 'strokes');
 	    linePath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	    linePath.setStrokeWidth(this.toolSettings.lineThickness);
 	    this._addStroke([linePath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.lineColor));
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.lineColor));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.lineColor, 'strokes'));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.lineColor, 'strokes'));
 	    _startCoords.set(identifier, coords);
 	}
 	exports._startStroke = _startStroke;
@@ -700,7 +707,7 @@
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
 	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.lineColor);
+	        var circleNode = circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.lineColor, 'overlay');
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	        this._previewStroke.get(identifier).push(circleNode);
@@ -999,7 +1006,7 @@
 	                if (!_this._previewStroke.has('mouse'))
 	                    _this._previewStroke.set('mouse', []);
 	                _this._toolPreview(coords, 'mouse');
-	                _this._display(_this._previewStroke.get('mouse'), 'overlay');
+	                _this._display(_this._previewStroke.get('mouse'));
 	            }
 	            _this._display(_this.strokes[_this._strokeIndex]);
 	        };
@@ -1038,7 +1045,7 @@
 	                    if (!_this._previewStroke.has(identifier))
 	                        _this._previewStroke.set(identifier, []);
 	                    _this._toolPreview(coords, identifier);
-	                    _this._display(_this._previewStroke.get(identifier), 'overlay');
+	                    _this._display(_this._previewStroke.get(identifier));
 	                }
 	                _this._display(_this.strokes[_this._strokeIndex]);
 	            }

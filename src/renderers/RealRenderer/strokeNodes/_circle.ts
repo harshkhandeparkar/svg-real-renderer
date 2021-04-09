@@ -1,11 +1,13 @@
-import { Coordinate, StrokeNodeData } from '../../../types/RealRendererTypes';
+import { Coordinate, StrokeNodeData, SVGSection } from '../../../types/RealRendererTypes';
 
 export class Circle {
   node: SVGCircleElement;
+  section: SVGSection;
 
   constructor(
     center: Coordinate,
-    initialRadius: number
+    initialRadius: number,
+    section: SVGSection
   ) {
     const path: SVGCircleElement = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
@@ -13,12 +15,14 @@ export class Circle {
     path.setAttribute('cy', center[1].toString());
     path.setAttribute('r', initialRadius.toString());
     this.node = path;
+    this.section = section;
   }
 
   export(): StrokeNodeData {
     return {
       type: 'circle',
-      data: this.node.outerHTML.toString()
+      data: this.node.outerHTML.toString(),
+      section: this.section
     }
   }
 

@@ -27,7 +27,7 @@ export function _startStroke(
 ) {
   this._doPreview = false;
 
-  const brushPath = new Path('');
+  const brushPath = new Path('', 'strokes');
   brushPath.setStroke(getRGBColorString(this.toolSettings.brushColor));
   brushPath.setStrokeWidth(this.toolSettings.brushSize);
 
@@ -36,7 +36,8 @@ export function _startStroke(
     getCircleNode(
       coords,
       this.toolSettings.brushSize / 2 - 0.5,
-      this.toolSettings.brushColor
+      this.toolSettings.brushColor,
+      'strokes'
     )
   )
 }
@@ -50,7 +51,8 @@ export function _endStroke(
     getCircleNode(
       endCoords,
       this.toolSettings.brushSize / 2 - 0.5,
-      this.toolSettings.brushColor
+      this.toolSettings.brushColor,
+      'strokes'
     )
   )
 
@@ -66,7 +68,8 @@ export function _doStroke(
     getCircleNode(
       coords,
       this.toolSettings.brushSize / 2 - 0.5,
-      this.toolSettings.brushColor
+      this.toolSettings.brushColor,
+      'strokes'
     )
   );
 
@@ -87,7 +90,8 @@ export function _toolPreview(
     const circleNode = getCircleNode(
       coords,
       this.toolSettings.brushSize / 2 - 0.5,
-      this.toolSettings.brushColor
+      this.toolSettings.brushColor,
+      'overlay'
     )
 
     circleNode.setFill(getRGBColorString(this.toolSettings.brushColor));

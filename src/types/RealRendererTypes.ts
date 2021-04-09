@@ -7,6 +7,10 @@ export type GraphDimensions = [number, number];
 export type Color = [number, number, number];
 export type Coordinate = [number, number];
 export type StrokeNode = Path | Circle | Text | Polygon;
+export type SVGSection = 'bg' | 'strokes' | 'overlay';
+export type SVGSections = {
+  [Property in SVGSection]: SVGGElement;
+}
 /**
  * One stroke is an combination of multiple stroke nodes
  */
@@ -14,6 +18,7 @@ export type Stroke = StrokeNode[];
 export type StrokeNodeData = {
   type: 'path' | 'circle' | 'text' | 'polygon';
   data: string;
+  section: SVGSection;
 }
 export type StrokeExport = StrokeNodeData[];
 export type RealExport = {
@@ -48,12 +53,6 @@ export type BGNone = {
 }
 
 export type BGType = BGNone | BGRuled | BGGrid | BGAxes;
-
-export type SVGSections = {
-  bg: SVGGElement;
-  strokes: SVGGElement;
-  overlay: SVGGElement;
-}
 
 export interface IRealRendererOptionals {
   dimensions: GraphDimensions;

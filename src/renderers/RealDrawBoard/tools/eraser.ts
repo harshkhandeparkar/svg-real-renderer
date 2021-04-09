@@ -23,7 +23,7 @@ export function _startStroke(
   coords: [number, number],
   identifier: string
 ) {
-  const brushPath = new Path('');
+  const brushPath = new Path('', 'strokes');
   brushPath.setStroke(getRGBColorString(this.bgColor));
   brushPath.setStrokeWidth(this.toolSettings.eraserSize);
 
@@ -32,7 +32,8 @@ export function _startStroke(
     getCircleNode(
       coords,
       this.toolSettings.eraserSize / 2 - 0.5,
-      this.bgColor
+      this.bgColor,
+      'strokes'
     )
   )
 }
@@ -46,7 +47,8 @@ export function _endStroke(
     getCircleNode(
       endCoords,
       this.toolSettings.eraserSize / 2 - 0.5,
-      this.bgColor
+      this.bgColor,
+      'strokes'
     )
   )
 
@@ -62,7 +64,8 @@ export function _doStroke(
     getCircleNode(
       coords,
       this.toolSettings.eraserSize / 2 - 0.5,
-      this.bgColor
+      this.bgColor,
+      'strokes'
     )
   );
 
@@ -83,7 +86,8 @@ export function _toolPreview(
     const circleNode = getCircleNode(
       coords,
       this.toolSettings.eraserSize / 2 - 0.5,
-      this.bgColor
+      this.bgColor,
+      'overlay'
     )
 
     circleNode.setFill(getRGBColorString(this.bgColor));

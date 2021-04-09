@@ -1,9 +1,13 @@
-import { Coordinate, StrokeNodeData } from '../../../types/RealRendererTypes';
+import { Coordinate, StrokeNodeData, SVGSection } from '../../../types/RealRendererTypes';
 
 export class Polygon {
   node: SVGPolygonElement;
+  section: SVGSection;
 
-  constructor(points: Coordinate[]) {
+  constructor(
+    points: Coordinate[],
+    section: SVGSection
+  ) {
     const path: SVGPolygonElement = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
 
     let pointsString = '';
@@ -14,12 +18,14 @@ export class Polygon {
 
     path.setAttribute('points', pointsString);
     this.node = path;
+    this.section = section;
   }
 
   export(): StrokeNodeData {
     return {
       type: 'polygon',
-      data: this.node.outerHTML.toString()
+      data: this.node.outerHTML.toString(),
+      section: this.section
     }
   }
 

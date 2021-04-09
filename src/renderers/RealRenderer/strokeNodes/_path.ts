@@ -1,21 +1,25 @@
-import { StrokeNodeData } from '../../../types/RealRendererTypes';
+import { StrokeNodeData, SVGSection } from '../../../types/RealRendererTypes';
 
 export class Path {
   node: SVGPathElement;
+  section: SVGSection;
 
   constructor(
-    initialD: string
+    initialD: string,
+    section: SVGSection
   ) {
     const path: SVGPathElement = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
     path.setAttribute('d', initialD);
     this.node = path;
+    this.section = section;
   }
 
   export(): StrokeNodeData {
     return {
       type: 'path',
-      data: this.node.outerHTML.toString()
+      data: this.node.outerHTML.toString(),
+      section: this.section
     }
   }
 

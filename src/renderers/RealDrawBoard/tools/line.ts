@@ -32,7 +32,7 @@ export function _startStroke(
 ) {
   this._doPreview = false;
 
-  const linePath = new Path('');
+  const linePath = new Path('', 'strokes');
   linePath.setStroke(getRGBColorString(this.toolSettings.lineColor));
   linePath.setStrokeWidth(this.toolSettings.lineThickness);
 
@@ -42,7 +42,8 @@ export function _startStroke(
     getCircleNode(
       coords,
       this.toolSettings.lineThickness / 2 - 0.5,
-      this.toolSettings.lineColor
+      this.toolSettings.lineColor,
+      'strokes'
     )
   )
 
@@ -50,7 +51,8 @@ export function _startStroke(
     getCircleNode(
       coords,
       this.toolSettings.lineThickness / 2 - 0.5,
-      this.toolSettings.lineColor
+      this.toolSettings.lineColor,
+      'strokes'
     )
   )
 
@@ -99,7 +101,8 @@ export function _toolPreview(
     const circleNode = getCircleNode(
       coords,
       this.toolSettings.lineThickness / 2 - 0.5,
-      this.toolSettings.lineColor
+      this.toolSettings.lineColor,
+      'overlay'
     )
 
     circleNode.setFill(getRGBColorString(this.toolSettings.lineColor));
