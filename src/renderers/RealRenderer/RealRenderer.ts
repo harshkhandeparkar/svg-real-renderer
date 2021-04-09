@@ -13,6 +13,8 @@ import { Path } from './strokeNodes/_path';
 import { Text } from './strokeNodes/_text';
 import { Polygon } from './strokeNodes/_polygon';
 
+import { clamp } from '../../util/clamp';
+
 export class RealRenderer {
   svg: SVGSVGElement;
   dimensions: GraphDimensions;
@@ -25,8 +27,6 @@ export class RealRenderer {
   drawsPerFrame: number;
   timeStep: number;
   time: number;
-  xOffset: number;
-  yOffset: number;
   _doRender: boolean;
 
   public undo = undo;
@@ -39,6 +39,28 @@ export class RealRenderer {
       ...options
     }
 
+    switch(this.settings.bgType.type) {
+      case 'axes':
+        this.settings.bgType.xOffset = clamp(this.settings.bgType.xOffset, 0, 100); // %age
+        this.settings.bgType.yOffset = clamp(this.settings.bgType.yOffset, 0, 100); // %age
+        break;
+
+      case 'grid':
+        this.settings.bgType.xSpacing = clamp(this.settings.bgType.xSpacing, 0, 100); // %age
+        this.settings.bgType.ySpacing = clamp(this.settings.bgType.ySpacing, 0, 100); // %age
+        break;
+
+      case 'ruled':
+        this.settings.bgType.spacing = clamp(this.settings.bgType.spacing, 0, 100);
+        break;
+
+      case 'none':
+        break;
+
+      default:
+        break;
+    }
+
     this.svg = this.settings.svg;
     this.dimensions = this.settings.dimensions;
     this.yScaleFactor = this.settings.yScaleFactor;
@@ -48,11 +70,6 @@ export class RealRenderer {
     this.timeStep = this.settings.timeStep;
     this.time = this.settings.initTime;
 
-    this.xOffset = this.settings.xOffset; // %age offset
-    this.yOffset = this.settings.yOffset; // %age offset
-
-    this.xOffset = Math.max(0, Math.min(100, this.xOffset)) // Between 0 and 100
-    this.yOffset = Math.max(0, Math.min(100, this.yOffset)) // Between 0 and 100
     // *****DEFAULTS*****
 
     if (this.svg === undefined) {
@@ -65,8 +82,6 @@ export class RealRenderer {
     this._addStroke(
       getBlankGraphPaths(
         this.dimensions,
-        this.xOffset,
-        this.yOffset,
         this.bgColor,
         this.bgType
       )
@@ -200,8 +215,6 @@ export class RealRenderer {
     this.strokes = [
       getBlankGraphPaths(
         this.dimensions,
-        this.xOffset,
-        this.yOffset,
         this.bgColor,
         this.bgType
       )

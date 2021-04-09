@@ -23,28 +23,28 @@ export type RealExport = {
 }
 
 export type BGAxes = {
-  type: 'axes',
-  axesColor: Color,
-  xOffset: number,
-  yOffset: number
+  type: 'axes';
+  axesColor: Color;
+  xOffset: number;
+  yOffset: number;
 }
 
 export type BGRuled = {
-  type: 'ruled',
-  orientation: 'vertical' | 'horizontal',
-  spacing: number,
-  lineColor: Color
+  type: 'ruled';
+  orientation: 'vertical' | 'horizontal';
+  spacing: number;
+  lineColor: Color;
 }
 
 export type BGGrid = {
-  type: 'grid',
-  xSpacing: number,
-  ySpacing: number,
-  lineColor: Color
+  type: 'grid';
+  xSpacing: number;
+  ySpacing: number;
+  lineColor: Color;
 }
 
 export type BGNone = {
-  type: 'none'
+  type: 'none';
 }
 
 export type BGType = BGNone | BGRuled | BGGrid | BGAxes;
@@ -57,8 +57,6 @@ export interface IRealRendererOptionals {
   drawsPerFrame: number;
   timeStep: number;
   initTime: number;
-  xOffset: number;
-  yOffset: number;
 }
 
 export interface IRealRendererNonOptionals {

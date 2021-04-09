@@ -9,9 +9,6 @@ const lineGraphOptions = {
   drawsPerFrame: 2, // Draws twice before displaying the pixels (every browser frame)
   timeStep: 1 / 120, // Increases internal time count by 1 / 120 every *draw*
 
-  xOffset: 20, // 20%
-  yOffset: 10, // 10%
-
   progressiveAxis: 'x', // x -> Graph moves along x-axis; y -> Graph moves along y-axis
   progressionMode: 'squeeze', // continous -> Axis always moves; overflow -> Axis only moves when space for new data is inadequate;
   progressInterval: 0.4, // Axis moves by one pixel every 0.4 internal time units (Only for continous type)

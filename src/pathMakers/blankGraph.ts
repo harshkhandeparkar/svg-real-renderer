@@ -5,15 +5,10 @@ import { Polygon } from '../renderers/RealRenderer/strokeNodes/_polygon';
 
 export function getBlankGraphPaths(
   dimensions: GraphDimensions,
-  xOffset: number,
-  yOffset: number,
   bgColor: Color,
   bgType: BGType
 ): [Polygon, Path] {
   const outX = dimensions[0], outY = dimensions[1];
-
-  const X = Math.floor(outY * (xOffset / 100));
-  const Y = Math.floor(outX * (yOffset / 100));
 
   const axesPath = new Path('');
 
@@ -21,7 +16,11 @@ export function getBlankGraphPaths(
     case 'none':
       break;
       case 'axes':
+      const X = Math.floor(outY * (bgType.xOffset / 100));
+      const Y = Math.floor(outX * (bgType.yOffset / 100));
+
       axesPath.setStroke(getRGBColorString(bgType.axesColor));
+
       axesPath.appendPath(`M 0,${Y} H ${dimensions[0] - 1}`);
       axesPath.appendPath(`M ${X},0 V ${dimensions[1] - 1}`);
       break;

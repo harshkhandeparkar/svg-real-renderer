@@ -53,8 +53,6 @@ export function clear(this: RealDrawBoard) {
   this.strokes = [
     getBlankGraphPaths(
       this.dimensions,
-      this.xOffset,
-      this.yOffset,
       this.bgColor,
       this.bgType
     )

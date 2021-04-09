@@ -137,15 +137,15 @@
 
 
 
-	function getBlankGraphPaths(dimensions, xOffset, yOffset, bgColor, bgType) {
+	function getBlankGraphPaths(dimensions, bgColor, bgType) {
 	    var outX = dimensions[0], outY = dimensions[1];
-	    var X = Math.floor(outY * (xOffset / 100));
-	    var Y = Math.floor(outX * (yOffset / 100));
 	    var axesPath = new _path.Path('');
 	    switch (bgType.type) {
 	        case 'none':
 	            break;
 	        case 'axes':
+	            var X = Math.floor(outY * (bgType.xOffset / 100));
+	            var Y = Math.floor(outX * (bgType.yOffset / 100));
 	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.axesColor));
 	            axesPath.appendPath("M 0," + Y + " H " + (dimensions[0] - 1));
 	            axesPath.appendPath("M " + X + ",0 V " + (dimensions[1] - 1));
@@ -184,8 +184,6 @@
 	    drawsPerFrame: 1,
 	    timeStep: 1 / 60,
 	    initTime: 0,
-	    xOffset: 50,
-	    yOffset: 50
 	};
 	});
 
@@ -299,6 +297,15 @@
 	exports.Text = Text;
 	});
 
+	var clamp_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.clamp = void 0;
+	function clamp(input, min, max) {
+	    return Math.min(Math.max(input, min), max);
+	}
+	exports.clamp = clamp;
+	});
+
 	var RealRenderer_1 = createCommonjsModule(function (module, exports) {
 	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
 	    __assign = Object.assign || function(t) {
@@ -332,6 +339,7 @@
 
 
 
+
 	var RealRenderer = /** @class */ (function () {
 	    function RealRenderer(options) {
 	        this.strokes = [];
@@ -340,6 +348,19 @@
 	        this.redo = undo_1.redo;
 	        // *****DEFAULTS*****
 	        this.settings = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), options);
+	        switch (this.settings.bgType.type) {
+	            case 'axes':
+	                this.settings.bgType.xOffset = clamp_1.clamp(this.settings.bgType.xOffset, 0, 100); // %age
+	                this.settings.bgType.yOffset = clamp_1.clamp(this.settings.bgType.yOffset, 0, 100); // %age
+	                break;
+	            case 'grid':
+	                this.settings.bgType.xSpacing = clamp_1.clamp(this.settings.bgType.xSpacing, 0, 100); // %age
+	                this.settings.bgType.ySpacing = clamp_1.clamp(this.settings.bgType.ySpacing, 0, 100); // %age
+	                break;
+	            case 'ruled':
+	                this.settings.bgType.spacing = clamp_1.clamp(this.settings.bgType.spacing, 0, 100);
+	                break;
+	        }
 	        this.svg = this.settings.svg;
 	        this.dimensions = this.settings.dimensions;
 	        this.yScaleFactor = this.settings.yScaleFactor;
@@ -348,17 +369,13 @@
 	        this.drawsPerFrame = this.settings.drawsPerFrame;
 	        this.timeStep = this.settings.timeStep;
 	        this.time = this.settings.initTime;
-	        this.xOffset = this.settings.xOffset; // %age offset
-	        this.yOffset = this.settings.yOffset; // %age offset
-	        this.xOffset = Math.max(0, Math.min(100, this.xOffset)); // Between 0 and 100
-	        this.yOffset = Math.max(0, Math.min(100, this.yOffset)); // Between 0 and 100
 	        // *****DEFAULTS*****
 	        if (this.svg === undefined) {
 	            throw 'No SVG Element Found';
 	        }
 	        this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
 	        this.svg.setAttribute('preserveAspectRatio', 'none');
-	        this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.bgColor, this.bgType));
+	        this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType));
 	        this._display(this.strokes[this._strokeIndex]);
 	        this._doRender = false;
 	    }
@@ -464,7 +481,7 @@
 	    };
 	    RealRenderer.prototype.reset = function () {
 	        this.strokes = [
-	            blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.bgColor, this.bgType)
+	            blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType)
 	        ];
 	        this._strokeIndex = 0;
 	        this.resetTime();
@@ -757,7 +774,7 @@
 	        stroke.forEach(function (strokeNode) { return strokeNode.delete(); });
 	    });
 	    this.strokes = [
-	        blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.bgColor, this.bgType)
+	        blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType)
 	    ];
 	    this._display(this.strokes[this._strokeIndex]);
 	    return this;
