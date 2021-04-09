@@ -7,7 +7,6 @@ export function getBlankGraphPaths(
   dimensions: GraphDimensions,
   xOffset: number,
   yOffset: number,
-  axesColor: Color,
   bgColor: Color,
   bgType: BGType
 ): [Polygon, Path] {
@@ -16,28 +15,23 @@ export function getBlankGraphPaths(
   const X = Math.floor(outY * (xOffset / 100));
   const Y = Math.floor(outX * (yOffset / 100));
 
-  let d: string;
+  const axesPath = new Path('');
 
-  switch(bgType) {
+  switch(bgType.type) {
     case 'none':
-      d = '';
       break;
-    case 'axes':
-      d = `M 0,${Y} H ${dimensions[0] - 1}`
-      d += ` M ${X},0 V ${dimensions[1] - 1}`
+      case 'axes':
+      axesPath.setStroke(getRGBColorString(bgType.axesColor));
+      axesPath.appendPath(`M 0,${Y} H ${dimensions[0] - 1}`);
+      axesPath.appendPath(`M ${X},0 V ${dimensions[1] - 1}`);
       break;
     case 'grid':
-      d = '';
       break;
     case 'ruled':
-      d = '';
       break;
     default:
       break;
   }
-
-  const axesPath = new Path(d);
-  axesPath.setStroke(getRGBColorString(axesColor));
 
   const bgPolygon = new Polygon(
     [

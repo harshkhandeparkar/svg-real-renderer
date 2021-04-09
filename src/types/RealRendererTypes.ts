@@ -32,18 +32,28 @@ export type BGAxes = {
 export type BGRuled = {
   type: 'ruled',
   orientation: 'vertical' | 'horizontal',
-  xSpacing: number,
-  ySpacing: number
+  spacing: number,
+  lineColor: Color
 }
 
-export type BGType = 'none' | 'axes' | 'grid' | 'ruled';
+export type BGGrid = {
+  type: 'grid',
+  xSpacing: number,
+  ySpacing: number,
+  lineColor: Color
+}
+
+export type BGNone = {
+  type: 'none'
+}
+
+export type BGType = BGNone | BGRuled | BGGrid | BGAxes;
 
 export interface IRealRendererOptionals {
   dimensions: GraphDimensions;
   yScaleFactor: number;
   bgColor: Color;
   bgType: BGType;
-  axesColor: Color;
   drawsPerFrame: number;
   timeStep: number;
   initTime: number;

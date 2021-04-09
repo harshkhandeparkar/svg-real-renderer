@@ -22,7 +22,6 @@ export class RealRenderer {
   yScaleFactor: number;
   bgColor: Color;
   bgType: BGType;
-  axesColor: Color;
   drawsPerFrame: number;
   timeStep: number;
   time: number;
@@ -45,7 +44,6 @@ export class RealRenderer {
     this.yScaleFactor = this.settings.yScaleFactor;
     this.bgColor = this.settings.bgColor;
     this.bgType = this.settings.bgType;
-    this.axesColor = this.settings.axesColor;
     this.drawsPerFrame = this.settings.drawsPerFrame;
     this.timeStep = this.settings.timeStep;
     this.time = this.settings.initTime;
@@ -69,7 +67,6 @@ export class RealRenderer {
         this.dimensions,
         this.xOffset,
         this.yOffset,
-        this.axesColor,
         this.bgColor,
         this.bgType
       )
@@ -205,7 +202,6 @@ export class RealRenderer {
         this.dimensions,
         this.xOffset,
         this.yOffset,
-        this.axesColor,
         this.bgColor,
         this.bgType
       )

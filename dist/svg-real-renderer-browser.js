@@ -137,28 +137,20 @@
 
 
 
-	function getBlankGraphPaths(dimensions, xOffset, yOffset, axesColor, bgColor, bgType) {
+	function getBlankGraphPaths(dimensions, xOffset, yOffset, bgColor, bgType) {
 	    var outX = dimensions[0], outY = dimensions[1];
 	    var X = Math.floor(outY * (xOffset / 100));
 	    var Y = Math.floor(outX * (yOffset / 100));
-	    var d;
-	    switch (bgType) {
+	    var axesPath = new _path.Path('');
+	    switch (bgType.type) {
 	        case 'none':
-	            d = '';
 	            break;
 	        case 'axes':
-	            d = "M 0," + Y + " H " + (dimensions[0] - 1);
-	            d += " M " + X + ",0 V " + (dimensions[1] - 1);
-	            break;
-	        case 'grid':
-	            d = '';
-	            break;
-	        case 'ruled':
-	            d = '';
+	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.axesColor));
+	            axesPath.appendPath("M 0," + Y + " H " + (dimensions[0] - 1));
+	            axesPath.appendPath("M " + X + ",0 V " + (dimensions[1] - 1));
 	            break;
 	    }
-	    var axesPath = new _path.Path(d);
-	    axesPath.setStroke(getRGBColorString_1.getRGBColorString(axesColor));
 	    var bgPolygon = new _polygon.Polygon([
 	        [0, 0],
 	        [0, dimensions[1]],
@@ -181,11 +173,14 @@
 	exports.RealRendererDefaults = void 0;
 	exports.RealRendererDefaults = {
 	    dimensions: [1000, 1000],
-	    xScaleFactor: 10,
 	    yScaleFactor: 1,
 	    bgColor: [0, 0, 0],
-	    bgType: 'axes',
-	    axesColor: [1, 1, 1],
+	    bgType: {
+	        type: 'axes',
+	        axesColor: [1, 1, 1],
+	        xOffset: 20,
+	        yOffset: 20
+	    },
 	    drawsPerFrame: 1,
 	    timeStep: 1 / 60,
 	    initTime: 0,
@@ -347,11 +342,9 @@
 	        this.settings = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), options);
 	        this.svg = this.settings.svg;
 	        this.dimensions = this.settings.dimensions;
-	        this.xScaleFactor = this.settings.xScaleFactor;
 	        this.yScaleFactor = this.settings.yScaleFactor;
 	        this.bgColor = this.settings.bgColor;
 	        this.bgType = this.settings.bgType;
-	        this.axesColor = this.settings.axesColor;
 	        this.drawsPerFrame = this.settings.drawsPerFrame;
 	        this.timeStep = this.settings.timeStep;
 	        this.time = this.settings.initTime;
@@ -365,7 +358,7 @@
 	        }
 	        this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
 	        this.svg.setAttribute('preserveAspectRatio', 'none');
-	        this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.bgColor, this.bgType));
+	        this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.bgColor, this.bgType));
 	        this._display(this.strokes[this._strokeIndex]);
 	        this._doRender = false;
 	    }
@@ -471,7 +464,7 @@
 	    };
 	    RealRenderer.prototype.reset = function () {
 	        this.strokes = [
-	            blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.bgColor, this.bgType)
+	            blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.bgColor, this.bgType)
 	        ];
 	        this._strokeIndex = 0;
 	        this.resetTime();
@@ -764,14 +757,13 @@
 	        stroke.forEach(function (strokeNode) { return strokeNode.delete(); });
 	    });
 	    this.strokes = [
-	        blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.axesColor, this.bgColor, this.bgType)
+	        blankGraph.getBlankGraphPaths(this.dimensions, this.xOffset, this.yOffset, this.bgColor, this.bgType)
 	    ];
 	    this._display(this.strokes[this._strokeIndex]);
 	    return this;
 	}
 	exports.clear = clear;
 	function _resetBoard() {
-	    this.xScaleFactor = this.settings.xScaleFactor;
 	    this.yScaleFactor = this.settings.yScaleFactor;
 	    this.bgColor = this.settings.bgColor;
 	    this.tool = this.settings.tool;

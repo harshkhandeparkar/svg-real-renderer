@@ -55,7 +55,6 @@ export function clear(this: RealDrawBoard) {
       this.dimensions,
       this.xOffset,
       this.yOffset,
-      this.axesColor,
       this.bgColor,
       this.bgType
     )
