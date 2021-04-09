@@ -64,23 +64,26 @@ The constructor of the class takes an options javascript object as the only argu
 
 - `svg`([*SVGSVGElement*](https://developer.mozilla.org/en-US/docs/Web/API/SVGSVGElement)) (Required, No default):  The `svg` element on which the graph should be rendered.
 - `dimensions`(*Array*) (Default: `[1000, 1000]`): An array which contains the x and y dimensions(in pixels) of graph.
-- `xScaleFactor`(*Number) (Default: `10`): This is a number that determines the scaling of the x-axis. A greater value zooms into the x-axis. Greater values provide more precision and lower values increase the limits of the x-axis.
-
-Technically, each coordinate on the x-axis is divided by this number.
-
-- `yScaleFactor`(*Number*) (Default: `1`): This is a number that determines the scaling of the y-axis. A greater value zooms into the y-axis. Greater values provide more precision and lower values increase the limits of the y-axis.
-
-Technically, each coordinate on the y-axis is divided by this number.
 
 - `bgColor`(*Array*) (Default: `[0, 0, 0]`): This is an array with three numbers between `0` and `1`. The numbers represent the red, green and blue color values of the background color of the graph.
 
-- `drawAxes`(*boolean*) (Default: `true`): Whether to draw the x and y axes or not.
-
-- `axesColor`(*Array*) (Default: `[1, 1, 1]`): Same as `bgColor` but defines the color of the x and y axes.
-
-- `xOffset`(*Number*) (Default: `50`): Percentage offset on the graph for the x-axis.
-
-- `xOffset`(*Number*) (Default: `50`): Percentage offset on the graph for the y-axis.
+- `bgType`(*BGNone | BGAxes | BGRuled | BGGrid*): Defines how the backround should be. A plane background, with axes, ruled or grid.
+  - `BGNone`: Plain background. An object with `{type: 'none'}`
+  - `BGAxes`: Draws axes on the background. An object with the following properties:
+    - `type`: `'axes'`
+    - `axesColor`(*Color*): Color of the axes.
+    - `xOffset`(*number*): %age x-axis offset.
+    - `yOffset`(*number*): %age y-axis offset.
+  - `BGRuled`: Makes a ruled background. An object with the following properties:
+    - `type`: `'ruled'`
+    - `lineColor`(*Color*): Color of the ruled lines.
+    - `orientation`(*'vertical' | 'horizontal'*): Orientation of the ruled lines.
+    - `spacing`(*number*): %age spacing between ruled lines.
+  - `BGGrid`: Makes a background with grid. An object with the following properties:
+    - `type`: `'grid'`
+    - `lineColor`(*Color*): Color of the grid lines.
+    - `xSpacing`(*number*): %age spacing between ruled lines in x-axis.
+    - `ySpacing`(*number*): %age spacing between ruled lines in y-axis.
 
 - `drawsPerFrame`(*Integer*) (Default: `1`): A draw is an iteration over the graph. The graph is manipulated once per draw and the end result is displayed at the end of every frame. This integer number determines the number of draws that should be done per frame before displaying.
 
@@ -89,7 +92,6 @@ Technically, each coordinate on the y-axis is divided by this number.
 This time value is not used by the `RealRenderer` class but is used by its child classes.
 
 - `initTime`(*Number*) (Default: `0`): The initial value of the internal `time` variable.
-
 
 ##### Methods
 The class exposes the followind methods to the user. These methods are also chainable which means that you can run another method on the value returned by the previous method call.
