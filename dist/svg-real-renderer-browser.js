@@ -287,6 +287,10 @@
 	    Circle.prototype.setStrokeWidth = function (width) {
 	        this.node.setAttribute('stroke-width', width.toString());
 	    };
+	    Circle.prototype.setDashed = function (dashColor) {
+	        this.node.setAttribute('stroke-dasharray', '2,2');
+	        this.setStroke(dashColor);
+	    };
 	    Circle.prototype.delete = function () {
 	        this.node.remove();
 	    };
@@ -635,6 +639,7 @@
 	        var circleNode = circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor);
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.bgColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
+	        circleNode.setDashed(getRGBColorString_1.getRGBColorString(this.bgColor.map(function (c) { return 1 - c; })));
 	        this._previewStroke.get(identifier).push(circleNode);
 	    }
 	    else {

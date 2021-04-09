@@ -1,5 +1,6 @@
 import { getCircleNode } from '../../../pathMakers/circle';
 import { getLinePathCommand } from '../../../pathMakers/line';
+import { Color } from '../../../types/RealRendererTypes';
 import { getRGBColorString } from '../../../util/getRGBColorString';
 import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 import { Path } from '../../RealRenderer/strokeNodes/_path';
@@ -89,6 +90,7 @@ export function _toolPreview(
 
     circleNode.setFill(getRGBColorString(this.bgColor));
     circleNode.setStroke(getRGBColorString(this.bgColor));
+    circleNode.setDashed(getRGBColorString(this.bgColor.map((c) => 1 - c) as Color));
 
     this._previewStroke.get(identifier).push(circleNode);
   }

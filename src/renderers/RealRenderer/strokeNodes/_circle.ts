@@ -52,6 +52,11 @@ export class Circle {
     this.node.setAttribute('stroke-width', width.toString());
   }
 
+  setDashed(dashColor: string) {
+    this.node.setAttribute('stroke-dasharray', '2,2');
+    this.setStroke(dashColor);
+  }
+
   delete() {
     this.node.remove();
   }
