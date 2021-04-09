@@ -48,10 +48,13 @@ export class RealRenderer {
       case 'grid':
         this.settings.bgType.xSpacing = clamp(this.settings.bgType.xSpacing, 0, 100); // %age
         this.settings.bgType.ySpacing = clamp(this.settings.bgType.ySpacing, 0, 100); // %age
+        if (this.settings.bgType.xSpacing === 0) this.settings.bgType.xSpacing = 1;
+        if (this.settings.bgType.ySpacing === 0) this.settings.bgType.ySpacing = 1;
         break;
 
       case 'ruled':
         this.settings.bgType.spacing = clamp(this.settings.bgType.spacing, 0, 100);
+        if (this.settings.bgType.spacing === 0) this.settings.bgType.spacing = 1;
         break;
 
       case 'none':

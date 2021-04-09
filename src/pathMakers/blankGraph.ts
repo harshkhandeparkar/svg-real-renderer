@@ -15,7 +15,7 @@ export function getBlankGraphPaths(
   switch(bgType.type) {
     case 'none':
       break;
-      case 'axes':
+    case 'axes':
       const X = Math.floor(outY * (bgType.xOffset / 100));
       const Y = Math.floor(outX * (bgType.yOffset / 100));
 
@@ -24,12 +24,28 @@ export function getBlankGraphPaths(
       axesPath.appendPath(`M 0,${Y} H ${dimensions[0] - 1}`);
       axesPath.appendPath(`M ${X},0 V ${dimensions[1] - 1}`);
       break;
-    case 'grid':
+      case 'grid':
+      let xSpacing = dimensions[0] * (bgType.xSpacing / 100);
+      let ySpacing = dimensions[1] * (bgType.ySpacing / 100);
+
+      console.log(xSpacing, ySpacing)
+
+      axesPath.setStroke(getRGBColorString(bgType.lineColor));
+
+      // x-axis
+      for (let x = xSpacing; x < dimensions[0]; x += xSpacing) {
+        axesPath.appendPath(`M ${x},0 V ${dimensions[1] - 1}`);
+      }
+
+      // y-axis
+      for (let y = ySpacing; y < dimensions[1]; y += ySpacing) {
+        axesPath.appendPath(`M 0,${y} H ${dimensions[0] - 1}`);
+      }
+
       break;
     case 'ruled':
       const perpendicularDimension = bgType.orientation === 'horizontal' ? dimensions[1] : dimensions[0];
       let spacing = perpendicularDimension * (bgType.spacing / 100);
-      if (spacing <= 0) spacing = 1;
 
       axesPath.setStroke(getRGBColorString(bgType.lineColor));
       for (let dist = spacing; dist < perpendicularDimension; dist += spacing) {

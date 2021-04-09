@@ -151,12 +151,22 @@
 	            axesPath.appendPath("M " + X + ",0 V " + (dimensions[1] - 1));
 	            break;
 	        case 'grid':
+	            var xSpacing = dimensions[0] * (bgType.xSpacing / 100);
+	            var ySpacing = dimensions[1] * (bgType.ySpacing / 100);
+	            console.log(xSpacing, ySpacing);
+	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.lineColor));
+	            // x-axis
+	            for (var x = xSpacing; x < dimensions[0]; x += xSpacing) {
+	                axesPath.appendPath("M " + x + ",0 V " + (dimensions[1] - 1));
+	            }
+	            // y-axis
+	            for (var y = ySpacing; y < dimensions[1]; y += ySpacing) {
+	                axesPath.appendPath("M 0," + y + " H " + (dimensions[0] - 1));
+	            }
 	            break;
 	        case 'ruled':
 	            var perpendicularDimension = bgType.orientation === 'horizontal' ? dimensions[1] : dimensions[0];
 	            var spacing = perpendicularDimension * (bgType.spacing / 100);
-	            if (spacing <= 0)
-	                spacing = 1;
 	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.lineColor));
 	            for (var dist = spacing; dist < perpendicularDimension; dist += spacing) {
 	                var d = void 0;
@@ -373,9 +383,15 @@
 	            case 'grid':
 	                this.settings.bgType.xSpacing = clamp_1.clamp(this.settings.bgType.xSpacing, 0, 100); // %age
 	                this.settings.bgType.ySpacing = clamp_1.clamp(this.settings.bgType.ySpacing, 0, 100); // %age
+	                if (this.settings.bgType.xSpacing === 0)
+	                    this.settings.bgType.xSpacing = 1;
+	                if (this.settings.bgType.ySpacing === 0)
+	                    this.settings.bgType.ySpacing = 1;
 	                break;
 	            case 'ruled':
 	                this.settings.bgType.spacing = clamp_1.clamp(this.settings.bgType.spacing, 0, 100);
+	                if (this.settings.bgType.spacing === 0)
+	                    this.settings.bgType.spacing = 1;
 	                break;
 	        }
 	        this.svg = this.settings.svg;
