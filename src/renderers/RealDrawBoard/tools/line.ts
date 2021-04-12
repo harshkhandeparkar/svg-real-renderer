@@ -1,5 +1,5 @@
 import { RealDrawBoard } from '../RealDrawBoard';
-import { Color } from '../../../types/RealRendererTypes';
+import { Color, Coordinate } from '../../../types/RealRendererTypes';
 import { getCircleNode } from '../../../pathMakers/circle';
 import { getRGBColorString } from '../../../util/getRGBColorString';
 import { Path } from '../../RealRenderer/strokeNodes/_path';
@@ -27,7 +27,7 @@ const _startCoords: Map<string, [number, number]> = new Map(); /* key -> identif
 
 export function _startStroke(
   this: RealDrawBoard,
-  coords: [number, number],
+  coords: Coordinate,
   identifier: string
 ) {
   this._doPreview = false;
@@ -61,7 +61,7 @@ export function _startStroke(
 
 export function _endStroke(
   this: RealDrawBoard,
-  endCoords: [number, number],
+  endCoords: Coordinate,
   identifier: string
 ) {
   (<Path>this.strokes[this._strokeIndex][0]).updatePath(
@@ -79,7 +79,7 @@ export function _endStroke(
 
 export function _doStroke(
   this: RealDrawBoard,
-  coords: [number, number],
+  coords: Coordinate,
   identifier: string
 ) {
   (<Path>this.strokes[this._strokeIndex][0]).updatePath(
@@ -94,7 +94,7 @@ export function _doStroke(
 
 export function _toolPreview(
   this: RealDrawBoard,
-  coords: [number, number],
+  coords: Coordinate,
   identifier: string
 ) {
   if (this._previewStroke.get(identifier).length == 0) {
@@ -118,3 +118,15 @@ export function _toolPreview(
     circleNode.setStroke(getRGBColorString(this.toolSettings.lineColor));
   }
 }
+
+export function _onScroll(
+  this: RealDrawBoard,
+  scrollDelta: number,
+  coords: Coordinate,
+  identifier: string
+) {
+  this.toolSettings.lineThickness = Math.max(1, this.toolSettings.lineThickness - scrollDelta);
+  this._toolPreview(coords, identifier);
+  this._display(this._previewStroke.get(identifier));
+}
+

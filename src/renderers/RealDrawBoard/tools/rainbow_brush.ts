@@ -1,5 +1,6 @@
 import { RealDrawBoard } from '../RealDrawBoard';
 import { convertHSLToRGB } from '../../../util/convertHSLToRGB';
+import { Coordinate } from '../../../types/RealRendererTypes';
 
 let hue: number = 0;
 let gradientColors: [number, number, number] = [1, 1, 1];
@@ -20,7 +21,7 @@ export const RainbowBrushDefaults: IRainbowBrushSettings = {
 
 export function _startStroke(
   this: RealDrawBoard,
-  coords: [number, number],
+  coords: Coordinate,
   identifier: string
 ) {
   // gradientColors = convertHSLToRGB(hue, 90, 40);
@@ -30,7 +31,7 @@ export function _startStroke(
 
 export function _endStroke(
   this: RealDrawBoard,
-  endCoords: [number, number],
+  endCoords: Coordinate,
   identifier: string
 ) {
   // gradientColors = convertHSLToRGB(hue, 90, 40);
@@ -40,7 +41,7 @@ export function _endStroke(
 
 export function _doStroke(
   this: RealDrawBoard,
-  coords: [number, number],
+  coords: Coordinate,
   identifier: string
 ) {
   // hue = (hue + this.toolSettings.changeRate) % 360;
@@ -51,7 +52,7 @@ export function _doStroke(
 
 export function _toolPreview(
   this: RealDrawBoard,
-  coords: [number, number],
+  coords: Coordinate,
   identifier: string
 ) {
   // return <Texture>this._previewPlot(
@@ -62,3 +63,16 @@ export function _toolPreview(
   //   gradientColors
   // )
 }
+
+export function _onScroll(
+  this: RealDrawBoard,
+  scrollDelta: number,
+  coords: Coordinate,
+  identifier: string
+) {
+  this.toolSettings.brushSize = Math.max(1, this.toolSettings.brushSize - scrollDelta);
+  this._toolPreview(coords, identifier);
+  this._display(this._previewStroke.get(identifier));
+}
+
+

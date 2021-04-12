@@ -2,7 +2,7 @@ import { RealDrawBoard } from './RealDrawBoard';
 
 export function _getMouseCoords(
   this: RealDrawBoard,
-  e: MouseEvent
+  e: MouseEvent | WheelEvent
 ): [number, number] {
   const xScaleFactor = this.dimensions[0] / this.svg.clientWidth;
   const yScaleFactor = this.dimensions[1] / this.svg.clientHeight;

@@ -47,6 +47,7 @@ export class RealDrawBoard extends RealRenderer {
   protected _endStroke = tools[RealDrawBoardDefaults.tool]._endStroke;
   protected _doStroke = tools[RealDrawBoardDefaults.tool]._doStroke;
   protected _toolPreview = tools[RealDrawBoardDefaults.tool]._toolPreview;
+  protected _onScroll = tools[RealDrawBoardDefaults.tool]._onScroll;
   protected _getMouseCoords = _getMouseCoords;
   protected _getTouchCoords = _getTouchCoords;
 
@@ -146,6 +147,7 @@ export class RealDrawBoard extends RealRenderer {
     if (e.ctrlKey) {
       this.scale(Math.max(this.scaleFactor - e.deltaY * 0.001, 1));
     }
+    else this._onScroll(e.deltaY * 0.05, this._getMouseCoords(e), 'mouse');
   }
 
   protected _panEventListener = (e: MouseEvent) => {

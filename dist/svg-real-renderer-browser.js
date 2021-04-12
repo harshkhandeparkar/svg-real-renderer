@@ -596,7 +596,7 @@
 
 	var brush = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.BrushDefaults = exports.name = void 0;
+	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.BrushDefaults = exports.name = void 0;
 
 
 
@@ -641,11 +641,17 @@
 	    }
 	}
 	exports._toolPreview = _toolPreview;
+	function _onScroll(scrollDelta, coords, identifier) {
+	    this.toolSettings.brushSize = Math.max(1, this.toolSettings.brushSize - scrollDelta);
+	    this._toolPreview(coords, identifier);
+	    this._display(this._previewStroke.get(identifier));
+	}
+	exports._onScroll = _onScroll;
 	});
 
 	var eraser = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.EraserDefaults = exports.name = void 0;
+	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.EraserDefaults = exports.name = void 0;
 
 
 
@@ -687,11 +693,17 @@
 	    }
 	}
 	exports._toolPreview = _toolPreview;
+	function _onScroll(scrollDelta, coords, identifier) {
+	    this.toolSettings.eraserSize = Math.max(1, this.toolSettings.eraserSize - scrollDelta);
+	    this._toolPreview(coords, identifier);
+	    this._display(this._previewStroke.get(identifier));
+	}
+	exports._onScroll = _onScroll;
 	});
 
 	var line$1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.LineDefaults = exports.name = void 0;
+	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.LineDefaults = exports.name = void 0;
 
 
 
@@ -744,6 +756,12 @@
 	    }
 	}
 	exports._toolPreview = _toolPreview;
+	function _onScroll(scrollDelta, coords, identifier) {
+	    this.toolSettings.lineThickness = Math.max(1, this.toolSettings.lineThickness - scrollDelta);
+	    this._toolPreview(coords, identifier);
+	    this._display(this._previewStroke.get(identifier));
+	}
+	exports._onScroll = _onScroll;
 	});
 
 	var tools = createCommonjsModule(function (module, exports) {
@@ -818,6 +836,7 @@
 	    this._doStroke = tools.tools[this.tool]._doStroke;
 	    this._endStroke = tools.tools[this.tool]._endStroke;
 	    this._toolPreview = tools.tools[this.tool]._toolPreview;
+	    this._onScroll = tools.tools[this.tool]._onScroll;
 	    this._previewStroke.forEach(function (stroke) {
 	        stroke.forEach(function (node) {
 	            node.delete();
@@ -984,6 +1003,7 @@
 	        _this._endStroke = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._endStroke;
 	        _this._doStroke = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._doStroke;
 	        _this._toolPreview = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._toolPreview;
+	        _this._onScroll = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._onScroll;
 	        _this._getMouseCoords = _coords._getMouseCoords;
 	        _this._getTouchCoords = _coords._getTouchCoords;
 	        _this.changeToolSetting = boardManip.changeToolSetting;
@@ -1046,6 +1066,8 @@
 	            if (e.ctrlKey) {
 	                _this.scale(Math.max(_this.scaleFactor - e.deltaY * 0.001, 1));
 	            }
+	            else
+	                _this._onScroll(e.deltaY * 0.05, _this._getMouseCoords(e), 'mouse');
 	        };
 	        _this._panEventListener = function (e) {
 	            if (e.ctrlKey) {
