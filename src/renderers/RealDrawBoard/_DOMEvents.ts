@@ -5,6 +5,7 @@ export function _addDOMEvents(this: RealDrawBoard) {
   this.svg.addEventListener('mouseup', this._mouseUpEventListener);
   this.svg.addEventListener('mouseleave', this._mouseLeaveEventListener);
   this.svg.addEventListener('mousemove', this._previewMouseMoveEventListener);
+  this.svg.addEventListener('wheel', this._wheelEventListener);
 
   this.svg.addEventListener('touchstart', this._touchStartEventListener);
   this.svg.addEventListener('touchmove', this._touchMoveEventListener);
@@ -17,6 +18,7 @@ export function _removeDOMEvents(this: RealDrawBoard) {
   this.svg.removeEventListener('mouseup', this._mouseUpEventListener);
   this.svg.removeEventListener('mouseexit', this._mouseLeaveEventListener);
   this.svg.removeEventListener('mousemove', this._previewMouseMoveEventListener);
+  this.svg.removeEventListener('wheel', this._wheelEventListener);
 
   this.svg.removeEventListener('touchstart', this._touchStartEventListener);
   this.svg.removeEventListener('touchmove', this._touchMoveEventListener);

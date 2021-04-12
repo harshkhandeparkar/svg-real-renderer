@@ -214,6 +214,7 @@
 	    drawsPerFrame: 1,
 	    timeStep: 1 / 60,
 	    initTime: 0,
+	    scaleFactor: 1
 	};
 	});
 
@@ -381,6 +382,8 @@
 
 	var RealRenderer = /** @class */ (function () {
 	    function RealRenderer(options) {
+	        this._offsetX = 0;
+	        this._offsetY = 0;
 	        this.strokes = [];
 	        this._strokeIndex = -1;
 	        this.undo = undo_1.undo;
@@ -408,16 +411,21 @@
 	        }
 	        this.svg = this.settings.svg;
 	        this.dimensions = this.settings.dimensions;
+	        this.originalDimensions = [
+	            this.settings.dimensions[0],
+	            this.settings.dimensions[1]
+	        ];
 	        this.bgColor = this.settings.bgColor;
 	        this.bgType = this.settings.bgType;
 	        this.drawsPerFrame = this.settings.drawsPerFrame;
 	        this.timeStep = this.settings.timeStep;
 	        this.time = this.settings.initTime;
+	        this.scaleFactor = this.settings.scaleFactor;
 	        // *****DEFAULTS*****
 	        if (this.svg === undefined) {
 	            throw 'No SVG Element Found';
 	        }
-	        this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
+	        this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
 	        this.svg.setAttribute('preserveAspectRatio', 'none');
 	        this.svgSections = {
 	            bg: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
@@ -431,6 +439,9 @@
 	        this._display(this.strokes[this._strokeIndex]);
 	        this._doRender = false;
 	    }
+	    RealRenderer.prototype._setViewBox = function (dimensions, xOffset, yOffset) {
+	        this.svg.setAttribute('viewBox', xOffset + " " + yOffset + " " + dimensions[0] + " " + dimensions[1]);
+	    };
 	    RealRenderer.prototype._drawFunc = function (time) {
 	        return this;
 	    };
@@ -449,6 +460,18 @@
 	        for (var i = 0; i < numDraws; i++)
 	            this._draw();
 	        return this;
+	    };
+	    RealRenderer.prototype.scale = function (scaleFactor) {
+	        this.scaleFactor = scaleFactor;
+	        this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
+	        this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
+	        // To clamp the offsets as well
+	        this.changeOffsets(this._offsetX, this._offsetY);
+	    };
+	    RealRenderer.prototype.changeOffsets = function (xOffset, yOffset) {
+	        this._offsetX = clamp_1.clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
+	        this._offsetY = clamp_1.clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
+	        this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
 	    };
 	    RealRenderer.prototype._render = function () {
 	        var _this = this;
@@ -850,6 +873,7 @@
 	    this.svg.addEventListener('mouseup', this._mouseUpEventListener);
 	    this.svg.addEventListener('mouseleave', this._mouseLeaveEventListener);
 	    this.svg.addEventListener('mousemove', this._previewMouseMoveEventListener);
+	    this.svg.addEventListener('wheel', this._wheelEventListener);
 	    this.svg.addEventListener('touchstart', this._touchStartEventListener);
 	    this.svg.addEventListener('touchmove', this._touchMoveEventListener);
 	    this.svg.addEventListener('touchend', this._touchEndEventListener);
@@ -861,6 +885,7 @@
 	    this.svg.removeEventListener('mouseup', this._mouseUpEventListener);
 	    this.svg.removeEventListener('mouseexit', this._mouseLeaveEventListener);
 	    this.svg.removeEventListener('mousemove', this._previewMouseMoveEventListener);
+	    this.svg.removeEventListener('wheel', this._wheelEventListener);
 	    this.svg.removeEventListener('touchstart', this._touchStartEventListener);
 	    this.svg.removeEventListener('touchmove', this._touchMoveEventListener);
 	    this.svg.removeEventListener('touchend', this._touchEndEventListener);
@@ -875,16 +900,16 @@
 	function _getMouseCoords(e) {
 	    var xScaleFactor = this.dimensions[0] / this.svg.clientWidth;
 	    var yScaleFactor = this.dimensions[1] / this.svg.clientHeight;
-	    var x = e.offsetX * xScaleFactor;
-	    var y = e.offsetY * yScaleFactor;
+	    var x = e.offsetX * xScaleFactor + this._offsetX;
+	    var y = e.offsetY * yScaleFactor + this._offsetY;
 	    return [x, y]; // In graph coordinates
 	}
 	exports._getMouseCoords = _getMouseCoords;
 	function _getTouchCoords(touch) {
 	    var xScaleFactor = this.dimensions[0] / this.svg.clientWidth;
 	    var yScaleFactor = this.dimensions[1] / this.svg.clientHeight;
-	    var x = (touch.clientX - this.svg.getBoundingClientRect().left) * xScaleFactor;
-	    var y = (touch.clientY - this.svg.getBoundingClientRect().top) * yScaleFactor;
+	    var x = (touch.clientX - this.svg.getBoundingClientRect().left + this._offsetY) * xScaleFactor;
+	    var y = (touch.clientY - this.svg.getBoundingClientRect().top + this._offsetY) * yScaleFactor;
 	    return [x, y];
 	}
 	exports._getTouchCoords = _getTouchCoords;
@@ -969,16 +994,22 @@
 	        // --- Mouse Events ---
 	        _this._mouseDownEventListener = function (e) {
 	            if (e.button === 0 /* Left Click */) {
-	                _this.svg.addEventListener('mousemove', _this._mouseMoveEventListener);
-	                var coords = _this._getMouseCoords(e);
-	                _this._startStroke(coords, 'mouse');
-	                _this._lastCoords.set('mouse', coords);
+	                if (e.ctrlKey) {
+	                    _this.svg.addEventListener('mousemove', _this._panEventListener);
+	                }
+	                else {
+	                    _this.svg.addEventListener('mousemove', _this._mouseMoveEventListener);
+	                    var coords = _this._getMouseCoords(e);
+	                    _this._startStroke(coords, 'mouse');
+	                    _this._lastCoords.set('mouse', coords);
+	                }
 	            }
 	        };
 	        _this._mouseUpEventListener = function (e) {
 	            if (e.button === 0 /* Left Click */) {
 	                var endCoords = _this._getMouseCoords(e);
 	                _this.svg.removeEventListener('mousemove', _this._mouseMoveEventListener);
+	                _this.svg.removeEventListener('mousemove', _this._panEventListener);
 	                if (_this._lastCoords.has('mouse')) {
 	                    _this._endStroke(endCoords, 'mouse');
 	                    _this._lastCoords.delete('mouse');
@@ -1009,6 +1040,17 @@
 	                _this._display(_this._previewStroke.get('mouse'));
 	            }
 	            _this._display(_this.strokes[_this._strokeIndex]);
+	        };
+	        _this._wheelEventListener = function (e) {
+	            e.preventDefault();
+	            if (e.ctrlKey) {
+	                _this.scale(Math.max(_this.scaleFactor - e.deltaY * 0.001, 1));
+	            }
+	        };
+	        _this._panEventListener = function (e) {
+	            if (e.ctrlKey) {
+	                _this.changeOffsets(_this._offsetX - e.movementX, _this._offsetY - e.movementY);
+	            }
 	        };
 	        // --- Mouse Events ---
 	        // --- Touch Events ---

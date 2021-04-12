@@ -1,6 +1,6 @@
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
-import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport, RealRendererSettings, BGType, RealExport, SVGSections, SVGSection } from '../../types/RealRendererTypes';
+import { GraphDimensions, Color, RealRendererOptions, Stroke, StrokeExport, RealRendererSettings, BGType, RealExport, SVGSections } from '../../types/RealRendererTypes';
 export * as RealRendererTypes from '../../types/RealRendererTypes';
 
 import { RealRendererDefaults } from '../../constants/defaults/RealRendererDefaults';
@@ -19,16 +19,19 @@ export class RealRenderer {
   svg: SVGSVGElement;
   svgSections: SVGSections;
   dimensions: GraphDimensions;
+  scaleFactor: number;
+  protected _offsetX: number = 0;
+  protected _offsetY: number = 0;
+  originalDimensions: GraphDimensions;
   strokes: Stroke[] = [];
   settings: RealRendererSettings;
-  _strokeIndex: number = -1;
-  yScaleFactor: number;
+  protected _strokeIndex: number = -1;
   bgColor: Color;
   bgType: BGType;
   drawsPerFrame: number;
   timeStep: number;
   time: number;
-  _doRender: boolean;
+  protected _doRender: boolean;
 
   public undo = undo;
   public redo = redo;
@@ -67,11 +70,16 @@ export class RealRenderer {
 
     this.svg = this.settings.svg;
     this.dimensions = this.settings.dimensions;
+    this.originalDimensions = [
+      this.settings.dimensions[0],
+      this.settings.dimensions[1]
+    ]
     this.bgColor = this.settings.bgColor;
     this.bgType = this.settings.bgType;
     this.drawsPerFrame = this.settings.drawsPerFrame;
     this.timeStep = this.settings.timeStep;
     this.time = this.settings.initTime;
+    this.scaleFactor = this.settings.scaleFactor;
 
     // *****DEFAULTS*****
 
@@ -79,7 +87,7 @@ export class RealRenderer {
       throw 'No SVG Element Found';
     }
 
-    this.svg.setAttribute('viewBox', `0 0 ${this.dimensions[0]} ${this.dimensions[1]}`);
+    this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
     this.svg.setAttribute('preserveAspectRatio', 'none');
 
     this.svgSections = {
@@ -104,18 +112,22 @@ export class RealRenderer {
     this._doRender = false;
   }
 
-  _drawFunc(time: number) { // Can be overridden
+  protected _setViewBox(dimensions: GraphDimensions, xOffset: number, yOffset: number) {
+    this.svg.setAttribute('viewBox', `${xOffset} ${yOffset} ${dimensions[0]} ${dimensions[1]}`);
+  }
+
+  protected _drawFunc(time: number) { // Can be overridden
     return this;
   }
 
-  _draw() {
+  protected _draw() {
     this.time += this.timeStep;
 
     this._drawFunc(this.time);
     return this;
   }
 
-  _addStroke(stroke: Stroke) {
+  protected _addStroke(stroke: Stroke) {
     if (this.strokes.length > this._strokeIndex + 1) this.strokes.splice(this._strokeIndex + 1, this.strokes.length - this._strokeIndex);
     this.strokes[++this._strokeIndex] = stroke;
   }
@@ -125,7 +137,22 @@ export class RealRenderer {
     return this;
   }
 
-  _render() {
+  scale(scaleFactor: number) {
+    this.scaleFactor = scaleFactor;
+    this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
+    this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
+
+    // To clamp the offsets as well
+    this.changeOffsets(this._offsetX, this._offsetY);
+  }
+
+  changeOffsets(xOffset: number, yOffset: number) {
+    this._offsetX = clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
+    this._offsetY = clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
+    this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
+  }
+
+  protected _render() {
     if (this._doRender) {
       this.draw(this.drawsPerFrame);
       this._display(this.strokes[this._strokeIndex]);

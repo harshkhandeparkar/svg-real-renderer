@@ -12,4 +12,5 @@ export const RealRendererDefaults: IRealRendererOptionals = {
   drawsPerFrame: 1,
   timeStep: 1 / 60,
   initTime: 0,
+  scaleFactor: 1
 }

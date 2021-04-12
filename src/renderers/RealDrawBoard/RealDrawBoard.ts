@@ -75,24 +75,30 @@ export class RealDrawBoard extends RealRenderer {
   // --- DOM Event Listeners ---
 
   // --- Mouse Events ---
-  _mouseDownEventListener = (e: MouseEvent) => {
+  protected _mouseDownEventListener = (e: MouseEvent) => {
     if (e.button === 0 /* Left Click */) {
-      this.svg.addEventListener('mousemove', this._mouseMoveEventListener);
+      if (e.ctrlKey) {
+        this.svg.addEventListener('mousemove', this._panEventListener);
+      }
+      else {
+        this.svg.addEventListener('mousemove', this._mouseMoveEventListener);
 
-      const coords = this._getMouseCoords(e);
+        const coords = this._getMouseCoords(e);
 
-      this._startStroke(
-        coords,
-        'mouse'
-      )
-      this._lastCoords.set('mouse', coords);
+        this._startStroke(
+          coords,
+          'mouse'
+        )
+        this._lastCoords.set('mouse', coords);
+      }
     }
   }
 
-  _mouseUpEventListener = (e: MouseEvent) => {
+  protected _mouseUpEventListener = (e: MouseEvent) => {
     if (e.button === 0 /* Left Click */) {
       const endCoords = this._getMouseCoords(e);
       this.svg.removeEventListener('mousemove', this._mouseMoveEventListener);
+      this.svg.removeEventListener('mousemove', this._panEventListener);
 
       if(this._lastCoords.has('mouse')) {
         this._endStroke(endCoords, 'mouse');
@@ -103,7 +109,7 @@ export class RealDrawBoard extends RealRenderer {
     }
   }
 
-  _mouseLeaveEventListener = (e: MouseEvent) => {
+  protected _mouseLeaveEventListener = (e: MouseEvent) => {
     this.svg.removeEventListener('mousemove', this._mouseMoveEventListener);
 
     if(this._lastCoords.has('mouse')) {
@@ -115,13 +121,13 @@ export class RealDrawBoard extends RealRenderer {
     this.clearPreview();
   }
 
-  _mouseMoveEventListener = (e: MouseEvent) => {
+  protected _mouseMoveEventListener = (e: MouseEvent) => {
     const coords = this._getMouseCoords(e);
     this._doStroke(coords, 'mouse');
     this._lastCoords.set('mouse', coords);
   }
 
-  _previewMouseMoveEventListener = (e: MouseEvent) => {
+  protected _previewMouseMoveEventListener = (e: MouseEvent) => {
     const coords = this._getMouseCoords(e);
 
     if (this._doPreview) {
@@ -133,10 +139,24 @@ export class RealDrawBoard extends RealRenderer {
 
     this._display(this.strokes[this._strokeIndex]);
   }
+
+  protected _wheelEventListener = (e: WheelEvent) => {
+    e.preventDefault();
+
+    if (e.ctrlKey) {
+      this.scale(Math.max(this.scaleFactor - e.deltaY * 0.001, 1));
+    }
+  }
+
+  protected _panEventListener = (e: MouseEvent) => {
+    if (e.ctrlKey) {
+      this.changeOffsets(this._offsetX - e.movementX, this._offsetY - e.movementY);
+    }
+  }
   // --- Mouse Events ---
 
   // --- Touch Events ---
-  _touchStartEventListener = (e: TouchEvent) => {
+  protected _touchStartEventListener = (e: TouchEvent) => {
     e.preventDefault();
 
     for (let i = 0; i < e.touches.length; i++) {
@@ -154,7 +174,7 @@ export class RealDrawBoard extends RealRenderer {
     }
   }
 
-  _touchEndEventListener = (e: TouchEvent) => {
+  protected _touchEndEventListener = (e: TouchEvent) => {
     for (let i = 0; i < e.changedTouches.length; i++) {
       const coords = this._getTouchCoords(e.changedTouches.item(i));
       const identifier = e.changedTouches.item(i).identifier.toString();
@@ -171,7 +191,7 @@ export class RealDrawBoard extends RealRenderer {
     this.clearPreview();
   }
 
-  _touchMoveEventListener = (e: TouchEvent) => {
+  protected _touchMoveEventListener = (e: TouchEvent) => {
     for (let i = 0; i < e.touches.length; i++) {
       const coords = this._getTouchCoords(e.touches.item(i));
       this._doStroke(
@@ -182,7 +202,7 @@ export class RealDrawBoard extends RealRenderer {
     }
   }
 
-  _previewTouchMoveEventListener = (e: TouchEvent) => {
+  protected _previewTouchMoveEventListener = (e: TouchEvent) => {
     for (let i = 0; i < e.touches.length; i++) {
       const coords = this._getTouchCoords(e.touches.item(i));
       const identifier = e.touches.item(i).identifier.toString();

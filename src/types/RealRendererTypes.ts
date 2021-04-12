@@ -61,6 +61,7 @@ export interface IRealRendererOptionals {
   drawsPerFrame: number;
   timeStep: number;
   initTime: number;
+  scaleFactor: number;
 }
 
 export interface IRealRendererNonOptionals {
