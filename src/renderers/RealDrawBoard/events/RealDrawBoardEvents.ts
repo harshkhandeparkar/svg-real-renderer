@@ -6,9 +6,13 @@ export interface RealDrawBoardEvents {
     settingName: keyof ToolSettings,
     newValue: ToolSettings[keyof ToolSettings]
   };
+  'board-cleared': {};
+  'board-reset': {};
 }
 
 export const RealDrawBoardEventList: (keyof RealDrawBoardEvents)[] = [
   'tool-change',
-  'tool-setting-change'
+  'tool-setting-change',
+  'board-cleared',
+  'board-reset'
 ]

@@ -68,6 +68,7 @@ export function clear(this: RealDrawBoard) {
   ]
   this._display(this.strokes[this._strokeIndex]);
 
+  this.emit('board-cleared', {});
   return this;
 }
 
@@ -82,4 +83,8 @@ export function _resetBoard(this: RealDrawBoard) {
   this._lastCoords.clear();
 
   this.stopRender();
+
+  this.emit('board-reset', {});
+
+  return this;
 }
