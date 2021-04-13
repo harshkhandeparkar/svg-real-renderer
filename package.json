@@ -1,6 +1,6 @@
 {
   "name": "svg-real-renderer",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "A Real Time 2D Graphical Rendering Engine Made With SVG",
   "main": "build/index.js",
   "typings": "build/index.d.ts",
