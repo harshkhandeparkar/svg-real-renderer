@@ -1,4 +1,5 @@
 import { EventEmitter } from './events/eventEmitter';
+import { IRealRendererEvents, RealRendererEventList } from './events/RealRendererEvents';
 
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
@@ -17,7 +18,7 @@ import { Polygon } from './strokeNodes/_polygon';
 
 import { clamp } from '../../util/clamp';
 
-export class RealRenderer<EventTypes> extends EventEmitter<EventTypes> {
+export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRendererEvents> extends EventEmitter<EventTypes> {
   svg: SVGSVGElement;
   svgSections: SVGSections;
   dimensions: GraphDimensions;
@@ -38,7 +39,10 @@ export class RealRenderer<EventTypes> extends EventEmitter<EventTypes> {
   public undo = undo;
   public redo = redo;
 
-  constructor(options: RealRendererOptions, eventList?: (keyof EventTypes)[]) {
+  constructor(
+    options: RealRendererOptions,
+    eventList: (keyof EventTypes)[] = RealRendererEventList
+  ) {
     super(eventList);
 
     // *****DEFAULTS*****

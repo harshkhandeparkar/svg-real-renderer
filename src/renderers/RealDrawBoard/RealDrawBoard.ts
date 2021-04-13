@@ -1,5 +1,5 @@
 import { RealRenderer } from '../RealRenderer/RealRenderer';
-import { RealDrawBoardEvents, RealDrawBoardEventList } from './events/RealDrawBoardEvents';
+import { IRealDrawBoardEvents, RealDrawBoardEventList } from './events/RealDrawBoardEvents';
 
 import { RealDrawBoardOptions, RealDrawBoardSettings } from '../../types/RealDrawBoardTypes';
 import { RealDrawBoardDefaults } from '../../constants/defaults/RealDrawBoardDefaults';
@@ -27,7 +27,7 @@ import {
 import { tools, Tool, ToolSettings, ToolDefaults } from './tools/tools';
 import { Coordinate, Stroke } from '../../types/RealRendererTypes';
 
-export class RealDrawBoard extends RealRenderer<RealDrawBoardEvents> {
+export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
   settings: RealDrawBoardSettings;
   tool: Tool = RealDrawBoardDefaults.tool;
   toolSettings: ToolSettings;

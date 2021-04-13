@@ -1,6 +1,7 @@
+import { IRealRendererEvents, RealRendererEventList } from '../../RealRenderer/events/RealRendererEvents';
 import { Tool, ToolSettings } from '../tools/tools';
 
-export interface RealDrawBoardEvents {
+export interface IRealDrawBoardEvents extends IRealRendererEvents {
   'tool-change': {newTool: Tool};
   'tool-setting-change': {
     settingName: keyof ToolSettings,
@@ -10,7 +11,8 @@ export interface RealDrawBoardEvents {
   'board-reset': {};
 }
 
-export const RealDrawBoardEventList: (keyof RealDrawBoardEvents)[] = [
+export const RealDrawBoardEventList: (keyof IRealDrawBoardEvents)[] = [
+  ...RealRendererEventList,
   'tool-change',
   'tool-setting-change',
   'board-cleared',

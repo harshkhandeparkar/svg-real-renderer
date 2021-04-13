@@ -52,6 +52,14 @@
 	exports.EventEmitter = EventEmitter;
 	});
 
+	var RealRendererEvents = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.RealRendererEventList = void 0;
+	exports.RealRendererEventList = [
+	    'start-render'
+	];
+	});
+
 	var getRGBColorString_1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.getRGBColorString = void 0;
@@ -413,6 +421,7 @@
 	exports.RealRenderer = exports.RealRendererTypes = void 0;
 
 
+
 	exports.RealRendererTypes = RealRendererTypes;
 
 	__exportStar(RealRendererDefaults, exports);
@@ -425,6 +434,7 @@
 	var RealRenderer = /** @class */ (function (_super) {
 	    __extends(RealRenderer, _super);
 	    function RealRenderer(options, eventList) {
+	        if (eventList === void 0) { eventList = RealRendererEvents.RealRendererEventList; }
 	        var _this = _super.call(this, eventList) || this;
 	        _this._offsetX = 0;
 	        _this._offsetY = 0;
@@ -614,12 +624,22 @@
 	});
 
 	var RealDrawBoardEvents = createCommonjsModule(function (module, exports) {
+	var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || function () {
+	    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+	    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+	        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+	            r[k] = a[j];
+	    return r;
+	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.RealDrawBoardEventList = void 0;
-	exports.RealDrawBoardEventList = [
+
+	exports.RealDrawBoardEventList = __spreadArrays(RealRendererEvents.RealRendererEventList, [
 	    'tool-change',
-	    'tool-setting-change'
-	];
+	    'tool-setting-change',
+	    'board-cleared',
+	    'board-reset'
+	]);
 	});
 
 	var circle = createCommonjsModule(function (module, exports) {
@@ -932,6 +952,7 @@
 	        blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType)
 	    ];
 	    this._display(this.strokes[this._strokeIndex]);
+	    this.emit('board-cleared', {});
 	    return this;
 	}
 	exports.clear = clear;
@@ -941,6 +962,8 @@
 	    this.toolSettings = __assign(__assign({}, tools.ToolDefaults), this.settings.toolSettings);
 	    this._lastCoords.clear();
 	    this.stopRender();
+	    this.emit('board-reset', {});
+	    return this;
 	}
 	exports._resetBoard = _resetBoard;
 	});
@@ -1224,9 +1247,11 @@
 
 	var build = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.renderPreview = exports.RealDrawBoard = void 0;
+	exports.renderPreview = exports.RealRenderer = exports.RealDrawBoard = void 0;
 
 	Object.defineProperty(exports, "RealDrawBoard", { enumerable: true, get: function () { return RealDrawBoard_1.RealDrawBoard; } });
+
+	Object.defineProperty(exports, "RealRenderer", { enumerable: true, get: function () { return RealRenderer_1.RealRenderer; } });
 
 	Object.defineProperty(exports, "renderPreview", { enumerable: true, get: function () { return renderPreview_1.renderPreview; } });
 	});
