@@ -6,6 +6,8 @@ import { getCircleNode } from '../../../pathMakers/circle';
 import { getLinePathCommand } from '../../../pathMakers/line';
 import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 
+import { getRadiusFromThickness } from './util/getRadiusFromThickness';
+
 export const name = 'brush';
 
 export interface IBrushSettings {
@@ -35,7 +37,7 @@ export function _startStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.brushSize / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.brushSize),
       this.toolSettings.brushColor,
       'strokes'
     )
@@ -50,7 +52,7 @@ export function _endStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       endCoords,
-      this.toolSettings.brushSize / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.brushSize),
       this.toolSettings.brushColor,
       'strokes'
     )
@@ -67,7 +69,7 @@ export function _doStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.brushSize / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.brushSize),
       this.toolSettings.brushColor,
       'strokes'
     )
@@ -86,10 +88,12 @@ export function _toolPreview(
   coords: Coordinate,
   identifier: string
 ) {
+  if (!this._previewStroke.has(identifier)) this._previewStroke.set(identifier, []);
+
   if (this._previewStroke.get(identifier).length == 0) {
     const circleNode = getCircleNode(
       coords,
-      this.toolSettings.brushSize / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.brushSize),
       this.toolSettings.brushColor,
       'overlay'
     )
@@ -100,9 +104,9 @@ export function _toolPreview(
     this._previewStroke.get(identifier).push(circleNode);
   }
   else {
-    const circleNode = <Circle>this._previewStroke.get(identifier)[0]
+    const circleNode = <Circle>this._previewStroke.get(identifier)[0];
     circleNode.updateCenter(coords);
-    circleNode.updateRadius(this.toolSettings.brushSize / 2 - 0.5);
+    circleNode.updateRadius(getRadiusFromThickness(this.toolSettings.brushSize));
     circleNode.setFill(getRGBColorString(this.toolSettings.brushColor));
     circleNode.setStroke(getRGBColorString(this.toolSettings.brushColor));
   }
@@ -115,6 +119,11 @@ export function _onScroll(
   identifier: string
 ) {
   this.changeToolSetting('brushSize', Math.max(1, this.toolSettings.brushSize - scrollDelta));
+
+  if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
+    (this._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.toolSettings.brushSize));
+    this._display(this._previewStroke.get(identifier));
+  }
+
   this._toolPreview(coords, identifier);
-  this._display(this._previewStroke.get(identifier));
 }

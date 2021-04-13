@@ -55,13 +55,6 @@ export function _toolPreview(
   coords: Coordinate,
   identifier: string
 ) {
-  // return <Texture>this._previewPlot(
-  //   this.graphPixels,
-  //   coords[0],
-  //   coords[1],
-  //   this.toolSettings.brushSize,
-  //   gradientColors
-  // )
 }
 
 export function _onScroll(
@@ -71,7 +64,6 @@ export function _onScroll(
   identifier: string
 ) {
   this.changeToolSetting('brushSize', Math.max(1, this.toolSettings.brushSize - scrollDelta));
-  this._toolPreview(coords, identifier);
   this._display(this._previewStroke.get(identifier));
 }
 

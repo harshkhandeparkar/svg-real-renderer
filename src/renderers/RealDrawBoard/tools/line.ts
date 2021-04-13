@@ -6,6 +6,8 @@ import { Path } from '../../RealRenderer/strokeNodes/_path';
 import { getLinePathCommand } from '../../../pathMakers/line';
 import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 
+import { getRadiusFromThickness } from './util/getRadiusFromThickness';
+
 export const name = 'line';
 
 export interface ILineSettings {
@@ -41,7 +43,7 @@ export function _startStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.lineThickness / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.lineThickness),
       this.toolSettings.lineColor,
       'strokes'
     )
@@ -50,7 +52,7 @@ export function _startStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.lineThickness / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.lineThickness),
       this.toolSettings.lineColor,
       'strokes'
     )
@@ -100,7 +102,7 @@ export function _toolPreview(
   if (this._previewStroke.get(identifier).length == 0) {
     const circleNode = getCircleNode(
       coords,
-      this.toolSettings.lineThickness / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.lineThickness),
       this.toolSettings.lineColor,
       'overlay'
     )
@@ -113,7 +115,7 @@ export function _toolPreview(
   else {
     const circleNode = <Circle>this._previewStroke.get(identifier)[0]
     circleNode.updateCenter(coords);
-    circleNode.updateRadius(this.toolSettings.lineThickness / 2 - 0.5);
+    circleNode.updateRadius(getRadiusFromThickness(this.toolSettings.lineThickness));
     circleNode.setFill(getRGBColorString(this.toolSettings.lineColor));
     circleNode.setStroke(getRGBColorString(this.toolSettings.lineColor));
   }
@@ -126,7 +128,5 @@ export function _onScroll(
   identifier: string
 ) {
   this.changeToolSetting('lineThickness', Math.max(1, this.toolSettings.lineThickness - scrollDelta));
-  this._toolPreview(coords, identifier);
-  this._display(this._previewStroke.get(identifier));
 }
 

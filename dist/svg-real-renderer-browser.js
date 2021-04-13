@@ -689,9 +689,16 @@
 	exports.getLinePathCommand = getLinePathCommand;
 	});
 
+	var getRadiusFromThickness = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.getRadiusFromThickness = void 0;
+	exports.getRadiusFromThickness = function (thickness) { return thickness / 2 - 0.5; };
+	});
+
 	var brush = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.BrushDefaults = exports.name = void 0;
+
 
 
 
@@ -707,22 +714,24 @@
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	    brushPath.setStrokeWidth(this.toolSettings.brushSize);
 	    this._addStroke([brushPath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor, 'strokes'));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor, 'strokes'));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
 	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor, 'strokes'));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
 	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
+	    if (!this._previewStroke.has(identifier))
+	        this._previewStroke.set(identifier, []);
 	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, this.toolSettings.brushSize / 2 - 0.5, this.toolSettings.brushColor, 'overlay');
+	        var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'overlay');
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        this._previewStroke.get(identifier).push(circleNode);
@@ -730,7 +739,7 @@
 	    else {
 	        var circleNode = this._previewStroke.get(identifier)[0];
 	        circleNode.updateCenter(coords);
-	        circleNode.updateRadius(this.toolSettings.brushSize / 2 - 0.5);
+	        circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize));
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	    }
@@ -738,8 +747,11 @@
 	exports._toolPreview = _toolPreview;
 	function _onScroll(scrollDelta, coords, identifier) {
 	    this.changeToolSetting('brushSize', Math.max(1, this.toolSettings.brushSize - scrollDelta));
+	    if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
+	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize));
+	        this._display(this._previewStroke.get(identifier));
+	    }
 	    this._toolPreview(coords, identifier);
-	    this._display(this._previewStroke.get(identifier));
 	}
 	exports._onScroll = _onScroll;
 	});
@@ -747,6 +759,7 @@
 	var eraser = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.EraserDefaults = exports.name = void 0;
+
 
 
 
@@ -760,22 +773,22 @@
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
 	    brushPath.setStrokeWidth(this.toolSettings.eraserSize);
 	    this._addStroke([brushPath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor, 'strokes'));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor, 'strokes'));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
 	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor, 'strokes'));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
 	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
 	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, this.toolSettings.eraserSize / 2 - 0.5, this.bgColor, 'overlay');
+	        var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'overlay');
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.bgColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
 	        circleNode.setDashed(getRGBColorString_1.getRGBColorString(this.bgColor.map(function (c) { return 1 - c; })));
@@ -784,14 +797,16 @@
 	    else {
 	        var circleNode = this._previewStroke.get(identifier)[0];
 	        circleNode.updateCenter(coords);
-	        circleNode.updateRadius(this.toolSettings.eraserSize / 2 - 0.5);
+	        circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize));
 	    }
 	}
 	exports._toolPreview = _toolPreview;
 	function _onScroll(scrollDelta, coords, identifier) {
 	    this.changeToolSetting('eraserSize', Math.max(1, this.toolSettings.eraserSize - scrollDelta));
-	    this._toolPreview(coords, identifier);
-	    this._display(this._previewStroke.get(identifier));
+	    if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
+	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize));
+	        this._display(this._previewStroke.get(identifier));
+	    }
 	}
 	exports._onScroll = _onScroll;
 	});
@@ -799,6 +814,7 @@
 	var line$1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.LineDefaults = exports.name = void 0;
+
 
 
 
@@ -818,8 +834,8 @@
 	    linePath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	    linePath.setStrokeWidth(this.toolSettings.lineThickness);
 	    this._addStroke([linePath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.lineColor, 'strokes'));
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.lineColor, 'strokes'));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'strokes'));
+	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'strokes'));
 	    _startCoords.set(identifier, coords);
 	}
 	exports._startStroke = _startStroke;
@@ -837,7 +853,7 @@
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
 	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, this.toolSettings.lineThickness / 2 - 0.5, this.toolSettings.lineColor, 'overlay');
+	        var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'overlay');
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	        this._previewStroke.get(identifier).push(circleNode);
@@ -845,7 +861,7 @@
 	    else {
 	        var circleNode = this._previewStroke.get(identifier)[0];
 	        circleNode.updateCenter(coords);
-	        circleNode.updateRadius(this.toolSettings.lineThickness / 2 - 0.5);
+	        circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness));
 	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	    }
@@ -853,8 +869,6 @@
 	exports._toolPreview = _toolPreview;
 	function _onScroll(scrollDelta, coords, identifier) {
 	    this.changeToolSetting('lineThickness', Math.max(1, this.toolSettings.lineThickness - scrollDelta));
-	    this._toolPreview(coords, identifier);
-	    this._display(this._previewStroke.get(identifier));
 	}
 	exports._onScroll = _onScroll;
 	});

@@ -5,6 +5,7 @@ import { getRGBColorString } from '../../../util/getRGBColorString';
 import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 import { Path } from '../../RealRenderer/strokeNodes/_path';
 import { RealDrawBoard } from '../RealDrawBoard';
+import { getRadiusFromThickness } from './util/getRadiusFromThickness';
 
 export const name = 'eraser';
 
@@ -31,7 +32,7 @@ export function _startStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.eraserSize / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.eraserSize),
       this.bgColor,
       'strokes'
     )
@@ -46,7 +47,7 @@ export function _endStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       endCoords,
-      this.toolSettings.eraserSize / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.eraserSize),
       this.bgColor,
       'strokes'
     )
@@ -63,7 +64,7 @@ export function _doStroke(
   this.strokes[this._strokeIndex].push(
     getCircleNode(
       coords,
-      this.toolSettings.eraserSize / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.eraserSize),
       this.bgColor,
       'strokes'
     )
@@ -85,7 +86,7 @@ export function _toolPreview(
   if (this._previewStroke.get(identifier).length == 0) {
     const circleNode = getCircleNode(
       coords,
-      this.toolSettings.eraserSize / 2 - 0.5,
+      getRadiusFromThickness(this.toolSettings.eraserSize),
       this.bgColor,
       'overlay'
     )
@@ -99,7 +100,7 @@ export function _toolPreview(
   else {
     const circleNode = <Circle>this._previewStroke.get(identifier)[0]
     circleNode.updateCenter(coords);
-    circleNode.updateRadius(this.toolSettings.eraserSize / 2 - 0.5);
+    circleNode.updateRadius(getRadiusFromThickness(this.toolSettings.eraserSize));
   }
 }
 
@@ -110,7 +111,10 @@ export function _onScroll(
   identifier: string
 ) {
   this.changeToolSetting('eraserSize', Math.max(1, this.toolSettings.eraserSize - scrollDelta));
-  this._toolPreview(coords, identifier);
-  this._display(this._previewStroke.get(identifier));
+
+  if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
+    (this._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.toolSettings.brushSize));
+    this._display(this._previewStroke.get(identifier));
+  }
 }
 
