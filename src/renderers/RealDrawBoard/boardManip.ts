@@ -57,24 +57,27 @@ export function clearPreview(this: RealDrawBoard) {
 }
 
 export function clear(this: RealDrawBoard) {
-  this._strokeIndex = 0;
-  this._lastCoords.clear();
+  if (this._strokeIndex > 0) {
+    this._strokeIndex = 0;
+    this._lastCoords.clear();
 
-  this.strokes.forEach((stroke) => {
-    stroke.forEach((strokeNode) => strokeNode.delete());
-  })
+    this.strokes.forEach((stroke) => {
+      stroke.forEach((strokeNode) => strokeNode.delete());
+    })
 
-  this.strokes = [
-    getBlankGraphPaths(
-      this.dimensions,
-      this.bgColor,
-      this.bgType
-    )
-  ]
-  this._display(this.strokes[this._strokeIndex]);
+    this.strokes = [
+      getBlankGraphPaths(
+        this.dimensions,
+        this.bgColor,
+        this.bgType
+      )
+    ]
+    this._display(this.strokes[this._strokeIndex]);
 
-  this.emit('board-cleared', {});
+    this.emit('board-cleared', {});
+  }
   return this;
+
 }
 
 export function _resetBoard(this: RealDrawBoard) {
