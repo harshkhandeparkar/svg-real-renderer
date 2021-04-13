@@ -57,7 +57,9 @@
 	exports.RealRendererEventList = void 0;
 	exports.RealRendererEventList = [
 	    'start-render',
-	    'stop-render'
+	    'stop-render',
+	    'change-scale',
+	    'change-offsets'
 	];
 	});
 

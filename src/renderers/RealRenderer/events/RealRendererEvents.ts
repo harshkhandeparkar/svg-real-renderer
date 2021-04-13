@@ -19,5 +19,7 @@ export interface IRealRendererEvents {
 
 export const RealRendererEventList: (keyof IRealRendererEvents)[] = [
   'start-render',
-  'stop-render'
+  'stop-render',
+  'change-scale',
+  'change-offsets'
 ]
