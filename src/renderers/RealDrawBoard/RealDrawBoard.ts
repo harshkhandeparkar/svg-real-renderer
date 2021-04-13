@@ -1,4 +1,5 @@
 import { RealRenderer } from '../RealRenderer/RealRenderer';
+import { RealDrawBoardEvents, RealDrawBoardEventList } from './events/RealDrawBoardEvents';
 
 import { RealDrawBoardOptions, RealDrawBoardSettings } from '../../types/RealDrawBoardTypes';
 import { RealDrawBoardDefaults } from '../../constants/defaults/RealDrawBoardDefaults';
@@ -26,7 +27,7 @@ import {
 import { tools, Tool, ToolSettings, ToolDefaults } from './tools/tools';
 import { Coordinate, Stroke } from '../../types/RealRendererTypes';
 
-export class RealDrawBoard extends RealRenderer {
+export class RealDrawBoard extends RealRenderer<RealDrawBoardEvents> {
   settings: RealDrawBoardSettings;
   tool: Tool = RealDrawBoardDefaults.tool;
   toolSettings: ToolSettings;
@@ -58,7 +59,7 @@ export class RealDrawBoard extends RealRenderer {
 
   constructor(options: RealDrawBoardOptions) {
     // *****DEFAULTS*****
-    super(options);
+    super(options, RealDrawBoardEventList);
 
     this.settings = {
       ...RealDrawBoardDefaults,
