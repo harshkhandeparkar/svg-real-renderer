@@ -146,18 +146,36 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
   }
 
   scale(scaleFactor: number) {
+    const oldScaleFactor = this.scaleFactor;
     this.scaleFactor = scaleFactor;
     this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
     this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
 
     // To clamp the offsets as well
     this.changeOffsets(this._offsetX, this._offsetY);
+
+    this.emit('change-scale', {
+      oldScaleFactor,
+      newScaleFactor: this.scaleFactor
+    })
   }
 
   changeOffsets(xOffset: number, yOffset: number) {
+    const oldOffsets = {
+      x: this._offsetX,
+      y: this._offsetY
+    }
     this._offsetX = clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
     this._offsetY = clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
     this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
+
+    this.emit('change-offsets', {
+      oldOffsets,
+      newOffsets: {
+        x: this._offsetX,
+        y: this._offsetY
+      }
+    })
   }
 
   protected _render() {
@@ -179,12 +197,14 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     if (!this._doRender) {
       this._doRender = true;
       this._render();
-      return this;
+      this.emit('start-render', {});
     }
+    return this;
   }
 
   stopRender() {
     this._doRender = false;
+    this.emit('stop-render', {});
     return this;
   }
 
