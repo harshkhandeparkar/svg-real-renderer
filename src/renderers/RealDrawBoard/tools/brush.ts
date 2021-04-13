@@ -114,7 +114,7 @@ export function _onScroll(
   coords: Coordinate,
   identifier: string
 ) {
-  this.toolSettings.brushSize = Math.max(1, this.toolSettings.brushSize - scrollDelta);
+  this.changeToolSetting('brushSize', Math.max(1, this.toolSettings.brushSize - scrollDelta));
   this._toolPreview(coords, identifier);
   this._display(this._previewStroke.get(identifier));
 }

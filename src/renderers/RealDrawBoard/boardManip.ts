@@ -18,15 +18,23 @@ export function changeTool(this: RealDrawBoard, newTool: Tool) {
 
   this._previewStroke.clear();
 
+  this.emit('tool-change', {
+    newTool
+  })
+
   return this;
 }
 
-export function changeToolSetting(
+export function changeToolSetting<SettingName extends keyof ToolSettings>(
   this: RealDrawBoard,
-  settingName: keyof ToolSettings,
-  value: any
+  settingName: SettingName,
+  value: ToolSettings[SettingName]
 ) {
   this.toolSettings[settingName] = value;
+  this.emit('tool-setting-change', {
+    settingName: settingName,
+    newValue: value
+  })
 
   return this;
 }

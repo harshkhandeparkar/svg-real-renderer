@@ -109,7 +109,7 @@ export function _onScroll(
   coords: Coordinate,
   identifier: string
 ) {
-  this.toolSettings.eraserSize = Math.max(1, this.toolSettings.eraserSize - scrollDelta);
+  this.changeToolSetting('eraserSize', Math.max(1, this.toolSettings.eraserSize - scrollDelta));
   this._toolPreview(coords, identifier);
   this._display(this._previewStroke.get(identifier));
 }

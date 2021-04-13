@@ -125,7 +125,7 @@ export function _onScroll(
   coords: Coordinate,
   identifier: string
 ) {
-  this.toolSettings.lineThickness = Math.max(1, this.toolSettings.lineThickness - scrollDelta);
+  this.changeToolSetting('lineThickness', Math.max(1, this.toolSettings.lineThickness - scrollDelta));
   this._toolPreview(coords, identifier);
   this._display(this._previewStroke.get(identifier));
 }
