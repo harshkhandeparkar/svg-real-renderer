@@ -1,7 +1,7 @@
 export class EventEmitter<Events> {
   eventHandlers: {
-    [Event in keyof Events]: Map<string, (params: Events[Event]) => void>
-  }
+    [Event in keyof Events]?: Map<string, (params: Events[Event]) => void>
+  } = {}
 
   constructor (eventList: (keyof Events)[]) {
     eventList.forEach((event) => {
@@ -14,6 +14,7 @@ export class EventEmitter<Events> {
     handlerName: string,
     handler: (params: Events[Event]) => void
   ) {
+
     if (!this.eventHandlers[eventName].has(handlerName)) this.eventHandlers[eventName].set(handlerName, handler);
   }
 

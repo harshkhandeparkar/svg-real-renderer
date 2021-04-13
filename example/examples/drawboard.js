@@ -70,6 +70,11 @@ eraserSizeRange.addEventListener('input', e => {
   DrawBoard.changeToolSetting('eraserSize', Number(eraserSizeRange.value))
 })
 
+DrawBoard.on('tool-setting-change', 'tool-setting-change-handler', ({settingName, newValue}) => {
+  if (settingName === 'brushSize') brushSizeRange.value = newValue;
+  else if (settingName === 'eraserSize') eraserSizeRange.value = newValue;
+})
+
 document.querySelector('#draw-undo').addEventListener('click', e => {
   e.preventDefault();
   DrawBoard.undo();

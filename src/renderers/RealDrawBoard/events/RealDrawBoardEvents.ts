@@ -5,7 +5,7 @@ export interface RealDrawBoardEvents {
   'tool-setting-change': {
     settingName: keyof ToolSettings,
     newValue: ToolSettings[keyof ToolSettings]
-  }
+  };
 }
 
 export const RealDrawBoardEventList: (keyof RealDrawBoardEvents)[] = [

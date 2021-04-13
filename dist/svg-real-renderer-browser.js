@@ -24,6 +24,34 @@
 		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
 	}
 
+	var eventEmitter = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.EventEmitter = void 0;
+	var EventEmitter = /** @class */ (function () {
+	    function EventEmitter(eventList) {
+	        var _this = this;
+	        this.eventHandlers = {};
+	        eventList.forEach(function (event) {
+	            _this.eventHandlers[event] = new Map();
+	        });
+	    }
+	    EventEmitter.prototype.on = function (eventName, handlerName, handler) {
+	        if (!this.eventHandlers[eventName].has(handlerName))
+	            this.eventHandlers[eventName].set(handlerName, handler);
+	    };
+	    EventEmitter.prototype.off = function (eventName, handlerName) {
+	        this.eventHandlers[eventName].delete(handlerName);
+	    };
+	    EventEmitter.prototype.emit = function (eventName, parameters) {
+	        this.eventHandlers[eventName].forEach(function (handler) {
+	            handler(parameters);
+	        });
+	    };
+	    return EventEmitter;
+	}());
+	exports.EventEmitter = EventEmitter;
+	});
+
 	var getRGBColorString_1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.getRGBColorString = void 0;
@@ -347,6 +375,19 @@
 	});
 
 	var RealRenderer_1 = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
 	    __assign = Object.assign || function(t) {
 	        for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -371,6 +412,7 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.RealRenderer = exports.RealRendererTypes = void 0;
 
+
 	exports.RealRendererTypes = RealRendererTypes;
 
 	__exportStar(RealRendererDefaults, exports);
@@ -380,64 +422,67 @@
 
 
 
-	var RealRenderer = /** @class */ (function () {
-	    function RealRenderer(options) {
-	        this._offsetX = 0;
-	        this._offsetY = 0;
-	        this.strokes = [];
-	        this._strokeIndex = -1;
-	        this.undo = undo_1.undo;
-	        this.redo = undo_1.redo;
+	var RealRenderer = /** @class */ (function (_super) {
+	    __extends(RealRenderer, _super);
+	    function RealRenderer(options, eventList) {
+	        var _this = _super.call(this, eventList) || this;
+	        _this._offsetX = 0;
+	        _this._offsetY = 0;
+	        _this.strokes = [];
+	        _this._strokeIndex = -1;
+	        _this.undo = undo_1.undo;
+	        _this.redo = undo_1.redo;
 	        // *****DEFAULTS*****
-	        this.settings = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), options);
-	        switch (this.settings.bgType.type) {
+	        _this.settings = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), options);
+	        switch (_this.settings.bgType.type) {
 	            case 'axes':
-	                this.settings.bgType.xOffset = clamp_1.clamp(this.settings.bgType.xOffset, 0, 100); // %age
-	                this.settings.bgType.yOffset = clamp_1.clamp(this.settings.bgType.yOffset, 0, 100); // %age
+	                _this.settings.bgType.xOffset = clamp_1.clamp(_this.settings.bgType.xOffset, 0, 100); // %age
+	                _this.settings.bgType.yOffset = clamp_1.clamp(_this.settings.bgType.yOffset, 0, 100); // %age
 	                break;
 	            case 'grid':
-	                this.settings.bgType.xSpacing = clamp_1.clamp(this.settings.bgType.xSpacing, 0, 100); // %age
-	                this.settings.bgType.ySpacing = clamp_1.clamp(this.settings.bgType.ySpacing, 0, 100); // %age
-	                if (this.settings.bgType.xSpacing === 0)
-	                    this.settings.bgType.xSpacing = 1;
-	                if (this.settings.bgType.ySpacing === 0)
-	                    this.settings.bgType.ySpacing = 1;
+	                _this.settings.bgType.xSpacing = clamp_1.clamp(_this.settings.bgType.xSpacing, 0, 100); // %age
+	                _this.settings.bgType.ySpacing = clamp_1.clamp(_this.settings.bgType.ySpacing, 0, 100); // %age
+	                if (_this.settings.bgType.xSpacing === 0)
+	                    _this.settings.bgType.xSpacing = 1;
+	                if (_this.settings.bgType.ySpacing === 0)
+	                    _this.settings.bgType.ySpacing = 1;
 	                break;
 	            case 'ruled':
-	                this.settings.bgType.spacing = clamp_1.clamp(this.settings.bgType.spacing, 0, 100);
-	                if (this.settings.bgType.spacing === 0)
-	                    this.settings.bgType.spacing = 1;
+	                _this.settings.bgType.spacing = clamp_1.clamp(_this.settings.bgType.spacing, 0, 100);
+	                if (_this.settings.bgType.spacing === 0)
+	                    _this.settings.bgType.spacing = 1;
 	                break;
 	        }
-	        this.svg = this.settings.svg;
-	        this.dimensions = this.settings.dimensions;
-	        this.originalDimensions = [
-	            this.settings.dimensions[0],
-	            this.settings.dimensions[1]
+	        _this.svg = _this.settings.svg;
+	        _this.dimensions = _this.settings.dimensions;
+	        _this.originalDimensions = [
+	            _this.settings.dimensions[0],
+	            _this.settings.dimensions[1]
 	        ];
-	        this.bgColor = this.settings.bgColor;
-	        this.bgType = this.settings.bgType;
-	        this.drawsPerFrame = this.settings.drawsPerFrame;
-	        this.timeStep = this.settings.timeStep;
-	        this.time = this.settings.initTime;
-	        this.scaleFactor = this.settings.scaleFactor;
+	        _this.bgColor = _this.settings.bgColor;
+	        _this.bgType = _this.settings.bgType;
+	        _this.drawsPerFrame = _this.settings.drawsPerFrame;
+	        _this.timeStep = _this.settings.timeStep;
+	        _this.time = _this.settings.initTime;
+	        _this.scaleFactor = _this.settings.scaleFactor;
 	        // *****DEFAULTS*****
-	        if (this.svg === undefined) {
+	        if (_this.svg === undefined) {
 	            throw 'No SVG Element Found';
 	        }
-	        this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
-	        this.svg.setAttribute('preserveAspectRatio', 'none');
-	        this.svgSections = {
+	        _this._setViewBox(_this.dimensions, _this._offsetX, _this._offsetY);
+	        _this.svg.setAttribute('preserveAspectRatio', 'none');
+	        _this.svgSections = {
 	            bg: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
 	            strokes: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
 	            overlay: document.createElementNS('http://www.w3.org/2000/svg', 'g')
 	        };
-	        this.svg.appendChild(this.svgSections.bg);
-	        this.svg.appendChild(this.svgSections.strokes);
-	        this.svg.appendChild(this.svgSections.overlay);
-	        this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType));
-	        this._display(this.strokes[this._strokeIndex]);
-	        this._doRender = false;
+	        _this.svg.appendChild(_this.svgSections.bg);
+	        _this.svg.appendChild(_this.svgSections.strokes);
+	        _this.svg.appendChild(_this.svgSections.overlay);
+	        _this._addStroke(blankGraph.getBlankGraphPaths(_this.dimensions, _this.bgColor, _this.bgType));
+	        _this._display(_this.strokes[_this._strokeIndex]);
+	        _this._doRender = false;
+	        return _this;
 	    }
 	    RealRenderer.prototype._setViewBox = function (dimensions, xOffset, yOffset) {
 	        this.svg.setAttribute('viewBox', xOffset + " " + yOffset + " " + dimensions[0] + " " + dimensions[1]);
@@ -564,8 +609,17 @@
 	        return this;
 	    };
 	    return RealRenderer;
-	}());
+	}(eventEmitter.EventEmitter));
 	exports.RealRenderer = RealRenderer;
+	});
+
+	var RealDrawBoardEvents = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.RealDrawBoardEventList = void 0;
+	exports.RealDrawBoardEventList = [
+	    'tool-change',
+	    'tool-setting-change'
+	];
 	});
 
 	var circle = createCommonjsModule(function (module, exports) {
@@ -642,7 +696,7 @@
 	}
 	exports._toolPreview = _toolPreview;
 	function _onScroll(scrollDelta, coords, identifier) {
-	    this.toolSettings.brushSize = Math.max(1, this.toolSettings.brushSize - scrollDelta);
+	    this.changeToolSetting('brushSize', Math.max(1, this.toolSettings.brushSize - scrollDelta));
 	    this._toolPreview(coords, identifier);
 	    this._display(this._previewStroke.get(identifier));
 	}
@@ -694,7 +748,7 @@
 	}
 	exports._toolPreview = _toolPreview;
 	function _onScroll(scrollDelta, coords, identifier) {
-	    this.toolSettings.eraserSize = Math.max(1, this.toolSettings.eraserSize - scrollDelta);
+	    this.changeToolSetting('eraserSize', Math.max(1, this.toolSettings.eraserSize - scrollDelta));
 	    this._toolPreview(coords, identifier);
 	    this._display(this._previewStroke.get(identifier));
 	}
@@ -757,7 +811,7 @@
 	}
 	exports._toolPreview = _toolPreview;
 	function _onScroll(scrollDelta, coords, identifier) {
-	    this.toolSettings.lineThickness = Math.max(1, this.toolSettings.lineThickness - scrollDelta);
+	    this.changeToolSetting('lineThickness', Math.max(1, this.toolSettings.lineThickness - scrollDelta));
 	    this._toolPreview(coords, identifier);
 	    this._display(this._previewStroke.get(identifier));
 	}
@@ -843,11 +897,18 @@
 	        });
 	    });
 	    this._previewStroke.clear();
+	    this.emit('tool-change', {
+	        newTool: newTool
+	    });
 	    return this;
 	}
 	exports.changeTool = changeTool;
 	function changeToolSetting(settingName, value) {
 	    this.toolSettings[settingName] = value;
+	    this.emit('tool-setting-change', {
+	        settingName: settingName,
+	        newValue: value
+	    });
 	    return this;
 	}
 	exports.changeToolSetting = changeToolSetting;
@@ -973,6 +1034,7 @@
 	exports.RealDrawBoard = exports.RealDrawBoardTypes = exports.RealRendererTypes = void 0;
 
 
+
 	exports.RealRendererTypes = RealRendererTypes;
 	exports.RealDrawBoardTypes = RealDrawBoardTypes;
 	__exportStar(RealDrawBoardDefaults, exports);
@@ -985,7 +1047,7 @@
 	    function RealDrawBoard(options) {
 	        var _this = 
 	        // *****DEFAULTS*****
-	        _super.call(this, options) || this;
+	        _super.call(this, options, RealDrawBoardEvents.RealDrawBoardEventList) || this;
 	        _this.tool = RealDrawBoardDefaults.RealDrawBoardDefaults.tool;
 	        /** key -> identifier, value -> coordinate
 	         *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
@@ -1162,9 +1224,7 @@
 
 	var build = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.renderPreview = exports.RealDrawBoard = exports.RealRenderer = void 0;
-
-	Object.defineProperty(exports, "RealRenderer", { enumerable: true, get: function () { return RealRenderer_1.RealRenderer; } });
+	exports.renderPreview = exports.RealDrawBoard = void 0;
 
 	Object.defineProperty(exports, "RealDrawBoard", { enumerable: true, get: function () { return RealDrawBoard_1.RealDrawBoard; } });
 
