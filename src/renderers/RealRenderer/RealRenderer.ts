@@ -23,18 +23,18 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
   svgSections: SVGSections;
   dimensions: GraphDimensions;
   scaleFactor: number;
-  protected _offsetX: number = 0;
-  protected _offsetY: number = 0;
+  _offsetX: number = 0;
+  _offsetY: number = 0;
   originalDimensions: GraphDimensions;
   strokes: Stroke[] = [];
   settings: RealRendererSettings;
-  protected _strokeIndex: number = -1;
+  _strokeIndex: number = -1;
   bgColor: Color;
   bgType: BGType;
   drawsPerFrame: number;
   timeStep: number;
   time: number;
-  protected _doRender: boolean;
+  _doRender: boolean;
 
   public undo = undo;
   public redo = redo;
