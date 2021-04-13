@@ -982,16 +982,18 @@
 	}
 	exports.clearPreview = clearPreview;
 	function clear() {
-	    this._strokeIndex = 0;
-	    this._lastCoords.clear();
-	    this.strokes.forEach(function (stroke) {
-	        stroke.forEach(function (strokeNode) { return strokeNode.delete(); });
-	    });
-	    this.strokes = [
-	        blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType)
-	    ];
-	    this._display(this.strokes[this._strokeIndex]);
-	    this.emit('board-cleared', {});
+	    if (this._strokeIndex > 0) {
+	        this._strokeIndex = 0;
+	        this._lastCoords.clear();
+	        this.strokes.forEach(function (stroke) {
+	            stroke.forEach(function (strokeNode) { return strokeNode.delete(); });
+	        });
+	        this.strokes = [
+	            blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType)
+	        ];
+	        this._display(this.strokes[this._strokeIndex]);
+	        this.emit('board-cleared', {});
+	    }
 	    return this;
 	}
 	exports.clear = clear;
