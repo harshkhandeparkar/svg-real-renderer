@@ -3,6 +3,7 @@ import { Tool, ToolDefaults, tools, ToolSettings } from './tools/tools';
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
 export function changeTool(this: RealDrawBoard, newTool: Tool) {
+  const oldTool = this.tool;
   this.tool = newTool;
   this._startStroke = tools[this.tool]._startStroke;
   this._doStroke = tools[this.tool]._doStroke;
@@ -19,7 +20,8 @@ export function changeTool(this: RealDrawBoard, newTool: Tool) {
   this._previewStroke.clear();
 
   this.emit('tool-change', {
-    newTool
+    newTool,
+    oldTool
   })
 
   return this;
@@ -30,10 +32,13 @@ export function changeToolSetting<SettingName extends keyof ToolSettings>(
   settingName: SettingName,
   value: ToolSettings[SettingName]
 ) {
+  const oldValue = this.toolSettings[settingName];
+
   this.toolSettings[settingName] = value;
   this.emit('tool-setting-change', {
     settingName: settingName,
-    newValue: value
+    newValue: value,
+    oldValue
   })
 
   return this;

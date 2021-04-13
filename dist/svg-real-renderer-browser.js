@@ -56,7 +56,8 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.RealRendererEventList = void 0;
 	exports.RealRendererEventList = [
-	    'start-render'
+	    'start-render',
+	    'stop-render'
 	];
 	});
 
@@ -517,16 +518,32 @@
 	        return this;
 	    };
 	    RealRenderer.prototype.scale = function (scaleFactor) {
+	        var oldScaleFactor = this.scaleFactor;
 	        this.scaleFactor = scaleFactor;
 	        this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
 	        this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
 	        // To clamp the offsets as well
 	        this.changeOffsets(this._offsetX, this._offsetY);
+	        this.emit('change-scale', {
+	            oldScaleFactor: oldScaleFactor,
+	            newScaleFactor: this.scaleFactor
+	        });
 	    };
 	    RealRenderer.prototype.changeOffsets = function (xOffset, yOffset) {
+	        var oldOffsets = {
+	            x: this._offsetX,
+	            y: this._offsetY
+	        };
 	        this._offsetX = clamp_1.clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
 	        this._offsetY = clamp_1.clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
 	        this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
+	        this.emit('change-offsets', {
+	            oldOffsets: oldOffsets,
+	            newOffsets: {
+	                x: this._offsetX,
+	                y: this._offsetY
+	            }
+	        });
 	    };
 	    RealRenderer.prototype._render = function () {
 	        var _this = this;
@@ -547,11 +564,13 @@
 	        if (!this._doRender) {
 	            this._doRender = true;
 	            this._render();
-	            return this;
+	            this.emit('start-render', {});
 	        }
+	        return this;
 	    };
 	    RealRenderer.prototype.stopRender = function () {
 	        this._doRender = false;
+	        this.emit('stop-render', {});
 	        return this;
 	    };
 	    RealRenderer.prototype.toggleRender = function () {
@@ -905,6 +924,7 @@
 
 
 	function changeTool(newTool) {
+	    var oldTool = this.tool;
 	    this.tool = newTool;
 	    this._startStroke = tools.tools[this.tool]._startStroke;
 	    this._doStroke = tools.tools[this.tool]._doStroke;
@@ -918,16 +938,19 @@
 	    });
 	    this._previewStroke.clear();
 	    this.emit('tool-change', {
-	        newTool: newTool
+	        newTool: newTool,
+	        oldTool: oldTool
 	    });
 	    return this;
 	}
 	exports.changeTool = changeTool;
 	function changeToolSetting(settingName, value) {
+	    var oldValue = this.toolSettings[settingName];
 	    this.toolSettings[settingName] = value;
 	    this.emit('tool-setting-change', {
 	        settingName: settingName,
-	        newValue: value
+	        newValue: value,
+	        oldValue: oldValue
 	    });
 	    return this;
 	}
