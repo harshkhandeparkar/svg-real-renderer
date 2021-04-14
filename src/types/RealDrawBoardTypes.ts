@@ -2,9 +2,15 @@ import { IRealRendererNonOptionals, IRealRendererOptionals } from './RealRendere
 import { Tool, ToolOptions, ToolSettings } from '../renderers/RealDrawBoard/tools/tools';
 
 export interface IRealDrawBoardOptionals extends IRealRendererOptionals {
+  /**
+   * Initial values for the tool settings.
+   */
   toolSettings: ToolOptions;
   allowUndo: boolean;
   maxUndos: number;
+  /**
+   * Initially selected tool.
+   */
   tool: Tool;
 }
 

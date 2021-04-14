@@ -1,14 +1,12 @@
 import { Color } from '../types/RealRendererTypes';
 
 /**
- * Convert hsl Color into RGB color.
- * @param h color value ranges from 0 to 360.
- * @param s saturation value.
- * @param l brightness level.
- * @return array containing r g and b value
+ * Convert HSL Color into RGB color.
+ * @param h Hue value ranges from 0 to 360.
+ * @param s Saturation value.
+ * @param l Brightness level.
  */
 export function convertHSLToRGB(h: number, s: number, l: number): Color {
-
   s /= 100;
   l /= 100;
 

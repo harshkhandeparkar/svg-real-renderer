@@ -1,9 +1,9 @@
-import { GraphDimensions, RealExport, StrokeExport } from '../types/RealRendererTypes';
+import { RealExport } from '../types/RealRendererTypes';
 
 /**
- * Renders a preview of given data.
- * @param data Export Data
- * @param renderTo SVG Element to render to
+ * Renders a preview of the given data to a given separate SVG element.
+ * @param data Data to be rendered (exported by using .export()).
+ * @param renderTo SVG Element to render to.
  */
 export function renderPreview(
   data: RealExport,
