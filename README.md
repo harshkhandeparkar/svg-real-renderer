@@ -7,7 +7,6 @@ A Real Time 2D Graphical Rendering Engine Made With [SVG](https://developer.mozi
 - [Usage](#usage)
 - [Example](https://harshkhandeparkar.github.io/svg-real-renderer)
 - [API](#api)
-- [Real Renderers](#real-renderers)
 - [License](LICENSE)
 
 ### Usage
@@ -42,7 +41,7 @@ NOTE: It works with typescript
 ### API
 The library exports some util functions(listed below) as well as some [Real Renderers](#real-renderers). In the browser, the library exports these under the global namespace variable `SVGRealRenderer`.
 
-Read the API [docs](docs/docs.md)
+Read the API [docs](docs/docs.md).
 ### Thank You!
 
 > Open Source by Harsh Khandeparkar
