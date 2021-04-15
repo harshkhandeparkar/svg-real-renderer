@@ -24,4 +24,4 @@
 
 • **svg**: SVGSVGElement
 
-Defined in: [src/types/RealRendererTypes.ts:116](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/907d5e6/src/types/RealRendererTypes.ts#L116)
+Defined in: [src/types/RealRendererTypes.ts:116](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealRendererTypes.ts#L116)

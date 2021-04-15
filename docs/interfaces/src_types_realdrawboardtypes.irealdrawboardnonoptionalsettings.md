@@ -25,12 +25,12 @@
 
 Inherited from: [IRealRendererNonOptionals](src_types_realrenderertypes.irealrenderernonoptionals.md).[svg](src_types_realrenderertypes.irealrenderernonoptionals.md#svg)
 
-Defined in: [src/types/RealRendererTypes.ts:116](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/907d5e6/src/types/RealRendererTypes.ts#L116)
+Defined in: [src/types/RealRendererTypes.ts:116](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealRendererTypes.ts#L116)
 
 ___
 
 ### toolSettings
 
-• **toolSettings**: IBrushSettings & IEraserSettings & ILineSettings
+• **toolSettings**: ToolSettings
 
-Defined in: [src/types/RealDrawBoardTypes.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/907d5e6/src/types/RealDrawBoardTypes.ts#L20)
+Defined in: [src/types/RealDrawBoardTypes.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealDrawBoardTypes.ts#L20)

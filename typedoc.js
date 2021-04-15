@@ -15,6 +15,7 @@ module.exports = {
   entryPoints: [
     'index.ts',
     ...getListOfFiles('src/constants/defaults'),
+    ...getListOfFiles('src/constants/events'),
     ...getListOfFiles('src/types')
   ]
 }
