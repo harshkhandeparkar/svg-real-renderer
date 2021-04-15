@@ -247,7 +247,6 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.RealRendererDefaults = void 0;
 	exports.RealRendererDefaults = {
-	    dimensions: [1000, 1000],
 	    bgColor: [0, 0, 0],
 	    bgType: {
 	        type: 'axes',
@@ -482,11 +481,6 @@
 	                    _this.settings.bgType.spacing = 1;
 	                break;
 	        }
-	        _this.dimensions = _this.settings.dimensions;
-	        _this.originalDimensions = [
-	            _this.settings.dimensions[0],
-	            _this.settings.dimensions[1]
-	        ];
 	        _this.bgColor = _this.settings.bgColor;
 	        _this.bgType = _this.settings.bgType;
 	        _this.drawsPerFrame = _this.settings.drawsPerFrame;
@@ -545,7 +539,12 @@
 	                _this.svgSections[strokeNode.section].appendChild(strokeNode.node);
 	        });
 	    };
-	    RealRenderer.prototype.attach = function (svg) {
+	    RealRenderer.prototype.attach = function (svg, dimensions) {
+	        this.dimensions = dimensions;
+	        this.originalDimensions = [
+	            dimensions[0],
+	            dimensions[1]
+	        ];
 	        this.svg = svg;
 	        this._setSVG();
 	        return this;
