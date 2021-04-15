@@ -10,7 +10,7 @@
   "private": false,
   "scripts": {
     "build": "tsc && rollup -c",
-    "doc": "typedoc --publicPath docs/ --name 'SVG Real Renderer' --includeVersion --includes src/ --out docs --readme none --entryDocument docs.md index.ts",
+    "doc": "typedoc --name 'SVG Real Renderer' --includeVersion --includes src/ --out docs --readme none --entryDocument docs.md index.ts",
     "npm-publish": "yarn build && yarn doc && git add dist && git add docs && yarn publish"
   },
   "dependencies": {},

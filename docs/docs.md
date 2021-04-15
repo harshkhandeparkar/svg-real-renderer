@@ -1,17 +1,17 @@
-SVG Real Renderer - v0.3.3
+SVG Real Renderer - v0.3.4
 
-# SVG Real Renderer - v0.3.3
+# SVG Real Renderer - v0.3.4
 
 ## Table of contents
 
 ### Classes
 
-- [RealDrawBoard](docs/classes/realdrawboard.md)
-- [RealRenderer](docs/classes/realrenderer.md)
+- [RealDrawBoard](classes/realdrawboard.md)
+- [RealRenderer](classes/realrenderer.md)
 
 ### Functions
 
-- [renderPreview](docs/docs.md#renderpreview)
+- [renderPreview](docs.md#renderpreview)
 
 ## Functions
 
@@ -30,4 +30,4 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [src/util/renderPreview.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2f83349/src/util/renderPreview.ts#L8)
+Defined in: [src/util/renderPreview.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ee2ba47/src/util/renderPreview.ts#L8)
