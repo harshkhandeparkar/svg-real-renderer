@@ -1,7 +1,6 @@
 import { IRealRendererOptionals } from '../../types/RealRendererTypes';
 
 export const RealRendererDefaults: IRealRendererOptionals = {
-  dimensions: [1000, 1000],
   bgColor: [0, 0, 0],
   bgType: {
     type: 'axes',
