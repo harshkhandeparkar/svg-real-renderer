@@ -113,7 +113,7 @@ export function _onScroll(
   this.changeToolSetting('eraserSize', Math.max(1, this.toolSettings.eraserSize - scrollDelta));
 
   if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
-    (this._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.toolSettings.brushSize));
+    (this._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.toolSettings.eraserSize));
     this._display(this._previewStroke.get(identifier));
   }
 }
