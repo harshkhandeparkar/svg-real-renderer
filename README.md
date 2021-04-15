@@ -41,7 +41,7 @@ NOTE: It works with typescript
 ### API
 The library exports some util functions(listed below) as well as some [Real Renderers](#real-renderers). In the browser, the library exports these under the global namespace variable `SVGRealRenderer`.
 
-Read the API [docs](docs/docs.md).
+Read the API [markdown docs](docs/docs.md) or [HTML docs](https://harshkhandeparkar.github.io/svg-real-renderer/example/docs).
 ### Thank You!
 
 > Open Source by Harsh Khandeparkar
