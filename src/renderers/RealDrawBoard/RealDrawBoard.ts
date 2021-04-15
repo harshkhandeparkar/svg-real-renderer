@@ -63,7 +63,11 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
 
     this.settings = {
       ...RealDrawBoardDefaults,
-      ...options
+      ...options,
+      toolSettings: {
+        ...RealDrawBoardDefaults.toolSettings,
+        ...('toolSettings' in options ? options.toolSettings : {})
+      }
     }
 
     this.toolSettings = {

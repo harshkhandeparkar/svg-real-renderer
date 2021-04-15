@@ -14,10 +14,15 @@ export interface IRealDrawBoardOptionals extends IRealRendererOptionals {
   tool: Tool;
 }
 
-export interface IRealDrawBoardNonOptionals extends IRealRendererNonOptionals {
+export interface IRealDrawBoardNonOptionalOptions extends IRealRendererNonOptionals { }
+
+export interface IRealDrawBoardNonOptionalSettings extends IRealRendererNonOptionals {
   toolSettings: ToolSettings;
 }
 
-
-export type RealDrawBoardSettings = IRealDrawBoardNonOptionals & IRealDrawBoardOptionals;
-export type RealDrawBoardOptions = IRealDrawBoardNonOptionals & (IRealDrawBoardOptionals | {});
+export type RealDrawBoardSettings = IRealDrawBoardNonOptionalSettings & IRealDrawBoardOptionals;
+export type RealDrawBoardOptions = IRealDrawBoardNonOptionalOptions & (IRealDrawBoardOptionals | {});
+export type RealDrawBoardParameters = (IRealDrawBoardOptionals | {});
+export interface IRealDrawBoardParametersSettings extends IRealDrawBoardOptionals {
+  toolSettings: ToolSettings;
+}

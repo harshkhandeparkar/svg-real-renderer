@@ -66,6 +66,11 @@
 	var getRGBColorString_1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.getRGBColorString = void 0;
+	/**
+	 *
+	 * @param color Converts a color array to rgb() css color format.
+	 * @returns
+	 */
 	function getRGBColorString(color) {
 	    return "rgb(" + color[0] * 255 + ", " + color[1] * 255 + ", " + color[2] * 255 + ")";
 	}
@@ -260,6 +265,12 @@
 	var clamp_1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.clamp = void 0;
+	/**
+	 * Clamps a given number between two bounds.
+	 * @param input The number to be clamped.
+	 * @param min Lower bound.
+	 * @param max Upper bound.
+	 */
 	function clamp(input, min, max) {
 	    return Math.min(Math.max(input, min), max);
 	}
@@ -1240,7 +1251,7 @@
 	                _this._display(_this.strokes[_this._strokeIndex]);
 	            }
 	        };
-	        _this.settings = __assign(__assign({}, RealDrawBoardDefaults.RealDrawBoardDefaults), options);
+	        _this.settings = __assign(__assign(__assign({}, RealDrawBoardDefaults.RealDrawBoardDefaults), options), { toolSettings: __assign(__assign({}, RealDrawBoardDefaults.RealDrawBoardDefaults.toolSettings), ('toolSettings' in options ? options.toolSettings : {})) });
 	        _this.toolSettings = __assign(__assign({}, tools.ToolDefaults), _this.settings.toolSettings);
 	        _this.changeTool(_this.settings.tool);
 	        return _this;
@@ -1270,9 +1281,9 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.renderPreview = void 0;
 	/**
-	 * Renders a preview of given data.
-	 * @param data Export Data
-	 * @param renderTo SVG Element to render to
+	 * Renders a preview of the given data to a given separate SVG element.
+	 * @param data Data to be rendered (exported by using .export()).
+	 * @param renderTo SVG Element to render to.
 	 */
 	function renderPreview(data, renderTo) {
 	    var exportData = data.exportData, dimensions = data.dimensions;

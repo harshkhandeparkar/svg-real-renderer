@@ -118,3 +118,4 @@ export interface IRealRendererNonOptionals {
 
 export type RealRendererSettings = IRealRendererNonOptionals & IRealRendererOptionals;
 export type RealRendererOptions = IRealRendererNonOptionals & (IRealRendererOptionals | {});
+export type RealRendererParameters = (IRealRendererOptionals | {});
