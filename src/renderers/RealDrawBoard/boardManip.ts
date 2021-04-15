@@ -2,6 +2,11 @@ import { RealDrawBoard } from './RealDrawBoard';
 import { Tool, ToolDefaults, tools, ToolSettings } from './tools/tools';
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
+/**
+ * Change the currently selected tool on the draw board.
+ * @param newTool
+ * @returns Self for chaining.
+ */
 export function changeTool(this: RealDrawBoard, newTool: Tool) {
   const oldTool = this.tool;
   this.tool = newTool;
@@ -27,6 +32,12 @@ export function changeTool(this: RealDrawBoard, newTool: Tool) {
   return this;
 }
 
+/**
+ * Change a tool setting.
+ * @param settingName Name of the tool setting.
+ * @param value New value for the setting.
+ * @returns Self for chaining.
+ */
 export function changeToolSetting<SettingName extends keyof ToolSettings>(
   this: RealDrawBoard,
   settingName: SettingName,
@@ -44,6 +55,10 @@ export function changeToolSetting<SettingName extends keyof ToolSettings>(
   return this;
 }
 
+/**
+ * Clear all tool previews.
+ * @returns Self for chaining.
+ */
 export function clearPreview(this: RealDrawBoard) {
   this._previewStroke.forEach((stroke) => {
     stroke.forEach((node) => {
@@ -56,6 +71,10 @@ export function clearPreview(this: RealDrawBoard) {
   return this;
 }
 
+/**
+ * Clear the board without resetting any parameters.
+ * @returns Self for chaining.
+ */
 export function clear(this: RealDrawBoard) {
   if (this._strokeIndex > 0) {
     this._strokeIndex = 0;
@@ -80,6 +99,9 @@ export function clear(this: RealDrawBoard) {
 
 }
 
+/**
+ * @internal
+ */
 export function _resetBoard(this: RealDrawBoard) {
   this.bgColor = this.settings.bgColor;
   this.tool = this.settings.tool;

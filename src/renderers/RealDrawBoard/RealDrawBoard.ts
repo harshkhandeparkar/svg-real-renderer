@@ -27,6 +27,9 @@ import {
 import { tools, Tool, ToolSettings, ToolDefaults } from './tools/tools';
 import { Coordinate, Stroke } from '../../types/RealRendererTypes';
 
+/**
+ * Drawing board.
+ */
 export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
   settings: RealDrawBoardSettings;
   tool: Tool = RealDrawBoardDefaults.tool;

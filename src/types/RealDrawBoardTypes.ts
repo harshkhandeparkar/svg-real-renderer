@@ -6,7 +6,13 @@ export interface IRealDrawBoardOptionals extends IRealRendererOptionals {
    * Initial values for the tool settings.
    */
   toolSettings: ToolOptions;
+  /**
+   * Wheter undo is allowed.
+   */
   allowUndo: boolean;
+  /**
+   * Maximum number of possible undos. Use a smaller number to save memory.
+   */
   maxUndos: number;
   /**
    * Initially selected tool.

@@ -84,6 +84,9 @@ export type BGGrid = {
   lineColor: Color;
 }
 
+/**
+ * Solid background.
+ */
 export type BGNone = {
   type: 'none';
 }
@@ -95,6 +98,9 @@ export interface IRealRendererOptionals {
    * Background color.
    */
   bgColor: Color;
+  /**
+   * Type of the background.
+   */
   bgType: BGType;
   /**
    * Number of updates to be made to the graph per frame.
@@ -108,6 +114,9 @@ export interface IRealRendererOptionals {
    * Initial value of the internal time.
    */
   initTime: number;
+  /**
+   * Scaling of the graph. Larger number zooms.
+   */
   scaleFactor: number;
 }
 

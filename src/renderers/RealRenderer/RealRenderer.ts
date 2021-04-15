@@ -18,6 +18,9 @@ import { Polygon } from './strokeNodes/_polygon';
 
 import { clamp } from '../../util/clamp';
 
+/**
+ * General Real Renderer with no specific purpose. Should be extended to use.
+ */
 export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRendererEvents> extends EventEmitter<EventTypes> {
   svg: SVGSVGElement;
   svgSections: SVGSections;
@@ -41,7 +44,7 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
 
   /**
    *
-   * @param {RealRendererOptions} options
+   * @param options
    * @param eventList
    */
   constructor(
@@ -156,6 +159,12 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     })
   }
 
+  /**
+   * Attaches to a DOM SVG element to render to.
+   * @param svg The SVG element to attach.
+   * @param dimensions Dimensions of the graph.
+   * @returns Self for chaining.
+   */
   attach(svg: SVGSVGElement, dimensions: GraphDimensions) {
     this.dimensions = dimensions;
     this.originalDimensions = [
@@ -169,6 +178,10 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     return this;
   }
 
+  /**
+   * Start rendering.
+   * @returns Self for chaining.
+   */
   startRender() {
     if (!this._doRender) {
       this._doRender = true;
@@ -178,6 +191,10 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     return this;
   }
 
+  /**
+   * Stop rendering.
+   * @returns Self for chaining.
+   */
   stopRender() {
     this._doRender = false;
     this.emit('stop-render', {});
@@ -185,6 +202,10 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     return this;
   }
 
+  /**
+   * Toggle rendering.
+   * @returns Self for chaining.
+   */
   toggleRender() {
     this._doRender = !this._doRender;
     if (this._doRender) this._render();
@@ -192,12 +213,22 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     return this;
   }
 
+  /**
+   * Draw a certain number of frames.
+   * @param numDraws Number of frames to draw.
+   * @returns Self for chaining.
+   */
   draw(numDraws: number = 1) {
     for (let i = 0; i < numDraws; i++) this._draw();
 
     return this;
   }
 
+  /**
+   * Scale/zoom the graph.
+   * @param scaleFactor Factor to scale the graph by. Larger number zooms in.
+   * @returns Self for chaining.
+   */
   scale(scaleFactor: number) {
     const oldScaleFactor = this.scaleFactor;
     this.scaleFactor = scaleFactor;
@@ -215,6 +246,12 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     return this;
   }
 
+  /**
+   * Change the offsets of the graph (for panning)
+   * @param xOffset Offset in the x-direction.
+   * @param yOffset Offset in the y-direction.
+   * @returns Self for chaining.
+   */
   changeOffsets(xOffset: number, yOffset: number) {
     const oldOffsets = {
       x: this._offsetX,
@@ -235,6 +272,10 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     return this;
   }
 
+  /**
+   * Export the data of the graph in a certain format that can be used to load the data later. Load using .import().
+   * @returns Data of the graph in a storable and loadable format.
+   */
   exportData(): RealExport {
     const strokeExport: StrokeExport[] = [];
     this.strokes.forEach((stroke) => {
@@ -250,6 +291,11 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     }
   }
 
+  /**
+   * Import the data exported by .export() method.
+   * @param data Data exported by .export()
+   * @returns Self for chaining.
+   */
   importData(
     data: RealExport
   ) {
@@ -297,12 +343,20 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     return this;
   }
 
+  /**
+   * Resets the internal time counter.
+   * @returns Self for chaining.
+   */
   resetTime() {
     this.time = 0;
 
     return this;
   }
 
+  /**
+   * Resets everything regarding the graph.
+   * @returns Self for chaining.
+   */
   reset() {
     this.strokes = [
       getBlankGraphPaths(
