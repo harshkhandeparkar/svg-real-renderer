@@ -775,7 +775,6 @@
 	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize));
 	        this._display(this._previewStroke.get(identifier));
 	    }
-	    this._toolPreview(coords, identifier);
 	}
 	exports._onScroll = _onScroll;
 	});
@@ -893,6 +892,10 @@
 	exports._toolPreview = _toolPreview;
 	function _onScroll(scrollDelta, coords, identifier) {
 	    this.changeToolSetting('lineThickness', Math.max(1, this.toolSettings.lineThickness - scrollDelta));
+	    if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
+	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize));
+	        this._display(this._previewStroke.get(identifier));
+	    }
 	}
 	exports._onScroll = _onScroll;
 	});

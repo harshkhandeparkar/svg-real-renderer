@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.6](../docs.md) / [src/types/RealRendererTypes](../modules/src_types_realrenderertypes.md) / IRealRendererNonOptionals
+[SVG Real Renderer - v0.3.7](../docs.md) / [src/types/RealRendererTypes](../modules/src_types_realrenderertypes.md) / IRealRendererNonOptionals
 
 # Interface: IRealRendererNonOptionals
 

@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.6](../docs.md) / [src/types/RealDrawBoardTypes](../modules/src_types_realdrawboardtypes.md) / IRealDrawBoardOptionals
+[SVG Real Renderer - v0.3.7](../docs.md) / [src/types/RealDrawBoardTypes](../modules/src_types_realdrawboardtypes.md) / IRealDrawBoardOptionals
 
 # Interface: IRealDrawBoardOptionals
 
@@ -33,7 +33,7 @@
 
 • **allowUndo**: *boolean*
 
-Defined in: [src/types/RealDrawBoardTypes.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealDrawBoardTypes.ts#L9)
+Defined in: [src/types/RealDrawBoardTypes.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealDrawBoardTypes.ts#L9)
 
 ___
 
@@ -45,7 +45,7 @@ Background color.
 
 Inherited from: [IRealRendererOptionals](src_types_realrenderertypes.irealrendereroptionals.md).[bgColor](src_types_realrenderertypes.irealrendereroptionals.md#bgcolor)
 
-Defined in: [src/types/RealRendererTypes.ts:97](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealRendererTypes.ts#L97)
+Defined in: [src/types/RealRendererTypes.ts:97](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealRendererTypes.ts#L97)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 Inherited from: [IRealRendererOptionals](src_types_realrenderertypes.irealrendereroptionals.md).[bgType](src_types_realrenderertypes.irealrendereroptionals.md#bgtype)
 
-Defined in: [src/types/RealRendererTypes.ts:98](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealRendererTypes.ts#L98)
+Defined in: [src/types/RealRendererTypes.ts:98](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealRendererTypes.ts#L98)
 
 ___
 
@@ -67,7 +67,7 @@ Number of updates to be made to the graph per frame.
 
 Inherited from: [IRealRendererOptionals](src_types_realrenderertypes.irealrendereroptionals.md).[drawsPerFrame](src_types_realrenderertypes.irealrendereroptionals.md#drawsperframe)
 
-Defined in: [src/types/RealRendererTypes.ts:102](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealRendererTypes.ts#L102)
+Defined in: [src/types/RealRendererTypes.ts:102](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealRendererTypes.ts#L102)
 
 ___
 
@@ -79,7 +79,7 @@ Initial value of the internal time.
 
 Inherited from: [IRealRendererOptionals](src_types_realrenderertypes.irealrendereroptionals.md).[initTime](src_types_realrenderertypes.irealrendereroptionals.md#inittime)
 
-Defined in: [src/types/RealRendererTypes.ts:110](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealRendererTypes.ts#L110)
+Defined in: [src/types/RealRendererTypes.ts:110](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealRendererTypes.ts#L110)
 
 ___
 
@@ -87,7 +87,7 @@ ___
 
 • **maxUndos**: *number*
 
-Defined in: [src/types/RealDrawBoardTypes.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealDrawBoardTypes.ts#L10)
+Defined in: [src/types/RealDrawBoardTypes.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealDrawBoardTypes.ts#L10)
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 Inherited from: [IRealRendererOptionals](src_types_realrenderertypes.irealrendereroptionals.md).[scaleFactor](src_types_realrenderertypes.irealrendereroptionals.md#scalefactor)
 
-Defined in: [src/types/RealRendererTypes.ts:111](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealRendererTypes.ts#L111)
+Defined in: [src/types/RealRendererTypes.ts:111](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealRendererTypes.ts#L111)
 
 ___
 
@@ -109,7 +109,7 @@ Amount to increment the internal time by each frame.
 
 Inherited from: [IRealRendererOptionals](src_types_realrenderertypes.irealrendereroptionals.md).[timeStep](src_types_realrenderertypes.irealrendereroptionals.md#timestep)
 
-Defined in: [src/types/RealRendererTypes.ts:106](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealRendererTypes.ts#L106)
+Defined in: [src/types/RealRendererTypes.ts:106](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealRendererTypes.ts#L106)
 
 ___
 
@@ -119,7 +119,7 @@ ___
 
 Initially selected tool.
 
-Defined in: [src/types/RealDrawBoardTypes.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealDrawBoardTypes.ts#L14)
+Defined in: [src/types/RealDrawBoardTypes.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealDrawBoardTypes.ts#L14)
 
 ___
 
@@ -129,4 +129,4 @@ ___
 
 Initial values for the tool settings.
 
-Defined in: [src/types/RealDrawBoardTypes.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/83d7428/src/types/RealDrawBoardTypes.ts#L8)
+Defined in: [src/types/RealDrawBoardTypes.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealDrawBoardTypes.ts#L8)
