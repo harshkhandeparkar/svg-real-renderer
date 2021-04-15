@@ -112,9 +112,7 @@ export interface IRealRendererOptionals {
   scaleFactor: number;
 }
 
-export interface IRealRendererNonOptionals {
-  svg: SVGSVGElement;
-}
+export interface IRealRendererNonOptionals { }
 
 export type RealRendererSettings = IRealRendererNonOptionals & IRealRendererOptionals;
 export type RealRendererOptions = IRealRendererNonOptionals & (IRealRendererOptionals | {});

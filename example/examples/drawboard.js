@@ -1,6 +1,5 @@
 // Draw Board
 const drawBoardOptions = {
-  svg: document.getElementById('drawboard-svg'),
   dimensions: [420, 360],
 
   bgColor: [0.960784314, 0.870588235, 0.701960784], // CSS wheat color
@@ -26,7 +25,7 @@ const drawBoardOptions = {
 }
 
 const DrawBoard = new SVGRealRenderer.RealDrawBoard(drawBoardOptions);
-DrawBoard.draw().startRender();
+DrawBoard.attach(document.getElementById('drawboard-svg')).draw().startRender();
 
 const colorWheel = new iro.ColorPicker("#drawboard-colorwheel", {
   width: 100,

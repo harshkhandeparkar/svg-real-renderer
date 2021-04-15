@@ -81,7 +81,6 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
         break;
     }
 
-    this.svg = this.settings.svg;
     this.dimensions = this.settings.dimensions;
     this.originalDimensions = [
       this.settings.dimensions[0],
@@ -95,7 +94,9 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     this.scaleFactor = this.settings.scaleFactor;
 
     // *****DEFAULTS*****
+  }
 
+  protected _setSVG() {
     if (this.svg === undefined) {
       throw 'No SVG Element Found';
     }
@@ -145,8 +146,54 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     this.strokes[++this._strokeIndex] = stroke;
   }
 
+  protected _render() {
+    if (this._doRender) {
+      this.draw(this.drawsPerFrame);
+      this._display(this.strokes[this._strokeIndex]);
+
+      window.requestAnimationFrame(() => {this._render()});
+    }
+  }
+
+  protected _display(stroke: Stroke) {
+    stroke.forEach((strokeNode) => {
+      if (strokeNode.node.parentElement == null) this.svgSections[strokeNode.section].appendChild(strokeNode.node);
+    })
+  }
+
+  attach(svg: SVGSVGElement) {
+    this.svg = svg;
+
+    this._setSVG();
+    return this;
+  }
+
+  startRender() {
+    if (!this._doRender) {
+      this._doRender = true;
+      this._render();
+      this.emit('start-render', {});
+    }
+    return this;
+  }
+
+  stopRender() {
+    this._doRender = false;
+    this.emit('stop-render', {});
+
+    return this;
+  }
+
+  toggleRender() {
+    this._doRender = !this._doRender;
+    if (this._doRender) this._render();
+
+    return this;
+  }
+
   draw(numDraws: number = 1) {
     for (let i = 0; i < numDraws; i++) this._draw();
+
     return this;
   }
 
@@ -163,6 +210,8 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
       oldScaleFactor,
       newScaleFactor: this.scaleFactor
     })
+
+    return this;
   }
 
   changeOffsets(xOffset: number, yOffset: number) {
@@ -181,41 +230,7 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
         y: this._offsetY
       }
     })
-  }
 
-  protected _render() {
-    if (this._doRender) {
-      this.draw(this.drawsPerFrame);
-      this._display(this.strokes[this._strokeIndex]);
-
-      window.requestAnimationFrame(() => {this._render()});
-    }
-  }
-
-  _display(stroke: Stroke) {
-    stroke.forEach((strokeNode) => {
-      if (strokeNode.node.parentElement == null) this.svgSections[strokeNode.section].appendChild(strokeNode.node);
-    })
-  }
-
-  startRender() {
-    if (!this._doRender) {
-      this._doRender = true;
-      this._render();
-      this.emit('start-render', {});
-    }
-    return this;
-  }
-
-  stopRender() {
-    this._doRender = false;
-    this.emit('stop-render', {});
-    return this;
-  }
-
-  toggleRender() {
-    this._doRender = !this._doRender;
-    if (this._doRender) this._render();
     return this;
   }
 
@@ -277,10 +292,13 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     for (let i = 0; i <= this._strokeIndex; i++) {
       this._display(this.strokes[i]);
     }
+
+    return this;
   }
 
   resetTime() {
     this.time = 0;
+
     return this;
   }
 

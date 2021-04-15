@@ -33,7 +33,7 @@ const LineGraph = new renderer.LineGraph(options); // For example
 `svg-real-renderer` packages need to be installed via npm or yarn.
 
 ```js
-const DrawBoard = new require('svg-real-renderer').RealDrawBoard({svg: document.getElementById('svg-id')}) // DrawBoard is an example.
+const DrawBoard = (new require('svg-real-renderer').RealDrawBoard()).attach(document.getElementById('svg-id')) // DrawBoard is an example.
 ```
 
 NOTE: It works with typescript

@@ -33,12 +33,15 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
   toolSettings: ToolSettings;
   /** key -> identifier, value -> coordinate
    *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+   * @internal
    */
-  _lastCoords: Map<string, Coordinate> = new Map(); /* key -> identifier, value -> coordinate*/
+  _lastCoords: Map<string, Coordinate> = new Map();
+  /** @internal */
   _doPreview: boolean = true; // If a preview should be drawn
   /**
    * The preview for the current stroke
    */
+  /** @internal */
   _previewStroke: Map<string, Stroke> = new Map();
 
   protected _resetBoard = _resetBoard;
