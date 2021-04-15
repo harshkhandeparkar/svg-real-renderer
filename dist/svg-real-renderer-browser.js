@@ -482,7 +482,6 @@
 	                    _this.settings.bgType.spacing = 1;
 	                break;
 	        }
-	        _this.svg = _this.settings.svg;
 	        _this.dimensions = _this.settings.dimensions;
 	        _this.originalDimensions = [
 	            _this.settings.dimensions[0],
@@ -494,25 +493,27 @@
 	        _this.timeStep = _this.settings.timeStep;
 	        _this.time = _this.settings.initTime;
 	        _this.scaleFactor = _this.settings.scaleFactor;
+	        return _this;
 	        // *****DEFAULTS*****
-	        if (_this.svg === undefined) {
+	    }
+	    RealRenderer.prototype._setSVG = function () {
+	        if (this.svg === undefined) {
 	            throw 'No SVG Element Found';
 	        }
-	        _this._setViewBox(_this.dimensions, _this._offsetX, _this._offsetY);
-	        _this.svg.setAttribute('preserveAspectRatio', 'none');
-	        _this.svgSections = {
+	        this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
+	        this.svg.setAttribute('preserveAspectRatio', 'none');
+	        this.svgSections = {
 	            bg: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
 	            strokes: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
 	            overlay: document.createElementNS('http://www.w3.org/2000/svg', 'g')
 	        };
-	        _this.svg.appendChild(_this.svgSections.bg);
-	        _this.svg.appendChild(_this.svgSections.strokes);
-	        _this.svg.appendChild(_this.svgSections.overlay);
-	        _this._addStroke(blankGraph.getBlankGraphPaths(_this.dimensions, _this.bgColor, _this.bgType));
-	        _this._display(_this.strokes[_this._strokeIndex]);
-	        _this._doRender = false;
-	        return _this;
-	    }
+	        this.svg.appendChild(this.svgSections.bg);
+	        this.svg.appendChild(this.svgSections.strokes);
+	        this.svg.appendChild(this.svgSections.overlay);
+	        this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType));
+	        this._display(this.strokes[this._strokeIndex]);
+	        this._doRender = false;
+	    };
 	    RealRenderer.prototype._setViewBox = function (dimensions, xOffset, yOffset) {
 	        this.svg.setAttribute('viewBox', xOffset + " " + yOffset + " " + dimensions[0] + " " + dimensions[1]);
 	    };
@@ -529,40 +530,6 @@
 	            this.strokes.splice(this._strokeIndex + 1, this.strokes.length - this._strokeIndex);
 	        this.strokes[++this._strokeIndex] = stroke;
 	    };
-	    RealRenderer.prototype.draw = function (numDraws) {
-	        if (numDraws === void 0) { numDraws = 1; }
-	        for (var i = 0; i < numDraws; i++)
-	            this._draw();
-	        return this;
-	    };
-	    RealRenderer.prototype.scale = function (scaleFactor) {
-	        var oldScaleFactor = this.scaleFactor;
-	        this.scaleFactor = scaleFactor;
-	        this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
-	        this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
-	        // To clamp the offsets as well
-	        this.changeOffsets(this._offsetX, this._offsetY);
-	        this.emit('change-scale', {
-	            oldScaleFactor: oldScaleFactor,
-	            newScaleFactor: this.scaleFactor
-	        });
-	    };
-	    RealRenderer.prototype.changeOffsets = function (xOffset, yOffset) {
-	        var oldOffsets = {
-	            x: this._offsetX,
-	            y: this._offsetY
-	        };
-	        this._offsetX = clamp_1.clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
-	        this._offsetY = clamp_1.clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
-	        this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
-	        this.emit('change-offsets', {
-	            oldOffsets: oldOffsets,
-	            newOffsets: {
-	                x: this._offsetX,
-	                y: this._offsetY
-	            }
-	        });
-	    };
 	    RealRenderer.prototype._render = function () {
 	        var _this = this;
 	        if (this._doRender) {
@@ -577,6 +544,11 @@
 	            if (strokeNode.node.parentElement == null)
 	                _this.svgSections[strokeNode.section].appendChild(strokeNode.node);
 	        });
+	    };
+	    RealRenderer.prototype.attach = function (svg) {
+	        this.svg = svg;
+	        this._setSVG();
+	        return this;
 	    };
 	    RealRenderer.prototype.startRender = function () {
 	        if (!this._doRender) {
@@ -595,6 +567,42 @@
 	        this._doRender = !this._doRender;
 	        if (this._doRender)
 	            this._render();
+	        return this;
+	    };
+	    RealRenderer.prototype.draw = function (numDraws) {
+	        if (numDraws === void 0) { numDraws = 1; }
+	        for (var i = 0; i < numDraws; i++)
+	            this._draw();
+	        return this;
+	    };
+	    RealRenderer.prototype.scale = function (scaleFactor) {
+	        var oldScaleFactor = this.scaleFactor;
+	        this.scaleFactor = scaleFactor;
+	        this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
+	        this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
+	        // To clamp the offsets as well
+	        this.changeOffsets(this._offsetX, this._offsetY);
+	        this.emit('change-scale', {
+	            oldScaleFactor: oldScaleFactor,
+	            newScaleFactor: this.scaleFactor
+	        });
+	        return this;
+	    };
+	    RealRenderer.prototype.changeOffsets = function (xOffset, yOffset) {
+	        var oldOffsets = {
+	            x: this._offsetX,
+	            y: this._offsetY
+	        };
+	        this._offsetX = clamp_1.clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
+	        this._offsetY = clamp_1.clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
+	        this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
+	        this.emit('change-offsets', {
+	            oldOffsets: oldOffsets,
+	            newOffsets: {
+	                x: this._offsetX,
+	                y: this._offsetY
+	            }
+	        });
 	        return this;
 	    };
 	    RealRenderer.prototype.exportData = function () {
@@ -641,6 +649,7 @@
 	        for (var i = 0; i <= this._strokeIndex; i++) {
 	            this._display(this.strokes[i]);
 	        }
+	        return this;
 	    };
 	    RealRenderer.prototype.resetTime = function () {
 	        this.time = 0;
@@ -1131,12 +1140,15 @@
 	        _this.tool = RealDrawBoardDefaults.RealDrawBoardDefaults.tool;
 	        /** key -> identifier, value -> coordinate
 	         *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+	         * @internal
 	         */
-	        _this._lastCoords = new Map(); /* key -> identifier, value -> coordinate*/
+	        _this._lastCoords = new Map();
+	        /** @internal */
 	        _this._doPreview = true; // If a preview should be drawn
 	        /**
 	         * The preview for the current stroke
 	         */
+	        /** @internal */
 	        _this._previewStroke = new Map();
 	        _this._resetBoard = boardManip._resetBoard;
 	        _this._addDOMEvents = _DOMEvents._addDOMEvents;

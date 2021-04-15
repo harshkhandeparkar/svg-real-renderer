@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.4](../docs.md) / [index](../modules/index.md) / RealRenderer
+[SVG Real Renderer - v0.3.5](../docs.md) / [index](../modules/index.md) / RealRenderer
 
 # Class: RealRenderer<EventTypes\>
 
@@ -48,7 +48,7 @@ Name | Type | Default |
 
 ### Methods
 
-- [\_display](index.realrenderer.md#_display)
+- [attach](index.realrenderer.md#attach)
 - [changeOffsets](index.realrenderer.md#changeoffsets)
 - [draw](index.realrenderer.md#draw)
 - [emit](index.realrenderer.md#emit)
@@ -86,7 +86,7 @@ Name | Type |
 
 Overrides: EventEmitter&lt;EventTypes&gt;.constructor
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:40](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L40)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:40](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L40)
 
 ## Properties
 
@@ -94,7 +94,7 @@ Defined in: [src/renderers/RealRenderer/RealRenderer.ts:40](https://github.com/H
 
 • **\_doRender**: *boolean*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:37](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L37)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:37](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L37)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 • **\_offsetX**: *number*= 0
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:26](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L26)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:26](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L26)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 • **\_offsetY**: *number*= 0
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:27](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L27)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:27](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L27)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 • **\_strokeIndex**: *number*= -1
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L31)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L31)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 • **bgColor**: [*Color*](../modules/src_types_realrenderertypes.md#color)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:32](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L32)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:32](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L32)
 
 ___
 
@@ -134,7 +134,7 @@ ___
 
 • **bgType**: [*BGType*](../modules/src_types_realrenderertypes.md#bgtype)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:33](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L33)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:33](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L33)
 
 ___
 
@@ -142,7 +142,7 @@ ___
 
 • **dimensions**: [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:24](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L24)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:24](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L24)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 • **drawsPerFrame**: *number*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L34)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L34)
 
 ___
 
@@ -160,7 +160,7 @@ ___
 
 Inherited from: EventEmitter.eventHandlers
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:2](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/events/eventEmitter.ts#L2)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:2](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/events/eventEmitter.ts#L2)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 • **originalDimensions**: [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L28)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L28)
 
 ___
 
@@ -188,9 +188,9 @@ Name | Type |
 
 **Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
 
-Defined in: [src/renderers/RealRenderer/undo.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/undo.ts#L14)
+Defined in: [src/renderers/RealRenderer/undo.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/undo.ts#L14)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:40](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L40)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:40](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L40)
 
 ___
 
@@ -198,7 +198,7 @@ ___
 
 • **scaleFactor**: *number*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:25](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L25)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:25](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L25)
 
 ___
 
@@ -206,7 +206,7 @@ ___
 
 • **settings**: [*IRealRendererNonOptionals*](../interfaces/src_types_realrenderertypes.irealrenderernonoptionals.md) & [*IRealRendererOptionals*](../interfaces/src_types_realrenderertypes.irealrendereroptionals.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:30](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L30)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:30](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L30)
 
 ___
 
@@ -214,7 +214,7 @@ ___
 
 • **strokes**: [*Stroke*](../modules/src_types_realrenderertypes.md#stroke)[]= []
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:29](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L29)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:29](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L29)
 
 ___
 
@@ -222,7 +222,7 @@ ___
 
 • **svg**: SVGSVGElement
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:22](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L22)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:22](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L22)
 
 ___
 
@@ -230,7 +230,7 @@ ___
 
 • **svgSections**: [*SVGSections*](../modules/src_types_realrenderertypes.md#svgsections)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:23](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L23)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:23](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L23)
 
 ___
 
@@ -238,7 +238,7 @@ ___
 
 • **time**: *number*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:36](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L36)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:36](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L36)
 
 ___
 
@@ -246,7 +246,7 @@ ___
 
 • **timeStep**: *number*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:35](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L35)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:35](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L35)
 
 ___
 
@@ -266,31 +266,31 @@ Name | Type |
 
 **Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
 
-Defined in: [src/renderers/RealRenderer/undo.ts:4](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/undo.ts#L4)
+Defined in: [src/renderers/RealRenderer/undo.ts:4](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/undo.ts#L4)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:39](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L39)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:39](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L39)
 
 ## Methods
 
-### \_display
+### attach
 
-▸ **_display**(`stroke`: [*Stroke*](../modules/src_types_realrenderertypes.md#stroke)): *void*
+▸ **attach**(`svg`: SVGSVGElement): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
 #### Parameters:
 
 Name | Type |
 :------ | :------ |
-`stroke` | [*Stroke*](../modules/src_types_realrenderertypes.md#stroke) |
+`svg` | SVGSVGElement |
 
-**Returns:** *void*
+**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:195](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L195)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:164](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L164)
 
 ___
 
 ### changeOffsets
 
-▸ **changeOffsets**(`xOffset`: *number*, `yOffset`: *number*): *void*
+▸ **changeOffsets**(`xOffset`: *number*, `yOffset`: *number*): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
 #### Parameters:
 
@@ -299,9 +299,9 @@ Name | Type |
 `xOffset` | *number* |
 `yOffset` | *number* |
 
-**Returns:** *void*
+**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:168](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L168)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:217](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L217)
 
 ___
 
@@ -317,7 +317,7 @@ Name | Type | Default value |
 
 **Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:148](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L148)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:194](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L194)
 
 ___
 
@@ -342,7 +342,7 @@ Name | Type |
 
 Inherited from: EventEmitter.emit
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/events/eventEmitter.ts#L28)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/events/eventEmitter.ts#L28)
 
 ___
 
@@ -352,13 +352,13 @@ ___
 
 **Returns:** [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:222](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L222)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:237](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L237)
 
 ___
 
 ### importData
 
-▸ **importData**(`data`: [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)): *void*
+▸ **importData**(`data`: [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
 #### Parameters:
 
@@ -366,9 +366,9 @@ Name | Type |
 :------ | :------ |
 `data` | [*RealExport*](../modules/src_types_realrenderertypes.md#realexport) |
 
-**Returns:** *void*
+**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:237](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L237)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:252](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L252)
 
 ___
 
@@ -393,7 +393,7 @@ Name | Type |
 
 Inherited from: EventEmitter.off
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:21](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/events/eventEmitter.ts#L21)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:21](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/events/eventEmitter.ts#L21)
 
 ___
 
@@ -419,7 +419,7 @@ Name | Type |
 
 Inherited from: EventEmitter.on
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/events/eventEmitter.ts#L12)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/events/eventEmitter.ts#L12)
 
 ___
 
@@ -429,7 +429,7 @@ ___
 
 **Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:287](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L287)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:305](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L305)
 
 ___
 
@@ -439,13 +439,13 @@ ___
 
 **Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:282](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L282)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:299](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L299)
 
 ___
 
 ### scale
 
-▸ **scale**(`scaleFactor`: *number*): *void*
+▸ **scale**(`scaleFactor`: *number*): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
 #### Parameters:
 
@@ -453,9 +453,9 @@ Name | Type |
 :------ | :------ |
 `scaleFactor` | *number* |
 
-**Returns:** *void*
+**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:153](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L153)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:200](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L200)
 
 ___
 
@@ -465,7 +465,7 @@ ___
 
 **Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:201](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L201)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:171](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L171)
 
 ___
 
@@ -475,7 +475,7 @@ ___
 
 **Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:210](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L210)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:180](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L180)
 
 ___
 
@@ -485,4 +485,4 @@ ___
 
 **Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:216](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/c1d2f58/src/renderers/RealRenderer/RealRenderer.ts#L216)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:187](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f34f0c8/src/renderers/RealRenderer/RealRenderer.ts#L187)
