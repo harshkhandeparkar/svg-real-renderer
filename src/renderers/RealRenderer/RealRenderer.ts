@@ -39,6 +39,11 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
   public undo = undo;
   public redo = redo;
 
+  /**
+   *
+   * @param {RealRendererOptions} options
+   * @param eventList
+   */
   constructor(
     options: RealRendererOptions,
     eventList: (keyof EventTypes)[] = RealRendererEventList
