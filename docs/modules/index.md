@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.7](../docs.md) / index
+[SVG Real Renderer - v0.3.8](../docs.md) / index
 
 # Module: index
 
@@ -30,4 +30,4 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [src/util/renderPreview.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/util/renderPreview.ts#L8)
+Defined in: [src/util/renderPreview.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/8557d6a/src/util/renderPreview.ts#L8)

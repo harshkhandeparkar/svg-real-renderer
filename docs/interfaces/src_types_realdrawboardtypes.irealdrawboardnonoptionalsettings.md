@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.7](../docs.md) / [src/types/RealDrawBoardTypes](../modules/src_types_realdrawboardtypes.md) / IRealDrawBoardNonOptionalSettings
+[SVG Real Renderer - v0.3.8](../docs.md) / [src/types/RealDrawBoardTypes](../modules/src_types_realdrawboardtypes.md) / IRealDrawBoardNonOptionalSettings
 
 # Interface: IRealDrawBoardNonOptionalSettings
 
@@ -22,4 +22,4 @@
 
 • **toolSettings**: ToolSettings
 
-Defined in: [src/types/RealDrawBoardTypes.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ff87ea8/src/types/RealDrawBoardTypes.ts#L20)
+Defined in: [src/types/RealDrawBoardTypes.ts:26](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/8557d6a/src/types/RealDrawBoardTypes.ts#L26)
