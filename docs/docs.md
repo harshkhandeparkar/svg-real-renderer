@@ -4,30 +4,10 @@ SVG Real Renderer - v0.3.4
 
 ## Table of contents
 
-### Classes
+### Modules
 
-- [RealDrawBoard](classes/realdrawboard.md)
-- [RealRenderer](classes/realrenderer.md)
-
-### Functions
-
-- [renderPreview](docs.md#renderpreview)
-
-## Functions
-
-### renderPreview
-
-▸ **renderPreview**(`data`: RealExport, `renderTo`: SVGSVGElement): *void*
-
-Renders a preview of the given data to a given separate SVG element.
-
-#### Parameters:
-
-Name | Type | Description |
-:------ | :------ | :------ |
-`data` | RealExport | Data to be rendered (exported by using .export()).   |
-`renderTo` | SVGSVGElement | SVG Element to render to.    |
-
-**Returns:** *void*
-
-Defined in: [src/util/renderPreview.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/7404981/src/util/renderPreview.ts#L8)
+- [index](modules/index.md)
+- [src/constants/defaults/RealDrawBoardDefaults](modules/src_constants_defaults_realdrawboarddefaults.md)
+- [src/constants/defaults/RealRendererDefaults](modules/src_constants_defaults_realrendererdefaults.md)
+- [src/types/RealDrawBoardTypes](modules/src_types_realdrawboardtypes.md)
+- [src/types/RealRendererTypes](modules/src_types_realrenderertypes.md)
