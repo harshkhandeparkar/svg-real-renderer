@@ -36,7 +36,7 @@ Name | Type |
 `oldOffsets.x` | *number* |
 `oldOffsets.y` | *number* |
 
-Defined in: [src/constants/events/RealRendererEvents.ts:7](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/constants/events/RealRendererEvents.ts#L7)
+Defined in: [src/constants/events/RealRendererEvents.ts:7](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/constants/events/RealRendererEvents.ts#L7)
 
 ___
 
@@ -51,7 +51,7 @@ Name | Type |
 `newScaleFactor` | *number* |
 `oldScaleFactor` | *number* |
 
-Defined in: [src/constants/events/RealRendererEvents.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/constants/events/RealRendererEvents.ts#L3)
+Defined in: [src/constants/events/RealRendererEvents.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/constants/events/RealRendererEvents.ts#L3)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Type declaration:
 
-Defined in: [src/constants/events/RealRendererEvents.ts:1](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/constants/events/RealRendererEvents.ts#L1)
+Defined in: [src/constants/events/RealRendererEvents.ts:1](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/constants/events/RealRendererEvents.ts#L1)
 
 ___
 
@@ -71,4 +71,4 @@ ___
 
 #### Type declaration:
 
-Defined in: [src/constants/events/RealRendererEvents.ts:2](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/constants/events/RealRendererEvents.ts#L2)
+Defined in: [src/constants/events/RealRendererEvents.ts:2](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/constants/events/RealRendererEvents.ts#L2)

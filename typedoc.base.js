@@ -9,9 +9,6 @@ module.exports = {
   excludeInternal: true,
   includeVersion: true,
   name: 'SVG Real Renderer',
-  out: ['docs'],
-  readme: 'none',
-  entryDocument: 'docs.md',
   entryPoints: [
     'index.ts',
     ...getListOfFiles('src/constants/defaults'),

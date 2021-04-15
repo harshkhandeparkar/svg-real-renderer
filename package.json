@@ -10,7 +10,7 @@
   "private": false,
   "scripts": {
     "build": "tsc && rollup -c",
-    "doc": "typedoc --options typedoc.js",
+    "doc": "typedoc --options typedoc.markdown.js && typedoc --options typedoc.html.js",
     "npm-publish": "yarn build && yarn doc && git add dist && git add docs && yarn publish"
   },
   "dependencies": {},

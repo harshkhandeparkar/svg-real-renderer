@@ -30,7 +30,7 @@
 
 Background color.
 
-Defined in: [src/types/RealRendererTypes.ts:98](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealRendererTypes.ts#L98)
+Defined in: [src/types/RealRendererTypes.ts:98](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/types/RealRendererTypes.ts#L98)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 • **bgType**: [*BGType*](../modules/src_types_realrenderertypes.md#bgtype)
 
-Defined in: [src/types/RealRendererTypes.ts:99](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealRendererTypes.ts#L99)
+Defined in: [src/types/RealRendererTypes.ts:99](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/types/RealRendererTypes.ts#L99)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 • **dimensions**: [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions)
 
-Defined in: [src/types/RealRendererTypes.ts:94](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealRendererTypes.ts#L94)
+Defined in: [src/types/RealRendererTypes.ts:94](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/types/RealRendererTypes.ts#L94)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 Number of updates to be made to the graph per frame.
 
-Defined in: [src/types/RealRendererTypes.ts:103](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealRendererTypes.ts#L103)
+Defined in: [src/types/RealRendererTypes.ts:103](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/types/RealRendererTypes.ts#L103)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 Initial value of the internal time.
 
-Defined in: [src/types/RealRendererTypes.ts:111](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealRendererTypes.ts#L111)
+Defined in: [src/types/RealRendererTypes.ts:111](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/types/RealRendererTypes.ts#L111)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 • **scaleFactor**: *number*
 
-Defined in: [src/types/RealRendererTypes.ts:112](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealRendererTypes.ts#L112)
+Defined in: [src/types/RealRendererTypes.ts:112](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/types/RealRendererTypes.ts#L112)
 
 ___
 
@@ -84,4 +84,4 @@ ___
 
 Amount to increment the internal time by each frame.
 
-Defined in: [src/types/RealRendererTypes.ts:107](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/types/RealRendererTypes.ts#L107)
+Defined in: [src/types/RealRendererTypes.ts:107](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/types/RealRendererTypes.ts#L107)

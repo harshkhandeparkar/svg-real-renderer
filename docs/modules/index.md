@@ -30,4 +30,4 @@ Name | Type | Description |
 
 **Returns:** *void*
 
-Defined in: [src/util/renderPreview.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/cdeee4a/src/util/renderPreview.ts#L8)
+Defined in: [src/util/renderPreview.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/449f651/src/util/renderPreview.ts#L8)
