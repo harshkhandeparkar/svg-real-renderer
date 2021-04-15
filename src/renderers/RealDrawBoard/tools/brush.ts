@@ -124,6 +124,4 @@ export function _onScroll(
     (this._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.toolSettings.brushSize));
     this._display(this._previewStroke.get(identifier));
   }
-
-  this._toolPreview(coords, identifier);
 }
