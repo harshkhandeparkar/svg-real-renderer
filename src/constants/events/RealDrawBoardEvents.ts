@@ -1,5 +1,5 @@
-import { IRealRendererEvents, RealRendererEventList } from '../../RealRenderer/events/RealRendererEvents';
-import { Tool, ToolSettings } from '../tools/tools';
+import { IRealRendererEvents, RealRendererEventList } from './RealRendererEvents';
+import { Tool, ToolSettings } from '../../renderers/RealDrawBoard/tools/tools';
 
 export interface IRealDrawBoardEvents extends IRealRendererEvents {
   'tool-change': {

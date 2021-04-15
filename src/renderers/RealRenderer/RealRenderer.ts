@@ -1,5 +1,5 @@
 import { EventEmitter } from './events/eventEmitter';
-import { IRealRendererEvents, RealRendererEventList } from './events/RealRendererEvents';
+import { IRealRendererEvents, RealRendererEventList } from '../../constants/events/RealRendererEvents';
 
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 

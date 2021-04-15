@@ -1,5 +1,5 @@
 import { RealRenderer } from '../RealRenderer/RealRenderer';
-import { IRealDrawBoardEvents, RealDrawBoardEventList } from './events/RealDrawBoardEvents';
+import { IRealDrawBoardEvents, RealDrawBoardEventList } from '../../constants/events/RealDrawBoardEvents';
 
 import { RealDrawBoardOptions, RealDrawBoardSettings } from '../../types/RealDrawBoardTypes';
 import { RealDrawBoardDefaults } from '../../constants/defaults/RealDrawBoardDefaults';
