@@ -91,7 +91,6 @@ export type BGNone = {
 export type BGType = BGNone | BGRuled | BGGrid | BGAxes;
 
 export interface IRealRendererOptionals {
-  dimensions: GraphDimensions;
   /**
    * Background color.
    */

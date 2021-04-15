@@ -81,11 +81,6 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
         break;
     }
 
-    this.dimensions = this.settings.dimensions;
-    this.originalDimensions = [
-      this.settings.dimensions[0],
-      this.settings.dimensions[1]
-    ]
     this.bgColor = this.settings.bgColor;
     this.bgType = this.settings.bgType;
     this.drawsPerFrame = this.settings.drawsPerFrame;
@@ -161,7 +156,13 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
     })
   }
 
-  attach(svg: SVGSVGElement) {
+  attach(svg: SVGSVGElement, dimensions: GraphDimensions) {
+    this.dimensions = dimensions;
+    this.originalDimensions = [
+      dimensions[0],
+      dimensions[1]
+    ]
+
     this.svg = svg;
 
     this._setSVG();
