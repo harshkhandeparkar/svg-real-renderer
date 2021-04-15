@@ -447,6 +447,11 @@
 
 	var RealRenderer = /** @class */ (function (_super) {
 	    __extends(RealRenderer, _super);
+	    /**
+	     *
+	     * @param {RealRendererOptions} options
+	     * @param eventList
+	     */
 	    function RealRenderer(options, eventList) {
 	        if (eventList === void 0) { eventList = RealRendererEvents.RealRendererEventList; }
 	        var _this = _super.call(this, eventList) || this;
@@ -815,7 +820,7 @@
 	function _onScroll(scrollDelta, coords, identifier) {
 	    this.changeToolSetting('eraserSize', Math.max(1, this.toolSettings.eraserSize - scrollDelta));
 	    if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
-	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize));
+	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize));
 	        this._display(this._previewStroke.get(identifier));
 	    }
 	}
