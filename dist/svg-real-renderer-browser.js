@@ -280,6 +280,11 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.redo = exports.undo = void 0;
 
+	/**
+	 * Undos a certain number of strokes drawn on the graph.
+	 * @param numUndo Number of strokes to undo.
+	 * @returns Self for chaining.
+	 */
 	function undo(numUndo) {
 	    if (numUndo === void 0) { numUndo = 1; }
 	    this._strokeIndex = clamp_1.clamp(this._strokeIndex - numUndo, 0, this.strokes.length - 1);
@@ -289,6 +294,11 @@
 	    return this;
 	}
 	exports.undo = undo;
+	/**
+	 * Redos a certain number of strokes drawn on the graph.
+	 * @param numRedo Number of strokes to redo.
+	 * @returns Self for chaining.
+	 */
 	function redo(numRedo) {
 	    if (numRedo === void 0) { numRedo = 1; }
 	    var doRedo = clamp_1.clamp(numRedo, numRedo, this.strokes.length - this._strokeIndex - 1);
@@ -444,11 +454,14 @@
 
 
 
+	/**
+	 * General Real Renderer with no specific purpose. Should be extended to use.
+	 */
 	var RealRenderer = /** @class */ (function (_super) {
 	    __extends(RealRenderer, _super);
 	    /**
 	     *
-	     * @param {RealRendererOptions} options
+	     * @param options
 	     * @param eventList
 	     */
 	    function RealRenderer(options, eventList) {
@@ -539,6 +552,12 @@
 	                _this.svgSections[strokeNode.section].appendChild(strokeNode.node);
 	        });
 	    };
+	    /**
+	     * Attaches to a DOM SVG element to render to.
+	     * @param svg The SVG element to attach.
+	     * @param dimensions Dimensions of the graph.
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.attach = function (svg, dimensions) {
 	        this.dimensions = dimensions;
 	        this.originalDimensions = [
@@ -549,6 +568,10 @@
 	        this._setSVG();
 	        return this;
 	    };
+	    /**
+	     * Start rendering.
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.startRender = function () {
 	        if (!this._doRender) {
 	            this._doRender = true;
@@ -557,23 +580,41 @@
 	        }
 	        return this;
 	    };
+	    /**
+	     * Stop rendering.
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.stopRender = function () {
 	        this._doRender = false;
 	        this.emit('stop-render', {});
 	        return this;
 	    };
+	    /**
+	     * Toggle rendering.
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.toggleRender = function () {
 	        this._doRender = !this._doRender;
 	        if (this._doRender)
 	            this._render();
 	        return this;
 	    };
+	    /**
+	     * Draw a certain number of frames.
+	     * @param numDraws Number of frames to draw.
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.draw = function (numDraws) {
 	        if (numDraws === void 0) { numDraws = 1; }
 	        for (var i = 0; i < numDraws; i++)
 	            this._draw();
 	        return this;
 	    };
+	    /**
+	     * Scale/zoom the graph.
+	     * @param scaleFactor Factor to scale the graph by. Larger number zooms in.
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.scale = function (scaleFactor) {
 	        var oldScaleFactor = this.scaleFactor;
 	        this.scaleFactor = scaleFactor;
@@ -587,6 +628,12 @@
 	        });
 	        return this;
 	    };
+	    /**
+	     * Change the offsets of the graph (for panning)
+	     * @param xOffset Offset in the x-direction.
+	     * @param yOffset Offset in the y-direction.
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.changeOffsets = function (xOffset, yOffset) {
 	        var oldOffsets = {
 	            x: this._offsetX,
@@ -604,6 +651,10 @@
 	        });
 	        return this;
 	    };
+	    /**
+	     * Export the data of the graph in a certain format that can be used to load the data later. Load using .import().
+	     * @returns Data of the graph in a storable and loadable format.
+	     */
 	    RealRenderer.prototype.exportData = function () {
 	        var strokeExport = [];
 	        this.strokes.forEach(function (stroke) {
@@ -615,6 +666,11 @@
 	            dimensions: this.dimensions
 	        };
 	    };
+	    /**
+	     * Import the data exported by .export() method.
+	     * @param data Data exported by .export()
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.importData = function (data) {
 	        var _this = this;
 	        this.strokes.forEach(function (stroke) {
@@ -650,10 +706,18 @@
 	        }
 	        return this;
 	    };
+	    /**
+	     * Resets the internal time counter.
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.resetTime = function () {
 	        this.time = 0;
 	        return this;
 	    };
+	    /**
+	     * Resets everything regarding the graph.
+	     * @returns Self for chaining.
+	     */
 	    RealRenderer.prototype.reset = function () {
 	        this.strokes = [
 	            blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType)
@@ -853,6 +917,7 @@
 	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
 	function _startStroke(coords, identifier) {
 	    this._doPreview = false;
+	    this._previewStroke.delete(identifier);
 	    var linePath = new _path.Path('', 'strokes');
 	    linePath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	    linePath.setStrokeWidth(this.toolSettings.lineThickness);
@@ -893,7 +958,7 @@
 	function _onScroll(scrollDelta, coords, identifier) {
 	    this.changeToolSetting('lineThickness', Math.max(1, this.toolSettings.lineThickness - scrollDelta));
 	    if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
-	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize));
+	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness));
 	        this._display(this._previewStroke.get(identifier));
 	    }
 	}
@@ -966,6 +1031,11 @@
 	exports._resetBoard = exports.clear = exports.clearPreview = exports.changeToolSetting = exports.changeTool = void 0;
 
 
+	/**
+	 * Change the currently selected tool on the draw board.
+	 * @param newTool
+	 * @returns Self for chaining.
+	 */
 	function changeTool(newTool) {
 	    var oldTool = this.tool;
 	    this.tool = newTool;
@@ -987,6 +1057,12 @@
 	    return this;
 	}
 	exports.changeTool = changeTool;
+	/**
+	 * Change a tool setting.
+	 * @param settingName Name of the tool setting.
+	 * @param value New value for the setting.
+	 * @returns Self for chaining.
+	 */
 	function changeToolSetting(settingName, value) {
 	    var oldValue = this.toolSettings[settingName];
 	    this.toolSettings[settingName] = value;
@@ -998,6 +1074,10 @@
 	    return this;
 	}
 	exports.changeToolSetting = changeToolSetting;
+	/**
+	 * Clear all tool previews.
+	 * @returns Self for chaining.
+	 */
 	function clearPreview() {
 	    this._previewStroke.forEach(function (stroke) {
 	        stroke.forEach(function (node) {
@@ -1008,6 +1088,10 @@
 	    return this;
 	}
 	exports.clearPreview = clearPreview;
+	/**
+	 * Clear the board without resetting any parameters.
+	 * @returns Self for chaining.
+	 */
 	function clear() {
 	    if (this._strokeIndex > 0) {
 	        this._strokeIndex = 0;
@@ -1024,6 +1108,9 @@
 	    return this;
 	}
 	exports.clear = clear;
+	/**
+	 * @internal
+	 */
 	function _resetBoard() {
 	    this.bgColor = this.settings.bgColor;
 	    this.tool = this.settings.tool;
@@ -1133,6 +1220,9 @@
 
 
 
+	/**
+	 * Drawing board.
+	 */
 	var RealDrawBoard = /** @class */ (function (_super) {
 	    __extends(RealDrawBoard, _super);
 	    function RealDrawBoard(options) {

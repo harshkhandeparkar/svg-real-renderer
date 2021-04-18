@@ -22,4 +22,4 @@
 
 • **toolSettings**: ToolSettings
 
-Defined in: [src/types/RealDrawBoardTypes.ts:26](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/8557d6a/src/types/RealDrawBoardTypes.ts#L26)
+Defined in: [src/types/RealDrawBoardTypes.ts:26](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f8dea34/src/types/RealDrawBoardTypes.ts#L26)
