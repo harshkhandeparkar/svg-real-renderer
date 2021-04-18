@@ -33,6 +33,7 @@ export function _startStroke(
   identifier: string
 ) {
   this._doPreview = false;
+  this._previewStroke.delete(identifier);
 
   const linePath = new Path('', 'strokes');
   linePath.setStroke(getRGBColorString(this.toolSettings.lineColor));
@@ -130,7 +131,7 @@ export function _onScroll(
   this.changeToolSetting('lineThickness', Math.max(1, this.toolSettings.lineThickness - scrollDelta));
 
   if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
-    (this._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.toolSettings.brushSize));
+    (this._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.toolSettings.lineThickness));
     this._display(this._previewStroke.get(identifier));
   }
 }
