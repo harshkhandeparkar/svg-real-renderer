@@ -20,12 +20,13 @@ export type SVGSection = 'bg' | 'strokes' | 'overlay';
 export type SVGSections = {
   [Property in SVGSection]: SVGGElement;
 }
+export type StrokeNodeType = 'path' | 'circle' | 'text' | 'polygon';
 /**
  * One stroke is an combination of multiple stroke nodes
  */
 export type Stroke = StrokeNode[];
 export type StrokeNodeData = {
-  type: 'path' | 'circle' | 'text' | 'polygon';
+  type: StrokeNodeType;
   data: string;
   section: SVGSection;
 }

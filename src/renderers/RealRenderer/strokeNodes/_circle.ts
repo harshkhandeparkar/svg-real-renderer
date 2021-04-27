@@ -1,14 +1,13 @@
-import { Coordinate, StrokeNodeData, SVGSection } from '../../../types/RealRendererTypes';
+import { Coordinate, SVGSection } from '../../../types/RealRendererTypes';
+import { Node } from './_node';
 
-export class Circle {
-  node: SVGCircleElement;
-  section: SVGSection;
-
+export class Circle extends Node<SVGCircleElement, 'circle'> {
   constructor(
     center: Coordinate,
     initialRadius: number,
     section: SVGSection
   ) {
+    super(section, 'circle', 'circle');
     const path: SVGCircleElement = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 
     path.setAttribute('cx', center[0].toString());
@@ -18,23 +17,6 @@ export class Circle {
     this.section = section;
   }
 
-  export(): StrokeNodeData {
-    return {
-      type: 'circle',
-      data: this.node.outerHTML.toString(),
-      section: this.section
-    }
-  }
-
-  import(data: string) {
-    const wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    wrapper.innerHTML = data;
-    this.node = <SVGCircleElement>wrapper.firstChild;
-
-    wrapper.removeChild(this.node);
-    wrapper.remove();
-  }
-
   updateRadius(newRadius: number) {
     this.node.setAttribute('r', newRadius.toString());
   }
@@ -42,26 +24,5 @@ export class Circle {
   updateCenter(newCenter: Coordinate) {
     this.node.setAttribute('cx', newCenter[0].toString());
     this.node.setAttribute('cy', newCenter[1].toString());
-  }
-
-  setStroke(stroke: string) {
-    this.node.setAttribute('stroke', stroke);
-  }
-
-  setFill(fill: string) {
-    this.node.setAttribute('fill', fill);
-  }
-
-  setStrokeWidth(width: number) {
-    this.node.setAttribute('stroke-width', width.toString());
-  }
-
-  setDashed(dashColor: string) {
-    this.node.setAttribute('stroke-dasharray', '2,2');
-    this.setStroke(dashColor);
-  }
-
-  delete() {
-    this.node.remove();
   }
 }
