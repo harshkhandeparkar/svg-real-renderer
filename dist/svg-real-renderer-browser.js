@@ -77,81 +77,127 @@
 	exports.getRGBColorString = getRGBColorString;
 	});
 
-	var _path = createCommonjsModule(function (module, exports) {
+	var _node = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.Path = void 0;
-	var Path = /** @class */ (function () {
-	    function Path(initialD, section) {
-	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-	        path.setAttribute('d', initialD);
+	exports.Node = void 0;
+	var Node = /** @class */ (function () {
+	    function Node(section, elementName, strokeNodeType) {
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', this.elementName);
+	        this.elementName = elementName;
+	        this.strokeNodeType = strokeNodeType;
 	        this.node = path;
 	        this.section = section;
 	    }
-	    Path.prototype.export = function () {
+	    Node.prototype.export = function () {
 	        return {
-	            type: 'path',
+	            type: this.strokeNodeType,
 	            data: this.node.outerHTML.toString(),
 	            section: this.section
 	        };
 	    };
-	    Path.prototype.import = function (data) {
+	    Node.prototype.import = function (data) {
 	        var wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	        wrapper.innerHTML = data;
 	        this.node = wrapper.firstChild;
 	        wrapper.removeChild(this.node);
 	        wrapper.remove();
 	    };
+	    Node.prototype.setStroke = function (stroke) {
+	        this.node.setAttribute('stroke', stroke);
+	    };
+	    Node.prototype.setFill = function (fill) {
+	        this.node.setAttribute('fill', fill);
+	    };
+	    Node.prototype.setStrokeWidth = function (width) {
+	        this.node.setAttribute('stroke-width', width.toString());
+	    };
+	    Node.prototype.setDashed = function (dashColor) {
+	        this.node.setAttribute('stroke-dasharray', '2,2');
+	        this.setStroke(dashColor);
+	    };
+	    Node.prototype.setId = function (id) {
+	        this.node.setAttribute('id', id);
+	    };
+	    Node.prototype.setClassName = function (className) {
+	        this.node.classList.add(className);
+	    };
+	    Node.prototype.delete = function () {
+	        this.node.remove();
+	    };
+	    return Node;
+	}());
+	exports.Node = Node;
+	});
+
+	var _path = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Path = void 0;
+
+	var Path = /** @class */ (function (_super) {
+	    __extends(Path, _super);
+	    function Path(initialD, section) {
+	        var _this = _super.call(this, section, 'path', 'path') || this;
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	        path.setAttribute('d', initialD);
+	        _this.node = path;
+	        _this.section = section;
+	        return _this;
+	    }
 	    Path.prototype.updatePath = function (newD) {
 	        this.node.setAttribute('d', newD);
 	    };
 	    Path.prototype.appendPath = function (appendD) {
 	        this.node.setAttribute('d', this.node.getAttribute('d') + ' ' + appendD);
 	    };
-	    Path.prototype.setStroke = function (stroke) {
-	        this.node.setAttribute('stroke', stroke);
-	    };
-	    Path.prototype.setFill = function (fill) {
-	        this.node.setAttribute('fill', fill);
-	    };
-	    Path.prototype.setStrokeWidth = function (width) {
-	        this.node.setAttribute('stroke-width', width.toString());
-	    };
-	    Path.prototype.delete = function () {
-	        this.node.remove();
-	    };
 	    return Path;
-	}());
+	}(_node.Node));
 	exports.Path = Path;
 	});
 
 	var _polygon = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Polygon = void 0;
-	var Polygon = /** @class */ (function () {
+
+	var Polygon = /** @class */ (function (_super) {
+	    __extends(Polygon, _super);
 	    function Polygon(points, section) {
+	        var _this = _super.call(this, section, 'polygon', 'polygon') || this;
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
 	        var pointsString = '';
 	        points.forEach(function (point) {
 	            pointsString += point[0] + "," + point[1] + " ";
 	        });
 	        path.setAttribute('points', pointsString);
-	        this.node = path;
-	        this.section = section;
+	        _this.node = path;
+	        _this.section = section;
+	        return _this;
 	    }
-	    Polygon.prototype.export = function () {
-	        return {
-	            type: 'polygon',
-	            data: this.node.outerHTML.toString(),
-	            section: this.section
-	        };
-	    };
-	    Polygon.prototype.import = function (data) {
-	        var wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	        wrapper.innerHTML = data;
-	        this.node = wrapper.firstChild;
-	        wrapper.removeChild(this.node);
-	        wrapper.remove();
-	    };
 	    Polygon.prototype.updatePoints = function (newPoints) {
 	        var pointsString = '';
 	        newPoints.forEach(function (point) {
@@ -162,20 +208,8 @@
 	    Polygon.prototype.addPoint = function (point) {
 	        this.node.setAttribute('points', this.node.getAttribute('points') + (point[0] + "," + point[1] + " "));
 	    };
-	    Polygon.prototype.setStroke = function (stroke) {
-	        this.node.setAttribute('stroke', stroke);
-	    };
-	    Polygon.prototype.setFill = function (fill) {
-	        this.node.setAttribute('fill', fill);
-	    };
-	    Polygon.prototype.setStrokeWidth = function (width) {
-	        this.node.setAttribute('stroke-width', width.toString());
-	    };
-	    Polygon.prototype.delete = function () {
-	        this.node.remove();
-	    };
 	    return Polygon;
-	}());
+	}(_node.Node));
 	exports.Polygon = Polygon;
 	});
 
@@ -312,31 +346,34 @@
 	});
 
 	var _circle = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Circle = void 0;
-	var Circle = /** @class */ (function () {
+
+	var Circle = /** @class */ (function (_super) {
+	    __extends(Circle, _super);
 	    function Circle(center, initialRadius, section) {
+	        var _this = _super.call(this, section, 'circle', 'circle') || this;
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
 	        path.setAttribute('cx', center[0].toString());
 	        path.setAttribute('cy', center[1].toString());
 	        path.setAttribute('r', initialRadius.toString());
-	        this.node = path;
-	        this.section = section;
+	        _this.node = path;
+	        _this.section = section;
+	        return _this;
 	    }
-	    Circle.prototype.export = function () {
-	        return {
-	            type: 'circle',
-	            data: this.node.outerHTML.toString(),
-	            section: this.section
-	        };
-	    };
-	    Circle.prototype.import = function (data) {
-	        var wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	        wrapper.innerHTML = data;
-	        this.node = wrapper.firstChild;
-	        wrapper.removeChild(this.node);
-	        wrapper.remove();
-	    };
 	    Circle.prototype.updateRadius = function (newRadius) {
 	        this.node.setAttribute('r', newRadius.toString());
 	    };
@@ -344,64 +381,48 @@
 	        this.node.setAttribute('cx', newCenter[0].toString());
 	        this.node.setAttribute('cy', newCenter[1].toString());
 	    };
-	    Circle.prototype.setStroke = function (stroke) {
-	        this.node.setAttribute('stroke', stroke);
-	    };
-	    Circle.prototype.setFill = function (fill) {
-	        this.node.setAttribute('fill', fill);
-	    };
-	    Circle.prototype.setStrokeWidth = function (width) {
-	        this.node.setAttribute('stroke-width', width.toString());
-	    };
-	    Circle.prototype.setDashed = function (dashColor) {
-	        this.node.setAttribute('stroke-dasharray', '2,2');
-	        this.setStroke(dashColor);
-	    };
-	    Circle.prototype.delete = function () {
-	        this.node.remove();
-	    };
 	    return Circle;
-	}());
+	}(_node.Node));
 	exports.Circle = Circle;
 	});
 
 	var _text = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Text = void 0;
-	var Text = /** @class */ (function () {
+
+	var Text = /** @class */ (function (_super) {
+	    __extends(Text, _super);
 	    function Text(position, initialText, section) {
+	        var _this = _super.call(this, section, 'text', 'text') || this;
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 	        path.textContent = initialText;
 	        path.setAttribute('x', position[0].toString());
 	        path.setAttribute('y', position[1].toString());
-	        this.node = path;
-	        this.section = section;
+	        _this.node = path;
+	        _this.section = section;
+	        return _this;
 	    }
-	    Text.prototype.export = function () {
-	        return {
-	            type: 'text',
-	            data: this.node.outerHTML.toString(),
-	            section: this.section
-	        };
-	    };
-	    Text.prototype.import = function (data) {
-	        var wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-	        wrapper.innerHTML = data;
-	        this.node = wrapper.firstChild;
-	        wrapper.removeChild(this.node);
-	        wrapper.remove();
-	    };
 	    Text.prototype.updateText = function (newText) {
 	        this.node.textContent = newText;
 	    };
 	    Text.prototype.setStyle = function (proprty, value) {
 	        this.node.style[proprty] = value;
 	    };
-	    Text.prototype.delete = function () {
-	        this.node.remove();
-	    };
 	    return Text;
-	}());
+	}(_node.Node));
 	exports.Text = Text;
 	});
 
@@ -725,6 +746,38 @@
 	        this._strokeIndex = 0;
 	        this.resetTime();
 	        this._display(this.strokes[this._strokeIndex]);
+	        return this;
+	    };
+	    /**
+	     * Changes the background of the graph.
+	     * @param newBG New background.
+	     * @returns Self for chaining.
+	     */
+	    RealRenderer.prototype.changeBackground = function (newBG) {
+	        this.bgType = newBG;
+	        var newBGStrokes = blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType);
+	        switch (this.bgType.type) {
+	            case 'axes':
+	                this.bgType.xOffset = clamp_1.clamp(this.bgType.xOffset, 0, 100); // %age
+	                this.bgType.yOffset = clamp_1.clamp(this.bgType.yOffset, 0, 100); // %age
+	                break;
+	            case 'grid':
+	                this.bgType.xSpacing = clamp_1.clamp(this.bgType.xSpacing, 0, 100); // %age
+	                this.bgType.ySpacing = clamp_1.clamp(this.bgType.ySpacing, 0, 100); // %age
+	                if (this.bgType.xSpacing === 0)
+	                    this.bgType.xSpacing = 1;
+	                if (this.bgType.ySpacing === 0)
+	                    this.bgType.ySpacing = 1;
+	                break;
+	            case 'ruled':
+	                this.bgType.spacing = clamp_1.clamp(this.bgType.spacing, 0, 100);
+	                if (this.bgType.spacing === 0)
+	                    this.bgType.spacing = 1;
+	                break;
+	        }
+	        this.strokes[0].forEach(function (stroke) { return stroke.delete(); });
+	        this.strokes[0] = newBGStrokes;
+	        this._display(this.strokes[0]);
 	        return this;
 	    };
 	    return RealRenderer;

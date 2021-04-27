@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.8](../docs.md) / src/types/RealDrawBoardTypes
+[SVG Real Renderer - v0.3.9](../docs.md) / src/types/RealDrawBoardTypes
 
 # Module: src/types/RealDrawBoardTypes
 
@@ -23,7 +23,7 @@
 
 Ƭ **RealDrawBoardOptions**: [*IRealDrawBoardNonOptionalOptions*](../interfaces/src_types_realdrawboardtypes.irealdrawboardnonoptionaloptions.md) & [*IRealDrawBoardOptionals*](../interfaces/src_types_realdrawboardtypes.irealdrawboardoptionals.md) \| {}
 
-Defined in: [src/types/RealDrawBoardTypes.ts:30](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f8dea34/src/types/RealDrawBoardTypes.ts#L30)
+Defined in: [src/types/RealDrawBoardTypes.ts:30](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/692d19f/src/types/RealDrawBoardTypes.ts#L30)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 Ƭ **RealDrawBoardParameters**: [*IRealDrawBoardOptionals*](../interfaces/src_types_realdrawboardtypes.irealdrawboardoptionals.md) \| {}
 
-Defined in: [src/types/RealDrawBoardTypes.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f8dea34/src/types/RealDrawBoardTypes.ts#L31)
+Defined in: [src/types/RealDrawBoardTypes.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/692d19f/src/types/RealDrawBoardTypes.ts#L31)
 
 ___
 
@@ -39,4 +39,4 @@ ___
 
 Ƭ **RealDrawBoardSettings**: [*IRealDrawBoardNonOptionalSettings*](../interfaces/src_types_realdrawboardtypes.irealdrawboardnonoptionalsettings.md) & [*IRealDrawBoardOptionals*](../interfaces/src_types_realdrawboardtypes.irealdrawboardoptionals.md)
 
-Defined in: [src/types/RealDrawBoardTypes.ts:29](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f8dea34/src/types/RealDrawBoardTypes.ts#L29)
+Defined in: [src/types/RealDrawBoardTypes.ts:29](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/692d19f/src/types/RealDrawBoardTypes.ts#L29)
