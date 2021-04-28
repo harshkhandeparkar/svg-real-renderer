@@ -684,7 +684,8 @@
 	        return {
 	            exportData: strokeExport,
 	            strokeIndex: this._strokeIndex,
-	            dimensions: this.dimensions
+	            dimensions: this.dimensions,
+	            bgType: this.bgType
 	        };
 	    };
 	    /**
@@ -698,6 +699,8 @@
 	            stroke.forEach(function (node) { return node.delete(); });
 	        });
 	        this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
+	        if (data.bgType)
+	            this.bgType = data.bgType;
 	        this.strokes = [];
 	        data.exportData.forEach(function (strokeExport) {
 	            _this.strokes.push(strokeExport.map(function (strokeNodeData) {
