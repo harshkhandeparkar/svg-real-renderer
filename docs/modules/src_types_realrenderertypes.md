@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.10](../docs.md) / src/types/RealRendererTypes
+[SVG Real Renderer - v0.3.11](../docs.md) / src/types/RealRendererTypes
 
 # Module: src/types/RealRendererTypes
 
@@ -48,7 +48,7 @@ Name | Type | Description |
 `xOffset` | *number* | %age offset of the y-axis (in the x-direction).   |
 `yOffset` | *number* | %age offset of the x-axis (in the y-direction).   |
 
-Defined in: [src/types/RealRendererTypes.ts:47](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L47)
+Defined in: [src/types/RealRendererTypes.ts:47](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L47)
 
 ___
 
@@ -67,7 +67,7 @@ Name | Type | Description |
 `xSpacing` | *number* | Percentage spacing between the vertical grid lines lines.   |
 `ySpacing` | *number* | Percentage spacing between the horizontal grid lines lines.   |
 
-Defined in: [src/types/RealRendererTypes.ts:76](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L76)
+Defined in: [src/types/RealRendererTypes.ts:76](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L76)
 
 ___
 
@@ -83,7 +83,7 @@ Name | Type |
 :------ | :------ |
 `type` | *none* |
 
-Defined in: [src/types/RealRendererTypes.ts:92](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L92)
+Defined in: [src/types/RealRendererTypes.ts:92](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L92)
 
 ___
 
@@ -102,7 +102,7 @@ Name | Type | Description |
 `spacing` | *number* | Percentage spacing between the ruled lines.   |
 `type` | *ruled* | - |
 
-Defined in: [src/types/RealRendererTypes.ts:63](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L63)
+Defined in: [src/types/RealRendererTypes.ts:63](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L63)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 Ƭ **BGType**: [*BGNone*](src_types_realrenderertypes.md#bgnone) \| [*BGRuled*](src_types_realrenderertypes.md#bgruled) \| [*BGGrid*](src_types_realrenderertypes.md#bggrid) \| [*BGAxes*](src_types_realrenderertypes.md#bgaxes)
 
-Defined in: [src/types/RealRendererTypes.ts:96](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L96)
+Defined in: [src/types/RealRendererTypes.ts:96](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L96)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 An array of R, G and B colors ranging between 0 and 1.
 
-Defined in: [src/types/RealRendererTypes.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L13)
+Defined in: [src/types/RealRendererTypes.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L13)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 A coordinate in the format [x, y].
 
-Defined in: [src/types/RealRendererTypes.ts:17](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L17)
+Defined in: [src/types/RealRendererTypes.ts:17](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L17)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 Dimensions of the graph in the format [width, height].
 
-Defined in: [src/types/RealRendererTypes.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L9)
+Defined in: [src/types/RealRendererTypes.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L9)
 
 ___
 
@@ -159,7 +159,7 @@ Name | Type |
 `exportData` | [*StrokeExport*](src_types_realrenderertypes.md#strokeexport)[] |
 `strokeIndex` | *number* |
 
-Defined in: [src/types/RealRendererTypes.ts:37](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L37)
+Defined in: [src/types/RealRendererTypes.ts:37](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L37)
 
 ___
 
@@ -167,7 +167,7 @@ ___
 
 Ƭ **RealRendererOptions**: [*IRealRendererNonOptionals*](../interfaces/src_types_realrenderertypes.irealrenderernonoptionals.md) & [*IRealRendererOptionals*](../interfaces/src_types_realrenderertypes.irealrendereroptionals.md) \| {}
 
-Defined in: [src/types/RealRendererTypes.ts:128](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L128)
+Defined in: [src/types/RealRendererTypes.ts:128](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L128)
 
 ___
 
@@ -175,7 +175,7 @@ ___
 
 Ƭ **RealRendererParameters**: [*IRealRendererOptionals*](../interfaces/src_types_realrenderertypes.irealrendereroptionals.md) \| {}
 
-Defined in: [src/types/RealRendererTypes.ts:129](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L129)
+Defined in: [src/types/RealRendererTypes.ts:129](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L129)
 
 ___
 
@@ -183,7 +183,7 @@ ___
 
 Ƭ **RealRendererSettings**: [*IRealRendererNonOptionals*](../interfaces/src_types_realrenderertypes.irealrenderernonoptionals.md) & [*IRealRendererOptionals*](../interfaces/src_types_realrenderertypes.irealrendereroptionals.md)
 
-Defined in: [src/types/RealRendererTypes.ts:127](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L127)
+Defined in: [src/types/RealRendererTypes.ts:127](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L127)
 
 ___
 
@@ -191,7 +191,7 @@ ___
 
 Ƭ **SVGSection**: *bg* \| *strokes* \| *overlay*
 
-Defined in: [src/types/RealRendererTypes.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L19)
+Defined in: [src/types/RealRendererTypes.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L19)
 
 ___
 
@@ -199,7 +199,7 @@ ___
 
 Ƭ **SVGSections**: { [Property in SVGSection]: SVGGElement}
 
-Defined in: [src/types/RealRendererTypes.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L20)
+Defined in: [src/types/RealRendererTypes.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L20)
 
 ___
 
@@ -209,7 +209,7 @@ ___
 
 One stroke is an combination of multiple stroke nodes
 
-Defined in: [src/types/RealRendererTypes.ts:27](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L27)
+Defined in: [src/types/RealRendererTypes.ts:27](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L27)
 
 ___
 
@@ -217,7 +217,7 @@ ___
 
 Ƭ **StrokeExport**: [*StrokeNodeData*](src_types_realrenderertypes.md#strokenodedata)[]
 
-Defined in: [src/types/RealRendererTypes.ts:33](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L33)
+Defined in: [src/types/RealRendererTypes.ts:33](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L33)
 
 ___
 
@@ -225,7 +225,7 @@ ___
 
 Ƭ **StrokeNode**: Path \| Circle \| Text \| Polygon
 
-Defined in: [src/types/RealRendererTypes.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L18)
+Defined in: [src/types/RealRendererTypes.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L18)
 
 ___
 
@@ -241,7 +241,7 @@ Name | Type |
 `section` | [*SVGSection*](src_types_realrenderertypes.md#svgsection) |
 `type` | [*StrokeNodeType*](src_types_realrenderertypes.md#strokenodetype) |
 
-Defined in: [src/types/RealRendererTypes.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L28)
+Defined in: [src/types/RealRendererTypes.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L28)
 
 ___
 
@@ -249,4 +249,4 @@ ___
 
 Ƭ **StrokeNodeType**: *path* \| *circle* \| *text* \| *polygon*
 
-Defined in: [src/types/RealRendererTypes.ts:23](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/types/RealRendererTypes.ts#L23)
+Defined in: [src/types/RealRendererTypes.ts:23](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L23)

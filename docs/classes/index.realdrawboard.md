@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.10](../docs.md) / [index](../modules/index.md) / RealDrawBoard
+[SVG Real Renderer - v0.3.11](../docs.md) / [index](../modules/index.md) / RealDrawBoard
 
 # Class: RealDrawBoard
 
@@ -80,7 +80,7 @@ Name | Type |
 
 Overrides: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:64](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L64)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:64](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L64)
 
 ## Properties
 
@@ -90,7 +90,7 @@ Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:64](https://github.com
 
 Inherited from: [RealRenderer](index.realrenderer.md).[_doRender](index.realrenderer.md#_dorender)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:40](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L40)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:40](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L40)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[_offsetX](index.realrenderer.md#_offsetx)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:29](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L29)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:29](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L29)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[_offsetY](index.realrenderer.md#_offsety)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:30](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L30)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:30](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L30)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[_strokeIndex](index.realrenderer.md#_strokeindex)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L34)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L34)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[bgColor](index.realrenderer.md#bgcolor)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:35](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L35)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:35](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L35)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[bgType](index.realrenderer.md#bgtype)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:36](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L36)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:36](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L36)
 
 ___
 
@@ -164,9 +164,9 @@ Name | Type |
 
 Self for chaining.
 
-Defined in: [src/renderers/RealDrawBoard/boardManip.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/boardManip.ts#L10)
+Defined in: [src/renderers/RealDrawBoard/boardManip.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/boardManip.ts#L10)
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:62](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L62)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:62](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L62)
 
 ___
 
@@ -197,9 +197,9 @@ Name | Type | Description |
 
 Self for chaining.
 
-Defined in: [src/renderers/RealDrawBoard/boardManip.ts:41](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/boardManip.ts#L41)
+Defined in: [src/renderers/RealDrawBoard/boardManip.ts:41](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/boardManip.ts#L41)
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:61](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L61)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:61](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L61)
 
 ___
 
@@ -217,9 +217,9 @@ Clear the board without resetting any parameters.
 
 Self for chaining.
 
-Defined in: [src/renderers/RealDrawBoard/boardManip.ts:78](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/boardManip.ts#L78)
+Defined in: [src/renderers/RealDrawBoard/boardManip.ts:78](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/boardManip.ts#L78)
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:64](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L64)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:64](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L64)
 
 ___
 
@@ -237,9 +237,9 @@ Clear all tool previews.
 
 Self for chaining.
 
-Defined in: [src/renderers/RealDrawBoard/boardManip.ts:62](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/boardManip.ts#L62)
+Defined in: [src/renderers/RealDrawBoard/boardManip.ts:62](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/boardManip.ts#L62)
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:63](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L63)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:63](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L63)
 
 ___
 
@@ -249,7 +249,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[dimensions](index.realrenderer.md#dimensions)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:27](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L27)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:27](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L27)
 
 ___
 
@@ -259,7 +259,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[drawsPerFrame](index.realrenderer.md#drawsperframe)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:37](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L37)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:37](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L37)
 
 ___
 
@@ -275,6 +275,7 @@ Name | Type |
 `board-reset`? | *Map*<string, (`params`: {}) => *void*\> |
 `change-offsets`? | *Map*<string, (`params`: { `newOffsets`: { `x`: *number* ; `y`: *number*  } ; `oldOffsets`: { `x`: *number* ; `y`: *number*  }  }) => *void*\> |
 `change-scale`? | *Map*<string, (`params`: { `newScaleFactor`: *number* ; `oldScaleFactor`: *number*  }) => *void*\> |
+`import`? | *Map*<string, (`params`: { `import`: [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)  }) => *void*\> |
 `start-render`? | *Map*<string, (`params`: {}) => *void*\> |
 `stop-render`? | *Map*<string, (`params`: {}) => *void*\> |
 `tool-change`? | *Map*<string, (`params`: { `newTool`: Tool ; `oldTool`: Tool  }) => *void*\> |
@@ -282,7 +283,7 @@ Name | Type |
 
 Inherited from: [RealRenderer](index.realrenderer.md).[eventHandlers](index.realrenderer.md#eventhandlers)
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:2](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/events/eventEmitter.ts#L2)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:2](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/events/eventEmitter.ts#L2)
 
 ___
 
@@ -292,7 +293,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[originalDimensions](index.realrenderer.md#originaldimensions)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L31)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L31)
 
 ___
 
@@ -316,11 +317,11 @@ Name | Type | Description |
 
 Self for chaining.
 
-Defined in: [src/renderers/RealRenderer/undo.ts:24](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/undo.ts#L24)
+Defined in: [src/renderers/RealRenderer/undo.ts:24](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/undo.ts#L24)
 
 Inherited from: [RealRenderer](index.realrenderer.md).[redo](index.realrenderer.md#redo)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:43](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L43)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:43](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L43)
 
 ___
 
@@ -330,7 +331,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[scaleFactor](index.realrenderer.md#scalefactor)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L28)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L28)
 
 ___
 
@@ -340,7 +341,7 @@ ___
 
 Overrides: [RealRenderer](index.realrenderer.md).[settings](index.realrenderer.md#settings)
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L34)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L34)
 
 ___
 
@@ -350,7 +351,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[strokes](index.realrenderer.md#strokes)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:32](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L32)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:32](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L32)
 
 ___
 
@@ -360,7 +361,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[svg](index.realrenderer.md#svg)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:25](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L25)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:25](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L25)
 
 ___
 
@@ -370,7 +371,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[svgSections](index.realrenderer.md#svgsections)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:26](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L26)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:26](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L26)
 
 ___
 
@@ -380,7 +381,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[time](index.realrenderer.md#time)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:39](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L39)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:39](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L39)
 
 ___
 
@@ -390,7 +391,7 @@ ___
 
 Inherited from: [RealRenderer](index.realrenderer.md).[timeStep](index.realrenderer.md#timestep)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:38](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L38)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:38](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L38)
 
 ___
 
@@ -398,7 +399,7 @@ ___
 
 • **tool**: Tool
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:35](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L35)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:35](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L35)
 
 ___
 
@@ -406,7 +407,7 @@ ___
 
 • **toolSettings**: ToolSettings
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:36](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L36)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:36](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L36)
 
 ___
 
@@ -430,11 +431,11 @@ Name | Type | Description |
 
 Self for chaining.
 
-Defined in: [src/renderers/RealRenderer/undo.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/undo.ts#L9)
+Defined in: [src/renderers/RealRenderer/undo.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/undo.ts#L9)
 
 Inherited from: [RealRenderer](index.realrenderer.md).[undo](index.realrenderer.md#undo)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:42](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L42)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:42](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L42)
 
 ## Methods
 
@@ -457,7 +458,7 @@ Self for chaining.
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:168](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L168)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:168](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L168)
 
 ___
 
@@ -479,7 +480,7 @@ Self for chaining.
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:383](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L383)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:387](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L387)
 
 ___
 
@@ -502,7 +503,7 @@ Self for chaining.
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:255](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L255)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:255](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L255)
 
 ___
 
@@ -524,7 +525,7 @@ Self for chaining.
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:221](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L221)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:221](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L221)
 
 ___
 
@@ -536,7 +537,7 @@ ___
 
 Name | Type |
 :------ | :------ |
-`Event` | *tool-change* \| *tool-setting-change* \| *board-cleared* \| *board-reset* \| *start-render* \| *stop-render* \| *change-scale* \| *change-offsets* |
+`Event` | *tool-change* \| *tool-setting-change* \| *board-cleared* \| *board-reset* \| *start-render* \| *stop-render* \| *change-scale* \| *change-offsets* \| *import* |
 
 #### Parameters:
 
@@ -549,7 +550,7 @@ Name | Type |
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/events/eventEmitter.ts#L28)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/events/eventEmitter.ts#L28)
 
 ___
 
@@ -565,7 +566,7 @@ Data of the graph in a storable and loadable format.
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:279](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L279)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:279](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L279)
 
 ___
 
@@ -587,7 +588,7 @@ Self for chaining.
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:300](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L300)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:300](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L300)
 
 ___
 
@@ -599,7 +600,7 @@ ___
 
 Name | Type |
 :------ | :------ |
-`Event` | *tool-change* \| *tool-setting-change* \| *board-cleared* \| *board-reset* \| *start-render* \| *stop-render* \| *change-scale* \| *change-offsets* |
+`Event` | *tool-change* \| *tool-setting-change* \| *board-cleared* \| *board-reset* \| *start-render* \| *stop-render* \| *change-scale* \| *change-offsets* \| *import* |
 
 #### Parameters:
 
@@ -612,7 +613,7 @@ Name | Type |
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:21](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/events/eventEmitter.ts#L21)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:21](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/events/eventEmitter.ts#L21)
 
 ___
 
@@ -624,7 +625,7 @@ ___
 
 Name | Type |
 :------ | :------ |
-`Event` | *tool-change* \| *tool-setting-change* \| *board-cleared* \| *board-reset* \| *start-render* \| *stop-render* \| *change-scale* \| *change-offsets* |
+`Event` | *tool-change* \| *tool-setting-change* \| *board-cleared* \| *board-reset* \| *start-render* \| *stop-render* \| *change-scale* \| *change-offsets* \| *import* |
 
 #### Parameters:
 
@@ -638,7 +639,7 @@ Name | Type |
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/events/eventEmitter.ts#L12)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/events/eventEmitter.ts#L12)
 
 ___
 
@@ -650,7 +651,7 @@ ___
 
 Overrides: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:247](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L247)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:247](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L247)
 
 ___
 
@@ -666,7 +667,7 @@ Self for chaining.
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:352](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L352)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:356](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L356)
 
 ___
 
@@ -688,7 +689,7 @@ Self for chaining.
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:232](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L232)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:232](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L232)
 
 ___
 
@@ -700,7 +701,7 @@ ___
 
 Overrides: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:235](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L235)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:235](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L235)
 
 ___
 
@@ -712,7 +713,7 @@ ___
 
 Overrides: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:241](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealDrawBoard/RealDrawBoard.ts#L241)
+Defined in: [src/renderers/RealDrawBoard/RealDrawBoard.ts:241](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealDrawBoard/RealDrawBoard.ts#L241)
 
 ___
 
@@ -728,4 +729,4 @@ Self for chaining.
 
 Inherited from: [RealRenderer](index.realrenderer.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:209](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/renderers/RealRenderer/RealRenderer.ts#L209)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:209](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/renderers/RealRenderer/RealRenderer.ts#L209)

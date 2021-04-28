@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.10](../docs.md) / [src/constants/events/RealRendererEvents](../modules/src_constants_events_realrendererevents.md) / IRealRendererEvents
+[SVG Real Renderer - v0.3.11](../docs.md) / [src/constants/events/RealRendererEvents](../modules/src_constants_events_realrendererevents.md) / IRealRendererEvents
 
 # Interface: IRealRendererEvents
 
@@ -16,6 +16,7 @@
 
 - [change-offsets](src_constants_events_realrendererevents.irealrendererevents.md#change-offsets)
 - [change-scale](src_constants_events_realrendererevents.irealrendererevents.md#change-scale)
+- [import](src_constants_events_realrendererevents.irealrendererevents.md#import)
 - [start-render](src_constants_events_realrendererevents.irealrendererevents.md#start-render)
 - [stop-render](src_constants_events_realrendererevents.irealrendererevents.md#stop-render)
 
@@ -36,7 +37,7 @@ Name | Type |
 `oldOffsets.x` | *number* |
 `oldOffsets.y` | *number* |
 
-Defined in: [src/constants/events/RealRendererEvents.ts:7](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/constants/events/RealRendererEvents.ts#L7)
+Defined in: [src/constants/events/RealRendererEvents.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L9)
 
 ___
 
@@ -51,7 +52,21 @@ Name | Type |
 `newScaleFactor` | *number* |
 `oldScaleFactor` | *number* |
 
-Defined in: [src/constants/events/RealRendererEvents.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/constants/events/RealRendererEvents.ts#L3)
+Defined in: [src/constants/events/RealRendererEvents.ts:5](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L5)
+
+___
+
+### import
+
+• **import**: *object*
+
+#### Type declaration:
+
+Name | Type |
+:------ | :------ |
+`import` | [*RealExport*](../modules/src_types_realrenderertypes.md#realexport) |
+
+Defined in: [src/constants/events/RealRendererEvents.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L19)
 
 ___
 
@@ -61,7 +76,7 @@ ___
 
 #### Type declaration:
 
-Defined in: [src/constants/events/RealRendererEvents.ts:1](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/constants/events/RealRendererEvents.ts#L1)
+Defined in: [src/constants/events/RealRendererEvents.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L3)
 
 ___
 
@@ -71,4 +86,4 @@ ___
 
 #### Type declaration:
 
-Defined in: [src/constants/events/RealRendererEvents.ts:2](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/811974a/src/constants/events/RealRendererEvents.ts#L2)
+Defined in: [src/constants/events/RealRendererEvents.ts:4](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L4)

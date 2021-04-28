@@ -59,7 +59,8 @@
 	    'start-render',
 	    'stop-render',
 	    'change-scale',
-	    'change-offsets'
+	    'change-offsets',
+	    'import'
 	];
 	});
 
@@ -728,6 +729,9 @@
 	        for (var i = 0; i <= this._strokeIndex; i++) {
 	            this._display(this.strokes[i]);
 	        }
+	        this.emit('import', {
+	            import: data
+	        });
 	        return this;
 	    };
 	    /**
