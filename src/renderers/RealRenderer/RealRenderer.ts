@@ -342,6 +342,10 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
       this._display(this.strokes[i]);
     }
 
+    this.emit('import', {
+      import: data
+    })
+
     return this;
   }
 

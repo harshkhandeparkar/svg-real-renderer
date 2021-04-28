@@ -1,3 +1,5 @@
+import { RealExport } from '../../types/RealRendererTypes';
+
 export interface IRealRendererEvents {
   'start-render': {};
   'stop-render': {};
@@ -15,11 +17,15 @@ export interface IRealRendererEvents {
       y: number;
     }
   };
+  'import': {
+    import: RealExport
+  }
 }
 
 export const RealRendererEventList: (keyof IRealRendererEvents)[] = [
   'start-render',
   'stop-render',
   'change-scale',
-  'change-offsets'
+  'change-offsets',
+  'import'
 ]
