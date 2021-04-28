@@ -37,6 +37,7 @@ export type StrokeExport = StrokeNodeData[];
 export type RealExport = {
   exportData: StrokeExport[];
   strokeIndex: number;
+  bgType: BGType;
   dimensions: GraphDimensions;
 }
 
