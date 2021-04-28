@@ -674,7 +674,7 @@
 	        return this;
 	    };
 	    /**
-	     * Export the data of the graph in a certain format that can be used to load the data later. Load using .import().
+	     * Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().
 	     * @returns Data of the graph in a storable and loadable format.
 	     */
 	    RealRenderer.prototype.exportData = function () {
@@ -707,19 +707,19 @@
 	            _this.strokes.push(strokeExport.map(function (strokeNodeData) {
 	                switch (strokeNodeData.type) {
 	                    case 'circle':
-	                        var circ = new _circle.Circle([0, 0], 0, strokeNodeData.section);
+	                        var circ = new _circle.Circle([0, 0], 0, strokeNodeData.section ? strokeNodeData.section : 'strokes');
 	                        circ.import(strokeNodeData.data);
 	                        return circ;
 	                    case 'path':
-	                        var path = new _path.Path('', strokeNodeData.section);
+	                        var path = new _path.Path('', strokeNodeData.section ? strokeNodeData.section : 'strokes');
 	                        path.import(strokeNodeData.data);
 	                        return path;
 	                    case 'text':
-	                        var text = new _text.Text([0, 0], '', strokeNodeData.section);
+	                        var text = new _text.Text([0, 0], '', strokeNodeData.section ? strokeNodeData.section : 'strokes');
 	                        text.import(strokeNodeData.data);
 	                        return text;
 	                    case 'polygon':
-	                        var polygon = new _polygon.Polygon([], strokeNodeData.section);
+	                        var polygon = new _polygon.Polygon([], strokeNodeData.section ? strokeNodeData.section : 'strokes');
 	                        polygon.import(strokeNodeData.data);
 	                        return polygon;
 	                }

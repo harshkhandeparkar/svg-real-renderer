@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.11](../docs.md) / [src/constants/events/RealRendererEvents](../modules/src_constants_events_realrendererevents.md) / IRealRendererEvents
+[SVG Real Renderer - v0.3.12](../docs.md) / [src/constants/events/RealRendererEvents](../modules/src_constants_events_realrendererevents.md) / IRealRendererEvents
 
 # Interface: IRealRendererEvents
 
@@ -37,7 +37,7 @@ Name | Type |
 `oldOffsets.x` | *number* |
 `oldOffsets.y` | *number* |
 
-Defined in: [src/constants/events/RealRendererEvents.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L9)
+Defined in: [src/constants/events/RealRendererEvents.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/constants/events/RealRendererEvents.ts#L9)
 
 ___
 
@@ -52,7 +52,7 @@ Name | Type |
 `newScaleFactor` | *number* |
 `oldScaleFactor` | *number* |
 
-Defined in: [src/constants/events/RealRendererEvents.ts:5](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L5)
+Defined in: [src/constants/events/RealRendererEvents.ts:5](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/constants/events/RealRendererEvents.ts#L5)
 
 ___
 
@@ -66,7 +66,7 @@ Name | Type |
 :------ | :------ |
 `import` | [*RealExport*](../modules/src_types_realrenderertypes.md#realexport) |
 
-Defined in: [src/constants/events/RealRendererEvents.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L19)
+Defined in: [src/constants/events/RealRendererEvents.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/constants/events/RealRendererEvents.ts#L19)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Type declaration:
 
-Defined in: [src/constants/events/RealRendererEvents.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L3)
+Defined in: [src/constants/events/RealRendererEvents.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/constants/events/RealRendererEvents.ts#L3)
 
 ___
 
@@ -86,4 +86,4 @@ ___
 
 #### Type declaration:
 
-Defined in: [src/constants/events/RealRendererEvents.ts:4](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealRendererEvents.ts#L4)
+Defined in: [src/constants/events/RealRendererEvents.ts:4](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/constants/events/RealRendererEvents.ts#L4)

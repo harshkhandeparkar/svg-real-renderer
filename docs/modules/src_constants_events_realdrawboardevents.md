@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.11](../docs.md) / src/constants/events/RealDrawBoardEvents
+[SVG Real Renderer - v0.3.12](../docs.md) / src/constants/events/RealDrawBoardEvents
 
 # Module: src/constants/events/RealDrawBoardEvents
 
@@ -18,4 +18,4 @@
 
 • `Const` **RealDrawBoardEventList**: keyof [*IRealDrawBoardEvents*](../interfaces/src_constants_events_realdrawboardevents.irealdrawboardevents.md)[]
 
-Defined in: [src/constants/events/RealDrawBoardEvents.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/constants/events/RealDrawBoardEvents.ts#L18)
+Defined in: [src/constants/events/RealDrawBoardEvents.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/constants/events/RealDrawBoardEvents.ts#L18)

@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.11](../docs.md) / [src/types/RealRendererTypes](../modules/src_types_realrenderertypes.md) / IRealRendererOptionals
+[SVG Real Renderer - v0.3.12](../docs.md) / [src/types/RealRendererTypes](../modules/src_types_realrenderertypes.md) / IRealRendererOptionals
 
 # Interface: IRealRendererOptionals
 
@@ -29,7 +29,7 @@
 
 Background color.
 
-Defined in: [src/types/RealRendererTypes.ts:102](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L102)
+Defined in: [src/types/RealRendererTypes.ts:102](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/types/RealRendererTypes.ts#L102)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 Type of the background.
 
-Defined in: [src/types/RealRendererTypes.ts:106](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L106)
+Defined in: [src/types/RealRendererTypes.ts:106](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/types/RealRendererTypes.ts#L106)
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
 Number of updates to be made to the graph per frame.
 
-Defined in: [src/types/RealRendererTypes.ts:110](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L110)
+Defined in: [src/types/RealRendererTypes.ts:110](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/types/RealRendererTypes.ts#L110)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 Initial value of the internal time.
 
-Defined in: [src/types/RealRendererTypes.ts:118](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L118)
+Defined in: [src/types/RealRendererTypes.ts:118](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/types/RealRendererTypes.ts#L118)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 Scaling of the graph. Larger number zooms.
 
-Defined in: [src/types/RealRendererTypes.ts:122](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L122)
+Defined in: [src/types/RealRendererTypes.ts:122](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/types/RealRendererTypes.ts#L122)
 
 ___
 
@@ -79,4 +79,4 @@ ___
 
 Amount to increment the internal time by each frame.
 
-Defined in: [src/types/RealRendererTypes.ts:114](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/eb44e85/src/types/RealRendererTypes.ts#L114)
+Defined in: [src/types/RealRendererTypes.ts:114](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/289dbab/src/types/RealRendererTypes.ts#L114)
