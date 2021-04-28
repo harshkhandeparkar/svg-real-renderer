@@ -273,7 +273,7 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
   }
 
   /**
-   * Export the data of the graph in a certain format that can be used to load the data later. Load using .import().
+   * Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().
    * @returns Data of the graph in a storable and loadable format.
    */
   exportData(): RealExport {
@@ -314,22 +314,22 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
         strokeExport.map((strokeNodeData) => {
           switch(strokeNodeData.type) {
             case 'circle':
-              const circ = new Circle([0, 0], 0, strokeNodeData.section);
+              const circ = new Circle([0, 0], 0, strokeNodeData.section ? strokeNodeData.section : 'strokes');
               circ.import(strokeNodeData.data);
               return circ;
 
             case 'path':
-              const path = new Path('', strokeNodeData.section);
+              const path = new Path('', strokeNodeData.section ? strokeNodeData.section : 'strokes');
               path.import(strokeNodeData.data);
               return path;
 
             case 'text':
-              const text = new Text([0, 0], '', strokeNodeData.section);
+              const text = new Text([0, 0], '', strokeNodeData.section ? strokeNodeData.section : 'strokes');
               text.import(strokeNodeData.data);
               return text;
 
             case 'polygon':
-              const polygon = new Polygon([], strokeNodeData.section);
+              const polygon = new Polygon([], strokeNodeData.section ? strokeNodeData.section : 'strokes');
               polygon.import(strokeNodeData.data);
               return polygon;
           }
