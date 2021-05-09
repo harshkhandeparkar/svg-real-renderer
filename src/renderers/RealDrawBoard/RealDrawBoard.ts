@@ -46,6 +46,12 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
    */
   /** @internal */
   _previewStroke: Map<string, Stroke> = new Map();
+  /**
+   * Map of ongoing strokes to their identifiers
+   * key -> identifier, value -> strokeIndex
+   * @internal
+   */
+  _strokeIdentifierMap: Map<string, number> = new Map();
 
   protected _resetBoard = _resetBoard;
   protected _addDOMEvents = _addDOMEvents;

@@ -34,7 +34,9 @@ export function _startStroke(
   brushPath.setStrokeWidth(this.toolSettings.brushSize);
 
   this._addStroke([brushPath]);
-  this.strokes[this._strokeIndex].push(
+  this._strokeIdentifierMap.set(identifier, this._strokeIndex);
+
+  this.strokes[this._strokeIdentifierMap.get(identifier)].push(
     getCircleNode(
       coords,
       getRadiusFromThickness(this.toolSettings.brushSize),
@@ -49,7 +51,7 @@ export function _endStroke(
   endCoords: Coordinate,
   identifier: string
 ) {
-  this.strokes[this._strokeIndex].push(
+  this.strokes[this._strokeIdentifierMap.get(identifier)].push(
     getCircleNode(
       endCoords,
       getRadiusFromThickness(this.toolSettings.brushSize),
@@ -58,6 +60,7 @@ export function _endStroke(
     )
   )
 
+  this._strokeIdentifierMap.delete(identifier);
   this._doPreview = true;
 }
 
@@ -66,7 +69,7 @@ export function _doStroke(
   coords: Coordinate,
   identifier: string
 ) {
-  this.strokes[this._strokeIndex].push(
+  this.strokes[this._strokeIdentifierMap.get(identifier)].push(
     getCircleNode(
       coords,
       getRadiusFromThickness(this.toolSettings.brushSize),
@@ -75,7 +78,7 @@ export function _doStroke(
     )
   );
 
-  (<Path>this.strokes[this._strokeIndex][0]).appendPath(
+  (<Path>this.strokes[this._strokeIdentifierMap.get(identifier)][0]).appendPath(
     getLinePathCommand(
       this._lastCoords.get(identifier),
       coords

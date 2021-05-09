@@ -59,6 +59,7 @@ export function _startStroke(
   )
 
   this._addStroke([new GroupNode('strokes', [linePath, startCircle, endCircle])]);
+  this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 
   _startCoords.set(identifier, coords);
 }
@@ -68,7 +69,7 @@ export function _endStroke(
   endCoords: Coordinate,
   identifier: string
 ) {
-  const lineNode = <GroupNode>this.strokes[this._strokeIndex][0];
+  const lineNode = <GroupNode>this.strokes[this._strokeIdentifierMap.get(identifier)][0];
 
   (<Path>lineNode.innerNodes[0]).updatePath(
     getLinePathCommand(
