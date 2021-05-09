@@ -236,7 +236,6 @@
 	        case 'grid':
 	            var xSpacing = dimensions[0] * (bgType.xSpacing / 100);
 	            var ySpacing = dimensions[1] * (bgType.ySpacing / 100);
-	            console.log(xSpacing, ySpacing);
 	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.lineColor));
 	            // x-axis
 	            for (var x = xSpacing; x < dimensions[0]; x += xSpacing) {
@@ -862,17 +861,19 @@
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
 	    brushPath.setStrokeWidth(this.toolSettings.brushSize);
 	    this._addStroke([brushPath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
+	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
+	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
+	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
+	    this._strokeIdentifierMap.delete(identifier);
 	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
-	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
+	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
+	    this.strokes[this._strokeIdentifierMap.get(identifier)][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
@@ -920,17 +921,18 @@
 	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
 	    brushPath.setStrokeWidth(this.toolSettings.eraserSize);
 	    this._addStroke([brushPath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
+	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
+	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
+	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
 	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
-	    this.strokes[this._strokeIndex][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
+	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
+	    this.strokes[this._strokeIdentifierMap.get(identifier)][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
@@ -958,9 +960,43 @@
 	exports._onScroll = _onScroll;
 	});
 
+	var _group = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.GroupNode = void 0;
+
+	var GroupNode = /** @class */ (function (_super) {
+	    __extends(GroupNode, _super);
+	    function GroupNode(section, initialInnerNodes) {
+	        var _this = _super.call(this, section, 'group', 'group') || this;
+	        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+	        initialInnerNodes.forEach(function (node) { return g.appendChild(node.node); });
+	        _this.innerNodes = initialInnerNodes;
+	        _this.node = g;
+	        _this.section = section;
+	        return _this;
+	    }
+	    return GroupNode;
+	}(_node.Node));
+	exports.GroupNode = GroupNode;
+	});
+
 	var line$1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.LineDefaults = exports.name = void 0;
+
 
 
 
@@ -972,31 +1008,38 @@
 	    lineColor: [1, 1, 1]
 	};
 	/** key -> identifier, value -> coordinate
-	   *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
-	   */
+	 *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+	 */
 	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
 	function _startStroke(coords, identifier) {
 	    this._doPreview = false;
-	    this._previewStroke.delete(identifier);
+	    if (this._previewStroke.has(identifier)) {
+	        this._previewStroke.get(identifier).forEach(function (strokeNode) {
+	            strokeNode.delete();
+	        });
+	    }
 	    var linePath = new _path.Path('', 'strokes');
 	    linePath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
 	    linePath.setStrokeWidth(this.toolSettings.lineThickness);
-	    this._addStroke([linePath]);
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'strokes'));
-	    this.strokes[this._strokeIndex].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'strokes'));
+	    var startCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'strokes');
+	    var endCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'strokes');
+	    this._addStroke([new _group.GroupNode('strokes', [linePath, startCircle, endCircle])]);
+	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 	    _startCoords.set(identifier, coords);
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIndex][0].updatePath(line.getLinePathCommand(_startCoords.get(identifier), endCoords));
-	    this.strokes[this._strokeIndex][2].updateCenter(endCoords);
+	    var lineNode = this.strokes[this._strokeIdentifierMap.get(identifier)][0];
+	    lineNode.innerNodes[0].updatePath(line.getLinePathCommand(_startCoords.get(identifier), endCoords));
+	    lineNode.innerNodes[2].updateCenter(endCoords);
 	    _startCoords.delete(identifier);
 	    this._doPreview = true;
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIndex][0].updatePath(line.getLinePathCommand(_startCoords.get(identifier), coords));
-	    this.strokes[this._strokeIndex][2].updateCenter(coords);
+	    var lineNode = this.strokes[this._strokeIndex][0];
+	    lineNode.innerNodes[0].updatePath(line.getLinePathCommand(_startCoords.get(identifier), coords));
+	    lineNode.innerNodes[2].updateCenter(coords);
 	}
 	exports._doStroke = _doStroke;
 	function _toolPreview(coords, identifier) {
@@ -1302,6 +1345,12 @@
 	         */
 	        /** @internal */
 	        _this._previewStroke = new Map();
+	        /**
+	         * Map of ongoing strokes to their identifiers
+	         * key -> identifier, value -> strokeIndex
+	         * @internal
+	         */
+	        _this._strokeIdentifierMap = new Map();
 	        _this._resetBoard = boardManip._resetBoard;
 	        _this._addDOMEvents = _DOMEvents._addDOMEvents;
 	        _this._removeDOMEvents = _DOMEvents._removeDOMEvents;
