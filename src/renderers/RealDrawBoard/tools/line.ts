@@ -5,6 +5,7 @@ import { getRGBColorString } from '../../../util/getRGBColorString';
 import { Path } from '../../RealRenderer/strokeNodes/_path';
 import { getLinePathCommand } from '../../../pathMakers/line';
 import { Circle } from '../../RealRenderer/strokeNodes/_circle';
+import { GroupNode } from '../../RealRenderer/strokeNodes/_group';
 
 import { getRadiusFromThickness } from './util/getRadiusFromThickness';
 
@@ -23,8 +24,8 @@ export const LineDefaults: ILineSettings = {
 }
 
 /** key -> identifier, value -> coordinate
-   *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
-   */
+ *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+ */
 const _startCoords: Map<string, [number, number]> = new Map(); /* key -> identifier, value -> coordinate*/
 
 export function _startStroke(
@@ -33,31 +34,31 @@ export function _startStroke(
   identifier: string
 ) {
   this._doPreview = false;
-  this._previewStroke.delete(identifier);
+  if (this._previewStroke.has(identifier)) {
+    this._previewStroke.get(identifier).forEach((strokeNode) => {
+      strokeNode.delete();
+    })
+  }
 
   const linePath = new Path('', 'strokes');
   linePath.setStroke(getRGBColorString(this.toolSettings.lineColor));
   linePath.setStrokeWidth(this.toolSettings.lineThickness);
 
-  this._addStroke([linePath]);
-
-  this.strokes[this._strokeIndex].push(
-    getCircleNode(
-      coords,
-      getRadiusFromThickness(this.toolSettings.lineThickness),
-      this.toolSettings.lineColor,
-      'strokes'
-    )
+  const startCircle = getCircleNode(
+    coords,
+    getRadiusFromThickness(this.toolSettings.lineThickness),
+    this.toolSettings.lineColor,
+    'strokes'
   )
 
-  this.strokes[this._strokeIndex].push(
-    getCircleNode(
-      coords,
-      getRadiusFromThickness(this.toolSettings.lineThickness),
-      this.toolSettings.lineColor,
-      'strokes'
-    )
+  const endCircle = getCircleNode(
+    coords,
+    getRadiusFromThickness(this.toolSettings.lineThickness),
+    this.toolSettings.lineColor,
+    'strokes'
   )
+
+  this._addStroke([new GroupNode('strokes', [linePath, startCircle, endCircle])]);
 
   _startCoords.set(identifier, coords);
 }
@@ -67,14 +68,16 @@ export function _endStroke(
   endCoords: Coordinate,
   identifier: string
 ) {
-  (<Path>this.strokes[this._strokeIndex][0]).updatePath(
+  const lineNode = <GroupNode>this.strokes[this._strokeIndex][0];
+
+  (<Path>lineNode.innerNodes[0]).updatePath(
     getLinePathCommand(
       _startCoords.get(identifier),
       endCoords
     )
   );
 
-  (<Circle>this.strokes[this._strokeIndex][2]).updateCenter(endCoords);
+  (<Circle>lineNode.innerNodes[2]).updateCenter(endCoords);
 
   _startCoords.delete(identifier);
   this._doPreview = true;
@@ -85,14 +88,17 @@ export function _doStroke(
   coords: Coordinate,
   identifier: string
 ) {
-  (<Path>this.strokes[this._strokeIndex][0]).updatePath(
+  const lineNode = <GroupNode>this.strokes[this._strokeIndex][0];
+
+
+  (<Path>lineNode.innerNodes[0]).updatePath(
     getLinePathCommand(
       _startCoords.get(identifier),
       coords
     )
   );
 
-  (<Circle>this.strokes[this._strokeIndex][2]).updateCenter(coords);
+  (<Circle>lineNode.innerNodes[2]).updateCenter(coords);
 }
 
 export function _toolPreview(

@@ -2,6 +2,7 @@ import { Path } from '../renderers/RealRenderer/strokeNodes/_path';
 import { Text } from '../renderers/RealRenderer/strokeNodes/_text';
 import { Circle } from '../renderers/RealRenderer/strokeNodes/_circle';
 import { Polygon } from '../renderers/RealRenderer/strokeNodes/_polygon';
+import { GroupNode } from '../renderers/RealRenderer/strokeNodes/_group';
 
 /**
  * Dimensions of the graph in the format [width, height].
@@ -15,12 +16,12 @@ export type Color = [number, number, number];
  * A coordinate in the format [x, y].
  */
 export type Coordinate = [number, number];
-export type StrokeNode = Path | Circle | Text | Polygon;
+export type StrokeNode = Path | Circle | Text | Polygon | GroupNode;
 export type SVGSection = 'bg' | 'strokes' | 'overlay';
 export type SVGSections = {
   [Property in SVGSection]: SVGGElement;
 }
-export type StrokeNodeType = 'path' | 'circle' | 'text' | 'polygon';
+export type StrokeNodeType = 'path' | 'circle' | 'text' | 'polygon' | 'group';
 /**
  * One stroke is an combination of multiple stroke nodes
  */

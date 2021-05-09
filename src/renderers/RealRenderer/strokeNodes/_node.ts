@@ -1,4 +1,4 @@
-import { Coordinate, StrokeNodeData, SVGSection, StrokeNodeType } from '../../../types/RealRendererTypes';
+import { StrokeNodeData, SVGSection, StrokeNodeType } from '../../../types/RealRendererTypes';
 
 export class Node<NodeType extends SVGElement, StrokeNodeT extends StrokeNodeType> {
   node: NodeType;
