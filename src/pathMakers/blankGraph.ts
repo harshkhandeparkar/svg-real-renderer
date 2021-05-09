@@ -28,8 +28,6 @@ export function getBlankGraphPaths(
       let xSpacing = dimensions[0] * (bgType.xSpacing / 100);
       let ySpacing = dimensions[1] * (bgType.ySpacing / 100);
 
-      console.log(xSpacing, ySpacing)
-
       axesPath.setStroke(getRGBColorString(bgType.lineColor));
 
       // x-axis
