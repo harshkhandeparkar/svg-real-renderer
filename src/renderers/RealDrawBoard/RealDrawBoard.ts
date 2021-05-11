@@ -238,13 +238,13 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
   // --- Touch Events ---
 
   // --- DOM Event Listeners ---
-  startRender() {
+  startRender = function startRender() {
     this._addDOMEvents();
 
     return this;
   }
 
-  stopRender() {
+  stopRender = function stopRender() {
     this._removeDOMEvents();
 
     return this;
