@@ -426,6 +426,344 @@
 	exports.Text = Text;
 	});
 
+	var _group = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.GroupNode = void 0;
+
+	var GroupNode = /** @class */ (function (_super) {
+	    __extends(GroupNode, _super);
+	    function GroupNode(section, initialInnerNodes) {
+	        var _this = _super.call(this, section, 'group', 'group') || this;
+	        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+	        initialInnerNodes.forEach(function (node) { return g.appendChild(node.node); });
+	        _this.innerNodes = initialInnerNodes;
+	        _this.node = g;
+	        _this.section = section;
+	        return _this;
+	    }
+	    return GroupNode;
+	}(_node.Node));
+	exports.GroupNode = GroupNode;
+	});
+
+	var importExport = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.importData = exports.exportData = void 0;
+
+
+
+
+
+	/**
+	 * Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().
+	 * @returns Data of the graph in a storable and loadable format.
+	 */
+	function exportData() {
+	    var strokeExport = [];
+	    this.strokes.forEach(function (stroke) {
+	        strokeExport.push(stroke.map(function (node) { return node.export(); }));
+	    });
+	    return {
+	        exportData: strokeExport,
+	        strokeIndex: this._strokeIndex,
+	        dimensions: this.dimensions,
+	        bgType: this.bgType
+	    };
+	}
+	exports.exportData = exportData;
+	/**
+	 * Import the data exported by .export() method.
+	 * @param data Data exported by .export()
+	 * @returns Self for chaining.
+	 */
+	function importData(data) {
+	    var _this = this;
+	    this.strokes.forEach(function (stroke) {
+	        stroke.forEach(function (node) { return node.delete(); });
+	    });
+	    this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
+	    if (data.bgType)
+	        this.bgType = data.bgType;
+	    this.strokes = [];
+	    data.exportData.forEach(function (strokeExport) {
+	        _this.strokes.push(strokeExport.map(function (strokeNodeData) {
+	            switch (strokeNodeData.type) {
+	                case 'circle':
+	                    var circ = new _circle.Circle([0, 0], 0, strokeNodeData.section ? strokeNodeData.section : 'strokes');
+	                    circ.import(strokeNodeData.data);
+	                    return circ;
+	                case 'path':
+	                    var path = new _path.Path('', strokeNodeData.section ? strokeNodeData.section : 'strokes');
+	                    path.import(strokeNodeData.data);
+	                    return path;
+	                case 'text':
+	                    var text = new _text.Text([0, 0], '', strokeNodeData.section ? strokeNodeData.section : 'strokes');
+	                    text.import(strokeNodeData.data);
+	                    return text;
+	                case 'group':
+	                    var group = new _group.GroupNode(strokeNodeData.section ? strokeNodeData.section : 'strokes', []);
+	                    group.import(strokeNodeData.data);
+	                    return group;
+	                case 'polygon':
+	                    var polygon = new _polygon.Polygon([], strokeNodeData.section ? strokeNodeData.section : 'strokes');
+	                    polygon.import(strokeNodeData.data);
+	                    return polygon;
+	            }
+	        }));
+	    });
+	    this._strokeIndex = data.strokeIndex;
+	    for (var i = 0; i <= this._strokeIndex; i++) {
+	        this._display(this.strokes[i]);
+	    }
+	    this.emit('import', {
+	        import: data
+	    });
+	    return this;
+	}
+	exports.importData = importData;
+	});
+
+	var background = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.normalizeBG = exports.changeBackground = void 0;
+
+
+	/**
+	 * Changes the background of the graph.
+	 * @param newBG New background.
+	 * @returns Self for chaining.
+	 */
+	function changeBackground(newBG) {
+	    this.bgType = newBG;
+	    var newBGStrokes = blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType);
+	    this.normalizeBG();
+	    this.strokes[0].forEach(function (stroke) { return stroke.delete(); });
+	    this.strokes[0] = newBGStrokes;
+	    this._display(this.strokes[0]);
+	    return this;
+	}
+	exports.changeBackground = changeBackground;
+	function normalizeBG() {
+	    switch (this.bgType.type) {
+	        case 'axes':
+	            this.bgType.xOffset = clamp_1.clamp(this.bgType.xOffset, 0, 100); // %age
+	            this.bgType.yOffset = clamp_1.clamp(this.bgType.yOffset, 0, 100); // %age
+	            break;
+	        case 'grid':
+	            this.bgType.xSpacing = clamp_1.clamp(this.bgType.xSpacing, 0, 100); // %age
+	            this.bgType.ySpacing = clamp_1.clamp(this.bgType.ySpacing, 0, 100); // %age
+	            if (this.bgType.xSpacing === 0)
+	                this.bgType.xSpacing = 1;
+	            if (this.bgType.ySpacing === 0)
+	                this.bgType.ySpacing = 1;
+	            break;
+	        case 'ruled':
+	            this.bgType.spacing = clamp_1.clamp(this.bgType.spacing, 0, 100);
+	            if (this.bgType.spacing === 0)
+	                this.bgType.spacing = 1;
+	            break;
+	    }
+	}
+	exports.normalizeBG = normalizeBG;
+	});
+
+	var svgDom = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.attach = exports._setViewBox = exports._setSVG = void 0;
+
+	function _setSVG() {
+	    if (this.svg === undefined) {
+	        throw 'No SVG Element Found';
+	    }
+	    this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
+	    this.svg.setAttribute('preserveAspectRatio', 'none');
+	    this.svgSections = {
+	        bg: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+	        strokes: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+	        overlay: document.createElementNS('http://www.w3.org/2000/svg', 'g')
+	    };
+	    this.svg.appendChild(this.svgSections.bg);
+	    this.svg.appendChild(this.svgSections.strokes);
+	    this.svg.appendChild(this.svgSections.overlay);
+	    this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType));
+	    this._display(this.strokes[this._strokeIndex]);
+	    this._doRender = false;
+	}
+	exports._setSVG = _setSVG;
+	function _setViewBox(dimensions, xOffset, yOffset) {
+	    this.svg.setAttribute('viewBox', xOffset + " " + yOffset + " " + dimensions[0] + " " + dimensions[1]);
+	}
+	exports._setViewBox = _setViewBox;
+	/**
+	   * Attaches to a DOM SVG element to render to.
+	   * @param svg The SVG element to attach.
+	   * @param dimensions Dimensions of the graph.
+	   * @returns Self for chaining.
+	   */
+	function attach(svg, dimensions) {
+	    this.dimensions = dimensions;
+	    this.originalDimensions = [
+	        dimensions[0],
+	        dimensions[1]
+	    ];
+	    this.svg = svg;
+	    this._setSVG();
+	    return this;
+	}
+	exports.attach = attach;
+	});
+
+	var svgSettings = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.changeOffsets = exports.scale = void 0;
+
+	/**
+	 * Scale/zoom the graph.
+	 * @param scaleFactor Factor to scale the graph by. Larger number zooms in.
+	 * @returns Self for chaining.
+	 */
+	function scale(scaleFactor) {
+	    var oldScaleFactor = this.scaleFactor;
+	    this.scaleFactor = scaleFactor;
+	    this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
+	    this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
+	    // To clamp the offsets as well
+	    this.changeOffsets(this._offsetX, this._offsetY);
+	    this.emit('change-scale', {
+	        oldScaleFactor: oldScaleFactor,
+	        newScaleFactor: this.scaleFactor
+	    });
+	    return this;
+	}
+	exports.scale = scale;
+	/**
+	 * Change the offsets of the graph (for panning)
+	 * @param xOffset Offset in the x-direction.
+	 * @param yOffset Offset in the y-direction.
+	 * @returns Self for chaining.
+	 */
+	function changeOffsets(xOffset, yOffset) {
+	    var oldOffsets = {
+	        x: this._offsetX,
+	        y: this._offsetY
+	    };
+	    this._offsetX = clamp_1.clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
+	    this._offsetY = clamp_1.clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
+	    this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
+	    this.emit('change-offsets', {
+	        oldOffsets: oldOffsets,
+	        newOffsets: {
+	            x: this._offsetX,
+	            y: this._offsetY
+	        }
+	    });
+	    return this;
+	}
+	exports.changeOffsets = changeOffsets;
+	});
+
+	var draw_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._addStroke = exports._display = exports.draw = exports._draw = exports._drawFunc = void 0;
+	function _drawFunc(time) {
+	    return this;
+	}
+	exports._drawFunc = _drawFunc;
+	function _draw() {
+	    this.time += this.timeStep;
+	    this._drawFunc(this.time);
+	    return this;
+	}
+	exports._draw = _draw;
+	/**
+	 * Draw a certain number of frames.
+	 * @param numDraws Number of frames to draw.
+	 * @returns Self for chaining.
+	 */
+	function draw(numDraws) {
+	    if (numDraws === void 0) { numDraws = 1; }
+	    for (var i = 0; i < numDraws; i++)
+	        this._draw();
+	    return this;
+	}
+	exports.draw = draw;
+	function _display(stroke) {
+	    var _this = this;
+	    stroke.forEach(function (strokeNode) {
+	        if (strokeNode.node.parentElement == null)
+	            _this.svgSections[strokeNode.section].appendChild(strokeNode.node);
+	    });
+	}
+	exports._display = _display;
+	function _addStroke(stroke) {
+	    if (this.strokes.length > this._strokeIndex + 1)
+	        this.strokes.splice(this._strokeIndex + 1, this.strokes.length - this._strokeIndex);
+	    this.strokes[++this._strokeIndex] = stroke;
+	}
+	exports._addStroke = _addStroke;
+	});
+
+	var render = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.toggleRender = exports.stopRender = exports.startRender = exports._render = void 0;
+	function _render() {
+	    var _this = this;
+	    if (this._doRender) {
+	        this.draw(this.drawsPerFrame);
+	        this._display(this.strokes[this._strokeIndex]);
+	        window.requestAnimationFrame(function () { _this._render(); });
+	    }
+	}
+	exports._render = _render;
+	/**
+	 * Start rendering.
+	 * @returns Self for chaining.
+	 */
+	function startRender() {
+	    if (!this._doRender) {
+	        this._doRender = true;
+	        this._render();
+	        this.emit('start-render', {});
+	    }
+	    return this;
+	}
+	exports.startRender = startRender;
+	/**
+	 * Stop rendering.
+	 * @returns Self for chaining.
+	 */
+	function stopRender() {
+	    this._doRender = false;
+	    this.emit('stop-render', {});
+	    return this;
+	}
+	exports.stopRender = stopRender;
+	/**
+	 * Toggle rendering.
+	 * @returns Self for chaining.
+	 */
+	function toggleRender() {
+	    this._doRender = !this._doRender;
+	    if (this._doRender)
+	        this._render();
+	    return this;
+	}
+	exports.toggleRender = toggleRender;
+	});
+
 	var RealRenderer_1 = createCommonjsModule(function (module, exports) {
 	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
 	    var extendStatics = function (d, b) {
@@ -475,6 +813,7 @@
 
 
 
+
 	/**
 	 * General Real Renderer with no specific purpose. Should be extended to use.
 	 */
@@ -494,29 +833,29 @@
 	        _this._strokeIndex = -1;
 	        _this.undo = undo_1.undo;
 	        _this.redo = undo_1.redo;
+	        _this.exportData = importExport.exportData;
+	        _this.importData = importExport.importData;
+	        _this.changeBackground = background.changeBackground;
+	        _this.scale = svgSettings.scale;
+	        _this.changeOffsets = svgSettings.changeOffsets;
+	        _this.attach = svgDom.attach;
+	        _this.draw = draw_1.draw;
+	        _this.startRender = render.startRender;
+	        _this.stopRender = render.stopRender;
+	        _this.toggleRender = render.toggleRender;
+	        _this.normalizeBG = background.normalizeBG;
+	        _this._setSVG = svgDom._setSVG;
+	        _this._setViewBox = svgDom._setViewBox;
+	        _this._drawFunc = draw_1._drawFunc;
+	        _this._draw = draw_1._draw;
+	        _this._display = draw_1._display;
+	        _this._addStroke = draw_1._addStroke;
+	        _this._render = render._render;
 	        // *****DEFAULTS*****
 	        _this.settings = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), options);
-	        switch (_this.settings.bgType.type) {
-	            case 'axes':
-	                _this.settings.bgType.xOffset = clamp_1.clamp(_this.settings.bgType.xOffset, 0, 100); // %age
-	                _this.settings.bgType.yOffset = clamp_1.clamp(_this.settings.bgType.yOffset, 0, 100); // %age
-	                break;
-	            case 'grid':
-	                _this.settings.bgType.xSpacing = clamp_1.clamp(_this.settings.bgType.xSpacing, 0, 100); // %age
-	                _this.settings.bgType.ySpacing = clamp_1.clamp(_this.settings.bgType.ySpacing, 0, 100); // %age
-	                if (_this.settings.bgType.xSpacing === 0)
-	                    _this.settings.bgType.xSpacing = 1;
-	                if (_this.settings.bgType.ySpacing === 0)
-	                    _this.settings.bgType.ySpacing = 1;
-	                break;
-	            case 'ruled':
-	                _this.settings.bgType.spacing = clamp_1.clamp(_this.settings.bgType.spacing, 0, 100);
-	                if (_this.settings.bgType.spacing === 0)
-	                    _this.settings.bgType.spacing = 1;
-	                break;
-	        }
-	        _this.bgColor = _this.settings.bgColor;
 	        _this.bgType = _this.settings.bgType;
+	        _this.normalizeBG();
+	        _this.bgColor = _this.settings.bgColor;
 	        _this.drawsPerFrame = _this.settings.drawsPerFrame;
 	        _this.timeStep = _this.settings.timeStep;
 	        _this.time = _this.settings.initTime;
@@ -524,215 +863,6 @@
 	        return _this;
 	        // *****DEFAULTS*****
 	    }
-	    RealRenderer.prototype._setSVG = function () {
-	        if (this.svg === undefined) {
-	            throw 'No SVG Element Found';
-	        }
-	        this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
-	        this.svg.setAttribute('preserveAspectRatio', 'none');
-	        this.svgSections = {
-	            bg: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
-	            strokes: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
-	            overlay: document.createElementNS('http://www.w3.org/2000/svg', 'g')
-	        };
-	        this.svg.appendChild(this.svgSections.bg);
-	        this.svg.appendChild(this.svgSections.strokes);
-	        this.svg.appendChild(this.svgSections.overlay);
-	        this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType));
-	        this._display(this.strokes[this._strokeIndex]);
-	        this._doRender = false;
-	    };
-	    RealRenderer.prototype._setViewBox = function (dimensions, xOffset, yOffset) {
-	        this.svg.setAttribute('viewBox', xOffset + " " + yOffset + " " + dimensions[0] + " " + dimensions[1]);
-	    };
-	    RealRenderer.prototype._drawFunc = function (time) {
-	        return this;
-	    };
-	    RealRenderer.prototype._draw = function () {
-	        this.time += this.timeStep;
-	        this._drawFunc(this.time);
-	        return this;
-	    };
-	    RealRenderer.prototype._addStroke = function (stroke) {
-	        if (this.strokes.length > this._strokeIndex + 1)
-	            this.strokes.splice(this._strokeIndex + 1, this.strokes.length - this._strokeIndex);
-	        this.strokes[++this._strokeIndex] = stroke;
-	    };
-	    RealRenderer.prototype._render = function () {
-	        var _this = this;
-	        if (this._doRender) {
-	            this.draw(this.drawsPerFrame);
-	            this._display(this.strokes[this._strokeIndex]);
-	            window.requestAnimationFrame(function () { _this._render(); });
-	        }
-	    };
-	    RealRenderer.prototype._display = function (stroke) {
-	        var _this = this;
-	        stroke.forEach(function (strokeNode) {
-	            if (strokeNode.node.parentElement == null)
-	                _this.svgSections[strokeNode.section].appendChild(strokeNode.node);
-	        });
-	    };
-	    /**
-	     * Attaches to a DOM SVG element to render to.
-	     * @param svg The SVG element to attach.
-	     * @param dimensions Dimensions of the graph.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.attach = function (svg, dimensions) {
-	        this.dimensions = dimensions;
-	        this.originalDimensions = [
-	            dimensions[0],
-	            dimensions[1]
-	        ];
-	        this.svg = svg;
-	        this._setSVG();
-	        return this;
-	    };
-	    /**
-	     * Start rendering.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.startRender = function () {
-	        if (!this._doRender) {
-	            this._doRender = true;
-	            this._render();
-	            this.emit('start-render', {});
-	        }
-	        return this;
-	    };
-	    /**
-	     * Stop rendering.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.stopRender = function () {
-	        this._doRender = false;
-	        this.emit('stop-render', {});
-	        return this;
-	    };
-	    /**
-	     * Toggle rendering.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.toggleRender = function () {
-	        this._doRender = !this._doRender;
-	        if (this._doRender)
-	            this._render();
-	        return this;
-	    };
-	    /**
-	     * Draw a certain number of frames.
-	     * @param numDraws Number of frames to draw.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.draw = function (numDraws) {
-	        if (numDraws === void 0) { numDraws = 1; }
-	        for (var i = 0; i < numDraws; i++)
-	            this._draw();
-	        return this;
-	    };
-	    /**
-	     * Scale/zoom the graph.
-	     * @param scaleFactor Factor to scale the graph by. Larger number zooms in.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.scale = function (scaleFactor) {
-	        var oldScaleFactor = this.scaleFactor;
-	        this.scaleFactor = scaleFactor;
-	        this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
-	        this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
-	        // To clamp the offsets as well
-	        this.changeOffsets(this._offsetX, this._offsetY);
-	        this.emit('change-scale', {
-	            oldScaleFactor: oldScaleFactor,
-	            newScaleFactor: this.scaleFactor
-	        });
-	        return this;
-	    };
-	    /**
-	     * Change the offsets of the graph (for panning)
-	     * @param xOffset Offset in the x-direction.
-	     * @param yOffset Offset in the y-direction.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.changeOffsets = function (xOffset, yOffset) {
-	        var oldOffsets = {
-	            x: this._offsetX,
-	            y: this._offsetY
-	        };
-	        this._offsetX = clamp_1.clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
-	        this._offsetY = clamp_1.clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
-	        this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
-	        this.emit('change-offsets', {
-	            oldOffsets: oldOffsets,
-	            newOffsets: {
-	                x: this._offsetX,
-	                y: this._offsetY
-	            }
-	        });
-	        return this;
-	    };
-	    /**
-	     * Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().
-	     * @returns Data of the graph in a storable and loadable format.
-	     */
-	    RealRenderer.prototype.exportData = function () {
-	        var strokeExport = [];
-	        this.strokes.forEach(function (stroke) {
-	            strokeExport.push(stroke.map(function (node) { return node.export(); }));
-	        });
-	        return {
-	            exportData: strokeExport,
-	            strokeIndex: this._strokeIndex,
-	            dimensions: this.dimensions,
-	            bgType: this.bgType
-	        };
-	    };
-	    /**
-	     * Import the data exported by .export() method.
-	     * @param data Data exported by .export()
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.importData = function (data) {
-	        var _this = this;
-	        this.strokes.forEach(function (stroke) {
-	            stroke.forEach(function (node) { return node.delete(); });
-	        });
-	        this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
-	        if (data.bgType)
-	            this.bgType = data.bgType;
-	        this.strokes = [];
-	        data.exportData.forEach(function (strokeExport) {
-	            _this.strokes.push(strokeExport.map(function (strokeNodeData) {
-	                switch (strokeNodeData.type) {
-	                    case 'circle':
-	                        var circ = new _circle.Circle([0, 0], 0, strokeNodeData.section ? strokeNodeData.section : 'strokes');
-	                        circ.import(strokeNodeData.data);
-	                        return circ;
-	                    case 'path':
-	                        var path = new _path.Path('', strokeNodeData.section ? strokeNodeData.section : 'strokes');
-	                        path.import(strokeNodeData.data);
-	                        return path;
-	                    case 'text':
-	                        var text = new _text.Text([0, 0], '', strokeNodeData.section ? strokeNodeData.section : 'strokes');
-	                        text.import(strokeNodeData.data);
-	                        return text;
-	                    case 'polygon':
-	                        var polygon = new _polygon.Polygon([], strokeNodeData.section ? strokeNodeData.section : 'strokes');
-	                        polygon.import(strokeNodeData.data);
-	                        return polygon;
-	                }
-	            }));
-	        });
-	        this._strokeIndex = data.strokeIndex;
-	        for (var i = 0; i <= this._strokeIndex; i++) {
-	            this._display(this.strokes[i]);
-	        }
-	        this.emit('import', {
-	            import: data
-	        });
-	        return this;
-	    };
 	    /**
 	     * Resets the internal time counter.
 	     * @returns Self for chaining.
@@ -752,38 +882,6 @@
 	        this._strokeIndex = 0;
 	        this.resetTime();
 	        this._display(this.strokes[this._strokeIndex]);
-	        return this;
-	    };
-	    /**
-	     * Changes the background of the graph.
-	     * @param newBG New background.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.changeBackground = function (newBG) {
-	        this.bgType = newBG;
-	        var newBGStrokes = blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType);
-	        switch (this.bgType.type) {
-	            case 'axes':
-	                this.bgType.xOffset = clamp_1.clamp(this.bgType.xOffset, 0, 100); // %age
-	                this.bgType.yOffset = clamp_1.clamp(this.bgType.yOffset, 0, 100); // %age
-	                break;
-	            case 'grid':
-	                this.bgType.xSpacing = clamp_1.clamp(this.bgType.xSpacing, 0, 100); // %age
-	                this.bgType.ySpacing = clamp_1.clamp(this.bgType.ySpacing, 0, 100); // %age
-	                if (this.bgType.xSpacing === 0)
-	                    this.bgType.xSpacing = 1;
-	                if (this.bgType.ySpacing === 0)
-	                    this.bgType.ySpacing = 1;
-	                break;
-	            case 'ruled':
-	                this.bgType.spacing = clamp_1.clamp(this.bgType.spacing, 0, 100);
-	                if (this.bgType.spacing === 0)
-	                    this.bgType.spacing = 1;
-	                break;
-	        }
-	        this.strokes[0].forEach(function (stroke) { return stroke.delete(); });
-	        this.strokes[0] = newBGStrokes;
-	        this._display(this.strokes[0]);
 	        return this;
 	    };
 	    return RealRenderer;
@@ -958,39 +1056,6 @@
 	    }
 	}
 	exports._onScroll = _onScroll;
-	});
-
-	var _group = createCommonjsModule(function (module, exports) {
-	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-	    var extendStatics = function (d, b) {
-	        extendStatics = Object.setPrototypeOf ||
-	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-	        return extendStatics(d, b);
-	    };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.GroupNode = void 0;
-
-	var GroupNode = /** @class */ (function (_super) {
-	    __extends(GroupNode, _super);
-	    function GroupNode(section, initialInnerNodes) {
-	        var _this = _super.call(this, section, 'group', 'group') || this;
-	        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-	        initialInnerNodes.forEach(function (node) { return g.appendChild(node.node); });
-	        _this.innerNodes = initialInnerNodes;
-	        _this.node = g;
-	        _this.section = section;
-	        return _this;
-	    }
-	    return GroupNode;
-	}(_node.Node));
-	exports.GroupNode = GroupNode;
 	});
 
 	var line$1 = createCommonjsModule(function (module, exports) {
@@ -1469,22 +1534,22 @@
 	                _this._display(_this.strokes[_this._strokeIndex]);
 	            }
 	        };
+	        // --- Touch Events ---
+	        // --- DOM Event Listeners ---
+	        _this.startRender = function startRender() {
+	            this._addDOMEvents();
+	            return this;
+	        };
+	        _this.stopRender = function stopRender() {
+	            this._removeDOMEvents();
+	            return this;
+	        };
 	        _this.settings = __assign(__assign(__assign({}, RealDrawBoardDefaults.RealDrawBoardDefaults), options), { toolSettings: __assign(__assign({}, RealDrawBoardDefaults.RealDrawBoardDefaults.toolSettings), ('toolSettings' in options ? options.toolSettings : {})) });
 	        _this.toolSettings = __assign(__assign({}, tools.ToolDefaults), _this.settings.toolSettings);
 	        _this.changeTool(_this.settings.tool);
 	        return _this;
 	        // *****DEFAULTS*****
 	    }
-	    // --- Touch Events ---
-	    // --- DOM Event Listeners ---
-	    RealDrawBoard.prototype.startRender = function () {
-	        this._addDOMEvents();
-	        return this;
-	    };
-	    RealDrawBoard.prototype.stopRender = function () {
-	        this._removeDOMEvents();
-	        return this;
-	    };
 	    RealDrawBoard.prototype.reset = function () {
 	        this._resetBoard();
 	        _super.prototype.reset.call(this);

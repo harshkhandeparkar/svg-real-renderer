@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.13](../docs.md) / [index](../modules/index.md) / RealRenderer
+[SVG Real Renderer - v0.3.14](../docs.md) / [index](../modules/index.md) / RealRenderer
 
 # Class: RealRenderer<EventTypes\>
 
@@ -32,39 +32,39 @@ Name | Type | Default |
 - [\_offsetX](index.realrenderer.md#_offsetx)
 - [\_offsetY](index.realrenderer.md#_offsety)
 - [\_strokeIndex](index.realrenderer.md#_strokeindex)
+- [attach](index.realrenderer.md#attach)
 - [bgColor](index.realrenderer.md#bgcolor)
 - [bgType](index.realrenderer.md#bgtype)
+- [changeBackground](index.realrenderer.md#changebackground)
+- [changeOffsets](index.realrenderer.md#changeoffsets)
 - [dimensions](index.realrenderer.md#dimensions)
+- [draw](index.realrenderer.md#draw)
 - [drawsPerFrame](index.realrenderer.md#drawsperframe)
 - [eventHandlers](index.realrenderer.md#eventhandlers)
+- [exportData](index.realrenderer.md#exportdata)
+- [importData](index.realrenderer.md#importdata)
 - [originalDimensions](index.realrenderer.md#originaldimensions)
 - [redo](index.realrenderer.md#redo)
+- [scale](index.realrenderer.md#scale)
 - [scaleFactor](index.realrenderer.md#scalefactor)
 - [settings](index.realrenderer.md#settings)
+- [startRender](index.realrenderer.md#startrender)
+- [stopRender](index.realrenderer.md#stoprender)
 - [strokes](index.realrenderer.md#strokes)
 - [svg](index.realrenderer.md#svg)
 - [svgSections](index.realrenderer.md#svgsections)
 - [time](index.realrenderer.md#time)
 - [timeStep](index.realrenderer.md#timestep)
+- [toggleRender](index.realrenderer.md#togglerender)
 - [undo](index.realrenderer.md#undo)
 
 ### Methods
 
-- [attach](index.realrenderer.md#attach)
-- [changeBackground](index.realrenderer.md#changebackground)
-- [changeOffsets](index.realrenderer.md#changeoffsets)
-- [draw](index.realrenderer.md#draw)
 - [emit](index.realrenderer.md#emit)
-- [exportData](index.realrenderer.md#exportdata)
-- [importData](index.realrenderer.md#importdata)
 - [off](index.realrenderer.md#off)
 - [on](index.realrenderer.md#on)
 - [reset](index.realrenderer.md#reset)
 - [resetTime](index.realrenderer.md#resettime)
-- [scale](index.realrenderer.md#scale)
-- [startRender](index.realrenderer.md#startrender)
-- [stopRender](index.realrenderer.md#stoprender)
-- [toggleRender](index.realrenderer.md#togglerender)
 
 ## Constructors
 
@@ -89,7 +89,7 @@ Name | Type |
 
 Overrides: EventEmitter&lt;EventTypes&gt;.constructor
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:43](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L43)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:68](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L68)
 
 ## Properties
 
@@ -97,7 +97,7 @@ Defined in: [src/renderers/RealRenderer/RealRenderer.ts:43](https://github.com/H
 
 • **\_doRender**: *boolean*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:40](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L40)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:41](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L41)
 
 ___
 
@@ -105,7 +105,7 @@ ___
 
 • **\_offsetX**: *number*= 0
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:29](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L29)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:30](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L30)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 • **\_offsetY**: *number*= 0
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:30](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L30)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L31)
 
 ___
 
@@ -121,7 +121,34 @@ ___
 
 • **\_strokeIndex**: *number*= -1
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L34)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:35](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L35)
+
+___
+
+### attach
+
+• **attach**: (`svg`: SVGSVGElement, `dimensions`: [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions)) => [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+#### Type declaration:
+
+▸ (`svg`: SVGSVGElement, `dimensions`: [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions)): [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Attaches to a DOM SVG element to render to.
+
+#### Parameters:
+
+Name | Type | Description |
+:------ | :------ | :------ |
+`svg` | SVGSVGElement | The SVG element to attach.   |
+`dimensions` | [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions) | Dimensions of the graph.   |
+
+**Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Self for chaining.
+
+Defined in: [src/renderers/RealRenderer/svg/svg-dom.ts:45](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/svg/svg-dom.ts#L45)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:52](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L52)
 
 ___
 
@@ -129,7 +156,7 @@ ___
 
 • **bgColor**: [*Color*](../modules/src_types_realrenderertypes.md#color)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:35](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L35)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:36](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L36)
 
 ___
 
@@ -137,7 +164,60 @@ ___
 
 • **bgType**: [*BGType*](../modules/src_types_realrenderertypes.md#bgtype)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:36](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L36)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:37](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L37)
+
+___
+
+### changeBackground
+
+• **changeBackground**: (`newBG`: [*BGType*](../modules/src_types_realrenderertypes.md#bgtype)) => [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+#### Type declaration:
+
+▸ (`newBG`: [*BGType*](../modules/src_types_realrenderertypes.md#bgtype)): [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Changes the background of the graph.
+
+#### Parameters:
+
+Name | Type | Description |
+:------ | :------ | :------ |
+`newBG` | [*BGType*](../modules/src_types_realrenderertypes.md#bgtype) | New background.   |
+
+**Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Self for chaining.
+
+Defined in: [src/renderers/RealRenderer/background.ts:11](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/background.ts#L11)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:48](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L48)
+
+___
+
+### changeOffsets
+
+• **changeOffsets**: (`xOffset`: *number*, `yOffset`: *number*) => [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+#### Type declaration:
+
+▸ (`xOffset`: *number*, `yOffset`: *number*): [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Change the offsets of the graph (for panning)
+
+#### Parameters:
+
+Name | Type | Description |
+:------ | :------ | :------ |
+`xOffset` | *number* | Offset in the x-direction.   |
+`yOffset` | *number* | Offset in the y-direction.   |
+
+**Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Self for chaining.
+
+Defined in: [src/renderers/RealRenderer/svg/svg-settings.ts:32](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/svg/svg-settings.ts#L32)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:51](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L51)
 
 ___
 
@@ -145,7 +225,33 @@ ___
 
 • **dimensions**: [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:27](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L27)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L28)
+
+___
+
+### draw
+
+• **draw**: (`numDraws`: *number*) => [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+#### Type declaration:
+
+▸ (`numDraws`: *number*): [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Draw a certain number of frames.
+
+#### Parameters:
+
+Name | Type | Description |
+:------ | :------ | :------ |
+`numDraws` | *number* | Number of frames to draw.   |
+
+**Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Self for chaining.
+
+Defined in: [src/renderers/RealRenderer/draw/draw.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/draw/draw.ts#L20)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:54](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L54)
 
 ___
 
@@ -153,7 +259,7 @@ ___
 
 • **drawsPerFrame**: *number*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:37](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L37)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:38](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L38)
 
 ___
 
@@ -163,7 +269,53 @@ ___
 
 Inherited from: EventEmitter.eventHandlers
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:2](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/events/eventEmitter.ts#L2)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:2](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/events/eventEmitter.ts#L2)
+
+___
+
+### exportData
+
+• **exportData**: () => [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)
+
+#### Type declaration:
+
+▸ (): [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)
+
+Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().
+
+**Returns:** [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)
+
+Data of the graph in a storable and loadable format.
+
+Defined in: [src/renderers/RealRenderer/import-export.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/import-export.ts#L13)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:46](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L46)
+
+___
+
+### importData
+
+• **importData**: (`data`: [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)) => [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+#### Type declaration:
+
+▸ (`data`: [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)): [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Import the data exported by .export() method.
+
+#### Parameters:
+
+Name | Type | Description |
+:------ | :------ | :------ |
+`data` | [*RealExport*](../modules/src_types_realrenderertypes.md#realexport) | Data exported by .export()   |
+
+**Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Self for chaining.
+
+Defined in: [src/renderers/RealRenderer/import-export.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/import-export.ts#L34)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:47](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L47)
 
 ___
 
@@ -171,7 +323,7 @@ ___
 
 • **originalDimensions**: [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L31)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:32](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L32)
 
 ___
 
@@ -195,9 +347,35 @@ Name | Type | Description |
 
 Self for chaining.
 
-Defined in: [src/renderers/RealRenderer/undo.ts:24](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/undo.ts#L24)
+Defined in: [src/renderers/RealRenderer/undo.ts:24](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/undo.ts#L24)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:43](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L43)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:44](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L44)
+
+___
+
+### scale
+
+• **scale**: (`scaleFactor`: *number*) => [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+#### Type declaration:
+
+▸ (`scaleFactor`: *number*): [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Scale/zoom the graph.
+
+#### Parameters:
+
+Name | Type | Description |
+:------ | :------ | :------ |
+`scaleFactor` | *number* | Factor to scale the graph by. Larger number zooms in.   |
+
+**Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Self for chaining.
+
+Defined in: [src/renderers/RealRenderer/svg/svg-settings.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/svg/svg-settings.ts#L9)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:50](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L50)
 
 ___
 
@@ -205,7 +383,7 @@ ___
 
 • **scaleFactor**: *number*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L28)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:29](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L29)
 
 ___
 
@@ -213,7 +391,47 @@ ___
 
 • **settings**: [*IRealRendererNonOptionals*](../interfaces/src_types_realrenderertypes.irealrenderernonoptionals.md) & [*IRealRendererOptionals*](../interfaces/src_types_realrenderertypes.irealrendereroptionals.md)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:33](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L33)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L34)
+
+___
+
+### startRender
+
+• **startRender**: () => [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+#### Type declaration:
+
+▸ (): [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Start rendering.
+
+**Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Self for chaining.
+
+Defined in: [src/renderers/RealRenderer/draw/render.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/draw/render.ts#L16)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:55](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L55)
+
+___
+
+### stopRender
+
+• **stopRender**: () => [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+#### Type declaration:
+
+▸ (): [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Stop rendering.
+
+**Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Self for chaining.
+
+Defined in: [src/renderers/RealRenderer/draw/render.ts:29](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/draw/render.ts#L29)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:56](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L56)
 
 ___
 
@@ -221,7 +439,7 @@ ___
 
 • **strokes**: [*Stroke*](../modules/src_types_realrenderertypes.md#stroke)[]= []
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:32](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L32)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:33](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L33)
 
 ___
 
@@ -229,7 +447,7 @@ ___
 
 • **svg**: SVGSVGElement
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:25](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L25)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:26](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L26)
 
 ___
 
@@ -237,7 +455,7 @@ ___
 
 • **svgSections**: [*SVGSections*](../modules/src_types_realrenderertypes.md#svgsections)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:26](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L26)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:27](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L27)
 
 ___
 
@@ -245,7 +463,7 @@ ___
 
 • **time**: *number*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:39](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L39)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:40](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L40)
 
 ___
 
@@ -253,7 +471,27 @@ ___
 
 • **timeStep**: *number*
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:38](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L38)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:39](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L39)
+
+___
+
+### toggleRender
+
+• **toggleRender**: () => [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+#### Type declaration:
+
+▸ (): [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Toggle rendering.
+
+**Returns:** [*RealRenderer*](index.realrenderer.md)<[*IRealRendererEvents*](../interfaces/src_constants_events_realrendererevents.irealrendererevents.md)\>
+
+Self for chaining.
+
+Defined in: [src/renderers/RealRenderer/draw/render.ts:40](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/draw/render.ts#L40)
+
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:57](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L57)
 
 ___
 
@@ -277,93 +515,11 @@ Name | Type | Description |
 
 Self for chaining.
 
-Defined in: [src/renderers/RealRenderer/undo.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/undo.ts#L9)
+Defined in: [src/renderers/RealRenderer/undo.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/undo.ts#L9)
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:42](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L42)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:43](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L43)
 
 ## Methods
-
-### attach
-
-▸ **attach**(`svg`: SVGSVGElement, `dimensions`: [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions)): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Attaches to a DOM SVG element to render to.
-
-#### Parameters:
-
-Name | Type | Description |
-:------ | :------ | :------ |
-`svg` | SVGSVGElement | The SVG element to attach.   |
-`dimensions` | [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions) | Dimensions of the graph.   |
-
-**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Self for chaining.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:168](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L168)
-
-___
-
-### changeBackground
-
-▸ **changeBackground**(`newBG`: [*BGType*](../modules/src_types_realrenderertypes.md#bgtype)): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Changes the background of the graph.
-
-#### Parameters:
-
-Name | Type | Description |
-:------ | :------ | :------ |
-`newBG` | [*BGType*](../modules/src_types_realrenderertypes.md#bgtype) | New background.   |
-
-**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Self for chaining.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:387](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L387)
-
-___
-
-### changeOffsets
-
-▸ **changeOffsets**(`xOffset`: *number*, `yOffset`: *number*): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Change the offsets of the graph (for panning)
-
-#### Parameters:
-
-Name | Type | Description |
-:------ | :------ | :------ |
-`xOffset` | *number* | Offset in the x-direction.   |
-`yOffset` | *number* | Offset in the y-direction.   |
-
-**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Self for chaining.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:255](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L255)
-
-___
-
-### draw
-
-▸ **draw**(`numDraws?`: *number*): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Draw a certain number of frames.
-
-#### Parameters:
-
-Name | Type | Default value | Description |
-:------ | :------ | :------ | :------ |
-`numDraws` | *number* | 1 | Number of frames to draw.   |
-
-**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Self for chaining.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:221](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L221)
-
-___
 
 ### emit
 
@@ -386,41 +542,7 @@ Name | Type |
 
 Inherited from: EventEmitter.emit
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/events/eventEmitter.ts#L28)
-
-___
-
-### exportData
-
-▸ **exportData**(): [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)
-
-Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().
-
-**Returns:** [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)
-
-Data of the graph in a storable and loadable format.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:279](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L279)
-
-___
-
-### importData
-
-▸ **importData**(`data`: [*RealExport*](../modules/src_types_realrenderertypes.md#realexport)): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Import the data exported by .export() method.
-
-#### Parameters:
-
-Name | Type | Description |
-:------ | :------ | :------ |
-`data` | [*RealExport*](../modules/src_types_realrenderertypes.md#realexport) | Data exported by .export()   |
-
-**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Self for chaining.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:300](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L300)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:28](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/events/eventEmitter.ts#L28)
 
 ___
 
@@ -445,7 +567,7 @@ Name | Type |
 
 Inherited from: EventEmitter.off
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:21](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/events/eventEmitter.ts#L21)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:21](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/events/eventEmitter.ts#L21)
 
 ___
 
@@ -471,7 +593,7 @@ Name | Type |
 
 Inherited from: EventEmitter.on
 
-Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/events/eventEmitter.ts#L12)
+Defined in: [src/renderers/RealRenderer/events/eventEmitter.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/events/eventEmitter.ts#L12)
 
 ___
 
@@ -485,7 +607,7 @@ Resets everything regarding the graph.
 
 Self for chaining.
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:366](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L366)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:113](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L113)
 
 ___
 
@@ -499,66 +621,4 @@ Resets the internal time counter.
 
 Self for chaining.
 
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:356](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L356)
-
-___
-
-### scale
-
-▸ **scale**(`scaleFactor`: *number*): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Scale/zoom the graph.
-
-#### Parameters:
-
-Name | Type | Description |
-:------ | :------ | :------ |
-`scaleFactor` | *number* | Factor to scale the graph by. Larger number zooms in.   |
-
-**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Self for chaining.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:232](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L232)
-
-___
-
-### startRender
-
-▸ **startRender**(): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Start rendering.
-
-**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Self for chaining.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:185](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L185)
-
-___
-
-### stopRender
-
-▸ **stopRender**(): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Stop rendering.
-
-**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Self for chaining.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:198](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L198)
-
-___
-
-### toggleRender
-
-▸ **toggleRender**(): [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Toggle rendering.
-
-**Returns:** [*RealRenderer*](index.realrenderer.md)<EventTypes\>
-
-Self for chaining.
-
-Defined in: [src/renderers/RealRenderer/RealRenderer.ts:209](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/4e6a73e/src/renderers/RealRenderer/RealRenderer.ts#L209)
+Defined in: [src/renderers/RealRenderer/RealRenderer.ts:103](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/renderers/RealRenderer/RealRenderer.ts#L103)
