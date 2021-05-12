@@ -84,10 +84,10 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
       ...options
     }
 
+    this.bgType = this.settings.bgType;
     this.normalizeBG();
 
     this.bgColor = this.settings.bgColor;
-    this.bgType = this.settings.bgType;
     this.drawsPerFrame = this.settings.drawsPerFrame;
     this.timeStep = this.settings.timeStep;
     this.time = this.settings.initTime;
