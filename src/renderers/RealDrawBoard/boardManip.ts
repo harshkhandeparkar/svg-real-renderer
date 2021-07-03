@@ -15,6 +15,7 @@ export function changeTool(this: RealDrawBoard, newTool: Tool) {
   this._endStroke = tools[this.tool]._endStroke;
   this._toolPreview = tools[this.tool]._toolPreview;
   this._onScroll = tools[this.tool]._onScroll;
+  this._onKey = tools[this.tool]._onKey;
 
   this._previewStroke.forEach((stroke) => {
     stroke.forEach((node) => {

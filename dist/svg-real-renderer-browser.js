@@ -942,7 +942,7 @@
 
 	var brush = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.BrushDefaults = exports.name = void 0;
+	exports._onKey = exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.BrushDefaults = exports.name = void 0;
 
 
 
@@ -1000,11 +1000,14 @@
 	    }
 	}
 	exports._onScroll = _onScroll;
+	function _onKey(e) {
+	}
+	exports._onKey = _onKey;
 	});
 
 	var eraser = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.EraserDefaults = exports.name = void 0;
+	exports._onKey = exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.EraserDefaults = exports.name = void 0;
 
 
 
@@ -1056,11 +1059,14 @@
 	    }
 	}
 	exports._onScroll = _onScroll;
+	function _onKey(e) {
+	}
+	exports._onKey = _onKey;
 	});
 
 	var line$1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.LineDefaults = exports.name = void 0;
+	exports._onKey = exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.LineDefaults = exports.name = void 0;
 
 
 
@@ -1131,6 +1137,56 @@
 	    }
 	}
 	exports._onScroll = _onScroll;
+	function _onKey(e) {
+	}
+	exports._onKey = _onKey;
+	});
+
+	var text = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._onKey = exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.TextDefaults = exports.name = void 0;
+
+
+	exports.name = 'text';
+	exports.TextDefaults = {
+	    fontSize: 1,
+	    fontColor: [1, 1, 1]
+	};
+	/** key -> identifier, value -> coordinate
+	 *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+	 */
+	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
+	function _startStroke(coords, identifier) {
+	    this._doPreview = false;
+	    if (this._previewStroke.has(identifier)) {
+	        this._previewStroke.get(identifier).forEach(function (strokeNode) {
+	            strokeNode.delete();
+	        });
+	    }
+	    var textPath = new _text.Text(coords, '', 'strokes');
+	    textPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.fontColor));
+	    textPath.setStrokeWidth(this.toolSettings.fontSize);
+	    this._addStroke([textPath]);
+	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
+	    _startCoords.set(identifier, coords);
+	}
+	exports._startStroke = _startStroke;
+	function _endStroke(endCoords, identifier) {
+	}
+	exports._endStroke = _endStroke;
+	function _doStroke(coords, identifier) {
+	}
+	exports._doStroke = _doStroke;
+	function _toolPreview(coords, identifier) {
+	}
+	exports._toolPreview = _toolPreview;
+	function _onScroll(scrollDelta, coords, identifier) {
+	}
+	exports._onScroll = _onScroll;
+	function _onKey(e) {
+	    console.log(e);
+	}
+	exports._onKey = _onKey;
 	});
 
 	var tools = createCommonjsModule(function (module, exports) {
@@ -1150,14 +1206,18 @@
 
 
 
+
 	// import * as rainbow_brush from './rainbow_brush';
 	exports.tools = {
 	    brush: brush,
 	    // rainbow_brush,
 	    eraser: eraser,
-	    line: line$1
+	    line: line$1,
+	    text: text
 	};
-	exports.ToolDefaults = __assign(__assign(__assign({}, brush.BrushDefaults), line$1.LineDefaults), eraser.EraserDefaults);
+	exports.ToolDefaults = __assign(__assign(__assign(__assign({}, brush.BrushDefaults), line$1.LineDefaults), eraser.EraserDefaults), text.TextDefaults
+	// ...rainbow_brush.RainbowBrushDefaults
+	);
 	});
 
 	var RealDrawBoardDefaults = createCommonjsModule(function (module, exports) {
@@ -1212,6 +1272,7 @@
 	    this._endStroke = tools.tools[this.tool]._endStroke;
 	    this._toolPreview = tools.tools[this.tool]._toolPreview;
 	    this._onScroll = tools.tools[this.tool]._onScroll;
+	    this._onKey = tools.tools[this.tool]._onKey;
 	    this._previewStroke.forEach(function (stroke) {
 	        stroke.forEach(function (node) {
 	            node.delete();
@@ -1300,6 +1361,7 @@
 	    this.svg.addEventListener('mouseleave', this._mouseLeaveEventListener);
 	    this.svg.addEventListener('mousemove', this._previewMouseMoveEventListener);
 	    this.svg.addEventListener('wheel', this._wheelEventListener);
+	    document.addEventListener('keypress', this._keyPressEventListener);
 	    this.svg.addEventListener('touchstart', this._touchStartEventListener);
 	    this.svg.addEventListener('touchmove', this._touchMoveEventListener);
 	    this.svg.addEventListener('touchend', this._touchEndEventListener);
@@ -1312,6 +1374,7 @@
 	    this.svg.removeEventListener('mouseexit', this._mouseLeaveEventListener);
 	    this.svg.removeEventListener('mousemove', this._previewMouseMoveEventListener);
 	    this.svg.removeEventListener('wheel', this._wheelEventListener);
+	    document.removeEventListener('keypress', this._keyPressEventListener);
 	    this.svg.removeEventListener('touchstart', this._touchStartEventListener);
 	    this.svg.removeEventListener('touchmove', this._touchMoveEventListener);
 	    this.svg.removeEventListener('touchend', this._touchEndEventListener);
@@ -1424,6 +1487,7 @@
 	        _this._doStroke = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._doStroke;
 	        _this._toolPreview = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._toolPreview;
 	        _this._onScroll = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._onScroll;
+	        _this._onKey = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._onKey;
 	        _this._getMouseCoords = _coords._getMouseCoords;
 	        _this._getTouchCoords = _coords._getTouchCoords;
 	        _this.changeToolSetting = boardManip.changeToolSetting;
@@ -1495,6 +1559,11 @@
 	            }
 	        };
 	        // --- Mouse Events ---
+	        // --- Keyboard Events ---
+	        _this._keyPressEventListener = function (e) {
+	            _this._onKey(e);
+	        };
+	        // --- /Keyboard Events ---
 	        // --- Touch Events ---
 	        _this._touchStartEventListener = function (e) {
 	            e.preventDefault();

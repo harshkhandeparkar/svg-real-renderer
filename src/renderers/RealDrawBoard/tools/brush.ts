@@ -128,3 +128,10 @@ export function _onScroll(
     this._display(this._previewStroke.get(identifier));
   }
 }
+
+export function _onKey(
+  this: RealDrawBoard,
+  e: KeyboardEvent
+) {
+
+}

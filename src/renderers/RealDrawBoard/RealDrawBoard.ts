@@ -61,6 +61,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
   protected _doStroke = tools[RealDrawBoardDefaults.tool]._doStroke;
   protected _toolPreview = tools[RealDrawBoardDefaults.tool]._toolPreview;
   protected _onScroll = tools[RealDrawBoardDefaults.tool]._onScroll;
+  protected _onKey = tools[RealDrawBoardDefaults.tool]._onKey;
   protected _getMouseCoords = _getMouseCoords;
   protected _getTouchCoords = _getTouchCoords;
 
@@ -173,6 +174,12 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
     }
   }
   // --- Mouse Events ---
+
+  // --- Keyboard Events ---
+  protected _keyPressEventListener = (e: KeyboardEvent) => {
+    this._onKey(e);
+  }
+  // --- /Keyboard Events ---
 
   // --- Touch Events ---
   protected _touchStartEventListener = (e: TouchEvent) => {

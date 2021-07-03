@@ -143,3 +143,9 @@ export function _onScroll(
   }
 }
 
+export function _onKey(
+  this: RealDrawBoard,
+  e: KeyboardEvent
+) {
+
+}

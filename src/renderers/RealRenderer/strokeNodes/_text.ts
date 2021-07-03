@@ -1,4 +1,4 @@
-import { Coordinate, StrokeNodeData, SVGSection } from '../../../types/RealRendererTypes';
+import { Coordinate, SVGSection } from '../../../types/RealRendererTypes';
 import { Node } from './_node';
 
 export class Text extends Node<SVGTextElement, 'text'> {
