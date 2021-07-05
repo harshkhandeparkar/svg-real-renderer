@@ -415,11 +415,20 @@
 	        _this.section = section;
 	        return _this;
 	    }
+	    Text.prototype.getText = function () {
+	        return this.node.textContent;
+	    };
 	    Text.prototype.updateText = function (newText) {
 	        this.node.textContent = newText;
 	    };
+	    Text.prototype.appendText = function (append) {
+	        this.node.textContent = this.getText() + append;
+	    };
 	    Text.prototype.setStyle = function (proprty, value) {
 	        this.node.style[proprty] = value;
+	    };
+	    Text.prototype.setFontSize = function (size) {
+	        this.node.style.fontSize = size + "px";
 	    };
 	    return Text;
 	}(_node.Node));
@@ -1150,12 +1159,14 @@
 	exports.name = 'text';
 	exports.TextDefaults = {
 	    fontSize: 1,
-	    fontColor: [1, 1, 1]
+	    fontColor: [1, 1, 1],
+	    mode: 'new'
 	};
 	/** key -> identifier, value -> coordinate
 	 *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
 	 */
 	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
+	var _selectedNode;
 	function _startStroke(coords, identifier) {
 	    this._doPreview = false;
 	    if (this._previewStroke.has(identifier)) {
@@ -1163,12 +1174,13 @@
 	            strokeNode.delete();
 	        });
 	    }
-	    var textPath = new _text.Text(coords, '', 'strokes');
-	    textPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.fontColor));
+	    var textPath = new _text.Text(coords, 'Myao', 'strokes');
+	    textPath.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.fontColor));
 	    textPath.setStrokeWidth(this.toolSettings.fontSize);
 	    this._addStroke([textPath]);
 	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 	    _startCoords.set(identifier, coords);
+	    _selectedNode = textPath;
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
@@ -1184,7 +1196,8 @@
 	}
 	exports._onScroll = _onScroll;
 	function _onKey(e) {
-	    console.log(e);
+	    if (_selectedNode)
+	        _selectedNode.appendText(e.key);
 	}
 	exports._onKey = _onKey;
 	});
@@ -1361,7 +1374,7 @@
 	    this.svg.addEventListener('mouseleave', this._mouseLeaveEventListener);
 	    this.svg.addEventListener('mousemove', this._previewMouseMoveEventListener);
 	    this.svg.addEventListener('wheel', this._wheelEventListener);
-	    document.addEventListener('keypress', this._keyPressEventListener);
+	    document.addEventListener('keydown', this._keyPressEventListener);
 	    this.svg.addEventListener('touchstart', this._touchStartEventListener);
 	    this.svg.addEventListener('touchmove', this._touchMoveEventListener);
 	    this.svg.addEventListener('touchend', this._touchEndEventListener);
@@ -1374,7 +1387,7 @@
 	    this.svg.removeEventListener('mouseexit', this._mouseLeaveEventListener);
 	    this.svg.removeEventListener('mousemove', this._previewMouseMoveEventListener);
 	    this.svg.removeEventListener('wheel', this._wheelEventListener);
-	    document.removeEventListener('keypress', this._keyPressEventListener);
+	    document.removeEventListener('keydown', this._keyPressEventListener);
 	    this.svg.removeEventListener('touchstart', this._touchStartEventListener);
 	    this.svg.removeEventListener('touchmove', this._touchMoveEventListener);
 	    this.svg.removeEventListener('touchend', this._touchEndEventListener);

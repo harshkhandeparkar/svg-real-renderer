@@ -27,6 +27,8 @@ export const TextDefaults: ITextSettings = {
  */
 const _startCoords: Map<string, [number, number]> = new Map(); /* key -> identifier, value -> coordinate*/
 
+let _selectedNode: Text;
+
 export function _startStroke(
   this: RealDrawBoard,
   coords: Coordinate,
@@ -39,14 +41,15 @@ export function _startStroke(
     })
   }
 
-  const textPath = new Text(coords, '', 'strokes');
-  textPath.setStroke(getRGBColorString(this.toolSettings.fontColor));
+  const textPath = new Text(coords, 'Myao', 'strokes');
+  textPath.setFill(getRGBColorString(this.toolSettings.fontColor));
   textPath.setStrokeWidth(this.toolSettings.fontSize);
 
   this._addStroke([textPath]);
   this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 
   _startCoords.set(identifier, coords);
+  _selectedNode = textPath;
 }
 
 export function _endStroke(
@@ -82,5 +85,5 @@ export function _onKey(
   this: RealDrawBoard,
   e: KeyboardEvent
 ) {
-  console.log(e);
+  if (_selectedNode) _selectedNode.appendText(e.key);
 }
