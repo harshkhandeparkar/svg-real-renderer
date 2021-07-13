@@ -1,10 +1,9 @@
-import { RealDrawBoard } from '../RealDrawBoard';
-import { Color, Coordinate } from '../../../types/RealRendererTypes';
-import { getRGBColorString } from '../../../util/getRGBColorString';
+import { RealDrawBoard } from '../../RealDrawBoard';
+import { Color, Coordinate } from '../../../../types/RealRendererTypes';
+import { getRGBColorString } from '../../../../util/getRGBColorString';
 
-import { Text } from '../../RealRenderer/strokeNodes/_text';
-
-import { getRadiusFromThickness } from './util/getRadiusFromThickness';
+import { Text } from '../../../RealRenderer/strokeNodes/_text';
+import { _mapKeyToAction } from './_mapKeyToAction';
 
 export const name = 'text';
 
@@ -41,7 +40,7 @@ export function _startStroke(
     })
   }
 
-  const textPath = new Text(coords, 'Myao', 'strokes');
+  const textPath = new Text(coords, 'Enter Text', 'strokes');
   textPath.setFill(getRGBColorString(this.toolSettings.fontColor));
   textPath.setStrokeWidth(this.toolSettings.fontSize);
 
@@ -85,5 +84,8 @@ export function _onKey(
   this: RealDrawBoard,
   e: KeyboardEvent
 ) {
-  if (_selectedNode) _selectedNode.appendText(e.key);
+  if (_selectedNode) {
+    e.preventDefault();
+    _mapKeyToAction(e, _selectedNode);
+  }
 }

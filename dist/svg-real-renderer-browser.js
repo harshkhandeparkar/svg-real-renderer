@@ -407,28 +407,62 @@
 	    __extends(Text, _super);
 	    function Text(position, initialText, section) {
 	        var _this = _super.call(this, section, 'text', 'text') || this;
+	        _this.tspans = [];
+	        _this.spanIndex = 0;
+	        _this.cursorSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+	        /** The text tspan after which the cursor is placed */
+	        _this.cursorIndex = 0;
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-	        path.textContent = initialText;
-	        path.setAttribute('x', position[0].toString());
-	        path.setAttribute('y', position[1].toString());
 	        _this.node = path;
 	        _this.section = section;
+	        _this._addTspan(initialText);
+	        path.appendChild(_this.cursorSpan);
+	        _this.cursorSpan.classList.add('svg-real-db-text-cursor');
+	        _this.cursorSpan.textContent = '|';
+	        _this.cursorIndex = 0;
+	        path.setAttribute('x', position[0].toString());
+	        path.setAttribute('y', position[1].toString());
 	        return _this;
 	    }
+	    Text.prototype._addTspan = function (text, index) {
+	        if (index === void 0) { index = 0; }
+	        this.tspans.splice(index, 0, document.createElementNS('http://www.w3.org/2000/svg', 'tspan'));
+	        this.node.appendChild(this.tspans[index]);
+	        this.tspans[index].textContent = text;
+	        this.tspans[index].style.whiteSpace = 'pre';
+	    };
 	    Text.prototype.getText = function () {
-	        return this.node.textContent;
+	        return this.tspans[this.spanIndex].textContent;
 	    };
 	    Text.prototype.updateText = function (newText) {
-	        this.node.textContent = newText;
+	        this.tspans[this.spanIndex].textContent = newText;
 	    };
 	    Text.prototype.appendText = function (append) {
-	        this.node.textContent = this.getText() + append;
+	        this.updateText(this.getText() + append);
 	    };
 	    Text.prototype.setStyle = function (proprty, value) {
 	        this.node.style[proprty] = value;
 	    };
 	    Text.prototype.setFontSize = function (size) {
 	        this.node.style.fontSize = size + "px";
+	    };
+	    Text.prototype.moveCursorLeft = function () {
+	        if (this.tspans[this.cursorIndex].textContent.length > 0) {
+	            if (!this.tspans[this.cursorIndex + 1])
+	                this._addTspan('', this.cursorIndex + 1);
+	            var beforeCursorText = this.tspans[this.cursorIndex].textContent;
+	            var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
+	            this.tspans[this.cursorIndex + 1].textContent = beforeCursorText[beforeCursorText.length - 1] + afterCursorText; // last character of before text becomes first character of after text
+	            this.tspans[this.cursorIndex].textContent = beforeCursorText.slice(0, -1); // remove last character
+	        }
+	    };
+	    Text.prototype.moveCursorRight = function () {
+	        if (this.tspans[this.cursorIndex + 1] && this.tspans[this.cursorIndex + 1].textContent.length > 0) {
+	            var beforeCursorText = this.tspans[this.cursorIndex].textContent;
+	            var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
+	            this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText[0]; // first character of after text becomes last character of before text
+	            this.tspans[this.cursorIndex + 1].textContent = afterCursorText.slice(1); // remove first character of after text
+	        }
 	    };
 	    return Text;
 	}(_node.Node));
@@ -1151,9 +1185,35 @@
 	exports._onKey = _onKey;
 	});
 
+	var _mapKeyToAction_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._mapKeyToAction = void 0;
+	function _mapKeyToAction(e, textNode) {
+	    switch (e.key.toLowerCase()) {
+	        case 'backspace':
+	            textNode.updateText(textNode.getText().slice(0, -1));
+	            break;
+	        case 'arrowleft':
+	            textNode.moveCursorLeft();
+	            break;
+	        case 'arrowright':
+	            textNode.moveCursorRight();
+	            break;
+	        case 'shift':
+	        case 'control':
+	            break;
+	        default:
+	            textNode.appendText(e.key);
+	            break;
+	    }
+	}
+	exports._mapKeyToAction = _mapKeyToAction;
+	});
+
 	var text = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._onKey = exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.TextDefaults = exports.name = void 0;
+
 
 
 	exports.name = 'text';
@@ -1174,7 +1234,7 @@
 	            strokeNode.delete();
 	        });
 	    }
-	    var textPath = new _text.Text(coords, 'Myao', 'strokes');
+	    var textPath = new _text.Text(coords, 'Enter Text', 'strokes');
 	    textPath.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.fontColor));
 	    textPath.setStrokeWidth(this.toolSettings.fontSize);
 	    this._addStroke([textPath]);
@@ -1196,8 +1256,10 @@
 	}
 	exports._onScroll = _onScroll;
 	function _onKey(e) {
-	    if (_selectedNode)
-	        _selectedNode.appendText(e.key);
+	    if (_selectedNode) {
+	        e.preventDefault();
+	        _mapKeyToAction_1._mapKeyToAction(e, _selectedNode);
+	    }
 	}
 	exports._onKey = _onKey;
 	});

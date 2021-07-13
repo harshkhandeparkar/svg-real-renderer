@@ -1,7 +1,7 @@
 import * as brush from './brush';
 import * as eraser from './eraser';
 import * as line from './line';
-import * as text from './text';
+import * as text from './text/text';
 // import * as rainbow_brush from './rainbow_brush';
 
 export const tools = {

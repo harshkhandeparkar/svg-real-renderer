@@ -46,6 +46,13 @@ colorWheel.on('input:change', color => {
     color.green / 255,
     color.blue / 255
   ])
+  DrawBoard.changeToolSetting(
+    'fontColor',
+    [
+    color.red / 255,
+    color.green / 255,
+    color.blue / 255
+  ])
 })
 
 const toolSelector = document.querySelector('#draw-tool');
