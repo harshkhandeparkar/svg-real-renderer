@@ -409,13 +409,13 @@
 	        var _this = _super.call(this, section, 'text', 'text') || this;
 	        _this.tspans = [];
 	        _this.spanIndex = 0;
-	        _this.cursorSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
 	        /** The text tspan after which the cursor is placed */
 	        _this.cursorIndex = 0;
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 	        _this.node = path;
 	        _this.section = section;
 	        _this._addTspan(initialText);
+	        _this.cursorSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
 	        path.appendChild(_this.cursorSpan);
 	        _this.cursorSpan.classList.add('svg-real-db-text-cursor');
 	        _this.cursorSpan.textContent = '|';
@@ -463,6 +463,9 @@
 	            this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText[0]; // first character of after text becomes last character of before text
 	            this.tspans[this.cursorIndex + 1].textContent = afterCursorText.slice(1); // remove first character of after text
 	        }
+	    };
+	    Text.prototype.destroyCursor = function () {
+	        this.cursorSpan.remove();
 	    };
 	    return Text;
 	}(_node.Node));
@@ -1240,6 +1243,8 @@
 	    this._addStroke([textPath]);
 	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 	    _startCoords.set(identifier, coords);
+	    if (_selectedNode)
+	        _selectedNode.destroyCursor();
 	    _selectedNode = textPath;
 	}
 	exports._startStroke = _startStroke;

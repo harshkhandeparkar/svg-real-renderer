@@ -48,6 +48,8 @@ export function _startStroke(
   this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 
   _startCoords.set(identifier, coords);
+
+  if (_selectedNode) _selectedNode.destroyCursor();
   _selectedNode = textPath;
 }
 

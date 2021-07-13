@@ -5,7 +5,7 @@ export class Text extends Node<SVGTextElement, 'text'> {
   tspans: SVGTSpanElement[] = [];
   spanIndex: number = 0;
 
-  cursorSpan: SVGTSpanElement = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+  cursorSpan: SVGTSpanElement;
   /** The text tspan after which the cursor is placed */
   cursorIndex: number = 0;
 
@@ -22,6 +22,7 @@ export class Text extends Node<SVGTextElement, 'text'> {
 
     this._addTspan(initialText);
 
+    this.cursorSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
     path.appendChild(this.cursorSpan);
     this.cursorSpan.classList.add('svg-real-db-text-cursor');
     this.cursorSpan.textContent = '|';
@@ -79,5 +80,9 @@ export class Text extends Node<SVGTextElement, 'text'> {
       this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText[0]; // first character of after text becomes last character of before text
       this.tspans[this.cursorIndex + 1].textContent = afterCursorText.slice(1); // remove first character of after text
     }
+  }
+
+  destroyCursor() {
+    this.cursorSpan.remove();
   }
 }
