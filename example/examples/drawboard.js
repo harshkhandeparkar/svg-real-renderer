@@ -74,6 +74,12 @@ eraserSizeRange.addEventListener('input', e => {
   DrawBoard.changeToolSetting('eraserSize', Number(eraserSizeRange.value))
 })
 
+const fontSizeRange = document.querySelector('#font-size');
+fontSizeRange.addEventListener('input', e => {
+  e.preventDefault();
+  DrawBoard.changeToolSetting('fontSize', Number(fontSizeRange.value))
+})
+
 DrawBoard.on('tool-setting-change', 'tool-setting-change-handler', ({settingName, newValue}) => {
   if (settingName === 'brushSize') brushSizeRange.value = newValue;
   else if (settingName === 'eraserSize') eraserSizeRange.value = newValue;

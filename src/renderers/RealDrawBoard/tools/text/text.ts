@@ -16,7 +16,7 @@ export interface ITextSettings {
 export type TextOptions = ITextSettings | {};
 
 export const TextDefaults: ITextSettings = {
-  fontSize: 1,
+  fontSize: 10,
   fontColor: [1, 1, 1],
   mode: 'new'
 }
@@ -42,12 +42,17 @@ export function _startStroke(
 
   const textPath = new Text(coords, 'Enter Text', 'strokes');
   textPath.setFill(getRGBColorString(this.toolSettings.fontColor));
-  textPath.setStrokeWidth(this.toolSettings.fontSize);
+  textPath.setFontSize(this.toolSettings.fontSize);
 
   this._addStroke([textPath]);
   this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 
   _startCoords.set(identifier, coords);
+
+  this.on('tool-setting-change', 'text-tool-handler', ({settingName, newValue}) => {
+    if (settingName === 'fontColor') _selectedNode.setFill(getRGBColorString(newValue as Color));
+    if (settingName === 'fontSize') _selectedNode.setFontSize(newValue as number);
+  })
 
   if (_selectedNode) _selectedNode.destroyCursor();
   _selectedNode = textPath;

@@ -1221,7 +1221,7 @@
 
 	exports.name = 'text';
 	exports.TextDefaults = {
-	    fontSize: 1,
+	    fontSize: 10,
 	    fontColor: [1, 1, 1],
 	    mode: 'new'
 	};
@@ -1239,10 +1239,17 @@
 	    }
 	    var textPath = new _text.Text(coords, 'Enter Text', 'strokes');
 	    textPath.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.fontColor));
-	    textPath.setStrokeWidth(this.toolSettings.fontSize);
+	    textPath.setFontSize(this.toolSettings.fontSize);
 	    this._addStroke([textPath]);
 	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 	    _startCoords.set(identifier, coords);
+	    this.on('tool-setting-change', 'text-tool-handler', function (_a) {
+	        var settingName = _a.settingName, newValue = _a.newValue;
+	        if (settingName === 'fontColor')
+	            _selectedNode.setFill(getRGBColorString_1.getRGBColorString(newValue));
+	        if (settingName === 'fontSize')
+	            _selectedNode.setFontSize(newValue);
+	    });
 	    if (_selectedNode)
 	        _selectedNode.destroyCursor();
 	    _selectedNode = textPath;
