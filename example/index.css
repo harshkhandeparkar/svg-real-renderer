@@ -60,3 +60,6 @@ a.class-name:hover {
   }
 }
 
+text {
+  user-select: none;
+}

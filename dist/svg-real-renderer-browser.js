@@ -400,6 +400,13 @@
 	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	    };
 	})();
+	var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || function () {
+	    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+	    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+	        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+	            r[k] = a[j];
+	    return r;
+	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Text = void 0;
 
@@ -411,17 +418,19 @@
 	        _this.spanIndex = 0;
 	        /** The text tspan after which the cursor is placed */
 	        _this.cursorIndex = 0;
+	        _this.position = [0, 0];
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 	        _this.node = path;
 	        _this.section = section;
 	        _this._addTspan(initialText);
 	        _this.cursorSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-	        path.appendChild(_this.cursorSpan);
+	        _this.node.appendChild(_this.cursorSpan);
 	        _this.cursorSpan.classList.add('svg-real-db-text-cursor');
 	        _this.cursorSpan.textContent = '|';
 	        _this.cursorIndex = 0;
-	        path.setAttribute('x', position[0].toString());
-	        path.setAttribute('y', position[1].toString());
+	        _this.position = __spreadArrays(position);
+	        _this.node.setAttribute('x', _this.position[0].toString());
+	        _this.node.setAttribute('y', _this.position[1].toString());
 	        return _this;
 	    }
 	    Text.prototype._addTspan = function (text, index) {
@@ -439,6 +448,17 @@
 	    };
 	    Text.prototype.appendText = function (append) {
 	        this.updateText(this.getText() + append);
+	    };
+	    Text.prototype.updateTextBaseline = function (position) {
+	        this.node.setAttribute('x', position[0].toString());
+	        this.node.setAttribute('y', position[1].toString());
+	    };
+	    Text.prototype.centerNode = function () {
+	        var textWidth = this.node.getBBox().width;
+	        this.updateTextBaseline([
+	            this.position[0] - textWidth / 2,
+	            this.position[1]
+	        ]);
 	    };
 	    Text.prototype.setStyle = function (proprty, value) {
 	        this.node.style[proprty] = value;
@@ -1215,7 +1235,8 @@
 
 	var text = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._onKey = exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.TextDefaults = exports.name = void 0;
+	exports._toolPreview = exports._onScroll = exports._onKey = exports._doStroke = exports._endStroke = exports._startStroke = exports.TextDefaults = exports.name = void 0;
+
 
 
 
@@ -1223,7 +1244,7 @@
 	exports.TextDefaults = {
 	    fontSize: 10,
 	    fontColor: [1, 1, 1],
-	    mode: 'new'
+	    textToolMode: 'new'
 	};
 	/** key -> identifier, value -> coordinate
 	 *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
@@ -1231,49 +1252,80 @@
 	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
 	var _selectedNode;
 	function _startStroke(coords, identifier) {
-	    this._doPreview = false;
-	    if (this._previewStroke.has(identifier)) {
-	        this._previewStroke.get(identifier).forEach(function (strokeNode) {
-	            strokeNode.delete();
-	        });
+	    if (this.toolSettings.textToolMode === 'new') {
+	        if (this._previewStroke.has(identifier)) {
+	            this._previewStroke.get(identifier).forEach(function (strokeNode) {
+	                strokeNode.delete();
+	            });
+	        }
+	        _startCoords.set(identifier, coords);
+	        var boundingBox = new _polygon.Polygon([coords, coords, coords, coords], 'overlay');
+	        boundingBox.setDashed('rgb(0.5, 0.5, 0.5)');
+	        boundingBox.setFill('transparent');
+	        this._previewStroke.set(identifier, [boundingBox]);
 	    }
-	    var textPath = new _text.Text(coords, 'Enter Text', 'strokes');
-	    textPath.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.fontColor));
-	    textPath.setFontSize(this.toolSettings.fontSize);
-	    this._addStroke([textPath]);
-	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
-	    _startCoords.set(identifier, coords);
-	    this.on('tool-setting-change', 'text-tool-handler', function (_a) {
-	        var settingName = _a.settingName, newValue = _a.newValue;
-	        if (settingName === 'fontColor')
-	            _selectedNode.setFill(getRGBColorString_1.getRGBColorString(newValue));
-	        if (settingName === 'fontSize')
-	            _selectedNode.setFontSize(newValue);
-	    });
-	    if (_selectedNode)
-	        _selectedNode.destroyCursor();
-	    _selectedNode = textPath;
 	}
 	exports._startStroke = _startStroke;
 	function _endStroke(endCoords, identifier) {
+	    if (this.toolSettings.textToolMode === 'new') {
+	        var _a = _startCoords.get(identifier), startX = _a[0], startY = _a[1];
+	        var endX = endCoords[0], endY = endCoords[1];
+	        var baselineCoords = [
+	            (startX + endX) / 2,
+	            (startY + endY) / 2
+	        ];
+	        var textPath = new _text.Text(baselineCoords, 'Enter Text', 'strokes');
+	        textPath.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.fontColor));
+	        textPath.setFontSize(this.toolSettings.fontSize);
+	        this._addStroke([textPath]);
+	        this._strokeIdentifierMap.set(identifier, this._strokeIndex);
+	        textPath.centerNode();
+	        this.on('tool-setting-change', 'text-tool-handler', function (_a) {
+	            var settingName = _a.settingName, newValue = _a.newValue;
+	            if (settingName === 'fontColor')
+	                _selectedNode.setFill(getRGBColorString_1.getRGBColorString(newValue));
+	            if (settingName === 'fontSize')
+	                _selectedNode.setFontSize(newValue);
+	        });
+	        if (_selectedNode)
+	            _selectedNode.destroyCursor();
+	        _selectedNode = textPath;
+	        this.changeToolSetting('textToolMode', 'edit');
+	        if (this._previewStroke.has(identifier)) {
+	            this._previewStroke.get(identifier).forEach(function (node) { return node.delete(); });
+	            this._previewStroke.delete(identifier);
+	        }
+	    }
 	}
 	exports._endStroke = _endStroke;
 	function _doStroke(coords, identifier) {
+	    if (this.toolSettings.textToolMode === 'new') {
+	        var boundingBox = this._previewStroke.get(identifier)[0];
+	        var _a = _startCoords.get(identifier), startX = _a[0], startY = _a[1];
+	        var endX = coords[0], endY = coords[1];
+	        boundingBox.updatePoints([
+	            [startX, startY],
+	            [endX, startY],
+	            [endX, endY],
+	            [startX, endY]
+	        ]);
+	    }
 	}
 	exports._doStroke = _doStroke;
-	function _toolPreview(coords, identifier) {
-	}
-	exports._toolPreview = _toolPreview;
-	function _onScroll(scrollDelta, coords, identifier) {
-	}
-	exports._onScroll = _onScroll;
 	function _onKey(e) {
-	    if (_selectedNode) {
+	    if (this.toolSettings.textToolMode === 'edit' && _selectedNode) {
 	        e.preventDefault();
 	        _mapKeyToAction_1._mapKeyToAction(e, _selectedNode);
+	        _selectedNode.centerNode();
 	    }
 	}
 	exports._onKey = _onKey;
+	function _onScroll(scrollDelta, coords, identifier) {
+	}
+	exports._onScroll = _onScroll;
+	function _toolPreview(coords, identifier) {
+	}
+	exports._toolPreview = _toolPreview;
 	});
 
 	var tools = createCommonjsModule(function (module, exports) {

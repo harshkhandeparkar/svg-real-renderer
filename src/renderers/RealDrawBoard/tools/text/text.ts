@@ -3,6 +3,7 @@ import { Color, Coordinate } from '../../../../types/RealRendererTypes';
 import { getRGBColorString } from '../../../../util/getRGBColorString';
 
 import { Text } from '../../../RealRenderer/strokeNodes/_text';
+import { Polygon } from '../../../RealRenderer/strokeNodes/_polygon';
 import { _mapKeyToAction } from './_mapKeyToAction';
 
 export const name = 'text';
@@ -10,7 +11,7 @@ export const name = 'text';
 export interface ITextSettings {
   fontSize: number;
   fontColor: Color;
-  mode: 'new' | 'edit';
+  textToolMode: 'new' | 'edit';
 }
 
 export type TextOptions = ITextSettings | {};
@@ -18,7 +19,7 @@ export type TextOptions = ITextSettings | {};
 export const TextDefaults: ITextSettings = {
   fontSize: 10,
   fontColor: [1, 1, 1],
-  mode: 'new'
+  textToolMode: 'new'
 }
 
 /** key -> identifier, value -> coordinate
@@ -33,29 +34,21 @@ export function _startStroke(
   coords: Coordinate,
   identifier: string
 ) {
-  this._doPreview = false;
-  if (this._previewStroke.has(identifier)) {
-    this._previewStroke.get(identifier).forEach((strokeNode) => {
-      strokeNode.delete();
-    })
+  if (this.toolSettings.textToolMode === 'new') {
+    if (this._previewStroke.has(identifier)) {
+      this._previewStroke.get(identifier).forEach((strokeNode) => {
+        strokeNode.delete();
+      })
+    }
+
+    _startCoords.set(identifier, coords);
+
+    const boundingBox = new Polygon([coords, coords, coords, coords], 'overlay');
+    boundingBox.setDashed('rgb(0.5, 0.5, 0.5)');
+    boundingBox.setFill('transparent');
+
+    this._previewStroke.set(identifier, [boundingBox]);
   }
-
-  const textPath = new Text(coords, 'Enter Text', 'strokes');
-  textPath.setFill(getRGBColorString(this.toolSettings.fontColor));
-  textPath.setFontSize(this.toolSettings.fontSize);
-
-  this._addStroke([textPath]);
-  this._strokeIdentifierMap.set(identifier, this._strokeIndex);
-
-  _startCoords.set(identifier, coords);
-
-  this.on('tool-setting-change', 'text-tool-handler', ({settingName, newValue}) => {
-    if (settingName === 'fontColor') _selectedNode.setFill(getRGBColorString(newValue as Color));
-    if (settingName === 'fontSize') _selectedNode.setFontSize(newValue as number);
-  })
-
-  if (_selectedNode) _selectedNode.destroyCursor();
-  _selectedNode = textPath;
 }
 
 export function _endStroke(
@@ -63,6 +56,40 @@ export function _endStroke(
   endCoords: Coordinate,
   identifier: string
 ) {
+  if (this.toolSettings.textToolMode === 'new') {
+    const [startX, startY] = _startCoords.get(identifier);
+    const [endX, endY] = endCoords;
+
+    const baselineCoords: Coordinate = [
+      (startX + endX) / 2,
+      (startY + endY) / 2
+    ]
+
+    const textPath = new Text(baselineCoords, 'Enter Text', 'strokes');
+
+    textPath.setFill(getRGBColorString(this.toolSettings.fontColor));
+    textPath.setFontSize(this.toolSettings.fontSize);
+
+    this._addStroke([textPath]);
+    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
+
+    textPath.centerNode();
+
+    this.on('tool-setting-change', 'text-tool-handler', ({settingName, newValue}) => {
+      if (settingName === 'fontColor') _selectedNode.setFill(getRGBColorString(newValue as Color));
+      if (settingName === 'fontSize') _selectedNode.setFontSize(newValue as number);
+    })
+
+    if (_selectedNode) _selectedNode.destroyCursor();
+    _selectedNode = textPath;
+
+    this.changeToolSetting('textToolMode', 'edit');
+
+    if (this._previewStroke.has(identifier)) {
+      this._previewStroke.get(identifier).forEach(node => node.delete());
+      this._previewStroke.delete(identifier)
+    }
+  }
 }
 
 export function _doStroke(
@@ -70,13 +97,30 @@ export function _doStroke(
   coords: Coordinate,
   identifier: string
 ) {
+  if (this.toolSettings.textToolMode === 'new') {
+    const boundingBox = this._previewStroke.get(identifier)[0] as Polygon;
+    const [startX, startY] = _startCoords.get(identifier);
+    const [endX, endY] = coords;
+
+    boundingBox.updatePoints([
+      [startX, startY],
+      [endX, startY],
+      [endX, endY],
+      [startX, endY]
+    ])
+  }
 }
 
-export function _toolPreview(
+export function _onKey(
   this: RealDrawBoard,
-  coords: Coordinate,
-  identifier: string
+  e: KeyboardEvent
 ) {
+  if (this.toolSettings.textToolMode === 'edit' && _selectedNode) {
+    e.preventDefault();
+    _mapKeyToAction(e, _selectedNode);
+
+    _selectedNode.centerNode();
+  }
 }
 
 export function _onScroll(
@@ -87,12 +131,9 @@ export function _onScroll(
 ) {
 }
 
-export function _onKey(
+export function _toolPreview(
   this: RealDrawBoard,
-  e: KeyboardEvent
+  coords: Coordinate,
+  identifier: string
 ) {
-  if (_selectedNode) {
-    e.preventDefault();
-    _mapKeyToAction(e, _selectedNode);
-  }
 }

@@ -15,6 +15,7 @@ const drawBoardOptions = {
     brushColor: [1, 1, 1], // Color of the brush
     lineColor: [1, 1, 1], // Color of the line
     lineThickness: 5,
+    fontColor: [0, 0, 0],
     changeRate: 3,
     eraserSize: 5
   },

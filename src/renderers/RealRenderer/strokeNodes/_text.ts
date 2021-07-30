@@ -9,6 +9,8 @@ export class Text extends Node<SVGTextElement, 'text'> {
   /** The text tspan after which the cursor is placed */
   cursorIndex: number = 0;
 
+  position: Coordinate = [0, 0];
+
   constructor(
     position: Coordinate,
     initialText: string,
@@ -23,13 +25,15 @@ export class Text extends Node<SVGTextElement, 'text'> {
     this._addTspan(initialText);
 
     this.cursorSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-    path.appendChild(this.cursorSpan);
+    this.node.appendChild(this.cursorSpan);
     this.cursorSpan.classList.add('svg-real-db-text-cursor');
     this.cursorSpan.textContent = '|';
     this.cursorIndex = 0;
 
-    path.setAttribute('x', position[0].toString());
-    path.setAttribute('y', position[1].toString());
+    this.position = [...position];
+
+    this.node.setAttribute('x', this.position[0].toString());
+    this.node.setAttribute('y', this.position[1].toString());
   }
 
   private _addTspan(text: string, index = 0) {
@@ -50,6 +54,20 @@ export class Text extends Node<SVGTextElement, 'text'> {
 
   appendText(append: string) {
     this.updateText(this.getText() + append);
+  }
+
+  updateTextBaseline(position: Coordinate) {
+    this.node.setAttribute('x', position[0].toString());
+    this.node.setAttribute('y', position[1].toString());
+  }
+
+  centerNode() {
+    const textWidth = this.node.getBBox().width;
+
+    this.updateTextBaseline([
+      this.position[0] - textWidth / 2,
+      this.position[1]
+    ])
   }
 
   setStyle(proprty: string, value: string) {
