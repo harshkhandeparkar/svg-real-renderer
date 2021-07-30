@@ -3,13 +3,22 @@ import { Text } from '../../../RealRenderer/strokeNodes/_text';
 export function _mapKeyToAction(e: KeyboardEvent, textNode: Text) {
   switch(e.key.toLowerCase()) {
     case 'backspace':
-      textNode.updateText(textNode.getText().slice(0, -1));
+      textNode.deleteLastCharacter();
       break;
     case 'arrowleft':
       textNode.moveCursorLeft();
       break;
     case 'arrowright':
       textNode.moveCursorRight();
+      break;
+    // case 'arrowdown':
+    //   textNode.moveCursorDown();
+    //   break;
+    // case 'arrowup':
+    //   textNode.moveCursorUp();
+      break;
+    case 'enter':
+      if (e.shiftKey) textNode.newLine();
       break;
     case 'shift':
     case 'control':

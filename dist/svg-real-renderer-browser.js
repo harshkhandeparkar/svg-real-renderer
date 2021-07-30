@@ -415,6 +415,7 @@
 	    function Text(position, initialText, section) {
 	        var _this = _super.call(this, section, 'text', 'text') || this;
 	        _this.tspans = [];
+	        /** The currently edited span */
 	        _this.spanIndex = 0;
 	        /** The text tspan after which the cursor is placed */
 	        _this.cursorIndex = 0;
@@ -422,43 +423,64 @@
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 	        _this.node = path;
 	        _this.section = section;
+	        _this.node.setAttribute('text-anchor', 'middle');
 	        _this._addTspan(initialText);
 	        _this.cursorSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
 	        _this.node.appendChild(_this.cursorSpan);
 	        _this.cursorSpan.classList.add('svg-real-db-text-cursor');
+	        _this.cursorSpan.style.setProperty('position', 'relative');
 	        _this.cursorSpan.textContent = '|';
 	        _this.cursorIndex = 0;
+	        _this._addTspan('', _this.spanIndex + 1); // span after cursor
 	        _this.position = __spreadArrays(position);
-	        _this.node.setAttribute('x', _this.position[0].toString());
+	        _this.node.setAttribute('x', (_this.position[0]).toString());
 	        _this.node.setAttribute('y', _this.position[1].toString());
 	        return _this;
 	    }
-	    Text.prototype._addTspan = function (text, index) {
+	    Text.prototype._addTspan = function (text, index, relativeTo) {
 	        if (index === void 0) { index = 0; }
+	        if (relativeTo === void 0) { relativeTo = 'spanAfter'; }
 	        this.tspans.splice(index, 0, document.createElementNS('http://www.w3.org/2000/svg', 'tspan'));
-	        this.node.appendChild(this.tspans[index]);
-	        this.tspans[index].textContent = text;
-	        this.tspans[index].style.whiteSpace = 'pre';
+	        var newTspan = this.tspans[index];
+	        if (relativeTo === 'spanAfter') {
+	            if (this.tspans[index + 1])
+	                this.tspans[index + 1].insertAdjacentElement('beforebegin', newTspan);
+	            else
+	                this.node.insertAdjacentElement('beforeend', newTspan);
+	        }
+	        else {
+	            if (this.tspans[index - 1])
+	                this.tspans[index - 1].insertAdjacentElement('afterend', newTspan);
+	            else
+	                this.node.insertAdjacentElement('afterbegin', newTspan);
+	        }
+	        newTspan.textContent = text;
+	        newTspan.style.setProperty('whiteSpace', 'pre');
 	    };
-	    Text.prototype.getText = function () {
+	    Text.prototype._getCurrentSpanText = function () {
 	        return this.tspans[this.spanIndex].textContent;
 	    };
-	    Text.prototype.updateText = function (newText) {
+	    Text.prototype._updateText = function (newText) {
 	        this.tspans[this.spanIndex].textContent = newText;
+	        if (this.tspans[this.cursorIndex].textContent !== '') { // workaround: empty svg tspans act like they do not exist
+	            this.cursorSpan.setAttribute('dy', "0em");
+	            this.cursorSpan.removeAttribute('x');
+	            this.tspans[this.cursorIndex].setAttribute('dy', 1.2 + "em");
+	            this.tspans[this.cursorIndex].setAttribute('x', this.position[0].toString());
+	        }
+	    };
+	    Text.prototype.getText = function () {
+	        return this.tspans.map(function (tspan) { return tspan.textContent; }).join('');
 	    };
 	    Text.prototype.appendText = function (append) {
-	        this.updateText(this.getText() + append);
+	        this._updateText(this._getCurrentSpanText() + append);
+	    };
+	    Text.prototype.deleteLastCharacter = function () {
+	        this._updateText(this._getCurrentSpanText().slice(0, -1));
 	    };
 	    Text.prototype.updateTextBaseline = function (position) {
 	        this.node.setAttribute('x', position[0].toString());
 	        this.node.setAttribute('y', position[1].toString());
-	    };
-	    Text.prototype.centerNode = function () {
-	        var textWidth = this.node.getBBox().width;
-	        this.updateTextBaseline([
-	            this.position[0] - textWidth / 2,
-	            this.position[1]
-	        ]);
 	    };
 	    Text.prototype.setStyle = function (proprty, value) {
 	        this.node.style[proprty] = value;
@@ -474,6 +496,9 @@
 	            var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
 	            this.tspans[this.cursorIndex + 1].textContent = beforeCursorText[beforeCursorText.length - 1] + afterCursorText; // last character of before text becomes first character of after text
 	            this.tspans[this.cursorIndex].textContent = beforeCursorText.slice(0, -1); // remove last character
+	            if (this.tspans[this.cursorIndex].textContent === '') { // workaround: empty svg tspans act like they do not exist
+	                this.cursorSpan.setAttribute('dy', 1.2 + "em");
+	            }
 	        }
 	    };
 	    Text.prototype.moveCursorRight = function () {
@@ -481,7 +506,25 @@
 	            var beforeCursorText = this.tspans[this.cursorIndex].textContent;
 	            var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
 	            this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText[0]; // first character of after text becomes last character of before text
-	            this.tspans[this.cursorIndex + 1].textContent = afterCursorText.slice(1); // remove first character of after text
+	            this.tspans[this.cursorIndex + 1].textContent = afterCursorText.slice(1); // remove first character of after cursorIndextext
+	            if (this.tspans[this.cursorIndex].textContent !== '') { // workaround: empty svg tspans act like they do not exist
+	                this.cursorSpan.setAttribute('dy', "0em");
+	                this.cursorSpan.removeAttribute('x');
+	                this.tspans[this.cursorIndex].setAttribute('dy', 1.2 + "em");
+	                this.tspans[this.cursorIndex].setAttribute('x', this.position[0].toString());
+	            }
+	        }
+	    };
+	    Text.prototype.newLine = function () {
+	        if (this.tspans[this.cursorIndex + 1]) {
+	            // if there is a span after the cursor, linebreak the span
+	            this.cursorSpan.setAttribute('dy', 1.2 + "em");
+	            this.cursorSpan.setAttribute('x', this.position[0].toString());
+	            // add a new empty span on that line
+	            this._addTspan('', this.cursorIndex + 1, 'spanBefore');
+	            // increment cursorIndex due to new span
+	            this.cursorIndex++;
+	            this.spanIndex = this.cursorIndex;
 	        }
 	    };
 	    Text.prototype.destroyCursor = function () {
@@ -1214,13 +1257,17 @@
 	function _mapKeyToAction(e, textNode) {
 	    switch (e.key.toLowerCase()) {
 	        case 'backspace':
-	            textNode.updateText(textNode.getText().slice(0, -1));
+	            textNode.deleteLastCharacter();
 	            break;
 	        case 'arrowleft':
 	            textNode.moveCursorLeft();
 	            break;
 	        case 'arrowright':
 	            textNode.moveCursorRight();
+	            break;
+	        case 'enter':
+	            if (e.shiftKey)
+	                textNode.newLine();
 	            break;
 	        case 'shift':
 	        case 'control':
@@ -1279,7 +1326,6 @@
 	        textPath.setFontSize(this.toolSettings.fontSize);
 	        this._addStroke([textPath]);
 	        this._strokeIdentifierMap.set(identifier, this._strokeIndex);
-	        textPath.centerNode();
 	        this.on('tool-setting-change', 'text-tool-handler', function (_a) {
 	            var settingName = _a.settingName, newValue = _a.newValue;
 	            if (settingName === 'fontColor')
@@ -1316,7 +1362,6 @@
 	    if (this.toolSettings.textToolMode === 'edit' && _selectedNode) {
 	        e.preventDefault();
 	        _mapKeyToAction_1._mapKeyToAction(e, _selectedNode);
-	        _selectedNode.centerNode();
 	    }
 	}
 	exports._onKey = _onKey;

@@ -73,8 +73,6 @@ export function _endStroke(
     this._addStroke([textPath]);
     this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 
-    textPath.centerNode();
-
     this.on('tool-setting-change', 'text-tool-handler', ({settingName, newValue}) => {
       if (settingName === 'fontColor') _selectedNode.setFill(getRGBColorString(newValue as Color));
       if (settingName === 'fontSize') _selectedNode.setFontSize(newValue as number);
@@ -118,8 +116,6 @@ export function _onKey(
   if (this.toolSettings.textToolMode === 'edit' && _selectedNode) {
     e.preventDefault();
     _mapKeyToAction(e, _selectedNode);
-
-    _selectedNode.centerNode();
   }
 }
 
