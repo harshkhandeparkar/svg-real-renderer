@@ -3,12 +3,12 @@ import { Node } from './_node';
 
 export class Text extends Node<SVGTextElement, 'text'> {
   tspans: SVGTSpanElement[] = [];
-  /** The currently edited span */
-  spanIndex: number = 0;
 
   cursorSpan: SVGTSpanElement;
   /** The text tspan after which the cursor is placed */
   cursorIndex: number = 0;
+  /** span indexes at which a newLine starts */
+  lineIndexes: number[] = [];
 
   position: Coordinate = [0, 0];
 
@@ -34,7 +34,8 @@ export class Text extends Node<SVGTextElement, 'text'> {
     this.cursorSpan.textContent = '|';
     this.cursorIndex = 0;
 
-    this._addTspan('', this.spanIndex + 1); // span after cursor
+    this._addTspan('', this.cursorIndex + 1); // span after cursor
+    this.lineIndexes.push(0);
 
     this.position = [...position];
 
@@ -47,6 +48,7 @@ export class Text extends Node<SVGTextElement, 'text'> {
     index = 0,
     relativeTo: 'spanAfter' | 'spanBefore' = 'spanAfter'
   ) {
+    this.lineIndexes = this.lineIndexes.map((i) => i >= index ? i + 1 : i);
     this.tspans.splice(index, 0, document.createElementNS('http://www.w3.org/2000/svg', 'tspan'));
     const newTspan = this.tspans[index];
 
@@ -63,13 +65,13 @@ export class Text extends Node<SVGTextElement, 'text'> {
   }
 
   private _getCurrentSpanText() {
-    return this.tspans[this.spanIndex].textContent;
+    return this.tspans[this.cursorIndex].textContent;
   }
 
   private _updateText(newText: string) {
-    this.tspans[this.spanIndex].textContent = newText;
+    this.tspans[this.cursorIndex].textContent = newText;
 
-    if (this.tspans[this.cursorIndex].textContent !== '') { // workaround: empty svg tspans act like they do not exist
+    if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
       this.cursorSpan.setAttribute('dy', `0em`);
       this.cursorSpan.removeAttribute('x');
 
@@ -87,12 +89,16 @@ export class Text extends Node<SVGTextElement, 'text'> {
   }
 
   deleteLastCharacter() {
-    this._updateText(this._getCurrentSpanText().slice(0, -1))
+    this._updateText(this._getCurrentSpanText().slice(0, -1));
   }
 
   updateTextBaseline(position: Coordinate) {
     this.node.setAttribute('x', position[0].toString());
     this.node.setAttribute('y', position[1].toString());
+
+    this.tspans.forEach((tspan) => {
+      if (tspan.hasAttribute('x')) tspan.setAttribute('x', position[0].toString());
+    })
   }
 
   setStyle(proprty: string, value: string) {
@@ -113,9 +119,24 @@ export class Text extends Node<SVGTextElement, 'text'> {
       this.tspans[this.cursorIndex + 1].textContent = beforeCursorText[beforeCursorText.length - 1] + afterCursorText; // last character of before text becomes first character of after text
       this.tspans[this.cursorIndex].textContent = beforeCursorText.slice(0, -1); // remove last character
 
-      if (this.tspans[this.cursorIndex].textContent === '') { // workaround: empty svg tspans act like they do not exist
+      if (this.tspans[this.cursorIndex].textContent === '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
         this.cursorSpan.setAttribute('dy', `${1.2}em`);
+        this.cursorSpan.setAttribute('x', this.position[0].toString());
       }
+    }
+    else if (this.cursorIndex > 0) {
+      this.tspans[this.cursorIndex + 1].setAttribute('dy', `${1.2}em`);
+      this.tspans[this.cursorIndex + 1].setAttribute('x', this.position[0].toString());
+
+      this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) - 1];
+      this.tspans[this.cursorIndex + 1].setAttribute('dy', '0');
+      this.tspans[this.cursorIndex + 1].removeAttribute('x');
+
+      this.cursorSpan.remove();
+      this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
+
+      this.cursorSpan.setAttribute('dy', '0');
+      this.cursorSpan.removeAttribute('x');
     }
   }
 
@@ -127,7 +148,7 @@ export class Text extends Node<SVGTextElement, 'text'> {
       this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText[0]; // first character of after text becomes last character of before text
       this.tspans[this.cursorIndex + 1].textContent = afterCursorText.slice(1); // remove first character of after cursorIndextext
 
-      if (this.tspans[this.cursorIndex].textContent !== '') { // workaround: empty svg tspans act like they do not exist
+      if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
         this.cursorSpan.setAttribute('dy', `0em`);
         this.cursorSpan.removeAttribute('x');
 
@@ -135,18 +156,32 @@ export class Text extends Node<SVGTextElement, 'text'> {
         this.tspans[this.cursorIndex].setAttribute('x', this.position[0].toString());
       }
     }
+    else if (this.cursorIndex < this.tspans.length - 2) {
+      this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1];
+
+      this.cursorSpan.remove();
+      this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
+
+      this.cursorSpan.setAttribute('dy', `${1.2}em`);
+      this.cursorSpan.setAttribute('x', this.position[0].toString());
+
+      this.tspans[this.cursorIndex + 1].setAttribute('dy', '0');
+      this.tspans[this.cursorIndex + 1].removeAttribute('x');
+    }
   }
 
   newLine() {
     if (this.tspans[this.cursorIndex + 1]) {
-      // if there is a span after the cursor, linebreak the span
+      // if there is a span after the cursor, linebreak the cursor
       this.cursorSpan.setAttribute('dy', `${1.2}em`);
       this.cursorSpan.setAttribute('x', this.position[0].toString());
       // add a new empty span on that line
       this._addTspan('', this.cursorIndex + 1, 'spanBefore');
       // increment cursorIndex due to new span
       this.cursorIndex++;
-      this.spanIndex = this.cursorIndex;
+
+      this.lineIndexes.push(this.cursorIndex);
+      this.lineIndexes.sort((a, b) => a - b);
     }
   }
 
