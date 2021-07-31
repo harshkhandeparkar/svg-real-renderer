@@ -11,9 +11,9 @@ export function _mapKeyToAction(e: KeyboardEvent, textNode: Text) {
     case 'arrowright':
       textNode.moveCursorRight();
       break;
-    // case 'arrowdown':
-    //   textNode.moveCursorDown();
-    //   break;
+    case 'arrowdown':
+      textNode.moveCursorDown();
+      break;
     // case 'arrowup':
     //   textNode.moveCursorUp();
       break;

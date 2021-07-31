@@ -2,7 +2,13 @@ import { Coordinate, SVGSection } from '../../../../types/RealRendererTypes';
 import { Node } from '../_node';
 
 import { newLine, removeLine } from './_newlines';
-import { addCursor, destroyCursor, moveCursorLeft, moveCursorRight } from './_cursor';
+import {
+  addCursor,
+  destroyCursor,
+  moveCursorLeft,
+  moveCursorRight,
+  moveCursorDown
+} from './_cursor';
 import {
   _getCurrentSpanText,
   _updateText,
@@ -29,6 +35,7 @@ export class Text extends Node<SVGTextElement, 'text'> {
   public destroyCursor = destroyCursor;
   public moveCursorLeft = moveCursorLeft;
   public moveCursorRight = moveCursorRight;
+  public moveCursorDown = moveCursorDown;
 
   protected _getCurrentSpanText = _getCurrentSpanText;
   protected _updateText = _updateText;
@@ -74,7 +81,11 @@ export class Text extends Node<SVGTextElement, 'text'> {
     relativeTo: 'spanAfter' | 'spanBefore' = 'spanAfter'
   ) {
     this.lineIndexes = this.lineIndexes.map((i) => i >= index ? i + 1 : i);
-    this.tspans.splice(index, 0, document.createElementNS('http://www.w3.org/2000/svg', 'tspan'));
+    this.tspans.splice(
+      index,
+      0,
+      document.createElementNS('http://www.w3.org/2000/svg', 'tspan')
+    )
     const newTspan = this.tspans[index];
 
     if (relativeTo === 'spanAfter') {
