@@ -386,6 +386,132 @@
 	exports.Circle = Circle;
 	});
 
+	var _newlines = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.removeLine = exports.newLine = void 0;
+	function newLine() {
+	    if (this.tspans[this.cursorIndex + 1]) {
+	        // if there is a span after the cursor, linebreak the cursor
+	        this.cursorSpan.setAttribute('dy', 1.2 + "em");
+	        this.cursorSpan.setAttribute('x', this.position[0].toString());
+	        // add a new empty span on that line
+	        this._addTspan('', this.cursorIndex + 1, 'spanBefore');
+	        // increment cursorIndex due to new span
+	        this.cursorIndex++;
+	        this.lineIndexes.push(this.cursorIndex);
+	        this.lineIndexes.sort(function (a, b) { return a - b; });
+	    }
+	}
+	exports.newLine = newLine;
+	function removeLine() {
+	    // remove the cursorIndex line
+	    var removedLine = this.lineIndexes.splice(this.lineIndexes.indexOf(this.cursorIndex), 1)[0];
+	    this.tspans[removedLine].remove();
+	    this.tspans.splice(removedLine, 1);
+	    this.lineIndexes = this.lineIndexes.map(function (i) { return i >= removedLine ? i - 1 : i; });
+	    this.cursorIndex = removedLine - 1;
+	}
+	exports.removeLine = removeLine;
+	});
+
+	var _cursor = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.addCursor = exports.destroyCursor = exports.moveCursorRight = exports.moveCursorLeft = void 0;
+	function moveCursorLeft() {
+	    if (this.tspans[this.cursorIndex].textContent.length > 0) {
+	        if (!this.tspans[this.cursorIndex + 1])
+	            this._addTspan('', this.cursorIndex + 1);
+	        var beforeCursorText = this.tspans[this.cursorIndex].textContent;
+	        var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
+	        this.tspans[this.cursorIndex + 1].textContent = beforeCursorText[beforeCursorText.length - 1] + afterCursorText; // last character of before text becomes first character of after text
+	        this.tspans[this.cursorIndex].textContent = beforeCursorText.slice(0, -1); // remove last character
+	        if (this.tspans[this.cursorIndex].textContent === '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
+	            this.cursorSpan.setAttribute('dy', 1.2 + "em");
+	            this.cursorSpan.setAttribute('x', this.position[0].toString());
+	        }
+	    }
+	    else if (this.cursorIndex > 0) {
+	        this.tspans[this.cursorIndex + 1].setAttribute('dy', 1.2 + "em");
+	        this.tspans[this.cursorIndex + 1].setAttribute('x', this.position[0].toString());
+	        this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) - 1];
+	        this.tspans[this.cursorIndex + 1].setAttribute('dy', '0');
+	        this.tspans[this.cursorIndex + 1].removeAttribute('x');
+	        this.cursorSpan.remove();
+	        this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
+	        this.cursorSpan.setAttribute('dy', '0');
+	        this.cursorSpan.removeAttribute('x');
+	    }
+	}
+	exports.moveCursorLeft = moveCursorLeft;
+	function moveCursorRight() {
+	    if (this.tspans[this.cursorIndex + 1] && this.tspans[this.cursorIndex + 1].textContent.length > 0) {
+	        var beforeCursorText = this.tspans[this.cursorIndex].textContent;
+	        var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
+	        this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText[0]; // first character of after text becomes last character of before text
+	        this.tspans[this.cursorIndex + 1].textContent = afterCursorText.slice(1); // remove first character of after cursorIndextext
+	        if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
+	            this.cursorSpan.setAttribute('dy', "0em");
+	            this.cursorSpan.removeAttribute('x');
+	            this.tspans[this.cursorIndex].setAttribute('dy', 1.2 + "em");
+	            this.tspans[this.cursorIndex].setAttribute('x', this.position[0].toString());
+	        }
+	    }
+	    else if (this.cursorIndex < this.tspans.length - 2) {
+	        this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1];
+	        this.cursorSpan.remove();
+	        this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
+	        this.cursorSpan.setAttribute('dy', 1.2 + "em");
+	        this.cursorSpan.setAttribute('x', this.position[0].toString());
+	        this.tspans[this.cursorIndex + 1].setAttribute('dy', '0');
+	        this.tspans[this.cursorIndex + 1].removeAttribute('x');
+	    }
+	}
+	exports.moveCursorRight = moveCursorRight;
+	function destroyCursor() {
+	    this.cursorSpan.remove();
+	}
+	exports.destroyCursor = destroyCursor;
+	function addCursor() {
+	    this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
+	}
+	exports.addCursor = addCursor;
+	});
+
+	var _editing = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.deleteLastCharacter = exports.appendText = exports.getText = exports._updateText = exports._getCurrentSpanText = void 0;
+	function _getCurrentSpanText() {
+	    return this.tspans[this.cursorIndex].textContent;
+	}
+	exports._getCurrentSpanText = _getCurrentSpanText;
+	function _updateText(newText) {
+	    this.tspans[this.cursorIndex].textContent = newText;
+	    if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
+	        this.cursorSpan.setAttribute('dy', "0em");
+	        this.cursorSpan.removeAttribute('x');
+	        this.tspans[this.cursorIndex].setAttribute('dy', 1.2 + "em");
+	        this.tspans[this.cursorIndex].setAttribute('x', this.position[0].toString());
+	    }
+	}
+	exports._updateText = _updateText;
+	function getText() {
+	    return this.tspans.map(function (tspan) { return tspan.textContent; }).join('');
+	}
+	exports.getText = getText;
+	function appendText(append) {
+	    this._updateText(this._getCurrentSpanText() + append);
+	}
+	exports.appendText = appendText;
+	function deleteLastCharacter() {
+	    this._updateText(this._getCurrentSpanText().slice(0, -1));
+	    // end of a newline
+	    if (this._getCurrentSpanText() === '' && this.cursorIndex > 0) {
+	        this.removeLine();
+	    }
+	}
+	exports.deleteLastCharacter = deleteLastCharacter;
+	});
+
 	var _text = createCommonjsModule(function (module, exports) {
 	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
 	    var extendStatics = function (d, b) {
@@ -410,6 +536,9 @@
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Text = void 0;
 
+
+
+
 	var Text = /** @class */ (function (_super) {
 	    __extends(Text, _super);
 	    function Text(position, initialText, section) {
@@ -420,6 +549,17 @@
 	        /** span indexes at which a newLine starts */
 	        _this.lineIndexes = [];
 	        _this.position = [0, 0];
+	        _this.newLine = _newlines.newLine;
+	        _this.removeLine = _newlines.removeLine;
+	        _this.addCursor = _cursor.addCursor;
+	        _this.destroyCursor = _cursor.destroyCursor;
+	        _this.moveCursorLeft = _cursor.moveCursorLeft;
+	        _this.moveCursorRight = _cursor.moveCursorRight;
+	        _this._getCurrentSpanText = _editing._getCurrentSpanText;
+	        _this._updateText = _editing._updateText;
+	        _this.getText = _editing.getText;
+	        _this.appendText = _editing.appendText;
+	        _this.deleteLastCharacter = _editing.deleteLastCharacter;
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 	        _this.node = path;
 	        _this.section = section;
@@ -459,37 +599,6 @@
 	        newTspan.textContent = text;
 	        newTspan.style.setProperty('whiteSpace', 'pre');
 	    };
-	    Text.prototype._getCurrentSpanText = function () {
-	        return this.tspans[this.cursorIndex].textContent;
-	    };
-	    Text.prototype._updateText = function (newText) {
-	        this.tspans[this.cursorIndex].textContent = newText;
-	        if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
-	            this.cursorSpan.setAttribute('dy', "0em");
-	            this.cursorSpan.removeAttribute('x');
-	            this.tspans[this.cursorIndex].setAttribute('dy', 1.2 + "em");
-	            this.tspans[this.cursorIndex].setAttribute('x', this.position[0].toString());
-	        }
-	    };
-	    Text.prototype.getText = function () {
-	        return this.tspans.map(function (tspan) { return tspan.textContent; }).join('');
-	    };
-	    Text.prototype.appendText = function (append) {
-	        this._updateText(this._getCurrentSpanText() + append);
-	    };
-	    Text.prototype.deleteLastCharacter = function () {
-	        this._updateText(this._getCurrentSpanText().slice(0, -1));
-	        console.log(this.tspans);
-	        // end of a newline
-	        if (this._getCurrentSpanText() === '' && this.cursorIndex > 0) {
-	            // remove that line
-	            var removedLine_1 = this.lineIndexes.splice(this.lineIndexes.indexOf(this.cursorIndex), 1)[0];
-	            this.tspans[removedLine_1].remove();
-	            this.tspans.splice(removedLine_1, 1);
-	            this.lineIndexes = this.lineIndexes.map(function (i) { return i >= removedLine_1 ? i - 1 : i; });
-	            this.cursorIndex = removedLine_1 - 1;
-	        }
-	    };
 	    Text.prototype.updateTextBaseline = function (position) {
 	        this.node.setAttribute('x', position[0].toString());
 	        this.node.setAttribute('y', position[1].toString());
@@ -503,70 +612,6 @@
 	    };
 	    Text.prototype.setFontSize = function (size) {
 	        this.node.style.fontSize = size + "px";
-	    };
-	    Text.prototype.moveCursorLeft = function () {
-	        if (this.tspans[this.cursorIndex].textContent.length > 0) {
-	            if (!this.tspans[this.cursorIndex + 1])
-	                this._addTspan('', this.cursorIndex + 1);
-	            var beforeCursorText = this.tspans[this.cursorIndex].textContent;
-	            var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
-	            this.tspans[this.cursorIndex + 1].textContent = beforeCursorText[beforeCursorText.length - 1] + afterCursorText; // last character of before text becomes first character of after text
-	            this.tspans[this.cursorIndex].textContent = beforeCursorText.slice(0, -1); // remove last character
-	            if (this.tspans[this.cursorIndex].textContent === '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
-	                this.cursorSpan.setAttribute('dy', 1.2 + "em");
-	                this.cursorSpan.setAttribute('x', this.position[0].toString());
-	            }
-	        }
-	        else if (this.cursorIndex > 0) {
-	            this.tspans[this.cursorIndex + 1].setAttribute('dy', 1.2 + "em");
-	            this.tspans[this.cursorIndex + 1].setAttribute('x', this.position[0].toString());
-	            this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) - 1];
-	            this.tspans[this.cursorIndex + 1].setAttribute('dy', '0');
-	            this.tspans[this.cursorIndex + 1].removeAttribute('x');
-	            this.cursorSpan.remove();
-	            this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
-	            this.cursorSpan.setAttribute('dy', '0');
-	            this.cursorSpan.removeAttribute('x');
-	        }
-	    };
-	    Text.prototype.moveCursorRight = function () {
-	        if (this.tspans[this.cursorIndex + 1] && this.tspans[this.cursorIndex + 1].textContent.length > 0) {
-	            var beforeCursorText = this.tspans[this.cursorIndex].textContent;
-	            var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
-	            this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText[0]; // first character of after text becomes last character of before text
-	            this.tspans[this.cursorIndex + 1].textContent = afterCursorText.slice(1); // remove first character of after cursorIndextext
-	            if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
-	                this.cursorSpan.setAttribute('dy', "0em");
-	                this.cursorSpan.removeAttribute('x');
-	                this.tspans[this.cursorIndex].setAttribute('dy', 1.2 + "em");
-	                this.tspans[this.cursorIndex].setAttribute('x', this.position[0].toString());
-	            }
-	        }
-	        else if (this.cursorIndex < this.tspans.length - 2) {
-	            this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1];
-	            this.cursorSpan.remove();
-	            this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
-	            this.cursorSpan.setAttribute('dy', 1.2 + "em");
-	            this.cursorSpan.setAttribute('x', this.position[0].toString());
-	            this.tspans[this.cursorIndex + 1].setAttribute('dy', '0');
-	            this.tspans[this.cursorIndex + 1].removeAttribute('x');
-	        }
-	    };
-	    Text.prototype.newLine = function () {
-	        if (this.tspans[this.cursorIndex + 1]) {
-	            // if there is a span after the cursor, linebreak the cursor
-	            this.cursorSpan.setAttribute('dy', 1.2 + "em");
-	            this.cursorSpan.setAttribute('x', this.position[0].toString());
-	            // add a new empty span on that line
-	            this._addTspan('', this.cursorIndex + 1, 'spanBefore');
-	            // increment cursorIndex due to new span
-	            this.cursorIndex++;
-	            this.lineIndexes.push(this.cursorIndex);
-	            this.lineIndexes.sort(function (a, b) { return a - b; });
-	        }
-	    };
-	    Text.prototype.destroyCursor = function () {
-	        this.cursorSpan.remove();
 	    };
 	    return Text;
 	}(_node.Node));
