@@ -1,20 +1,31 @@
 import { Text } from './_text';
 
+const moveOneCharacterLeft = ([str1, str2]: [string, string]): [string, string] => [str1 + str2[0], str2.slice(1)];
+const moveOneCharacterRight = ([str1, str2]: [string, string]): [string, string] => [str1.slice(0, -1), str1[str1.length - 1] + str2];
+
+const editTspanText = (
+  [tspan1, tspan2]: [SVGTSpanElement, SVGTSpanElement],
+  textChangeFunc: (textContents: [string, string]) => [string, string]
+) => {
+  const [newTspan1Text, newTspan2Text] = textChangeFunc([tspan1.textContent, tspan2.textContent]);
+  tspan1.textContent = newTspan1Text;
+  tspan2.textContent = newTspan2Text;
+}
+
 export function moveCursorLeft(this: Text) {
+  // if the cursor is in between the line, move the cursor in the text
   if (this.tspans[this.cursorIndex].textContent.length > 0) {
-    if (!this.tspans[this.cursorIndex + 1]) this._addTspan('', this.cursorIndex + 1);
-
-    const beforeCursorText = this.tspans[this.cursorIndex].textContent;
-    const afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
-
-    this.tspans[this.cursorIndex + 1].textContent = beforeCursorText[beforeCursorText.length - 1] + afterCursorText; // last character of before text becomes first character of after text
-    this.tspans[this.cursorIndex].textContent = beforeCursorText.slice(0, -1); // remove last character
+    editTspanText(
+      [this.tspans[this.cursorIndex], this.tspans[this.cursorIndex + 1]],
+      moveOneCharacterRight
+    )
 
      // workaround: empty svg tspans act like they do not exist
     if (this.tspans[this.cursorIndex].textContent === '' && this.cursorIndex !== 0) {
       this._setTspanPositioning(this.cursorSpan, 'lineBreak');
     }
   }
+  // if the cursor is at the beginning of the line, move the cursor up
   else if (this.cursorIndex > 0) {
     this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'lineBreak');
 
@@ -32,11 +43,10 @@ export function moveCursorLeft(this: Text) {
 
 export function moveCursorRight(this: Text) {
   if (this.tspans[this.cursorIndex + 1] && this.tspans[this.cursorIndex + 1].textContent.length > 0) {
-    const beforeCursorText = this.tspans[this.cursorIndex].textContent;
-    const afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
-
-    this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText[0]; // first character of after text becomes last character of before text
-    this.tspans[this.cursorIndex + 1].textContent = afterCursorText.slice(1); // remove first character of after cursorIndextext
+    editTspanText(
+      [this.tspans[this.cursorIndex], this.tspans[this.cursorIndex + 1]],
+      moveOneCharacterLeft
+    )
 
      // workaround: empty svg tspans act like they do not exist
     if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) {
