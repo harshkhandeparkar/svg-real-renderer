@@ -60,6 +60,7 @@ export class Text extends Node<SVGTextElement, 'text'> {
       if (this.tspans[index - 1]) this.tspans[index - 1].insertAdjacentElement('afterend', newTspan);
       else this.node.insertAdjacentElement('afterbegin', newTspan);
     }
+
     newTspan.textContent = text;
     newTspan.style.setProperty('whiteSpace', 'pre');
   }
@@ -90,6 +91,18 @@ export class Text extends Node<SVGTextElement, 'text'> {
 
   deleteLastCharacter() {
     this._updateText(this._getCurrentSpanText().slice(0, -1));
+
+    // end of a newline
+    if (this._getCurrentSpanText() === '' && this.cursorIndex > 0) {
+      // remove that line
+      const [removedLine] = this.lineIndexes.splice(this.lineIndexes.indexOf(this.cursorIndex), 1);
+      this.tspans[removedLine].remove();
+
+      this.tspans.splice(removedLine, 1);
+      this.lineIndexes = this.lineIndexes.map((i) => i >= removedLine ? i - 1 : i);
+
+      this.cursorIndex = removedLine - 1;
+    }
   }
 
   updateTextBaseline(position: Coordinate) {
