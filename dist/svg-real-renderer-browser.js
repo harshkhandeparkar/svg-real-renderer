@@ -416,7 +416,7 @@
 
 	var _cursor = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.addCursor = exports.destroyCursor = exports.moveCursorRight = exports.moveCursorLeft = void 0;
+	exports.addCursor = exports.destroyCursor = exports.moveCursorUp = exports.moveCursorDown = exports.moveCursorRight = exports.moveCursorLeft = void 0;
 	function moveCursorLeft() {
 	    if (this.tspans[this.cursorIndex].textContent.length > 0) {
 	        if (!this.tspans[this.cursorIndex + 1])
@@ -440,6 +440,7 @@
 	        this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
 	        this.cursorSpan.setAttribute('dy', '0');
 	        this.cursorSpan.removeAttribute('x');
+	        this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex + 1)] = this.cursorIndex + 2;
 	    }
 	}
 	exports.moveCursorLeft = moveCursorLeft;
@@ -457,16 +458,97 @@
 	        }
 	    }
 	    else if (this.cursorIndex < this.tspans.length - 2) {
-	        this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1];
+	        this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1] - 1;
 	        this.cursorSpan.remove();
 	        this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
 	        this.cursorSpan.setAttribute('dy', 1.2 + "em");
 	        this.cursorSpan.setAttribute('x', this.position[0].toString());
 	        this.tspans[this.cursorIndex + 1].setAttribute('dy', '0');
 	        this.tspans[this.cursorIndex + 1].removeAttribute('x');
+	        this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex + 1)] = this.cursorIndex;
 	    }
 	}
 	exports.moveCursorRight = moveCursorRight;
+	function moveCursorDown() {
+	    // check if another line exists
+	    var newLineIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1];
+	    if (newLineIndex) {
+	        // merge the current line into a single tspan
+	        var beforeCursorText = this.tspans[this.cursorIndex].textContent;
+	        var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
+	        // put all the text in one tspan
+	        this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText;
+	        // find out how the next line should be split
+	        var newLineText = this.tspans[newLineIndex].textContent;
+	        var newLineLength = newLineText.length;
+	        var splitIndex = Math.min(beforeCursorText.length - 1, newLineLength - 1);
+	        // find the split text
+	        var newSplitText = [
+	            newLineText.slice(0, splitIndex + 1),
+	            newLineText.slice(splitIndex + 1)
+	        ];
+	        // put the text in the right place
+	        this.tspans[newLineIndex - 1].textContent = newSplitText[0];
+	        this.tspans[newLineIndex].textContent = newSplitText[1];
+	        // move the cursor
+	        this.cursorSpan.remove();
+	        this.tspans[newLineIndex - 1].insertAdjacentElement('afterend', this.cursorSpan);
+	        // fix the dy
+	        this.tspans[newLineIndex].setAttribute('dy', '0');
+	        this.tspans[newLineIndex].removeAttribute('x');
+	        if (newSplitText[0] === '') { // workaround: empty svg tspans act like they do not exist
+	            this.cursorSpan.setAttribute('dy', 1.2 + "em");
+	            this.cursorSpan.setAttribute('x', this.position[0].toString());
+	        }
+	        else {
+	            this.tspans[newLineIndex - 1].setAttribute('dy', 1.2 + "em");
+	            this.tspans[newLineIndex - 1].setAttribute('x', this.position[0].toString());
+	        }
+	        // fix the lineIndex
+	        this.lineIndexes[this.lineIndexes.indexOf(newLineIndex)] = newLineIndex - 1;
+	        this.lineIndexes.sort(function (a, b) { return a - b; });
+	        this.cursorIndex = newLineIndex - 1;
+	    }
+	}
+	exports.moveCursorDown = moveCursorDown;
+	function moveCursorUp() {
+	    // check if another line exists
+	    var newLineIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) - 1];
+	    if (this.lineIndexes.includes(newLineIndex)) {
+	        // merge the current line into a single tspan
+	        var beforeCursorText = this.tspans[this.cursorIndex].textContent;
+	        var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
+	        // put all the text in one tspan
+	        this.tspans[this.cursorIndex + 1].textContent = beforeCursorText + afterCursorText;
+	        // find out how the next line should be split
+	        var newLineText = this.tspans[newLineIndex].textContent;
+	        var newLineLength = newLineText.length;
+	        var splitIndex = Math.min(beforeCursorText.length - 1, newLineLength - 1);
+	        // find the split text
+	        var newSplitText = [
+	            newLineText.slice(0, splitIndex + 1),
+	            newLineText.slice(splitIndex + 1)
+	        ];
+	        // put the text in the right place
+	        this.tspans[newLineIndex].textContent = newSplitText[0];
+	        this.tspans[newLineIndex + 1].textContent = newSplitText[1];
+	        // move the cursor
+	        this.cursorSpan.remove();
+	        this.tspans[newLineIndex].insertAdjacentElement('afterend', this.cursorSpan);
+	        // fix the dy
+	        this.tspans[newLineIndex + 1].setAttribute('dy', '0');
+	        this.tspans[newLineIndex + 1].removeAttribute('x');
+	        this.tspans[this.cursorIndex + 1].setAttribute('dy', 1.2 + "em");
+	        this.tspans[this.cursorIndex + 1].setAttribute('x', this.position[0].toString());
+	        console.log(this.cursorIndex, this.lineIndexes, newLineIndex);
+	        // fix the lineIndex
+	        this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex)] = this.cursorIndex + 1;
+	        this.lineIndexes.sort(function (a, b) { return a - b; });
+	        this.cursorIndex = newLineIndex;
+	    }
+	    console.log(this.lineIndexes);
+	}
+	exports.moveCursorUp = moveCursorUp;
 	function destroyCursor() {
 	    this.cursorSpan.remove();
 	}
@@ -555,6 +637,8 @@
 	        _this.destroyCursor = _cursor.destroyCursor;
 	        _this.moveCursorLeft = _cursor.moveCursorLeft;
 	        _this.moveCursorRight = _cursor.moveCursorRight;
+	        _this.moveCursorDown = _cursor.moveCursorDown;
+	        _this.moveCursorUp = _cursor.moveCursorUp;
 	        _this._getCurrentSpanText = _editing._getCurrentSpanText;
 	        _this._updateText = _editing._updateText;
 	        _this.getText = _editing.getText;
@@ -1347,6 +1431,12 @@
 	            break;
 	        case 'arrowright':
 	            textNode.moveCursorRight();
+	            break;
+	        case 'arrowdown':
+	            textNode.moveCursorDown();
+	            break;
+	        case 'arrowup':
+	            textNode.moveCursorUp();
 	            break;
 	        case 'enter':
 	            if (e.shiftKey)

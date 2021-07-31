@@ -14,8 +14,8 @@ export function _mapKeyToAction(e: KeyboardEvent, textNode: Text) {
     case 'arrowdown':
       textNode.moveCursorDown();
       break;
-    // case 'arrowup':
-    //   textNode.moveCursorUp();
+    case 'arrowup':
+      textNode.moveCursorUp();
       break;
     case 'enter':
       if (e.shiftKey) textNode.newLine();

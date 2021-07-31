@@ -50,7 +50,7 @@ export function moveCursorRight(this: Text) {
     }
   }
   else if (this.cursorIndex < this.tspans.length - 2) {
-    this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1];
+    this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1] - 1;
 
     this.cursorSpan.remove();
     this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
@@ -60,6 +60,8 @@ export function moveCursorRight(this: Text) {
 
     this.tspans[this.cursorIndex + 1].setAttribute('dy', '0');
     this.tspans[this.cursorIndex + 1].removeAttribute('x');
+
+    this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex + 1)] = this.cursorIndex;
   }
 }
 
@@ -112,6 +114,52 @@ export function moveCursorDown(this: Text) {
     this.lineIndexes.sort((a, b) => a - b);
 
     this.cursorIndex = newLineIndex - 1;
+  }
+}
+
+export function moveCursorUp(this: Text) {
+  // check if another line exists
+  const newLineIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) - 1];
+
+  if (this.lineIndexes.includes(newLineIndex)) {
+    // merge the current line into a single tspan
+    const beforeCursorText = this.tspans[this.cursorIndex].textContent;
+    const afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
+
+    // put all the text in one tspan
+    this.tspans[this.cursorIndex + 1].textContent = beforeCursorText + afterCursorText;
+
+    // find out how the next line should be split
+    const newLineText = this.tspans[newLineIndex].textContent;
+    const newLineLength = newLineText.length;
+    const splitIndex = Math.min(beforeCursorText.length - 1, newLineLength - 1);
+
+    // find the split text
+    const newSplitText = [
+      newLineText.slice(0, splitIndex + 1),
+      newLineText.slice(splitIndex + 1)
+    ]
+
+    // put the text in the right place
+    this.tspans[newLineIndex].textContent = newSplitText[0];
+    this.tspans[newLineIndex + 1].textContent = newSplitText[1];
+
+    // move the cursor
+    this.cursorSpan.remove();
+    this.tspans[newLineIndex].insertAdjacentElement('afterend', this.cursorSpan);
+
+    // fix the dy
+    this.tspans[newLineIndex + 1].setAttribute('dy', '0');
+    this.tspans[newLineIndex + 1].removeAttribute('x');
+
+    this.tspans[this.cursorIndex + 1].setAttribute('dy', `${1.2}em`);
+    this.tspans[this.cursorIndex + 1].setAttribute('x', this.position[0].toString());
+
+    // fix the lineIndex
+    this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex)] = this.cursorIndex + 1;
+    this.lineIndexes.sort((a, b) => a - b);
+
+    this.cursorIndex = newLineIndex;
   }
 }
 

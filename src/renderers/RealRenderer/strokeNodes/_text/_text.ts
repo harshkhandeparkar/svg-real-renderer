@@ -7,7 +7,8 @@ import {
   destroyCursor,
   moveCursorLeft,
   moveCursorRight,
-  moveCursorDown
+  moveCursorDown,
+  moveCursorUp
 } from './_cursor';
 import {
   _getCurrentSpanText,
@@ -36,6 +37,7 @@ export class Text extends Node<SVGTextElement, 'text'> {
   public moveCursorLeft = moveCursorLeft;
   public moveCursorRight = moveCursorRight;
   public moveCursorDown = moveCursorDown;
+  public moveCursorUp = moveCursorUp;
 
   protected _getCurrentSpanText = _getCurrentSpanText;
   protected _updateText = _updateText;
