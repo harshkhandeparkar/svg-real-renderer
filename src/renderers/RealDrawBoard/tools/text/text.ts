@@ -2,7 +2,7 @@ import { RealDrawBoard } from '../../RealDrawBoard';
 import { Color, Coordinate } from '../../../../types/RealRendererTypes';
 import { getRGBColorString } from '../../../../util/getRGBColorString';
 
-import { Text } from '../../../RealRenderer/strokeNodes/_text';
+import { Text } from '../../../RealRenderer/strokeNodes/_text/_text';
 import { Polygon } from '../../../RealRenderer/strokeNodes/_polygon';
 import { _mapKeyToAction } from './_mapKeyToAction';
 

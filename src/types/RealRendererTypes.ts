@@ -1,5 +1,5 @@
 import { Path } from '../renderers/RealRenderer/strokeNodes/_path';
-import { Text } from '../renderers/RealRenderer/strokeNodes/_text';
+import { Text } from '../renderers/RealRenderer/strokeNodes/_text/_text';
 import { Circle } from '../renderers/RealRenderer/strokeNodes/_circle';
 import { Polygon } from '../renderers/RealRenderer/strokeNodes/_polygon';
 import { GroupNode } from '../renderers/RealRenderer/strokeNodes/_group';

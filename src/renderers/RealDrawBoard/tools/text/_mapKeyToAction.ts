@@ -1,4 +1,4 @@
-import { Text } from '../../../RealRenderer/strokeNodes/_text';
+import { Text } from '../../../RealRenderer/strokeNodes/_text/_text';
 
 export function _mapKeyToAction(e: KeyboardEvent, textNode: Text) {
   switch(e.key.toLowerCase()) {

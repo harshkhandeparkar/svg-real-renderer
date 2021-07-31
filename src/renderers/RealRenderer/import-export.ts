@@ -2,7 +2,7 @@ import { RealExport, StrokeExport } from '../../types/RealRendererTypes';
 import { RealRenderer } from './RealRenderer';
 import { Circle } from './strokeNodes/_circle';
 import { Path } from './strokeNodes/_path';
-import { Text } from './strokeNodes/_text';
+import { Text } from './strokeNodes/_text/_text';
 import { GroupNode } from './strokeNodes/_group';
 import { Polygon } from './strokeNodes/_polygon';
 

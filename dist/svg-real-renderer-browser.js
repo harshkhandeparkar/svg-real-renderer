@@ -441,7 +441,6 @@
 	    Text.prototype._addTspan = function (text, index, relativeTo) {
 	        if (index === void 0) { index = 0; }
 	        if (relativeTo === void 0) { relativeTo = 'spanAfter'; }
-	        console.log('add', index);
 	        this.lineIndexes = this.lineIndexes.map(function (i) { return i >= index ? i + 1 : i; });
 	        this.tspans.splice(index, 0, document.createElementNS('http://www.w3.org/2000/svg', 'tspan'));
 	        var newTspan = this.tspans[index];
@@ -480,6 +479,16 @@
 	    };
 	    Text.prototype.deleteLastCharacter = function () {
 	        this._updateText(this._getCurrentSpanText().slice(0, -1));
+	        console.log(this.tspans);
+	        // end of a newline
+	        if (this._getCurrentSpanText() === '' && this.cursorIndex > 0) {
+	            // remove that line
+	            var removedLine_1 = this.lineIndexes.splice(this.lineIndexes.indexOf(this.cursorIndex), 1)[0];
+	            this.tspans[removedLine_1].remove();
+	            this.tspans.splice(removedLine_1, 1);
+	            this.lineIndexes = this.lineIndexes.map(function (i) { return i >= removedLine_1 ? i - 1 : i; });
+	            this.cursorIndex = removedLine_1 - 1;
+	        }
 	    };
 	    Text.prototype.updateTextBaseline = function (position) {
 	        this.node.setAttribute('x', position[0].toString());
@@ -554,7 +563,6 @@
 	            this.cursorIndex++;
 	            this.lineIndexes.push(this.cursorIndex);
 	            this.lineIndexes.sort(function (a, b) { return a - b; });
-	            console.log(this.lineIndexes);
 	        }
 	    };
 	    Text.prototype.destroyCursor = function () {
