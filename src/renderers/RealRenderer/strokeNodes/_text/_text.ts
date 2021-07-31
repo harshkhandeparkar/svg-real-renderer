@@ -103,6 +103,20 @@ export class Text extends Node<SVGTextElement, 'text'> {
     newTspan.style.setProperty('whiteSpace', 'pre');
   }
 
+  protected _setTspanPositioning(
+    tspan: SVGTSpanElement,
+    positioningType: 'lineBreak' | 'inline'
+  ) {
+    if (positioningType === 'lineBreak') {
+      tspan.setAttribute('x', this.position[0].toString());
+      tspan.setAttribute('dy', `${1.2}em`);
+    }
+    else if (positioningType === 'inline') {
+      tspan.removeAttribute('x');
+      tspan.removeAttribute('dy');
+    }
+  }
+
   updateTextBaseline(position: Coordinate) {
     this.node.setAttribute('x', position[0].toString());
     this.node.setAttribute('y', position[1].toString());

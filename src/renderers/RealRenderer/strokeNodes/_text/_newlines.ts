@@ -3,8 +3,7 @@ import { Text } from './_text';
 export function newLine(this: Text) {
   if (this.tspans[this.cursorIndex + 1]) {
     // if there is a span after the cursor, linebreak the cursor
-    this.cursorSpan.setAttribute('dy', `${1.2}em`);
-    this.cursorSpan.setAttribute('x', this.position[0].toString());
+    this._setTspanPositioning(this.cursorSpan, 'lineBreak');
     // add a new empty span on that line
     this._addTspan('', this.cursorIndex + 1, 'spanBefore');
     // increment cursorIndex due to new span

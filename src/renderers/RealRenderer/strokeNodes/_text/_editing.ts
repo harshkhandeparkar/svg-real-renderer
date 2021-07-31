@@ -7,12 +7,10 @@ export function _getCurrentSpanText(this: Text) {
 export function _updateText(this: Text, newText: string) {
   this.tspans[this.cursorIndex].textContent = newText;
 
-  if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) { // workaround: empty svg tspans act like they do not exist
-    this.cursorSpan.setAttribute('dy', `0em`);
-    this.cursorSpan.removeAttribute('x');
-
-    this.tspans[this.cursorIndex].setAttribute('dy', `${1.2}em`);
-    this.tspans[this.cursorIndex].setAttribute('x', this.position[0].toString());
+  // workaround: empty svg tspans act like they do not exist
+  if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) {
+    this._setTspanPositioning(this.cursorSpan, 'inline');
+    this._setTspanPositioning(this.tspans[this.cursorIndex], 'lineBreak');
   }
 }
 
