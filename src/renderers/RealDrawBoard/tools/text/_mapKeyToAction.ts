@@ -1,30 +1,36 @@
 import { Text } from '../../../RealRenderer/strokeNodes/_text/_text';
 
-export function _mapKeyToAction(e: KeyboardEvent, textNode: Text) {
+export function _mapKeyToAction(e: KeyboardEvent, _selectedNode: Text) {
   switch(e.key.toLowerCase()) {
     case 'backspace':
-      textNode.deleteLastCharacter();
+      _selectedNode.deleteLastCharacter();
       break;
     case 'arrowleft':
-      textNode.moveCursorLeft();
+      _selectedNode.moveCursorLeft();
       break;
     case 'arrowright':
-      textNode.moveCursorRight();
+      _selectedNode.moveCursorRight();
       break;
     case 'arrowdown':
-      textNode.moveCursorDown();
+      _selectedNode.moveCursorDown();
       break;
     case 'arrowup':
-      textNode.moveCursorUp();
+      _selectedNode.moveCursorUp();
       break;
     case 'enter':
-      if (e.shiftKey) textNode.newLine();
+      if (e.shiftKey) _selectedNode.newLine();
+      else {
+        _selectedNode.destroyCursor();
+        return null;
+      }
       break;
     case 'shift':
     case 'control':
       break;
     default:
-      textNode.appendText(e.key);
+      _selectedNode.appendText(e.key);
       break;
   }
+
+  return _selectedNode;
 }

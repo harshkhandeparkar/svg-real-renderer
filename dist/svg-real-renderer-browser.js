@@ -1423,34 +1423,39 @@
 	var _mapKeyToAction_1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._mapKeyToAction = void 0;
-	function _mapKeyToAction(e, textNode) {
+	function _mapKeyToAction(e, _selectedNode) {
 	    switch (e.key.toLowerCase()) {
 	        case 'backspace':
-	            textNode.deleteLastCharacter();
+	            _selectedNode.deleteLastCharacter();
 	            break;
 	        case 'arrowleft':
-	            textNode.moveCursorLeft();
+	            _selectedNode.moveCursorLeft();
 	            break;
 	        case 'arrowright':
-	            textNode.moveCursorRight();
+	            _selectedNode.moveCursorRight();
 	            break;
 	        case 'arrowdown':
-	            textNode.moveCursorDown();
+	            _selectedNode.moveCursorDown();
 	            break;
 	        case 'arrowup':
-	            textNode.moveCursorUp();
+	            _selectedNode.moveCursorUp();
 	            break;
 	        case 'enter':
 	            if (e.shiftKey)
-	                textNode.newLine();
+	                _selectedNode.newLine();
+	            else {
+	                _selectedNode.destroyCursor();
+	                return null;
+	            }
 	            break;
 	        case 'shift':
 	        case 'control':
 	            break;
 	        default:
-	            textNode.appendText(e.key);
+	            _selectedNode.appendText(e.key);
 	            break;
 	    }
+	    return _selectedNode;
 	}
 	exports._mapKeyToAction = _mapKeyToAction;
 	});
@@ -1482,7 +1487,7 @@
 	        }
 	        _startCoords.set(identifier, coords);
 	        var boundingBox = new _polygon.Polygon([coords, coords, coords, coords], 'overlay');
-	        boundingBox.setDashed('rgb(0.5, 0.5, 0.5)');
+	        boundingBox.setDashed(getRGBColorString_1.getRGBColorString([0.5, 0.5, 0.5]));
 	        boundingBox.setFill('transparent');
 	        this._previewStroke.set(identifier, [boundingBox]);
 	    }
@@ -1534,9 +1539,10 @@
 	}
 	exports._doStroke = _doStroke;
 	function _onKey(e) {
-	    if (this.toolSettings.textToolMode === 'edit' && _selectedNode) {
+	    if (this.toolSettings.textToolMode === 'edit' && _selectedNode !== null) {
+	        console.log('editing', _selectedNode);
 	        e.preventDefault();
-	        _mapKeyToAction_1._mapKeyToAction(e, _selectedNode);
+	        _selectedNode = _mapKeyToAction_1._mapKeyToAction(e, _selectedNode);
 	    }
 	}
 	exports._onKey = _onKey;

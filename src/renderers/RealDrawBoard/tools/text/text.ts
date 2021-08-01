@@ -44,7 +44,7 @@ export function _startStroke(
     _startCoords.set(identifier, coords);
 
     const boundingBox = new Polygon([coords, coords, coords, coords], 'overlay');
-    boundingBox.setDashed('rgb(0.5, 0.5, 0.5)');
+    boundingBox.setDashed(getRGBColorString([0.5, 0.5, 0.5]));
     boundingBox.setFill('transparent');
 
     this._previewStroke.set(identifier, [boundingBox]);
@@ -113,9 +113,9 @@ export function _onKey(
   this: RealDrawBoard,
   e: KeyboardEvent
 ) {
-  if (this.toolSettings.textToolMode === 'edit' && _selectedNode) {
+  if (this.toolSettings.textToolMode === 'edit' && _selectedNode !== null) {
     e.preventDefault();
-    _mapKeyToAction(e, _selectedNode);
+    _selectedNode = _mapKeyToAction(e, _selectedNode);
   }
 }
 
