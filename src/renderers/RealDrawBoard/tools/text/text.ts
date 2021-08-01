@@ -32,7 +32,8 @@ let _selectedNode: Text;
 export function _startStroke(
   this: RealDrawBoard,
   coords: Coordinate,
-  identifier: string
+  identifier: string,
+  target: EventTarget
 ) {
   if (this.toolSettings.textToolMode === 'new') {
     if (this._previewStroke.has(identifier)) {

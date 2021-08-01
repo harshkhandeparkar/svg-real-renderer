@@ -91,7 +91,6 @@ export function _doStroke(
 ) {
   const lineNode = <GroupNode>this.strokes[this._strokeIndex][0];
 
-
   (<Path>lineNode.innerNodes[0]).updatePath(
     getLinePathCommand(
       _startCoords.get(identifier),

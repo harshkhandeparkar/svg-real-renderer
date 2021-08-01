@@ -106,7 +106,8 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
 
         this._startStroke(
           coords,
-          'mouse'
+          'mouse',
+          e.target
         )
         this._lastCoords.set('mouse', coords);
       }
@@ -191,7 +192,8 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
 
       this._startStroke(
         coords,
-        identifier
+        identifier,
+        e.target
       )
       this._lastCoords.set(
         identifier,
