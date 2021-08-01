@@ -2,6 +2,7 @@ import { StrokeNode, SVGSection } from '../../../types/RealRendererTypes';
 import { Node } from './_node';
 
 export class GroupNode extends Node<SVGGElement, 'group'> {
+  innerNodes: StrokeNode[] = [];
   constructor(
     section: SVGSection,
     initialInnerNodes: StrokeNode[]
@@ -10,6 +11,7 @@ export class GroupNode extends Node<SVGGElement, 'group'> {
     const g: SVGGElement = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 
     initialInnerNodes.forEach((node) => g.appendChild(node.node));
+    this.innerNodes = initialInnerNodes;
 
     this.node = g;
     this.section = section;
