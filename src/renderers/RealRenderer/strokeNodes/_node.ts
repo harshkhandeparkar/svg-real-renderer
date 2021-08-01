@@ -3,7 +3,6 @@ import { StrokeNodeData, SVGSection, StrokeNodeType } from '../../../types/RealR
 export class Node<NodeType extends SVGElement, StrokeNodeT extends StrokeNodeType> {
   node: NodeType;
   section: SVGSection;
-  elementName: string;
   strokeNodeType: StrokeNodeT;
 
   constructor(
@@ -11,9 +10,8 @@ export class Node<NodeType extends SVGElement, StrokeNodeT extends StrokeNodeTyp
     elementName: string,
     strokeNodeType: StrokeNodeT
   ) {
-    const path: NodeType = document.createElementNS('http://www.w3.org/2000/svg', this.elementName) as NodeType;
+    const path: NodeType = document.createElementNS('http://www.w3.org/2000/svg', elementName) as NodeType;
 
-    this.elementName = elementName;
     this.strokeNodeType = strokeNodeType;
     this.node = path;
     this.section = section;

@@ -49,27 +49,27 @@ export function importData(
       strokeExport.map((strokeNodeData) => {
         switch(strokeNodeData.type) {
           case 'circle':
-            const circ = new Circle([0, 0], 0, strokeNodeData.section ? strokeNodeData.section : 'strokes');
+            const circ = new Circle([0, 0], 0, strokeNodeData.section ?? 'strokes');
             circ.import(strokeNodeData.data);
             return circ;
 
           case 'path':
-            const path = new Path('', strokeNodeData.section ? strokeNodeData.section : 'strokes');
+            const path = new Path('', strokeNodeData.section ?? 'strokes');
             path.import(strokeNodeData.data);
             return path;
 
           case 'text':
-            const text = new Text([0, 0], '', strokeNodeData.section ? strokeNodeData.section : 'strokes');
+            const text = new Text([0, 0], '', strokeNodeData.section ?? 'strokes');
             text.import(strokeNodeData.data);
             return text;
 
           case 'group':
-            const group = new GroupNode(strokeNodeData.section ? strokeNodeData.section : 'strokes', []);
+            const group = new GroupNode(strokeNodeData.section ?? 'strokes', []);
             group.import(strokeNodeData.data);
             return group;
 
           case 'polygon':
-            const polygon = new Polygon([], strokeNodeData.section ? strokeNodeData.section : 'strokes');
+            const polygon = new Polygon([], strokeNodeData.section ?? 'strokes');
             polygon.import(strokeNodeData.data);
             return polygon;
         }

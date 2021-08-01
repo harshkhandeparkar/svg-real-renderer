@@ -133,4 +133,13 @@ export class Text extends Node<SVGTextElement, 'text'> {
   setFontSize(size: number) {
     this.node.style.fontSize = `${size}px`;
   }
+
+  import(data: string) {
+    super.import(data);
+
+    this.position = [
+      Number(this.node.getAttribute('x')),
+      Number(this.node.getAttribute('y'))
+    ]
+  }
 }
