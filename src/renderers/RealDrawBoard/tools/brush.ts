@@ -125,7 +125,7 @@ export class Brush extends Tool {
   ) {
     this.RDB.changeToolSetting('brushSize', Math.max(1, this.RDB.toolSettings.brushSize - scrollDelta));
 
-    if (this.RDB._previewStroke.get(identifier) && this.RDB._previewStroke.get(identifier).length !== 0) {
+    if (this.RDB._previewStroke.get(identifier) != null && this.RDB._previewStroke.get(identifier).length !== 0) {
       (this.RDB._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.RDB.toolSettings.brushSize));
       this.RDB._display(this.RDB._previewStroke.get(identifier));
     }

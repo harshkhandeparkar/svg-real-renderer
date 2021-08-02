@@ -1,7 +1,7 @@
 import { Text } from './_text';
 
 export function newLine(this: Text) {
-  if (this.tspans[this.cursorIndex + 1]) {
+  if (this.tspans[this.cursorIndex + 1] !== undefined) {
     // if there is a span after the cursor, linebreak the cursor
     this._setTspanPositioning(this.cursorSpan, 'lineBreak');
     // add a new empty span on that line

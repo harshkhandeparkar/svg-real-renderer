@@ -40,7 +40,7 @@ export function importData(
   })
 
   this.svg.setAttribute('viewBox', `0 0 ${this.dimensions[0]} ${this.dimensions[1]}`);
-  if (data.bgType) this.bgType = data.bgType;
+  this.bgType = data.bgType ?? this.bgType;
 
   this.strokes = [];
 

@@ -91,11 +91,11 @@ export class Text extends Node<SVGTextElement, 'text'> {
     const newTspan = this.tspans[index];
 
     if (relativeTo === 'spanAfter') {
-      if (this.tspans[index + 1]) this.tspans[index + 1].insertAdjacentElement('beforebegin', newTspan);
+      if (this.tspans[index + 1] !== undefined) this.tspans[index + 1].insertAdjacentElement('beforebegin', newTspan);
       else this.node.insertAdjacentElement('beforeend', newTspan);
     }
     else {
-      if (this.tspans[index - 1]) this.tspans[index - 1].insertAdjacentElement('afterend', newTspan);
+      if (this.tspans[index - 1] !== undefined) this.tspans[index - 1].insertAdjacentElement('afterend', newTspan);
       else this.node.insertAdjacentElement('afterbegin', newTspan);
     }
 

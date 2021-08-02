@@ -42,7 +42,7 @@ export function moveCursorLeft(this: Text) {
 }
 
 export function moveCursorRight(this: Text) {
-  if (this.tspans[this.cursorIndex + 1] && this.tspans[this.cursorIndex + 1].textContent.length > 0) {
+  if (this.tspans[this.cursorIndex + 1] !== undefined && this.tspans[this.cursorIndex + 1].textContent.length > 0) {
     editTspanText(
       [this.tspans[this.cursorIndex], this.tspans[this.cursorIndex + 1]],
       moveOneCharacterLeft
@@ -71,7 +71,7 @@ export function moveCursorDown(this: Text) {
   // check if another line exists
   const newLineIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1];
 
-  if (newLineIndex) {
+  if (newLineIndex !== undefined) {
     // merge the current line into a single tspan
     const beforeCursorText = this.tspans[this.cursorIndex].textContent;
     const afterCursorText = this.tspans[this.cursorIndex + 1].textContent;

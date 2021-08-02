@@ -104,7 +104,7 @@ export class TextTool extends Tool {
       this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
 
 
-      if (this._selectedNode) this._selectedNode.destroyCursor();
+      if (this._selectedNode !== null) this._selectedNode.destroyCursor();
       this._selectedNode = textPath;
 
       this.RDB.changeToolSetting('textToolMode', 'edit');
