@@ -19,6 +19,11 @@ export const EraserDefaults: IEraserSettings = {
   eraserSize: 2
 }
 
+export function _onToolLoad(
+  this: RealDrawBoard
+) {
+}
+
 export function _startStroke(
   this: RealDrawBoard,
   coords: Coordinate,

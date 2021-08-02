@@ -22,6 +22,11 @@ export const BrushDefaults: IBrushSettings = {
   brushSize: 1
 }
 
+export function _onToolLoad(
+  this: RealDrawBoard
+) {
+}
+
 export function _startStroke(
   this: RealDrawBoard,
   coords: Coordinate,

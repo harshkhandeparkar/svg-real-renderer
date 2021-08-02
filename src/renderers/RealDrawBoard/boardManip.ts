@@ -10,6 +10,7 @@ import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 export function changeTool(this: RealDrawBoard, newTool: Tool) {
   const oldTool = this.tool;
   this.tool = newTool;
+  this._onToolLoad = tools[this.tool]._onToolLoad;
   this._startStroke = tools[this.tool]._startStroke;
   this._doStroke = tools[this.tool]._doStroke;
   this._endStroke = tools[this.tool]._endStroke;
@@ -24,6 +25,8 @@ export function changeTool(this: RealDrawBoard, newTool: Tool) {
   })
 
   this._previewStroke.clear();
+
+  this._onToolLoad();
 
   this.emit('tool-change', {
     newTool,

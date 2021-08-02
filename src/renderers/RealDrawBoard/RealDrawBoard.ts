@@ -56,6 +56,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
   protected _resetBoard = _resetBoard;
   protected _addDOMEvents = _addDOMEvents;
   protected _removeDOMEvents = _removeDOMEvents;
+  protected _onToolLoad = tools[RealDrawBoardDefaults.tool]._onToolLoad;
   protected _startStroke = tools[RealDrawBoardDefaults.tool]._startStroke;
   protected _endStroke = tools[RealDrawBoardDefaults.tool]._endStroke;
   protected _doStroke = tools[RealDrawBoardDefaults.tool]._doStroke;
@@ -90,6 +91,8 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
 
     this.changeTool(this.settings.tool);
     // *****DEFAULTS*****
+
+    this._onToolLoad();
   }
   // --- DOM Event Listeners ---
 

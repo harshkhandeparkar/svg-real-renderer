@@ -28,6 +28,11 @@ export const LineDefaults: ILineSettings = {
  */
 const _startCoords: Map<string, [number, number]> = new Map(); /* key -> identifier, value -> coordinate*/
 
+export function _onToolLoad(
+  this: RealDrawBoard
+) {
+}
+
 export function _startStroke(
   this: RealDrawBoard,
   coords: Coordinate,

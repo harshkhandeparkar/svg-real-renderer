@@ -19,6 +19,11 @@ export const RainbowBrushDefaults: IRainbowBrushSettings = {
   changeRate: 1
 }
 
+export function _onToolLoad(
+  this: RealDrawBoard
+) {
+}
+
 export function _startStroke(
   this: RealDrawBoard,
   coords: Coordinate,

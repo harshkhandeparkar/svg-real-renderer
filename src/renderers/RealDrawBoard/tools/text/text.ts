@@ -27,7 +27,20 @@ export const TextDefaults: ITextSettings = {
  */
 const _startCoords: Map<string, [number, number]> = new Map(); /* key -> identifier, value -> coordinate*/
 
-let _selectedNode: Text;
+let _selectedNode: Text | null;
+
+export function _onToolLoad(
+  this: RealDrawBoard
+) {
+  this.on('tool-setting-change', 'text-tool-handler', ({settingName, newValue}) => {
+    if (settingName === 'fontColor' && _selectedNode !== null) _selectedNode.setFill(getRGBColorString(newValue as Color));
+    if (settingName === 'fontSize' && _selectedNode !== null) _selectedNode.setFontSize(newValue as number);
+  })
+
+  this.on('board-cleared', 'text-tool-handler', () => {
+    this.changeToolSetting('textToolMode', 'edit');
+  })
+}
 
 export function _startStroke(
   this: RealDrawBoard,
@@ -74,10 +87,6 @@ export function _endStroke(
     this._addStroke([textPath]);
     this._strokeIdentifierMap.set(identifier, this._strokeIndex);
 
-    this.on('tool-setting-change', 'text-tool-handler', ({settingName, newValue}) => {
-      if (settingName === 'fontColor') _selectedNode.setFill(getRGBColorString(newValue as Color));
-      if (settingName === 'fontSize') _selectedNode.setFontSize(newValue as number);
-    })
 
     if (_selectedNode) _selectedNode.destroyCursor();
     _selectedNode = textPath;
