@@ -83,8 +83,7 @@
 	exports.Node = void 0;
 	var Node = /** @class */ (function () {
 	    function Node(section, elementName, strokeNodeType) {
-	        var path = document.createElementNS('http://www.w3.org/2000/svg', this.elementName);
-	        this.elementName = elementName;
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', elementName);
 	        this.strokeNodeType = strokeNodeType;
 	        this.node = path;
 	        this.section = section;
@@ -699,6 +698,13 @@
 	    Text.prototype.setFontSize = function (size) {
 	        this.node.style.fontSize = size + "px";
 	    };
+	    Text.prototype.import = function (data) {
+	        _super.prototype.import.call(this, data);
+	        this.position = [
+	            Number(this.node.getAttribute('x')),
+	            Number(this.node.getAttribute('y'))
+	        ];
+	    };
 	    return Text;
 	}(_node.Node));
 	exports.Text = Text;
@@ -725,6 +731,7 @@
 	    __extends(GroupNode, _super);
 	    function GroupNode(section, initialInnerNodes) {
 	        var _this = _super.call(this, section, 'group', 'group') || this;
+	        _this.innerNodes = [];
 	        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 	        initialInnerNodes.forEach(function (node) { return g.appendChild(node.node); });
 	        _this.innerNodes = initialInnerNodes;
@@ -778,25 +785,26 @@
 	    this.strokes = [];
 	    data.exportData.forEach(function (strokeExport) {
 	        _this.strokes.push(strokeExport.map(function (strokeNodeData) {
+	            var _a, _b, _c, _d, _e;
 	            switch (strokeNodeData.type) {
 	                case 'circle':
-	                    var circ = new _circle.Circle([0, 0], 0, strokeNodeData.section ? strokeNodeData.section : 'strokes');
+	                    var circ = new _circle.Circle([0, 0], 0, (_a = strokeNodeData.section) !== null && _a !== void 0 ? _a : 'strokes');
 	                    circ.import(strokeNodeData.data);
 	                    return circ;
 	                case 'path':
-	                    var path = new _path.Path('', strokeNodeData.section ? strokeNodeData.section : 'strokes');
+	                    var path = new _path.Path('', (_b = strokeNodeData.section) !== null && _b !== void 0 ? _b : 'strokes');
 	                    path.import(strokeNodeData.data);
 	                    return path;
 	                case 'text':
-	                    var text = new _text.Text([0, 0], '', strokeNodeData.section ? strokeNodeData.section : 'strokes');
+	                    var text = new _text.Text([0, 0], '', (_c = strokeNodeData.section) !== null && _c !== void 0 ? _c : 'strokes');
 	                    text.import(strokeNodeData.data);
 	                    return text;
 	                case 'group':
-	                    var group = new _group.GroupNode(strokeNodeData.section ? strokeNodeData.section : 'strokes', []);
+	                    var group = new _group.GroupNode((_d = strokeNodeData.section) !== null && _d !== void 0 ? _d : 'strokes', []);
 	                    group.import(strokeNodeData.data);
 	                    return group;
 	                case 'polygon':
-	                    var polygon = new _polygon.Polygon([], strokeNodeData.section ? strokeNodeData.section : 'strokes');
+	                    var polygon = new _polygon.Polygon([], (_e = strokeNodeData.section) !== null && _e !== void 0 ? _e : 'strokes');
 	                    polygon.import(strokeNodeData.data);
 	                    return polygon;
 	            }
@@ -1126,7 +1134,9 @@
 	        _this._setViewBox = svgDom._setViewBox;
 	        _this._drawFunc = draw_1._drawFunc;
 	        _this._draw = draw_1._draw;
+	        /** @internal */
 	        _this._display = draw_1._display;
+	        /** @internal */
 	        _this._addStroke = draw_1._addStroke;
 	        _this._render = render._render;
 	        // *****DEFAULTS*****
@@ -1186,6 +1196,26 @@
 	]);
 	});
 
+	var _tool = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Tool = void 0;
+	/** @internal */
+	var Tool = /** @class */ (function () {
+	    function Tool(RDB) {
+	        this.RDB = RDB;
+	    }
+	    Tool.prototype._onLoad = function () { };
+	    Tool.prototype._startStroke = function (coords, identifier, target) { };
+	    Tool.prototype._doStroke = function (coords, identifier, target) { };
+	    Tool.prototype._endStroke = function (coords, identifier, target) { };
+	    Tool.prototype._toolPreview = function (coords, identifier, target) { };
+	    Tool.prototype._onScroll = function (scrollDelta, coords, identifier) { };
+	    Tool.prototype._onKey = function (e) { };
+	    return Tool;
+	}());
+	exports.Tool = Tool;
+	});
+
 	var circle = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.getCircleNode = void 0;
@@ -1219,8 +1249,22 @@
 	});
 
 	var brush = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._onKey = exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.BrushDefaults = exports.name = void 0;
+	exports.Brush = exports.BrushDefaults = exports.name = void 0;
+
 
 
 
@@ -1231,61 +1275,75 @@
 	    brushColor: [1, 1, 1],
 	    brushSize: 1
 	};
-	function _startStroke(coords, identifier) {
-	    this._doPreview = false;
-	    var brushPath = new _path.Path('', 'strokes');
-	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
-	    brushPath.setStrokeWidth(this.toolSettings.brushSize);
-	    this._addStroke([brushPath]);
-	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
-	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
-	}
-	exports._startStroke = _startStroke;
-	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
-	    this._strokeIdentifierMap.delete(identifier);
-	    this._doPreview = true;
-	}
-	exports._endStroke = _endStroke;
-	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'strokes'));
-	    this.strokes[this._strokeIdentifierMap.get(identifier)][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
-	}
-	exports._doStroke = _doStroke;
-	function _toolPreview(coords, identifier) {
-	    if (!this._previewStroke.has(identifier))
-	        this._previewStroke.set(identifier, []);
-	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize), this.toolSettings.brushColor, 'overlay');
-	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
-	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
-	        this._previewStroke.get(identifier).push(circleNode);
+	var Brush = /** @class */ (function (_super) {
+	    __extends(Brush, _super);
+	    function Brush() {
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
-	    else {
-	        var circleNode = this._previewStroke.get(identifier)[0];
-	        circleNode.updateCenter(coords);
-	        circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize));
-	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
-	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.brushColor));
-	    }
-	}
-	exports._toolPreview = _toolPreview;
-	function _onScroll(scrollDelta, coords, identifier) {
-	    this.changeToolSetting('brushSize', Math.max(1, this.toolSettings.brushSize - scrollDelta));
-	    if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
-	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.brushSize));
-	        this._display(this._previewStroke.get(identifier));
-	    }
-	}
-	exports._onScroll = _onScroll;
-	function _onKey(e) {
-	}
-	exports._onKey = _onKey;
+	    Brush.prototype._startStroke = function (coords, identifier, target) {
+	        this.RDB._doPreview = false;
+	        var brushPath = new _path.Path('', 'strokes');
+	        brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.brushColor));
+	        brushPath.setStrokeWidth(this.RDB.toolSettings.brushSize);
+	        this.RDB._addStroke([brushPath]);
+	        this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
+	        this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.brushSize), this.RDB.toolSettings.brushColor, 'strokes'));
+	    };
+	    Brush.prototype._endStroke = function (endCoords, identifier, target) {
+	        this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.brushSize), this.RDB.toolSettings.brushColor, 'strokes'));
+	        this.RDB._strokeIdentifierMap.delete(identifier);
+	        this.RDB._doPreview = true;
+	    };
+	    Brush.prototype._doStroke = function (coords, identifier, target) {
+	        this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.brushSize), this.RDB.toolSettings.brushColor, 'strokes'));
+	        this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)][0].appendPath(line.getLinePathCommand(this.RDB._lastCoords.get(identifier), coords));
+	    };
+	    Brush.prototype._toolPreview = function (coords, identifier, target) {
+	        if (!this.RDB._previewStroke.has(identifier))
+	            this.RDB._previewStroke.set(identifier, []);
+	        if (this.RDB._previewStroke.get(identifier).length == 0) {
+	            var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.brushSize), this.RDB.toolSettings.brushColor, 'overlay');
+	            circleNode.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.brushColor));
+	            circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.brushColor));
+	            this.RDB._previewStroke.get(identifier).push(circleNode);
+	        }
+	        else {
+	            var circleNode = this.RDB._previewStroke.get(identifier)[0];
+	            circleNode.updateCenter(coords);
+	            circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.brushSize));
+	            circleNode.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.brushColor));
+	            circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.brushColor));
+	        }
+	    };
+	    Brush.prototype._onScroll = function (scrollDelta, coords, identifier) {
+	        this.RDB.changeToolSetting('brushSize', Math.max(1, this.RDB.toolSettings.brushSize - scrollDelta));
+	        if (this.RDB._previewStroke.get(identifier) && this.RDB._previewStroke.get(identifier).length !== 0) {
+	            this.RDB._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.brushSize));
+	            this.RDB._display(this.RDB._previewStroke.get(identifier));
+	        }
+	    };
+	    return Brush;
+	}(_tool.Tool));
+	exports.Brush = Brush;
 	});
 
 	var eraser = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._onKey = exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.EraserDefaults = exports.name = void 0;
+	exports.Eraser = exports.EraserDefaults = exports.name = void 0;
+
 
 
 
@@ -1295,56 +1353,70 @@
 	exports.EraserDefaults = {
 	    eraserSize: 2
 	};
-	function _startStroke(coords, identifier) {
-	    var brushPath = new _path.Path('', 'strokes');
-	    brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
-	    brushPath.setStrokeWidth(this.toolSettings.eraserSize);
-	    this._addStroke([brushPath]);
-	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
-	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
-	}
-	exports._startStroke = _startStroke;
-	function _endStroke(endCoords, identifier) {
-	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
-	    this._doPreview = true;
-	}
-	exports._endStroke = _endStroke;
-	function _doStroke(coords, identifier) {
-	    this.strokes[this._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'strokes'));
-	    this.strokes[this._strokeIdentifierMap.get(identifier)][0].appendPath(line.getLinePathCommand(this._lastCoords.get(identifier), coords));
-	}
-	exports._doStroke = _doStroke;
-	function _toolPreview(coords, identifier) {
-	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize), this.bgColor, 'overlay');
-	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.bgColor));
-	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.bgColor));
-	        circleNode.setDashed(getRGBColorString_1.getRGBColorString(this.bgColor.map(function (c) { return 1 - c; })));
-	        this._previewStroke.get(identifier).push(circleNode);
+	var Eraser = /** @class */ (function (_super) {
+	    __extends(Eraser, _super);
+	    function Eraser() {
+	        return _super !== null && _super.apply(this, arguments) || this;
 	    }
-	    else {
-	        var circleNode = this._previewStroke.get(identifier)[0];
-	        circleNode.updateCenter(coords);
-	        circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize));
-	    }
-	}
-	exports._toolPreview = _toolPreview;
-	function _onScroll(scrollDelta, coords, identifier) {
-	    this.changeToolSetting('eraserSize', Math.max(1, this.toolSettings.eraserSize - scrollDelta));
-	    if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
-	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.eraserSize));
-	        this._display(this._previewStroke.get(identifier));
-	    }
-	}
-	exports._onScroll = _onScroll;
-	function _onKey(e) {
-	}
-	exports._onKey = _onKey;
+	    Eraser.prototype._startStroke = function (coords, identifier, target) {
+	        var brushPath = new _path.Path('', 'strokes');
+	        brushPath.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.bgColor));
+	        brushPath.setStrokeWidth(this.RDB.toolSettings.eraserSize);
+	        this.RDB._addStroke([brushPath]);
+	        this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
+	        this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.eraserSize), this.RDB.bgColor, 'strokes'));
+	    };
+	    Eraser.prototype._endStroke = function (endCoords, identifier, target) {
+	        this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(endCoords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.eraserSize), this.RDB.bgColor, 'strokes'));
+	        this.RDB._doPreview = true;
+	    };
+	    Eraser.prototype._doStroke = function (coords, identifier, target) {
+	        this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)].push(circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.eraserSize), this.RDB.bgColor, 'strokes'));
+	        this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)][0].appendPath(line.getLinePathCommand(this.RDB._lastCoords.get(identifier), coords));
+	    };
+	    Eraser.prototype._toolPreview = function (coords, identifier, target) {
+	        if (this.RDB._previewStroke.get(identifier).length == 0) {
+	            var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.eraserSize), this.RDB.bgColor, 'overlay');
+	            circleNode.setFill(getRGBColorString_1.getRGBColorString(this.RDB.bgColor));
+	            circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.bgColor));
+	            circleNode.setDashed(getRGBColorString_1.getRGBColorString(this.RDB.bgColor.map(function (c) { return 1 - c; })));
+	            this.RDB._previewStroke.get(identifier).push(circleNode);
+	        }
+	        else {
+	            var circleNode = this.RDB._previewStroke.get(identifier)[0];
+	            circleNode.updateCenter(coords);
+	            circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.eraserSize));
+	        }
+	    };
+	    Eraser.prototype._onScroll = function (scrollDelta, coords, identifier) {
+	        this.RDB.changeToolSetting('eraserSize', Math.max(1, this.RDB.toolSettings.eraserSize - scrollDelta));
+	        if (this.RDB._previewStroke.get(identifier) && this.RDB._previewStroke.get(identifier).length !== 0) {
+	            this.RDB._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.eraserSize));
+	            this.RDB._display(this.RDB._previewStroke.get(identifier));
+	        }
+	    };
+	    return Eraser;
+	}(_tool.Tool));
+	exports.Eraser = Eraser;
 	});
 
 	var line$1 = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._onKey = exports._onScroll = exports._toolPreview = exports._doStroke = exports._endStroke = exports._startStroke = exports.LineDefaults = exports.name = void 0;
+	exports.Line = exports.LineDefaults = exports.name = void 0;
+
 
 
 
@@ -1356,68 +1428,69 @@
 	    lineThickness: 1,
 	    lineColor: [1, 1, 1]
 	};
-	/** key -> identifier, value -> coordinate
-	 *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
-	 */
-	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
-	function _startStroke(coords, identifier) {
-	    this._doPreview = false;
-	    if (this._previewStroke.has(identifier)) {
-	        this._previewStroke.get(identifier).forEach(function (strokeNode) {
-	            strokeNode.delete();
-	        });
+	var Line = /** @class */ (function (_super) {
+	    __extends(Line, _super);
+	    function Line() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        /** key -> identifier, value -> coordinate
+	         *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+	         */
+	        _this._startCoords = new Map(); /* key -> identifier, value -> coordinate*/
+	        return _this;
 	    }
-	    var linePath = new _path.Path('', 'strokes');
-	    linePath.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
-	    linePath.setStrokeWidth(this.toolSettings.lineThickness);
-	    var startCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'strokes');
-	    var endCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'strokes');
-	    this._addStroke([new _group.GroupNode('strokes', [linePath, startCircle, endCircle])]);
-	    this._strokeIdentifierMap.set(identifier, this._strokeIndex);
-	    _startCoords.set(identifier, coords);
-	}
-	exports._startStroke = _startStroke;
-	function _endStroke(endCoords, identifier) {
-	    var lineNode = this.strokes[this._strokeIdentifierMap.get(identifier)][0];
-	    lineNode.innerNodes[0].updatePath(line.getLinePathCommand(_startCoords.get(identifier), endCoords));
-	    lineNode.innerNodes[2].updateCenter(endCoords);
-	    _startCoords.delete(identifier);
-	    this._doPreview = true;
-	}
-	exports._endStroke = _endStroke;
-	function _doStroke(coords, identifier) {
-	    var lineNode = this.strokes[this._strokeIndex][0];
-	    lineNode.innerNodes[0].updatePath(line.getLinePathCommand(_startCoords.get(identifier), coords));
-	    lineNode.innerNodes[2].updateCenter(coords);
-	}
-	exports._doStroke = _doStroke;
-	function _toolPreview(coords, identifier) {
-	    if (this._previewStroke.get(identifier).length == 0) {
-	        var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness), this.toolSettings.lineColor, 'overlay');
-	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
-	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
-	        this._previewStroke.get(identifier).push(circleNode);
-	    }
-	    else {
-	        var circleNode = this._previewStroke.get(identifier)[0];
-	        circleNode.updateCenter(coords);
-	        circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness));
-	        circleNode.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
-	        circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.toolSettings.lineColor));
-	    }
-	}
-	exports._toolPreview = _toolPreview;
-	function _onScroll(scrollDelta, coords, identifier) {
-	    this.changeToolSetting('lineThickness', Math.max(1, this.toolSettings.lineThickness - scrollDelta));
-	    if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
-	        this._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.toolSettings.lineThickness));
-	        this._display(this._previewStroke.get(identifier));
-	    }
-	}
-	exports._onScroll = _onScroll;
-	function _onKey(e) {
-	}
-	exports._onKey = _onKey;
+	    Line.prototype._startStroke = function (coords, identifier, target) {
+	        this.RDB._doPreview = false;
+	        if (this.RDB._previewStroke.has(identifier)) {
+	            this.RDB._previewStroke.get(identifier).forEach(function (strokeNode) {
+	                strokeNode.delete();
+	            });
+	        }
+	        var linePath = new _path.Path('', 'strokes');
+	        linePath.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	        linePath.setStrokeWidth(this.RDB.toolSettings.lineThickness);
+	        var startCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness), this.RDB.toolSettings.lineColor, 'strokes');
+	        var endCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness), this.RDB.toolSettings.lineColor, 'strokes');
+	        this.RDB._addStroke([new _group.GroupNode('strokes', [linePath, startCircle, endCircle])]);
+	        this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
+	        this._startCoords.set(identifier, coords);
+	    };
+	    Line.prototype._endStroke = function (endCoords, identifier, target) {
+	        var lineNode = this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)][0];
+	        lineNode.innerNodes[0].updatePath(line.getLinePathCommand(this._startCoords.get(identifier), endCoords));
+	        lineNode.innerNodes[2].updateCenter(endCoords);
+	        this._startCoords.delete(identifier);
+	        this.RDB._doPreview = true;
+	    };
+	    Line.prototype._doStroke = function (coords, identifier, target) {
+	        var lineNode = this.RDB.strokes[this.RDB._strokeIndex][0];
+	        lineNode.innerNodes[0].updatePath(line.getLinePathCommand(this._startCoords.get(identifier), coords));
+	        lineNode.innerNodes[2].updateCenter(coords);
+	    };
+	    Line.prototype._toolPreview = function (coords, identifier, target) {
+	        if (this.RDB._previewStroke.get(identifier).length == 0) {
+	            var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness), this.RDB.toolSettings.lineColor, 'overlay');
+	            circleNode.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	            circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	            this.RDB._previewStroke.get(identifier).push(circleNode);
+	        }
+	        else {
+	            var circleNode = this.RDB._previewStroke.get(identifier)[0];
+	            circleNode.updateCenter(coords);
+	            circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness));
+	            circleNode.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	            circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	        }
+	    };
+	    Line.prototype._onScroll = function (scrollDelta, coords, identifier) {
+	        this.RDB.changeToolSetting('lineThickness', Math.max(1, this.RDB.toolSettings.lineThickness - scrollDelta));
+	        if (this.RDB._previewStroke.get(identifier) && this.RDB._previewStroke.get(identifier).length !== 0) {
+	            this.RDB._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness));
+	            this.RDB._display(this.RDB._previewStroke.get(identifier));
+	        }
+	    };
+	    return Line;
+	}(_tool.Tool));
+	exports.Line = Line;
 	});
 
 	var _mapKeyToAction_1 = createCommonjsModule(function (module, exports) {
@@ -1461,8 +1534,22 @@
 	});
 
 	var text = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._toolPreview = exports._onScroll = exports._onKey = exports._doStroke = exports._endStroke = exports._startStroke = exports.TextDefaults = exports.name = void 0;
+	exports.TextTool = exports.TextDefaults = exports.name = void 0;
+
 
 
 
@@ -1473,85 +1560,107 @@
 	    fontColor: [1, 1, 1],
 	    textToolMode: 'new'
 	};
-	/** key -> identifier, value -> coordinate
-	 *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+	/**
+	 * Text Tool
+	 * HOW TO USE:
+	 * There are two modes: 'new' and 'edit'
+	 * In 'new' mode, drag on the board to insert new text, this will also change the mode to edit mode.
+	 * In 'edit' mode, type to enter text. The following keyboard shortcuts/functions are supported:
+	 * 1) Arrow keys: Move the cursor.
+	 * 2) Backspace
+	 * 3) Shift + Enter: Add a new line.
+	 * 4) Enter: Confirm editing. NOTE: The text will NOT be editable after this step. This will be changed in future version.
+	 *
+	 * Cursor Styling:
+	 * The cursor is currently just a '|' character in an SVG <tspan>.
+	 * To style the cursor (blinking, color), add CSS to the `.svg-real-db-text-cursor' class.
+	 * See: /example/index.css in the repo.
 	 */
-	var _startCoords = new Map(); /* key -> identifier, value -> coordinate*/
-	var _selectedNode;
-	function _startStroke(coords, identifier) {
-	    if (this.toolSettings.textToolMode === 'new') {
-	        if (this._previewStroke.has(identifier)) {
-	            this._previewStroke.get(identifier).forEach(function (strokeNode) {
-	                strokeNode.delete();
-	            });
-	        }
-	        _startCoords.set(identifier, coords);
-	        var boundingBox = new _polygon.Polygon([coords, coords, coords, coords], 'overlay');
-	        boundingBox.setDashed(getRGBColorString_1.getRGBColorString([0.5, 0.5, 0.5]));
-	        boundingBox.setFill('transparent');
-	        this._previewStroke.set(identifier, [boundingBox]);
+	var TextTool = /** @class */ (function (_super) {
+	    __extends(TextTool, _super);
+	    function TextTool() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        /** key -> identifier, value -> coordinate
+	         *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+	         */
+	        _this._startCoords = new Map(); /* key -> identifier, value -> coordinate*/
+	        _this._selectedNode = null;
+	        return _this;
 	    }
-	}
-	exports._startStroke = _startStroke;
-	function _endStroke(endCoords, identifier) {
-	    if (this.toolSettings.textToolMode === 'new') {
-	        var _a = _startCoords.get(identifier), startX = _a[0], startY = _a[1];
-	        var endX = endCoords[0], endY = endCoords[1];
-	        var baselineCoords = [
-	            (startX + endX) / 2,
-	            (startY + endY) / 2
-	        ];
-	        var textPath = new _text.Text(baselineCoords, 'Enter Text', 'strokes');
-	        textPath.setFill(getRGBColorString_1.getRGBColorString(this.toolSettings.fontColor));
-	        textPath.setFontSize(this.toolSettings.fontSize);
-	        this._addStroke([textPath]);
-	        this._strokeIdentifierMap.set(identifier, this._strokeIndex);
-	        this.on('tool-setting-change', 'text-tool-handler', function (_a) {
+	    TextTool.prototype._onLoad = function () {
+	        var _this = this;
+	        this.RDB.on('tool-setting-change', 'text-tool-handler', function (_a) {
 	            var settingName = _a.settingName, newValue = _a.newValue;
-	            if (settingName === 'fontColor')
-	                _selectedNode.setFill(getRGBColorString_1.getRGBColorString(newValue));
-	            if (settingName === 'fontSize')
-	                _selectedNode.setFontSize(newValue);
+	            if (_this.RDB.toolSettings.textToolMode === 'edit' && _this._selectedNode !== null) {
+	                if (settingName === 'fontColor')
+	                    _this._selectedNode.setFill(getRGBColorString_1.getRGBColorString(newValue));
+	                if (settingName === 'fontSize')
+	                    _this._selectedNode.setFontSize(newValue);
+	            }
 	        });
-	        if (_selectedNode)
-	            _selectedNode.destroyCursor();
-	        _selectedNode = textPath;
-	        this.changeToolSetting('textToolMode', 'edit');
-	        if (this._previewStroke.has(identifier)) {
-	            this._previewStroke.get(identifier).forEach(function (node) { return node.delete(); });
-	            this._previewStroke.delete(identifier);
+	        this.RDB.on('board-cleared', 'text-tool-handler', function () {
+	            _this.RDB.changeToolSetting('textToolMode', 'edit');
+	        });
+	    };
+	    TextTool.prototype._startStroke = function (coords, identifier, target) {
+	        if (this.RDB.toolSettings.textToolMode === 'new') {
+	            if (this.RDB._previewStroke.has(identifier)) {
+	                this.RDB._previewStroke.get(identifier).forEach(function (strokeNode) {
+	                    strokeNode.delete();
+	                });
+	            }
+	            this._startCoords.set(identifier, coords);
+	            var boundingBox = new _polygon.Polygon([coords, coords, coords, coords], 'overlay');
+	            boundingBox.setDashed(getRGBColorString_1.getRGBColorString([0.5, 0.5, 0.5]));
+	            boundingBox.setFill('transparent');
+	            this.RDB._previewStroke.set(identifier, [boundingBox]);
 	        }
-	    }
-	}
-	exports._endStroke = _endStroke;
-	function _doStroke(coords, identifier) {
-	    if (this.toolSettings.textToolMode === 'new') {
-	        var boundingBox = this._previewStroke.get(identifier)[0];
-	        var _a = _startCoords.get(identifier), startX = _a[0], startY = _a[1];
-	        var endX = coords[0], endY = coords[1];
-	        boundingBox.updatePoints([
-	            [startX, startY],
-	            [endX, startY],
-	            [endX, endY],
-	            [startX, endY]
-	        ]);
-	    }
-	}
-	exports._doStroke = _doStroke;
-	function _onKey(e) {
-	    if (this.toolSettings.textToolMode === 'edit' && _selectedNode !== null) {
-	        console.log('editing', _selectedNode);
-	        e.preventDefault();
-	        _selectedNode = _mapKeyToAction_1._mapKeyToAction(e, _selectedNode);
-	    }
-	}
-	exports._onKey = _onKey;
-	function _onScroll(scrollDelta, coords, identifier) {
-	}
-	exports._onScroll = _onScroll;
-	function _toolPreview(coords, identifier) {
-	}
-	exports._toolPreview = _toolPreview;
+	    };
+	    TextTool.prototype._endStroke = function (endCoords, identifier, target) {
+	        if (this.RDB.toolSettings.textToolMode === 'new') {
+	            var _a = this._startCoords.get(identifier), startX = _a[0], startY = _a[1];
+	            var endX = endCoords[0], endY = endCoords[1];
+	            var baselineCoords = [
+	                (startX + endX) / 2,
+	                (startY + endY) / 2
+	            ];
+	            var textPath = new _text.Text(baselineCoords, 'Enter Text', 'strokes');
+	            textPath.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.fontColor));
+	            textPath.setFontSize(this.RDB.toolSettings.fontSize);
+	            this.RDB._addStroke([textPath]);
+	            this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
+	            if (this._selectedNode)
+	                this._selectedNode.destroyCursor();
+	            this._selectedNode = textPath;
+	            this.RDB.changeToolSetting('textToolMode', 'edit');
+	            if (this.RDB._previewStroke.has(identifier)) {
+	                this.RDB._previewStroke.get(identifier).forEach(function (node) { return node.delete(); });
+	                this.RDB._previewStroke.delete(identifier);
+	            }
+	        }
+	    };
+	    TextTool.prototype._doStroke = function (coords, identifier, target) {
+	        if (this.RDB.toolSettings.textToolMode === 'new') {
+	            var boundingBox = this.RDB._previewStroke.get(identifier)[0];
+	            var _a = this._startCoords.get(identifier), startX = _a[0], startY = _a[1];
+	            var endX = coords[0], endY = coords[1];
+	            boundingBox.updatePoints([
+	                [startX, startY],
+	                [endX, startY],
+	                [endX, endY],
+	                [startX, endY]
+	            ]);
+	        }
+	    };
+	    TextTool.prototype._onKey = function (e) {
+	        if (this.RDB.toolSettings.textToolMode === 'edit' && this._selectedNode !== null) {
+	            e.preventDefault();
+	            this._selectedNode = _mapKeyToAction_1._mapKeyToAction(e, this._selectedNode);
+	        }
+	    };
+	    return TextTool;
+	}(_tool.Tool));
+	exports.TextTool = TextTool;
 	});
 
 	var tools = createCommonjsModule(function (module, exports) {
@@ -1567,22 +1676,22 @@
 	    return __assign.apply(this, arguments);
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.ToolDefaults = exports.tools = void 0;
+	exports.TextTool = exports.LineTool = exports.EraserTool = exports.BrushTool = exports.ToolDefaults = void 0;
 
 
 
 
-	// import * as rainbow_brush from './rainbow_brush';
-	exports.tools = {
-	    brush: brush,
-	    // rainbow_brush,
-	    eraser: eraser,
-	    line: line$1,
-	    text: text
-	};
 	exports.ToolDefaults = __assign(__assign(__assign(__assign({}, brush.BrushDefaults), line$1.LineDefaults), eraser.EraserDefaults), text.TextDefaults
 	// ...rainbow_brush.RainbowBrushDefaults
 	);
+	var brush_1 = brush;
+	Object.defineProperty(exports, "BrushTool", { enumerable: true, get: function () { return brush_1.Brush; } });
+	var eraser_1 = eraser;
+	Object.defineProperty(exports, "EraserTool", { enumerable: true, get: function () { return eraser_1.Eraser; } });
+	var line_1 = line$1;
+	Object.defineProperty(exports, "LineTool", { enumerable: true, get: function () { return line_1.Line; } });
+	var text_1 = text;
+	Object.defineProperty(exports, "TextTool", { enumerable: true, get: function () { return text_1.TextTool; } });
 	});
 
 	var RealDrawBoardDefaults = createCommonjsModule(function (module, exports) {
@@ -1632,18 +1741,13 @@
 	function changeTool(newTool) {
 	    var oldTool = this.tool;
 	    this.tool = newTool;
-	    this._startStroke = tools.tools[this.tool]._startStroke;
-	    this._doStroke = tools.tools[this.tool]._doStroke;
-	    this._endStroke = tools.tools[this.tool]._endStroke;
-	    this._toolPreview = tools.tools[this.tool]._toolPreview;
-	    this._onScroll = tools.tools[this.tool]._onScroll;
-	    this._onKey = tools.tools[this.tool]._onKey;
 	    this._previewStroke.forEach(function (stroke) {
 	        stroke.forEach(function (node) {
 	            node.delete();
 	        });
 	    });
 	    this._previewStroke.clear();
+	    this._tools[this.tool]._onLoad();
 	    this.emit('tool-change', {
 	        newTool: newTool,
 	        oldTool: oldTool
@@ -1847,12 +1951,6 @@
 	        _this._resetBoard = boardManip._resetBoard;
 	        _this._addDOMEvents = _DOMEvents._addDOMEvents;
 	        _this._removeDOMEvents = _DOMEvents._removeDOMEvents;
-	        _this._startStroke = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._startStroke;
-	        _this._endStroke = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._endStroke;
-	        _this._doStroke = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._doStroke;
-	        _this._toolPreview = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._toolPreview;
-	        _this._onScroll = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._onScroll;
-	        _this._onKey = tools.tools[RealDrawBoardDefaults.RealDrawBoardDefaults.tool]._onKey;
 	        _this._getMouseCoords = _coords._getMouseCoords;
 	        _this._getTouchCoords = _coords._getTouchCoords;
 	        _this.changeToolSetting = boardManip.changeToolSetting;
@@ -1869,7 +1967,7 @@
 	                else {
 	                    _this.svg.addEventListener('mousemove', _this._mouseMoveEventListener);
 	                    var coords = _this._getMouseCoords(e);
-	                    _this._startStroke(coords, 'mouse');
+	                    _this._tools[_this.tool]._startStroke(coords, 'mouse', e.target);
 	                    _this._lastCoords.set('mouse', coords);
 	                }
 	            }
@@ -1880,7 +1978,7 @@
 	                _this.svg.removeEventListener('mousemove', _this._mouseMoveEventListener);
 	                _this.svg.removeEventListener('mousemove', _this._panEventListener);
 	                if (_this._lastCoords.has('mouse')) {
-	                    _this._endStroke(endCoords, 'mouse');
+	                    _this._tools[_this.tool]._endStroke(endCoords, 'mouse', e.target);
 	                    _this._lastCoords.delete('mouse');
 	                }
 	                _this._display(_this.strokes[_this._strokeIndex]);
@@ -1889,7 +1987,7 @@
 	        _this._mouseLeaveEventListener = function (e) {
 	            _this.svg.removeEventListener('mousemove', _this._mouseMoveEventListener);
 	            if (_this._lastCoords.has('mouse')) {
-	                _this._endStroke(_this._getMouseCoords(e), 'mouse');
+	                _this._tools[_this.tool]._endStroke(_this._getMouseCoords(e), 'mouse', e.target);
 	                _this._lastCoords.delete('mouse');
 	                _this._display(_this.strokes[_this._strokeIndex]);
 	            }
@@ -1897,7 +1995,7 @@
 	        };
 	        _this._mouseMoveEventListener = function (e) {
 	            var coords = _this._getMouseCoords(e);
-	            _this._doStroke(coords, 'mouse');
+	            _this._tools[_this.tool]._doStroke(coords, 'mouse', e.target);
 	            _this._lastCoords.set('mouse', coords);
 	        };
 	        _this._previewMouseMoveEventListener = function (e) {
@@ -1905,7 +2003,7 @@
 	            if (_this._doPreview) {
 	                if (!_this._previewStroke.has('mouse'))
 	                    _this._previewStroke.set('mouse', []);
-	                _this._toolPreview(coords, 'mouse');
+	                _this._tools[_this.tool]._toolPreview(coords, 'mouse', e.target);
 	                _this._display(_this._previewStroke.get('mouse'));
 	            }
 	            _this._display(_this.strokes[_this._strokeIndex]);
@@ -1916,7 +2014,7 @@
 	                _this.scale(Math.max(_this.scaleFactor - e.deltaY * 0.001, 1));
 	            }
 	            else
-	                _this._onScroll(e.deltaY * 0.05, _this._getMouseCoords(e), 'mouse');
+	                _this._tools[_this.tool]._onScroll(e.deltaY * 0.05, _this._getMouseCoords(e), 'mouse');
 	        };
 	        _this._panEventListener = function (e) {
 	            if (e.ctrlKey) {
@@ -1926,7 +2024,7 @@
 	        // --- Mouse Events ---
 	        // --- Keyboard Events ---
 	        _this._keyPressEventListener = function (e) {
-	            _this._onKey(e);
+	            _this._tools[_this.tool]._onKey(e);
 	        };
 	        // --- /Keyboard Events ---
 	        // --- Touch Events ---
@@ -1935,7 +2033,7 @@
 	            for (var i = 0; i < e.touches.length; i++) {
 	                var coords = _this._getTouchCoords(e.touches.item(i));
 	                var identifier = e.touches.item(i).identifier.toString();
-	                _this._startStroke(coords, identifier);
+	                _this._tools[_this.tool]._startStroke(coords, identifier, e.target);
 	                _this._lastCoords.set(identifier, coords);
 	            }
 	        };
@@ -1943,7 +2041,7 @@
 	            for (var i = 0; i < e.changedTouches.length; i++) {
 	                var coords = _this._getTouchCoords(e.changedTouches.item(i));
 	                var identifier = e.changedTouches.item(i).identifier.toString();
-	                _this._endStroke(coords, identifier);
+	                _this._tools[_this.tool]._endStroke(coords, identifier, e.target);
 	                _this._lastCoords.delete(identifier);
 	            }
 	            _this.clearPreview();
@@ -1951,7 +2049,7 @@
 	        _this._touchMoveEventListener = function (e) {
 	            for (var i = 0; i < e.touches.length; i++) {
 	                var coords = _this._getTouchCoords(e.touches.item(i));
-	                _this._doStroke(coords, e.touches.item(i).identifier.toString());
+	                _this._tools[_this.tool]._doStroke(coords, e.touches.item(i).identifier.toString(), e.target);
 	                _this._lastCoords.set(e.touches.item(i).identifier.toString(), coords);
 	            }
 	        };
@@ -1962,7 +2060,7 @@
 	                if (_this._doPreview) {
 	                    if (!_this._previewStroke.has(identifier))
 	                        _this._previewStroke.set(identifier, []);
-	                    _this._toolPreview(coords, identifier);
+	                    _this._tools[_this.tool]._toolPreview(coords, identifier, e.target);
 	                    _this._display(_this._previewStroke.get(identifier));
 	                }
 	                _this._display(_this.strokes[_this._strokeIndex]);
@@ -1980,9 +2078,15 @@
 	        };
 	        _this.settings = __assign(__assign(__assign({}, RealDrawBoardDefaults.RealDrawBoardDefaults), options), { toolSettings: __assign(__assign({}, RealDrawBoardDefaults.RealDrawBoardDefaults.toolSettings), ('toolSettings' in options ? options.toolSettings : {})) });
 	        _this.toolSettings = __assign(__assign({}, tools.ToolDefaults), _this.settings.toolSettings);
+	        // *****DEFAULTS*****
+	        _this._tools = {
+	            brush: new tools.BrushTool(_this),
+	            eraser: new tools.EraserTool(_this),
+	            line: new tools.LineTool(_this),
+	            text: new tools.TextTool(_this)
+	        };
 	        _this.changeTool(_this.settings.tool);
 	        return _this;
-	        // *****DEFAULTS*****
 	    }
 	    RealDrawBoard.prototype.reset = function () {
 	        this._resetBoard();
