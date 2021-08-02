@@ -23,6 +23,22 @@ export const TextDefaults: ITextSettings = {
   textToolMode: 'new'
 }
 
+/**
+ * Text Tool
+ * HOW TO USE:
+ * There are two modes: 'new' and 'edit'
+ * In 'new' mode, drag on the board to insert new text, this will also change the mode to edit mode.
+ * In 'edit' mode, type to enter text. The following keyboard shortcuts/functions are supported:
+ * 1) Arrow keys: Move the cursor.
+ * 2) Backspace
+ * 3) Shift + Enter: Add a new line.
+ * 4) Enter: Confirm editing. NOTE: The text will NOT be editable after this step. This will be changed in future version.
+ *
+ * Cursor Styling:
+ * The cursor is currently just a '|' character in an SVG <tspan>.
+ * To style the cursor (blinking, color), add CSS to the `.svg-real-db-text-cursor' class.
+ * See: /example/index.css in the repo.
+ */
 export class TextTool extends Tool {
   /** key -> identifier, value -> coordinate
    *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
