@@ -1,10 +1,10 @@
 import { RealExport, StrokeExport } from '../../types/RealRendererTypes';
 import { RealRenderer } from './RealRenderer';
 import { Circle } from './strokeNodes/_circle';
-import { Path } from './strokeNodes/_path';
-import { Text } from './strokeNodes/_text/_text';
 import { GroupNode } from './strokeNodes/_group';
+import { Path } from './strokeNodes/_path';
 import { Polygon } from './strokeNodes/_polygon';
+import { Text } from './strokeNodes/_text/_text';
 
 /**
  * Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().

@@ -1,12 +1,10 @@
-import { RealDrawBoard } from '../RealDrawBoard';
-import { Color, Coordinate } from '../../../types/RealRendererTypes';
 import { getCircleNode } from '../../../pathMakers/circle';
-import { getRGBColorString } from '../../../util/getRGBColorString';
-import { Path } from '../../RealRenderer/strokeNodes/_path';
 import { getLinePathCommand } from '../../../pathMakers/line';
+import { Color, Coordinate } from '../../../types/RealRendererTypes';
+import { getRGBColorString } from '../../../util/getRGBColorString';
 import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 import { GroupNode } from '../../RealRenderer/strokeNodes/_group';
-
+import { Path } from '../../RealRenderer/strokeNodes/_path';
 import { getRadiusFromThickness } from './util/getRadiusFromThickness';
 import { Tool } from './_tool';
 

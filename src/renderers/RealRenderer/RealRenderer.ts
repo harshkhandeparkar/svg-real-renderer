@@ -1,23 +1,18 @@
-import { EventEmitter } from './events/eventEmitter';
-import { IRealRendererEvents, RealRendererEventList } from '../../constants/events/RealRendererEvents';
-
-import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
-
-import { GraphDimensions, Color, RealRendererOptions, Stroke, RealRendererSettings, BGType, SVGSections } from '../../types/RealRendererTypes';
-export * as RealRendererTypes from '../../types/RealRendererTypes';
-
 import { RealRendererDefaults } from '../../constants/defaults/RealRendererDefaults';
+import { IRealRendererEvents, RealRendererEventList } from '../../constants/events/RealRendererEvents';
+import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
+import { BGType, Color, GraphDimensions, RealRendererOptions, RealRendererSettings, Stroke, SVGSections } from '../../types/RealRendererTypes';
+import { changeBackground, normalizeBG } from './background';
+import { draw, _addStroke, _display, _draw, _drawFunc } from './draw/draw';
+import { startRender, stopRender, toggleRender, _render } from './draw/render';
+import { EventEmitter } from './events/eventEmitter';
+import { exportData, importData } from './import-export';
+import { attach, _setSVG, _setViewBox } from './svg/svg-dom';
+import { changeOffsets, scale } from './svg/svg-settings';
+import { redo, undo } from './undo';
 
 export * from '../../constants/defaults/RealRendererDefaults';
-
-import { undo, redo } from './undo';
-
-import { exportData, importData } from './import-export';
-import { changeBackground, normalizeBG } from './background';
-import { attach, _setSVG, _setViewBox } from './svg/svg-dom';
-import { scale, changeOffsets } from './svg/svg-settings';
-import { _drawFunc, _draw, draw, _display, _addStroke } from './draw/draw';
-import { startRender, stopRender, toggleRender, _render } from './draw/render';
+export * as RealRendererTypes from '../../types/RealRendererTypes';
 
 /**
  * General Real Renderer with no specific purpose. Should be extended to use.

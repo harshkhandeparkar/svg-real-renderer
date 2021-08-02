@@ -1,14 +1,11 @@
-import { RealDrawBoard } from '../RealDrawBoard';
-import { Tool } from './_tool';
-
-import { Color, Coordinate } from '../../../types/RealRendererTypes';
-import { Path } from '../../RealRenderer/strokeNodes/_path';
-import { getRGBColorString } from '../../../util/getRGBColorString';
 import { getCircleNode } from '../../../pathMakers/circle';
 import { getLinePathCommand } from '../../../pathMakers/line';
+import { Color, Coordinate } from '../../../types/RealRendererTypes';
+import { getRGBColorString } from '../../../util/getRGBColorString';
 import { Circle } from '../../RealRenderer/strokeNodes/_circle';
-
+import { Path } from '../../RealRenderer/strokeNodes/_path';
 import { getRadiusFromThickness } from './util/getRadiusFromThickness';
+import { Tool } from './_tool';
 
 export const name = 'brush';
 

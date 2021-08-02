@@ -1,5 +1,5 @@
-import { IRealRendererNonOptionals, IRealRendererOptionals } from './RealRendererTypes';
 import { Tool, ToolOptions, ToolSettings } from '../renderers/RealDrawBoard/tools/tools';
+import { IRealRendererNonOptionals, IRealRendererOptionals } from './RealRendererTypes';
 
 export interface IRealDrawBoardOptionals extends IRealRendererOptionals {
   /**

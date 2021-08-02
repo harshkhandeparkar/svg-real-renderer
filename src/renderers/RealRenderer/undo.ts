@@ -1,5 +1,5 @@
-import { RealRenderer } from './RealRenderer';
 import { clamp } from '../../util/clamp';
+import { RealRenderer } from './RealRenderer';
 
 /**
  * Undos a certain number of strokes drawn on the graph.

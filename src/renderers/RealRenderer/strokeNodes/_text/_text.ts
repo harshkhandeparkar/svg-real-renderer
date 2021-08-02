@@ -1,22 +1,16 @@
 import { Coordinate, SVGSection } from '../../../../types/RealRendererTypes';
 import { Node } from '../_node';
-
-import { newLine, removeLine } from './_newlines';
 import {
   addCursor,
-  destroyCursor,
-  moveCursorLeft,
-  moveCursorRight,
-  moveCursorDown,
-  moveCursorUp
+  destroyCursor, moveCursorDown, moveCursorLeft,
+  moveCursorRight, moveCursorUp
 } from './_cursor';
 import {
-  _getCurrentSpanText,
-  _updateText,
-  getText,
   appendText,
-  deleteLastCharacter
+  deleteLastCharacter, getText, _getCurrentSpanText,
+  _updateText
 } from './_editing';
+import { newLine, removeLine } from './_newlines';
 
 export class Text extends Node<SVGTextElement, 'text'> {
   tspans: SVGTSpanElement[] = [];

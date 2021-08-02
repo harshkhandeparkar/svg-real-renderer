@@ -1,6 +1,6 @@
+import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 import { RealDrawBoard } from './RealDrawBoard';
 import { Tool, ToolDefaults, ToolSettings } from './tools/tools';
-import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
 /**
  * Change the currently selected tool on the draw board.

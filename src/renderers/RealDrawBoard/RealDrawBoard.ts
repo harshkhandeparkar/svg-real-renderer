@@ -1,13 +1,8 @@
-import { RealRenderer } from '../RealRenderer/RealRenderer';
-import { IRealDrawBoardEvents, RealDrawBoardEventList } from '../../constants/events/RealDrawBoardEvents';
-
-import { RealDrawBoardOptions, RealDrawBoardSettings } from '../../types/RealDrawBoardTypes';
 import { RealDrawBoardDefaults } from '../../constants/defaults/RealDrawBoardDefaults';
-
-export * as RealRendererTypes from '../../types/RealRendererTypes';
-export * as RealDrawBoardTypes from '../../types/RealDrawBoardTypes';
-export * from '../../constants/defaults/RealDrawBoardDefaults';
-
+import { IRealDrawBoardEvents, RealDrawBoardEventList } from '../../constants/events/RealDrawBoardEvents';
+import { RealDrawBoardOptions, RealDrawBoardSettings } from '../../types/RealDrawBoardTypes';
+import { Coordinate, Stroke } from '../../types/RealRendererTypes';
+import { RealRenderer } from '../RealRenderer/RealRenderer';
 import {
   changeTool,
   changeToolSetting,
@@ -16,25 +11,21 @@ import {
   _resetBoard
 } from './boardManip';
 import {
-  _addDOMEvents,
-  _removeDOMEvents
-} from './_DOMEvents';
+  BrushTool, EraserTool, LineTool, TextTool, Tool, ToolDefaults,
+  Tools, ToolSettings
+} from './tools/tools';
 import {
   _getMouseCoords,
   _getTouchCoords
 } from './_coords';
-
 import {
-  Tool,
-  ToolSettings,
-  ToolDefaults,
-  Tools,
-  BrushTool,
-  LineTool,
-  EraserTool,
-  TextTool
-} from './tools/tools';
-import { Coordinate, Stroke } from '../../types/RealRendererTypes';
+  _addDOMEvents,
+  _removeDOMEvents
+} from './_DOMEvents';
+
+export * from '../../constants/defaults/RealDrawBoardDefaults';
+export * as RealDrawBoardTypes from '../../types/RealDrawBoardTypes';
+export * as RealRendererTypes from '../../types/RealRendererTypes';
 
 /**
  * Drawing board.

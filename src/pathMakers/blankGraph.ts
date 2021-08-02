@@ -1,7 +1,7 @@
-import { GraphDimensions, Color, BGType } from '../types/RealRendererTypes';
-import { getRGBColorString } from '../util/getRGBColorString';
 import { Path } from '../renderers/RealRenderer/strokeNodes/_path';
 import { Polygon } from '../renderers/RealRenderer/strokeNodes/_polygon';
+import { BGType, Color, GraphDimensions } from '../types/RealRendererTypes';
+import { getRGBColorString } from '../util/getRGBColorString';
 
 export function getBlankGraphPaths(
   dimensions: GraphDimensions,

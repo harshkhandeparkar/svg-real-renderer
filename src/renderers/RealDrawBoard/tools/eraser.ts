@@ -4,7 +4,6 @@ import { Color, Coordinate } from '../../../types/RealRendererTypes';
 import { getRGBColorString } from '../../../util/getRGBColorString';
 import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 import { Path } from '../../RealRenderer/strokeNodes/_path';
-import { RealDrawBoard } from '../RealDrawBoard';
 import { getRadiusFromThickness } from './util/getRadiusFromThickness';
 import { Tool } from './_tool';
 
