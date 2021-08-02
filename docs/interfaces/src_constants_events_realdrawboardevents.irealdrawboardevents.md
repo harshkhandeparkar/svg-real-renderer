@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.14](../docs.md) / [src/constants/events/RealDrawBoardEvents](../modules/src_constants_events_realdrawboardevents.md) / IRealDrawBoardEvents
+[SVG Real Renderer - v0.3.15](../docs.md) / [src/constants/events/RealDrawBoardEvents](../modules/src_constants_events_realdrawboardevents.md) / IRealDrawBoardEvents
 
 # Interface: IRealDrawBoardEvents
 
@@ -32,7 +32,7 @@
 
 #### Type declaration:
 
-Defined in: [src/constants/events/RealDrawBoardEvents.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/constants/events/RealDrawBoardEvents.ts#L13)
+Defined in: [src/constants/events/RealDrawBoardEvents.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/events/RealDrawBoardEvents.ts#L13)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Type declaration:
 
-Defined in: [src/constants/events/RealDrawBoardEvents.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/constants/events/RealDrawBoardEvents.ts#L14)
+Defined in: [src/constants/events/RealDrawBoardEvents.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/events/RealDrawBoardEvents.ts#L14)
 
 ___
 
@@ -63,7 +63,7 @@ Name | Type |
 
 Inherited from: [IRealRendererEvents](src_constants_events_realrendererevents.irealrendererevents.md).[change-offsets](src_constants_events_realrendererevents.irealrendererevents.md#change-offsets)
 
-Defined in: [src/constants/events/RealRendererEvents.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/constants/events/RealRendererEvents.ts#L9)
+Defined in: [src/constants/events/RealRendererEvents.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/events/RealRendererEvents.ts#L9)
 
 ___
 
@@ -80,7 +80,7 @@ Name | Type |
 
 Inherited from: [IRealRendererEvents](src_constants_events_realrendererevents.irealrendererevents.md).[change-scale](src_constants_events_realrendererevents.irealrendererevents.md#change-scale)
 
-Defined in: [src/constants/events/RealRendererEvents.ts:5](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/constants/events/RealRendererEvents.ts#L5)
+Defined in: [src/constants/events/RealRendererEvents.ts:5](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/events/RealRendererEvents.ts#L5)
 
 ___
 
@@ -96,7 +96,7 @@ Name | Type |
 
 Inherited from: [IRealRendererEvents](src_constants_events_realrendererevents.irealrendererevents.md).[import](src_constants_events_realrendererevents.irealrendererevents.md#import)
 
-Defined in: [src/constants/events/RealRendererEvents.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/constants/events/RealRendererEvents.ts#L19)
+Defined in: [src/constants/events/RealRendererEvents.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/events/RealRendererEvents.ts#L19)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 Inherited from: [IRealRendererEvents](src_constants_events_realrendererevents.irealrendererevents.md).[start-render](src_constants_events_realrendererevents.irealrendererevents.md#start-render)
 
-Defined in: [src/constants/events/RealRendererEvents.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/constants/events/RealRendererEvents.ts#L3)
+Defined in: [src/constants/events/RealRendererEvents.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/events/RealRendererEvents.ts#L3)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 Inherited from: [IRealRendererEvents](src_constants_events_realrendererevents.irealrendererevents.md).[stop-render](src_constants_events_realrendererevents.irealrendererevents.md#stop-render)
 
-Defined in: [src/constants/events/RealRendererEvents.ts:4](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/constants/events/RealRendererEvents.ts#L4)
+Defined in: [src/constants/events/RealRendererEvents.ts:4](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/events/RealRendererEvents.ts#L4)
 
 ___
 
@@ -135,7 +135,7 @@ Name | Type |
 `newTool` | Tool |
 `oldTool` | Tool |
 
-Defined in: [src/constants/events/RealDrawBoardEvents.ts:4](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/constants/events/RealDrawBoardEvents.ts#L4)
+Defined in: [src/constants/events/RealDrawBoardEvents.ts:4](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/events/RealDrawBoardEvents.ts#L4)
 
 ___
 
@@ -147,8 +147,8 @@ ___
 
 Name | Type |
 :------ | :------ |
-`newValue` | *number* \| [*Color*](../modules/src_types_realrenderertypes.md#color) |
-`oldValue` | *number* \| [*Color*](../modules/src_types_realrenderertypes.md#color) |
-`settingName` | *brushColor* \| *brushSize* \| *eraserSize* \| *lineThickness* \| *lineColor* |
+`newValue` | *number* \| [*Color*](../modules/src_types_realrenderertypes.md#color) \| *new* \| *edit* |
+`oldValue` | *number* \| [*Color*](../modules/src_types_realrenderertypes.md#color) \| *new* \| *edit* |
+`settingName` | *brushColor* \| *brushSize* \| *eraserSize* \| *lineThickness* \| *lineColor* \| *fontSize* \| *fontColor* \| *textToolMode* |
 
-Defined in: [src/constants/events/RealDrawBoardEvents.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e37cdda/src/constants/events/RealDrawBoardEvents.ts#L8)
+Defined in: [src/constants/events/RealDrawBoardEvents.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/events/RealDrawBoardEvents.ts#L8)
