@@ -141,5 +141,19 @@ export class Text extends Node<SVGTextElement, 'text'> {
       Number(this.node.getAttribute('x')),
       Number(this.node.getAttribute('y'))
     ]
+
+    this.tspans = [];
+    this.lineIndexes = [];
+    this.cursorIndex = 0;
+
+    this.node.childNodes.forEach((node) => {
+      if (node instanceof SVGTSpanElement) {
+        const numTspans = this.tspans.push(node);
+
+        if (node.hasAttribute('dy')) this.lineIndexes.push(numTspans - 1)
+      }
+    })
+
+    this.lineIndexes.sort((a, b) => a - b);
   }
 }
