@@ -8,6 +8,7 @@ import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 import { GroupNode } from '../../RealRenderer/strokeNodes/_group';
 
 import { getRadiusFromThickness } from './util/getRadiusFromThickness';
+import { Tool } from './_tool';
 
 export const name = 'line';
 
@@ -23,133 +24,122 @@ export const LineDefaults: ILineSettings = {
   lineColor: [1, 1, 1]
 }
 
-/** key -> identifier, value -> coordinate
- *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
- */
-const _startCoords: Map<string, [number, number]> = new Map(); /* key -> identifier, value -> coordinate*/
+export class Line extends Tool {
+  /** key -> identifier, value -> coordinate
+   *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+   */
+  private _startCoords: Map<string, [number, number]> = new Map(); /* key -> identifier, value -> coordinate*/
 
-export function _onToolLoad(
-  this: RealDrawBoard
-) {
-}
+  public _startStroke(
+    coords: Coordinate,
+    identifier: string,
+    target: EventTarget
+  ) {
+    this.RDB._doPreview = false;
+    if (this.RDB._previewStroke.has(identifier)) {
+      this.RDB._previewStroke.get(identifier).forEach((strokeNode) => {
+        strokeNode.delete();
+      })
+    }
 
-export function _startStroke(
-  this: RealDrawBoard,
-  coords: Coordinate,
-  identifier: string
-) {
-  this._doPreview = false;
-  if (this._previewStroke.has(identifier)) {
-    this._previewStroke.get(identifier).forEach((strokeNode) => {
-      strokeNode.delete();
-    })
-  }
+    const linePath = new Path('', 'strokes');
+    linePath.setStroke(getRGBColorString(this.RDB.toolSettings.lineColor));
+    linePath.setStrokeWidth(this.RDB.toolSettings.lineThickness);
 
-  const linePath = new Path('', 'strokes');
-  linePath.setStroke(getRGBColorString(this.toolSettings.lineColor));
-  linePath.setStrokeWidth(this.toolSettings.lineThickness);
-
-  const startCircle = getCircleNode(
-    coords,
-    getRadiusFromThickness(this.toolSettings.lineThickness),
-    this.toolSettings.lineColor,
-    'strokes'
-  )
-
-  const endCircle = getCircleNode(
-    coords,
-    getRadiusFromThickness(this.toolSettings.lineThickness),
-    this.toolSettings.lineColor,
-    'strokes'
-  )
-
-  this._addStroke([new GroupNode('strokes', [linePath, startCircle, endCircle])]);
-  this._strokeIdentifierMap.set(identifier, this._strokeIndex);
-
-  _startCoords.set(identifier, coords);
-}
-
-export function _endStroke(
-  this: RealDrawBoard,
-  endCoords: Coordinate,
-  identifier: string
-) {
-  const lineNode = <GroupNode>this.strokes[this._strokeIdentifierMap.get(identifier)][0];
-
-  (<Path>lineNode.innerNodes[0]).updatePath(
-    getLinePathCommand(
-      _startCoords.get(identifier),
-      endCoords
-    )
-  );
-
-  (<Circle>lineNode.innerNodes[2]).updateCenter(endCoords);
-
-  _startCoords.delete(identifier);
-  this._doPreview = true;
-}
-
-export function _doStroke(
-  this: RealDrawBoard,
-  coords: Coordinate,
-  identifier: string
-) {
-  const lineNode = <GroupNode>this.strokes[this._strokeIndex][0];
-
-  (<Path>lineNode.innerNodes[0]).updatePath(
-    getLinePathCommand(
-      _startCoords.get(identifier),
-      coords
-    )
-  );
-
-  (<Circle>lineNode.innerNodes[2]).updateCenter(coords);
-}
-
-export function _toolPreview(
-  this: RealDrawBoard,
-  coords: Coordinate,
-  identifier: string
-) {
-  if (this._previewStroke.get(identifier).length == 0) {
-    const circleNode = getCircleNode(
+    const startCircle = getCircleNode(
       coords,
-      getRadiusFromThickness(this.toolSettings.lineThickness),
-      this.toolSettings.lineColor,
-      'overlay'
+      getRadiusFromThickness(this.RDB.toolSettings.lineThickness),
+      this.RDB.toolSettings.lineColor,
+      'strokes'
     )
 
-    circleNode.setFill(getRGBColorString(this.toolSettings.lineColor));
-    circleNode.setStroke(getRGBColorString(this.toolSettings.lineColor));
+    const endCircle = getCircleNode(
+      coords,
+      getRadiusFromThickness(this.RDB.toolSettings.lineThickness),
+      this.RDB.toolSettings.lineColor,
+      'strokes'
+    )
 
-    this._previewStroke.get(identifier).push(circleNode);
+    this.RDB._addStroke([new GroupNode('strokes', [linePath, startCircle, endCircle])]);
+    this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
+
+    this._startCoords.set(identifier, coords);
   }
-  else {
-    const circleNode = <Circle>this._previewStroke.get(identifier)[0]
-    circleNode.updateCenter(coords);
-    circleNode.updateRadius(getRadiusFromThickness(this.toolSettings.lineThickness));
-    circleNode.setFill(getRGBColorString(this.toolSettings.lineColor));
-    circleNode.setStroke(getRGBColorString(this.toolSettings.lineColor));
+
+  public _endStroke(
+    endCoords: Coordinate,
+    identifier: string,
+    target: EventTarget
+  ) {
+    const lineNode = <GroupNode>this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)][0];
+
+    (<Path>lineNode.innerNodes[0]).updatePath(
+      getLinePathCommand(
+        this._startCoords.get(identifier),
+        endCoords
+      )
+    );
+
+    (<Circle>lineNode.innerNodes[2]).updateCenter(endCoords);
+
+    this._startCoords.delete(identifier);
+    this.RDB._doPreview = true;
   }
-}
 
-export function _onScroll(
-  this: RealDrawBoard,
-  scrollDelta: number,
-  coords: Coordinate,
-  identifier: string
-) {
-  this.changeToolSetting('lineThickness', Math.max(1, this.toolSettings.lineThickness - scrollDelta));
+  public _doStroke(
+    coords: Coordinate,
+    identifier: string,
+    target: EventTarget
+  ) {
+    const lineNode = <GroupNode>this.RDB.strokes[this.RDB._strokeIndex][0];
 
-  if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
-    (this._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.toolSettings.lineThickness));
-    this._display(this._previewStroke.get(identifier));
+    (<Path>lineNode.innerNodes[0]).updatePath(
+      getLinePathCommand(
+        this._startCoords.get(identifier),
+        coords
+      )
+    );
+
+    (<Circle>lineNode.innerNodes[2]).updateCenter(coords);
   }
-}
 
-export function _onKey(
-  this: RealDrawBoard,
-  e: KeyboardEvent
-) {
+  public _toolPreview(
+    coords: Coordinate,
+    identifier: string,
+    target: EventTarget
+  ) {
+    if (this.RDB._previewStroke.get(identifier).length == 0) {
+      const circleNode = getCircleNode(
+        coords,
+        getRadiusFromThickness(this.RDB.toolSettings.lineThickness),
+        this.RDB.toolSettings.lineColor,
+        'overlay'
+      )
 
+      circleNode.setFill(getRGBColorString(this.RDB.toolSettings.lineColor));
+      circleNode.setStroke(getRGBColorString(this.RDB.toolSettings.lineColor));
+
+      this.RDB._previewStroke.get(identifier).push(circleNode);
+    }
+    else {
+      const circleNode = <Circle>this.RDB._previewStroke.get(identifier)[0]
+      circleNode.updateCenter(coords);
+      circleNode.updateRadius(getRadiusFromThickness(this.RDB.toolSettings.lineThickness));
+      circleNode.setFill(getRGBColorString(this.RDB.toolSettings.lineColor));
+      circleNode.setStroke(getRGBColorString(this.RDB.toolSettings.lineColor));
+    }
+  }
+
+  public _onScroll(
+    scrollDelta: number,
+    coords: Coordinate,
+    identifier: string
+  ) {
+    this.RDB.changeToolSetting('lineThickness', Math.max(1, this.RDB.toolSettings.lineThickness - scrollDelta));
+
+    if (this.RDB._previewStroke.get(identifier) && this.RDB._previewStroke.get(identifier).length !== 0) {
+      (this.RDB._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.RDB.toolSettings.lineThickness));
+      this.RDB._display(this.RDB._previewStroke.get(identifier));
+    }
+  }
 }

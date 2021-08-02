@@ -62,8 +62,10 @@ export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRenderer
 
   protected _drawFunc = _drawFunc;
   protected _draw = _draw;
-  protected _display = _display;
-  protected _addStroke = _addStroke;
+  /** @internal */
+  public _display = _display;
+  /** @internal */
+  public _addStroke = _addStroke;
 
   protected _render = _render;
 

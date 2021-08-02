@@ -1,5 +1,5 @@
 import { RealDrawBoard } from './RealDrawBoard';
-import { Tool, ToolDefaults, tools, ToolSettings } from './tools/tools';
+import { Tool, ToolDefaults, ToolSettings } from './tools/tools';
 import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 
 /**
@@ -10,13 +10,6 @@ import { getBlankGraphPaths } from '../../pathMakers/blankGraph';
 export function changeTool(this: RealDrawBoard, newTool: Tool) {
   const oldTool = this.tool;
   this.tool = newTool;
-  this._onToolLoad = tools[this.tool]._onToolLoad;
-  this._startStroke = tools[this.tool]._startStroke;
-  this._doStroke = tools[this.tool]._doStroke;
-  this._endStroke = tools[this.tool]._endStroke;
-  this._toolPreview = tools[this.tool]._toolPreview;
-  this._onScroll = tools[this.tool]._onScroll;
-  this._onKey = tools[this.tool]._onKey;
 
   this._previewStroke.forEach((stroke) => {
     stroke.forEach((node) => {
@@ -26,7 +19,7 @@ export function changeTool(this: RealDrawBoard, newTool: Tool) {
 
   this._previewStroke.clear();
 
-  this._onToolLoad();
+  this._tools[this.tool]._onLoad();
 
   this.emit('tool-change', {
     newTool,

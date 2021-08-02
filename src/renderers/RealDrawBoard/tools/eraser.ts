@@ -6,6 +6,7 @@ import { Circle } from '../../RealRenderer/strokeNodes/_circle';
 import { Path } from '../../RealRenderer/strokeNodes/_path';
 import { RealDrawBoard } from '../RealDrawBoard';
 import { getRadiusFromThickness } from './util/getRadiusFromThickness';
+import { Tool } from './_tool';
 
 export const name = 'eraser';
 
@@ -19,115 +20,104 @@ export const EraserDefaults: IEraserSettings = {
   eraserSize: 2
 }
 
-export function _onToolLoad(
-  this: RealDrawBoard
-) {
-}
+export class Eraser extends Tool {
+  public _startStroke(
+    coords: Coordinate,
+    identifier: string,
+    target: EventTarget
+  ) {
+    const brushPath = new Path('', 'strokes');
+    brushPath.setStroke(getRGBColorString(this.RDB.bgColor));
+    brushPath.setStrokeWidth(this.RDB.toolSettings.eraserSize);
 
-export function _startStroke(
-  this: RealDrawBoard,
-  coords: Coordinate,
-  identifier: string
-) {
-  const brushPath = new Path('', 'strokes');
-  brushPath.setStroke(getRGBColorString(this.bgColor));
-  brushPath.setStrokeWidth(this.toolSettings.eraserSize);
+    this.RDB._addStroke([brushPath]);
+    this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
 
-  this._addStroke([brushPath]);
-  this._strokeIdentifierMap.set(identifier, this._strokeIndex);
-
-  this.strokes[this._strokeIdentifierMap.get(identifier)].push(
-    getCircleNode(
-      coords,
-      getRadiusFromThickness(this.toolSettings.eraserSize),
-      this.bgColor,
-      'strokes'
+    this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)].push(
+      getCircleNode(
+        coords,
+        getRadiusFromThickness(this.RDB.toolSettings.eraserSize),
+        this.RDB.bgColor,
+        'strokes'
+      )
     )
-  )
-}
-
-export function _endStroke(
-  this: RealDrawBoard,
-  endCoords: Coordinate,
-  identifier: string
-) {
-  this.strokes[this._strokeIdentifierMap.get(identifier)].push(
-    getCircleNode(
-      endCoords,
-      getRadiusFromThickness(this.toolSettings.eraserSize),
-      this.bgColor,
-      'strokes'
-    )
-  )
-
-  this._doPreview = true;
-}
-
-export function _doStroke(
-  this: RealDrawBoard,
-  coords: Coordinate,
-  identifier: string
-) {
-  this.strokes[this._strokeIdentifierMap.get(identifier)].push(
-    getCircleNode(
-      coords,
-      getRadiusFromThickness(this.toolSettings.eraserSize),
-      this.bgColor,
-      'strokes'
-    )
-  );
-
-  (<Path>this.strokes[this._strokeIdentifierMap.get(identifier)][0]).appendPath(
-    getLinePathCommand(
-      this._lastCoords.get(identifier),
-      coords
-    )
-  )
-}
-
-export function _toolPreview(
-  this: RealDrawBoard,
-  coords: Coordinate,
-  identifier: string
- ) {
-  if (this._previewStroke.get(identifier).length == 0) {
-    const circleNode = getCircleNode(
-      coords,
-      getRadiusFromThickness(this.toolSettings.eraserSize),
-      this.bgColor,
-      'overlay'
-    )
-
-    circleNode.setFill(getRGBColorString(this.bgColor));
-    circleNode.setStroke(getRGBColorString(this.bgColor));
-    circleNode.setDashed(getRGBColorString(this.bgColor.map((c) => 1 - c) as Color));
-
-    this._previewStroke.get(identifier).push(circleNode);
   }
-  else {
-    const circleNode = <Circle>this._previewStroke.get(identifier)[0]
-    circleNode.updateCenter(coords);
-    circleNode.updateRadius(getRadiusFromThickness(this.toolSettings.eraserSize));
+
+  public _endStroke(
+    endCoords: Coordinate,
+    identifier: string,
+    target: EventTarget
+  ) {
+    this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)].push(
+      getCircleNode(
+        endCoords,
+        getRadiusFromThickness(this.RDB.toolSettings.eraserSize),
+        this.RDB.bgColor,
+        'strokes'
+      )
+    )
+
+    this.RDB._doPreview = true;
   }
-}
 
-export function _onScroll(
-  this: RealDrawBoard,
-  scrollDelta: number,
-  coords: Coordinate,
-  identifier: string
-) {
-  this.changeToolSetting('eraserSize', Math.max(1, this.toolSettings.eraserSize - scrollDelta));
+  public _doStroke(
+    coords: Coordinate,
+    identifier: string,
+    target: EventTarget
+  ) {
+    this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)].push(
+      getCircleNode(
+        coords,
+        getRadiusFromThickness(this.RDB.toolSettings.eraserSize),
+        this.RDB.bgColor,
+        'strokes'
+      )
+    );
 
-  if (this._previewStroke.get(identifier) && this._previewStroke.get(identifier).length !== 0) {
-    (this._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.toolSettings.eraserSize));
-    this._display(this._previewStroke.get(identifier));
+    (<Path>this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)][0]).appendPath(
+      getLinePathCommand(
+        this.RDB._lastCoords.get(identifier),
+        coords
+      )
+    )
   }
-}
 
-export function _onKey(
-  this: RealDrawBoard,
-  e: KeyboardEvent
-) {
+  public _toolPreview(
+    coords: Coordinate,
+    identifier: string,
+    target: EventTarget
+   ) {
+    if (this.RDB._previewStroke.get(identifier).length == 0) {
+      const circleNode = getCircleNode(
+        coords,
+        getRadiusFromThickness(this.RDB.toolSettings.eraserSize),
+        this.RDB.bgColor,
+        'overlay'
+      )
 
+      circleNode.setFill(getRGBColorString(this.RDB.bgColor));
+      circleNode.setStroke(getRGBColorString(this.RDB.bgColor));
+      circleNode.setDashed(getRGBColorString(this.RDB.bgColor.map((c) => 1 - c) as Color));
+
+      this.RDB._previewStroke.get(identifier).push(circleNode);
+    }
+    else {
+      const circleNode = <Circle>this.RDB._previewStroke.get(identifier)[0]
+      circleNode.updateCenter(coords);
+      circleNode.updateRadius(getRadiusFromThickness(this.RDB.toolSettings.eraserSize));
+    }
+  }
+
+  public _onScroll(
+    scrollDelta: number,
+    coords: Coordinate,
+    identifier: string
+  ) {
+    this.RDB.changeToolSetting('eraserSize', Math.max(1, this.RDB.toolSettings.eraserSize - scrollDelta));
+
+    if (this.RDB._previewStroke.get(identifier) && this.RDB._previewStroke.get(identifier).length !== 0) {
+      (this.RDB._previewStroke.get(identifier)[0] as Circle).updateRadius(getRadiusFromThickness(this.RDB.toolSettings.eraserSize));
+      this.RDB._display(this.RDB._previewStroke.get(identifier));
+    }
+  }
 }

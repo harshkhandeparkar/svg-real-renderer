@@ -24,7 +24,16 @@ import {
   _getTouchCoords
 } from './_coords';
 
-import { tools, Tool, ToolSettings, ToolDefaults } from './tools/tools';
+import {
+  Tool,
+  ToolSettings,
+  ToolDefaults,
+  Tools,
+  BrushTool,
+  LineTool,
+  EraserTool,
+  TextTool
+} from './tools/tools';
 import { Coordinate, Stroke } from '../../types/RealRendererTypes';
 
 /**
@@ -56,13 +65,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
   protected _resetBoard = _resetBoard;
   protected _addDOMEvents = _addDOMEvents;
   protected _removeDOMEvents = _removeDOMEvents;
-  protected _onToolLoad = tools[RealDrawBoardDefaults.tool]._onToolLoad;
-  protected _startStroke = tools[RealDrawBoardDefaults.tool]._startStroke;
-  protected _endStroke = tools[RealDrawBoardDefaults.tool]._endStroke;
-  protected _doStroke = tools[RealDrawBoardDefaults.tool]._doStroke;
-  protected _toolPreview = tools[RealDrawBoardDefaults.tool]._toolPreview;
-  protected _onScroll = tools[RealDrawBoardDefaults.tool]._onScroll;
-  protected _onKey = tools[RealDrawBoardDefaults.tool]._onKey;
+  protected _tools: Tools;
   protected _getMouseCoords = _getMouseCoords;
   protected _getTouchCoords = _getTouchCoords;
 
@@ -88,11 +91,16 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
       ...ToolDefaults,
       ...this.settings.toolSettings
     }
-
-    this.changeTool(this.settings.tool);
     // *****DEFAULTS*****
 
-    this._onToolLoad();
+    this._tools = {
+      brush: new BrushTool(this),
+      eraser: new EraserTool(this),
+      line: new LineTool(this),
+      text: new TextTool(this)
+    }
+
+    this.changeTool(this.settings.tool);
   }
   // --- DOM Event Listeners ---
 
@@ -107,7 +115,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
 
         const coords = this._getMouseCoords(e);
 
-        this._startStroke(
+        this._tools[this.tool]._startStroke(
           coords,
           'mouse',
           e.target
@@ -124,7 +132,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
       this.svg.removeEventListener('mousemove', this._panEventListener);
 
       if(this._lastCoords.has('mouse')) {
-        this._endStroke(endCoords, 'mouse');
+        this._tools[this.tool]._endStroke(endCoords, 'mouse', e.target);
         this._lastCoords.delete('mouse');
       }
 
@@ -136,7 +144,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
     this.svg.removeEventListener('mousemove', this._mouseMoveEventListener);
 
     if(this._lastCoords.has('mouse')) {
-      this._endStroke(this._getMouseCoords(e), 'mouse');
+      this._tools[this.tool]._endStroke(this._getMouseCoords(e), 'mouse', e.target);
       this._lastCoords.delete('mouse');
       this._display(this.strokes[this._strokeIndex]);
     }
@@ -146,7 +154,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
 
   protected _mouseMoveEventListener = (e: MouseEvent) => {
     const coords = this._getMouseCoords(e);
-    this._doStroke(coords, 'mouse');
+    this._tools[this.tool]._doStroke(coords, 'mouse', e.target);
     this._lastCoords.set('mouse', coords);
   }
 
@@ -156,7 +164,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
     if (this._doPreview) {
       if (!this._previewStroke.has('mouse')) this._previewStroke.set('mouse', []);
 
-      this._toolPreview(coords, 'mouse');
+      this._tools[this.tool]._toolPreview(coords, 'mouse', e.target);
       this._display(this._previewStroke.get('mouse'));
     }
 
@@ -169,7 +177,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
     if (e.ctrlKey) {
       this.scale(Math.max(this.scaleFactor - e.deltaY * 0.001, 1));
     }
-    else this._onScroll(e.deltaY * 0.05, this._getMouseCoords(e), 'mouse');
+    else this._tools[this.tool]._onScroll(e.deltaY * 0.05, this._getMouseCoords(e), 'mouse');
   }
 
   protected _panEventListener = (e: MouseEvent) => {
@@ -181,7 +189,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
 
   // --- Keyboard Events ---
   protected _keyPressEventListener = (e: KeyboardEvent) => {
-    this._onKey(e);
+    this._tools[this.tool]._onKey(e);
   }
   // --- /Keyboard Events ---
 
@@ -193,7 +201,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
       const coords = this._getTouchCoords(e.touches.item(i));
       const identifier = e.touches.item(i).identifier.toString();
 
-      this._startStroke(
+      this._tools[this.tool]._startStroke(
         coords,
         identifier,
         e.target
@@ -210,9 +218,10 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
       const coords = this._getTouchCoords(e.changedTouches.item(i));
       const identifier = e.changedTouches.item(i).identifier.toString();
 
-      this._endStroke(
+      this._tools[this.tool]._endStroke(
         coords,
-        identifier
+        identifier,
+        e.target
       )
       this._lastCoords.delete(
         identifier
@@ -225,9 +234,10 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
   protected _touchMoveEventListener = (e: TouchEvent) => {
     for (let i = 0; i < e.touches.length; i++) {
       const coords = this._getTouchCoords(e.touches.item(i));
-      this._doStroke(
+      this._tools[this.tool]._doStroke(
         coords,
-        e.touches.item(i).identifier.toString()
+        e.touches.item(i).identifier.toString(),
+        e.target
       )
       this._lastCoords.set(e.touches.item(i).identifier.toString(), coords);
     }
@@ -240,7 +250,7 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
 
       if (this._doPreview) {
         if (!this._previewStroke.has(identifier)) this._previewStroke.set(identifier, []);
-        this._toolPreview(coords, identifier);
+        this._tools[this.tool]._toolPreview(coords, identifier, e.target);
         this._display(this._previewStroke.get(identifier));
       }
 
