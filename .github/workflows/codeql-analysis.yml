@@ -23,8 +23,6 @@ on:
       - 'src'
   schedule:
     - cron: '15 14 * * 2'
-    - paths:
-      - 'src'
 
 jobs:
   analyze:
