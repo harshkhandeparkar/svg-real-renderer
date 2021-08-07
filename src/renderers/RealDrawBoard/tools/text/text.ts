@@ -72,7 +72,7 @@ export class TextTool extends Tool {
       this._startCoords.set(identifier, coords);
 
       const boundingBox = new Polygon([coords, coords, coords, coords], 'overlay');
-      boundingBox.setDashed(getRGBColorString([0.5, 0.5, 0.5]));
+      boundingBox.setDashed(getRGBColorString(this.RDB.bgColor.map((c) => 1 - c) as Color));
       boundingBox.setFill('transparent');
 
       this.RDB._previewStroke.set(identifier, [boundingBox]);
