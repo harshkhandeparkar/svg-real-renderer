@@ -157,6 +157,9 @@ export function moveCursorUp(this: Text) {
 }
 
 export function destroyCursor(this: Text) {
+  // if the cursor was acting as the newline, transfer newline to next tspan
+  if (this.cursorSpan.hasAttribute('dy')) this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'lineBreak');
+
   this.cursorSpan.remove();
 }
 

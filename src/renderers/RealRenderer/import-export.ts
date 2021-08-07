@@ -1,4 +1,4 @@
-import { RealExport, StrokeExport } from '../../types/RealRendererTypes';
+import { IRealExportV2, RealExport, StrokeExportV2 } from '../../types/RealRendererTypes';
 import { RealRenderer } from './RealRenderer';
 import { Circle } from './strokeNodes/_circle';
 import { GroupNode } from './strokeNodes/_group';
@@ -10,8 +10,9 @@ import { Text } from './strokeNodes/_text/_text';
  * Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().
  * @returns Data of the graph in a storable and loadable format.
  */
-export function exportData(this: RealRenderer): RealExport {
-  const strokeExport: StrokeExport[] = [];
+export function exportData(this: RealRenderer): IRealExportV2 {
+  const strokeExport: StrokeExportV2[] = [];
+
   this.strokes.forEach((stroke) => {
     strokeExport.push(
       stroke.map((node) => node.export())
@@ -19,6 +20,7 @@ export function exportData(this: RealRenderer): RealExport {
   })
 
   return {
+    version: 2,
     exportData: strokeExport,
     strokeIndex: this._strokeIndex,
     dimensions: this.dimensions,
@@ -44,38 +46,77 @@ export function importData(
 
   this.strokes = [];
 
-  data.exportData.forEach((strokeExport) => {
-    this.strokes.push(
-      strokeExport.map((strokeNodeData) => {
-        switch(strokeNodeData.type) {
-          case 'circle':
-            const circ = new Circle([0, 0], 0, strokeNodeData.section ?? 'strokes');
-            circ.import(strokeNodeData.data);
-            return circ;
+  if ('version' in data) {
+    if (data.version === 2) {
+      data.exportData.forEach((strokeExport) => {
+        this.strokes.push(
+          strokeExport.map((strokeNodeData) => {
+            switch(strokeNodeData.type) {
+              case 'circle':
+                const circ = new Circle([0, 0], 0, strokeNodeData.section ?? 'strokes');
+                circ.import(strokeNodeData);
+                return circ;
 
-          case 'path':
-            const path = new Path('', strokeNodeData.section ?? 'strokes');
-            path.import(strokeNodeData.data);
-            return path;
+              case 'path':
+                const path = new Path('', strokeNodeData.section ?? 'strokes');
+                path.import(strokeNodeData);
+                return path;
 
-          case 'text':
-            const text = new Text([0, 0], '', strokeNodeData.section ?? 'strokes');
-            text.import(strokeNodeData.data);
-            return text;
+              case 'text':
+                const text = new Text([0, 0], '', strokeNodeData.section ?? 'strokes');
+                text.import(strokeNodeData);
+                return text;
 
-          case 'group':
-            const group = new GroupNode(strokeNodeData.section ?? 'strokes', []);
-            group.import(strokeNodeData.data);
-            return group;
+              case 'group':
+                const group = new GroupNode(strokeNodeData.section ?? 'strokes', []);
+                group.import(strokeNodeData);
+                return group;
 
-          case 'polygon':
-            const polygon = new Polygon([], strokeNodeData.section ?? 'strokes');
-            polygon.import(strokeNodeData.data);
-            return polygon;
-        }
+              case 'polygon':
+                const polygon = new Polygon([], strokeNodeData.section ?? 'strokes');
+                polygon.import(strokeNodeData);
+                return polygon;
+            }
+          })
+        )
       })
-    )
-  })
+    }
+  }
+  else {
+    // legacy deprecated unsafe
+    data.exportData.forEach((strokeExport) => {
+      this.strokes.push(
+        strokeExport.map((strokeNodeData) => {
+          switch(strokeNodeData.type) {
+            case 'circle':
+              const circ = new Circle([0, 0], 0, strokeNodeData.section ?? 'strokes');
+              circ.importV1(strokeNodeData.data);
+              return circ;
+
+            case 'path':
+              const path = new Path('', strokeNodeData.section ?? 'strokes');
+              path.importV1(strokeNodeData.data);
+              return path;
+
+            case 'text':
+              const text = new Text([0, 0], '', strokeNodeData.section ?? 'strokes');
+              text.importV1(strokeNodeData.data);
+              return text;
+
+            case 'group':
+              const group = new GroupNode(strokeNodeData.section ?? 'strokes', []);
+              group.importV1(strokeNodeData.data);
+              return group;
+
+            case 'polygon':
+              const polygon = new Polygon([], strokeNodeData.section ?? 'strokes');
+              polygon.importV1(strokeNodeData.data);
+              return polygon;
+          }
+        })
+      )
+    })
+  }
 
   this._strokeIndex = data.strokeIndex;
   for (let i = 0; i <= this._strokeIndex; i++) {

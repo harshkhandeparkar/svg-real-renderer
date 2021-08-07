@@ -34,19 +34,39 @@
 	        this.node = path;
 	        this.section = section;
 	    }
-	    Node.prototype.export = function () {
+	    Node.prototype._exportBasicData = function () {
 	        return {
+	            stroke: this.node.hasAttribute('stroke') ? this.node.getAttribute('stroke') : null,
+	            fill: this.node.hasAttribute('fill') ? this.node.getAttribute('fill') : null,
+	            strokeWidth: this.node.hasAttribute('stroke-width') ? this.node.getAttribute('stroke-width') : null,
+	            dashed: this.node.hasAttribute('stroke-dasharray') ? { dashColor: this.node.getAttribute('stroke') } : false,
+	            id: this.node.hasAttribute('id') ? this.node.getAttribute('id') : null,
+	            class: this.node.hasAttribute('class') ? this.node.getAttribute('class') : null,
 	            type: this.strokeNodeType,
-	            data: this.node.outerHTML.toString(),
 	            section: this.section
 	        };
 	    };
-	    Node.prototype.import = function (data) {
+	    /** @deprecated */
+	    Node.prototype.importV1 = function (data) {
 	        var wrapper = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 	        wrapper.innerHTML = data;
 	        this.node = wrapper.firstChild;
 	        wrapper.removeChild(this.node);
 	        wrapper.remove();
+	    };
+	    Node.prototype.import = function (data) {
+	        if (data.stroke !== null)
+	            this.setStroke(data.stroke);
+	        if (data.fill !== null)
+	            this.setFill(data.fill);
+	        if (data.strokeWidth !== null)
+	            this.node.setAttribute('stroke-width', data.strokeWidth);
+	        if (data.dashed !== false)
+	            this.setDashed(data.dashed.dashColor);
+	        if (data.id !== null)
+	            this.setId(data.id);
+	        if (data.class !== null)
+	            this.node.setAttribute('class', data.class);
 	    };
 	    Node.prototype.setStroke = function (stroke) {
 	        this.node.setAttribute('stroke', stroke);
@@ -89,6 +109,17 @@
 	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	    };
 	})();
+	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
+	    __assign = Object.assign || function(t) {
+	        for (var s, i = 1, n = arguments.length; i < n; i++) {
+	            s = arguments[i];
+	            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	                t[p] = s[p];
+	        }
+	        return t;
+	    };
+	    return __assign.apply(this, arguments);
+	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Circle = void 0;
 
@@ -110,6 +141,14 @@
 	    Circle.prototype.updateCenter = function (newCenter) {
 	        this.node.setAttribute('cx', newCenter[0].toString());
 	        this.node.setAttribute('cy', newCenter[1].toString());
+	    };
+	    Circle.prototype.export = function () {
+	        return __assign(__assign({}, this._exportBasicData()), { center: [this.node.getAttribute('cx'), this.node.getAttribute('cy')], radius: this.node.getAttribute('radius'), type: this.strokeNodeType });
+	    };
+	    Circle.prototype.import = function (data) {
+	        this.node.setAttribute('cx', data.center[0]);
+	        this.node.setAttribute('cy', data.center[1]);
+	        this.node.setAttribute('r', data.radius);
 	    };
 	    return Circle;
 	}(_node.Node));
@@ -170,6 +209,17 @@
 	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	    };
 	})();
+	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
+	    __assign = Object.assign || function(t) {
+	        for (var s, i = 1, n = arguments.length; i < n; i++) {
+	            s = arguments[i];
+	            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	                t[p] = s[p];
+	        }
+	        return t;
+	    };
+	    return __assign.apply(this, arguments);
+	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Path = void 0;
 
@@ -188,6 +238,13 @@
 	    };
 	    Path.prototype.appendPath = function (appendD) {
 	        this.node.setAttribute('d', this.node.getAttribute('d') + ' ' + appendD);
+	    };
+	    Path.prototype.export = function () {
+	        return __assign(__assign({}, this._exportBasicData()), { d: this.node.getAttribute('d'), type: this.strokeNodeType });
+	    };
+	    Path.prototype.import = function (data) {
+	        _super.prototype.import.call(this, data);
+	        this.node.setAttribute('d', data.d);
 	    };
 	    return Path;
 	}(_node.Node));
@@ -372,133 +429,6 @@
 	exports.Eraser = Eraser;
 	});
 
-	var _group = createCommonjsModule(function (module, exports) {
-	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-	    var extendStatics = function (d, b) {
-	        extendStatics = Object.setPrototypeOf ||
-	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-	        return extendStatics(d, b);
-	    };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.GroupNode = void 0;
-
-	var GroupNode = /** @class */ (function (_super) {
-	    __extends(GroupNode, _super);
-	    function GroupNode(section, initialInnerNodes) {
-	        var _this = _super.call(this, section, 'group', 'group') || this;
-	        _this.innerNodes = [];
-	        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-	        initialInnerNodes.forEach(function (node) { return g.appendChild(node.node); });
-	        _this.innerNodes = initialInnerNodes;
-	        _this.node = g;
-	        _this.section = section;
-	        return _this;
-	    }
-	    return GroupNode;
-	}(_node.Node));
-	exports.GroupNode = GroupNode;
-	});
-
-	var line$1 = createCommonjsModule(function (module, exports) {
-	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-	    var extendStatics = function (d, b) {
-	        extendStatics = Object.setPrototypeOf ||
-	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-	        return extendStatics(d, b);
-	    };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.Line = exports.LineDefaults = exports.name = void 0;
-
-
-
-
-
-
-
-	exports.name = 'line';
-	exports.LineDefaults = {
-	    lineThickness: 1,
-	    lineColor: [1, 1, 1]
-	};
-	var Line = /** @class */ (function (_super) {
-	    __extends(Line, _super);
-	    function Line() {
-	        var _this = _super !== null && _super.apply(this, arguments) || this;
-	        /** key -> identifier, value -> coordinate
-	         *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
-	         */
-	        _this._startCoords = new Map(); /* key -> identifier, value -> coordinate*/
-	        return _this;
-	    }
-	    Line.prototype._startStroke = function (coords, identifier, target) {
-	        this.RDB._doPreview = false;
-	        if (this.RDB._previewStroke.has(identifier)) {
-	            this.RDB._previewStroke.get(identifier).forEach(function (strokeNode) {
-	                strokeNode.delete();
-	            });
-	        }
-	        var linePath = new _path.Path('', 'strokes');
-	        linePath.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
-	        linePath.setStrokeWidth(this.RDB.toolSettings.lineThickness);
-	        var startCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness), this.RDB.toolSettings.lineColor, 'strokes');
-	        var endCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness), this.RDB.toolSettings.lineColor, 'strokes');
-	        this.RDB._addStroke([new _group.GroupNode('strokes', [linePath, startCircle, endCircle])]);
-	        this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
-	        this._startCoords.set(identifier, coords);
-	    };
-	    Line.prototype._endStroke = function (endCoords, identifier, target) {
-	        var lineNode = this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)][0];
-	        lineNode.innerNodes[0].updatePath(line.getLinePathCommand(this._startCoords.get(identifier), endCoords));
-	        lineNode.innerNodes[2].updateCenter(endCoords);
-	        this._startCoords.delete(identifier);
-	        this.RDB._doPreview = true;
-	    };
-	    Line.prototype._doStroke = function (coords, identifier, target) {
-	        var lineNode = this.RDB.strokes[this.RDB._strokeIndex][0];
-	        lineNode.innerNodes[0].updatePath(line.getLinePathCommand(this._startCoords.get(identifier), coords));
-	        lineNode.innerNodes[2].updateCenter(coords);
-	    };
-	    Line.prototype._toolPreview = function (coords, identifier, target) {
-	        if (this.RDB._previewStroke.get(identifier).length == 0) {
-	            var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness), this.RDB.toolSettings.lineColor, 'overlay');
-	            circleNode.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
-	            circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
-	            this.RDB._previewStroke.get(identifier).push(circleNode);
-	        }
-	        else {
-	            var circleNode = this.RDB._previewStroke.get(identifier)[0];
-	            circleNode.updateCenter(coords);
-	            circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness));
-	            circleNode.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
-	            circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
-	        }
-	    };
-	    Line.prototype._onScroll = function (scrollDelta, coords, identifier) {
-	        this.RDB.changeToolSetting('lineThickness', Math.max(1, this.RDB.toolSettings.lineThickness - scrollDelta));
-	        if (this.RDB._previewStroke.get(identifier) != null && this.RDB._previewStroke.get(identifier).length !== 0) {
-	            this.RDB._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness));
-	            this.RDB._display(this.RDB._previewStroke.get(identifier));
-	        }
-	    };
-	    return Line;
-	}(_tool.Tool));
-	exports.Line = Line;
-	});
-
 	var _polygon = createCommonjsModule(function (module, exports) {
 	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
 	    var extendStatics = function (d, b) {
@@ -513,6 +443,17 @@
 	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	    };
 	})();
+	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
+	    __assign = Object.assign || function(t) {
+	        for (var s, i = 1, n = arguments.length; i < n; i++) {
+	            s = arguments[i];
+	            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	                t[p] = s[p];
+	        }
+	        return t;
+	    };
+	    return __assign.apply(this, arguments);
+	};
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Polygon = void 0;
 
@@ -540,6 +481,13 @@
 	    Polygon.prototype.addPoint = function (point) {
 	        this.node.setAttribute('points', this.node.getAttribute('points') + (point[0] + "," + point[1] + " "));
 	    };
+	    Polygon.prototype.export = function () {
+	        return __assign(__assign({}, this._exportBasicData()), { points: this.node.getAttribute('points'), type: this.strokeNodeType });
+	    };
+	    Polygon.prototype.import = function (data) {
+	        _super.prototype.import.call(this, data);
+	        this.node.setAttribute('points', data.points);
+	    };
 	    return Polygon;
 	}(_node.Node));
 	exports.Polygon = Polygon;
@@ -547,22 +495,7 @@
 
 	var _cursor = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.addCursor = exports.destroyCursor = exports.moveCursorUp = exports.moveCursorDown = exports.moveCursorRight = exports.moveCursorLeft = exports._moveCursorTo = exports._addNewLine = void 0;
-	/* TSPANS
-	 * Empty SVG tspans are completely ignored, including the 'dy' attribute and the 'x' attribute
-	 * When a new line break is added:
-	 * 1) if the cursor is at the beginning: the cursor will have to be the line break with the dy since the first tspan will be empty
-	 * 2) if the cursor is not at the beginning: the first tspan of that line will have the dy
-	 *
-	 * When the cursor is moved, accordingly the dy attribute should be moved, either to the tspan or to the cursor form the tspan
-	 *
-	 * Any tspan with a 'dy' attribute will be positioned relative to the previous tspan, including the x-position.
-	 * A newline span therefore needs to have an 'x' attribute equal to that of the parent text node.
-	 *
-	 * These two methods (defined in this file) can be used to do the above:
-	 * 1) _addNewLine(tspanIndex, characterIndex): Line breaks the given tspan at the given character.
-	 * 2) _moveCursorTo(newCursorIndex, characterIndex): Moves the cursor to a given new tspan and at the given character.
-	 */
+	exports.addCursor = exports.destroyCursor = exports.moveCursorUp = exports.moveCursorDown = exports.moveCursorRight = exports.moveCursorLeft = void 0;
 	var moveOneCharacterLeft = function (_a) {
 	    var str1 = _a[0], str2 = _a[1];
 	    return [str1 + str2[0], str2.slice(1)];
@@ -577,22 +510,6 @@
 	    tspan1.textContent = newTspan1Text;
 	    tspan2.textContent = newTspan2Text;
 	};
-	function _addNewLine(tspanIndex, characterIndex) {
-	    if (this.tspans[tspanIndex] !== undefined) {
-	        // find text split
-	        var beforeLineText = this.tspans[tspanIndex].textContent.slice(0, characterIndex);
-	        var newLineText = this.tspans[tspanIndex].textContent.slice(characterIndex);
-	        // add a new tspan
-	        this._addTspan(newLineText, tspanIndex + 1, 'spanBefore');
-	        // just set the positioning, if it's empty, handle in _moveCursorTo
-	        this._setTspanPositioning(this.tspans[tspanIndex + 1], 'lineBreak');
-	        this.tspans[tspanIndex].textContent = beforeLineText;
-	    }
-	}
-	exports._addNewLine = _addNewLine;
-	function _moveCursorTo(newCursorIndex, characterIndex) {
-	}
-	exports._moveCursorTo = _moveCursorTo;
 	function moveCursorLeft() {
 	    // if the cursor is in between the line, move the cursor in the text
 	    if (this.tspans[this.cursorIndex].textContent.length > 0) {
@@ -706,6 +623,9 @@
 	}
 	exports.moveCursorUp = moveCursorUp;
 	function destroyCursor() {
+	    // if the cursor was acting as the newline, transfer newline to next tspan
+	    if (this.cursorSpan.hasAttribute('dy'))
+	        this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'lineBreak');
 	    this.cursorSpan.remove();
 	}
 	exports.destroyCursor = destroyCursor;
@@ -802,6 +722,17 @@
 	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	    };
 	})();
+	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
+	    __assign = Object.assign || function(t) {
+	        for (var s, i = 1, n = arguments.length; i < n; i++) {
+	            s = arguments[i];
+	            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	                t[p] = s[p];
+	        }
+	        return t;
+	    };
+	    return __assign.apply(this, arguments);
+	};
 	var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || function () {
 	    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
 	    for (var r = Array(s), k = 0, i = 0; i < il; i++)
@@ -904,9 +835,10 @@
 	    Text.prototype.setFontSize = function (size) {
 	        this.node.style.fontSize = size + "px";
 	    };
-	    Text.prototype.import = function (data) {
+	    /** @deprecated */
+	    Text.prototype.importV1 = function (data) {
 	        var _this = this;
-	        _super.prototype.import.call(this, data);
+	        _super.prototype.importV1.call(this, data);
 	        this.position = [
 	            Number(this.node.getAttribute('x')),
 	            Number(this.node.getAttribute('y'))
@@ -923,9 +855,207 @@
 	        });
 	        this.lineIndexes.sort(function (a, b) { return a - b; });
 	    };
+	    Text.prototype.import = function (data) {
+	        var _this = this;
+	        this.tspans = data.tspans.map(function (tspan) {
+	            var tspan_ = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+	            tspan_.textContent = tspan.textContent;
+	            if (tspan.dy !== null)
+	                tspan_.setAttribute('dy', tspan.dy);
+	            if (tspan.x !== null)
+	                tspan_.setAttribute('x', tspan.x);
+	            _this.node.append(tspan_);
+	            return tspan_;
+	        });
+	        this.position = data.position;
+	        this.updateTextBaseline(this.position);
+	    };
+	    Text.prototype.export = function () {
+	        return __assign(__assign({}, this._exportBasicData()), { position: this.position, tspans: this.tspans.map(function (tspan) {
+	                return {
+	                    x: tspan.hasAttribute('x') ? tspan.getAttribute('x') : null,
+	                    dy: tspan.hasAttribute('dy') ? tspan.getAttribute('dy') : null,
+	                    textContent: tspan.textContent
+	                };
+	            }), type: this.strokeNodeType });
+	    };
 	    return Text;
 	}(_node.Node));
 	exports.Text = Text;
+	});
+
+	var _group = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
+	    __assign = Object.assign || function(t) {
+	        for (var s, i = 1, n = arguments.length; i < n; i++) {
+	            s = arguments[i];
+	            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	                t[p] = s[p];
+	        }
+	        return t;
+	    };
+	    return __assign.apply(this, arguments);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.GroupNode = void 0;
+
+
+
+
+
+	var GroupNode = /** @class */ (function (_super) {
+	    __extends(GroupNode, _super);
+	    function GroupNode(section, initialInnerNodes) {
+	        var _this = _super.call(this, section, 'group', 'group') || this;
+	        _this.innerNodes = [];
+	        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+	        initialInnerNodes.forEach(function (node) { return g.appendChild(node.node); });
+	        _this.innerNodes = initialInnerNodes;
+	        _this.node = g;
+	        _this.section = section;
+	        return _this;
+	    }
+	    GroupNode.prototype.export = function () {
+	        return __assign(__assign({}, this._exportBasicData()), { innerNodes: this.innerNodes.map(function (innerNode) { return innerNode.export(); }), type: this.strokeNodeType });
+	    };
+	    GroupNode.prototype.import = function (data) {
+	        var _this = this;
+	        this.innerNodes = data.innerNodes.map(function (strokeNodeData) {
+	            var _a, _b, _c, _d, _e;
+	            switch (strokeNodeData.type) {
+	                case 'circle':
+	                    var circ = new _circle.Circle([0, 0], 0, (_a = strokeNodeData.section) !== null && _a !== void 0 ? _a : 'strokes');
+	                    circ.import(strokeNodeData);
+	                    return circ;
+	                case 'path':
+	                    var path = new _path.Path('', (_b = strokeNodeData.section) !== null && _b !== void 0 ? _b : 'strokes');
+	                    path.import(strokeNodeData);
+	                    return path;
+	                case 'text':
+	                    var text = new _text.Text([0, 0], '', (_c = strokeNodeData.section) !== null && _c !== void 0 ? _c : 'strokes');
+	                    text.import(strokeNodeData);
+	                    return text;
+	                case 'group':
+	                    var group = new GroupNode((_d = strokeNodeData.section) !== null && _d !== void 0 ? _d : 'strokes', []);
+	                    group.import(strokeNodeData);
+	                    return group;
+	                case 'polygon':
+	                    var polygon = new _polygon.Polygon([], (_e = strokeNodeData.section) !== null && _e !== void 0 ? _e : 'strokes');
+	                    polygon.import(strokeNodeData);
+	                    return polygon;
+	            }
+	        });
+	        this.innerNodes.forEach(function (node) { return _this.node.appendChild(node.node); });
+	    };
+	    return GroupNode;
+	}(_node.Node));
+	exports.GroupNode = GroupNode;
+	});
+
+	var line$1 = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Line = exports.LineDefaults = exports.name = void 0;
+
+
+
+
+
+
+
+	exports.name = 'line';
+	exports.LineDefaults = {
+	    lineThickness: 1,
+	    lineColor: [1, 1, 1]
+	};
+	var Line = /** @class */ (function (_super) {
+	    __extends(Line, _super);
+	    function Line() {
+	        var _this = _super !== null && _super.apply(this, arguments) || this;
+	        /** key -> identifier, value -> coordinate
+	         *  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
+	         */
+	        _this._startCoords = new Map(); /* key -> identifier, value -> coordinate*/
+	        return _this;
+	    }
+	    Line.prototype._startStroke = function (coords, identifier, target) {
+	        this.RDB._doPreview = false;
+	        if (this.RDB._previewStroke.has(identifier)) {
+	            this.RDB._previewStroke.get(identifier).forEach(function (strokeNode) {
+	                strokeNode.delete();
+	            });
+	        }
+	        var linePath = new _path.Path('', 'strokes');
+	        linePath.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	        linePath.setStrokeWidth(this.RDB.toolSettings.lineThickness);
+	        var startCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness), this.RDB.toolSettings.lineColor, 'strokes');
+	        var endCircle = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness), this.RDB.toolSettings.lineColor, 'strokes');
+	        this.RDB._addStroke([new _group.GroupNode('strokes', [linePath, startCircle, endCircle])]);
+	        this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
+	        this._startCoords.set(identifier, coords);
+	    };
+	    Line.prototype._endStroke = function (endCoords, identifier, target) {
+	        var lineNode = this.RDB.strokes[this.RDB._strokeIdentifierMap.get(identifier)][0];
+	        lineNode.innerNodes[0].updatePath(line.getLinePathCommand(this._startCoords.get(identifier), endCoords));
+	        lineNode.innerNodes[2].updateCenter(endCoords);
+	        this._startCoords.delete(identifier);
+	        this.RDB._doPreview = true;
+	    };
+	    Line.prototype._doStroke = function (coords, identifier, target) {
+	        var lineNode = this.RDB.strokes[this.RDB._strokeIndex][0];
+	        lineNode.innerNodes[0].updatePath(line.getLinePathCommand(this._startCoords.get(identifier), coords));
+	        lineNode.innerNodes[2].updateCenter(coords);
+	    };
+	    Line.prototype._toolPreview = function (coords, identifier, target) {
+	        if (this.RDB._previewStroke.get(identifier).length == 0) {
+	            var circleNode = circle.getCircleNode(coords, getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness), this.RDB.toolSettings.lineColor, 'overlay');
+	            circleNode.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	            circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	            this.RDB._previewStroke.get(identifier).push(circleNode);
+	        }
+	        else {
+	            var circleNode = this.RDB._previewStroke.get(identifier)[0];
+	            circleNode.updateCenter(coords);
+	            circleNode.updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness));
+	            circleNode.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	            circleNode.setStroke(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.lineColor));
+	        }
+	    };
+	    Line.prototype._onScroll = function (scrollDelta, coords, identifier) {
+	        this.RDB.changeToolSetting('lineThickness', Math.max(1, this.RDB.toolSettings.lineThickness - scrollDelta));
+	        if (this.RDB._previewStroke.get(identifier) != null && this.RDB._previewStroke.get(identifier).length !== 0) {
+	            this.RDB._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness));
+	            this.RDB._display(this.RDB._previewStroke.get(identifier));
+	        }
+	    };
+	    return Line;
+	}(_tool.Tool));
+	exports.Line = Line;
 	});
 
 	var _mapKeyToAction_1 = createCommonjsModule(function (module, exports) {
@@ -1049,7 +1179,7 @@
 	            }
 	            this._startCoords.set(identifier, coords);
 	            var boundingBox = new _polygon.Polygon([coords, coords, coords, coords], 'overlay');
-	            boundingBox.setDashed(getRGBColorString_1.getRGBColorString([0.5, 0.5, 0.5]));
+	            boundingBox.setDashed(getRGBColorString_1.getRGBColorString(this.RDB.bgColor.map(function (c) { return 1 - c; })));
 	            boundingBox.setFill('transparent');
 	            this.RDB._previewStroke.set(identifier, [boundingBox]);
 	        }
@@ -1453,6 +1583,7 @@
 	        strokeExport.push(stroke.map(function (node) { return node.export(); }));
 	    });
 	    return {
+	        version: 2,
 	        exportData: strokeExport,
 	        strokeIndex: this._strokeIndex,
 	        dimensions: this.dimensions,
@@ -1474,33 +1605,67 @@
 	    this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
 	    this.bgType = (_a = data.bgType) !== null && _a !== void 0 ? _a : this.bgType;
 	    this.strokes = [];
-	    data.exportData.forEach(function (strokeExport) {
-	        _this.strokes.push(strokeExport.map(function (strokeNodeData) {
-	            var _a, _b, _c, _d, _e;
-	            switch (strokeNodeData.type) {
-	                case 'circle':
-	                    var circ = new _circle.Circle([0, 0], 0, (_a = strokeNodeData.section) !== null && _a !== void 0 ? _a : 'strokes');
-	                    circ.import(strokeNodeData.data);
-	                    return circ;
-	                case 'path':
-	                    var path = new _path.Path('', (_b = strokeNodeData.section) !== null && _b !== void 0 ? _b : 'strokes');
-	                    path.import(strokeNodeData.data);
-	                    return path;
-	                case 'text':
-	                    var text = new _text.Text([0, 0], '', (_c = strokeNodeData.section) !== null && _c !== void 0 ? _c : 'strokes');
-	                    text.import(strokeNodeData.data);
-	                    return text;
-	                case 'group':
-	                    var group = new _group.GroupNode((_d = strokeNodeData.section) !== null && _d !== void 0 ? _d : 'strokes', []);
-	                    group.import(strokeNodeData.data);
-	                    return group;
-	                case 'polygon':
-	                    var polygon = new _polygon.Polygon([], (_e = strokeNodeData.section) !== null && _e !== void 0 ? _e : 'strokes');
-	                    polygon.import(strokeNodeData.data);
-	                    return polygon;
-	            }
-	        }));
-	    });
+	    if ('version' in data) {
+	        if (data.version === 2) {
+	            data.exportData.forEach(function (strokeExport) {
+	                _this.strokes.push(strokeExport.map(function (strokeNodeData) {
+	                    var _a, _b, _c, _d, _e;
+	                    switch (strokeNodeData.type) {
+	                        case 'circle':
+	                            var circ = new _circle.Circle([0, 0], 0, (_a = strokeNodeData.section) !== null && _a !== void 0 ? _a : 'strokes');
+	                            circ.import(strokeNodeData);
+	                            return circ;
+	                        case 'path':
+	                            var path = new _path.Path('', (_b = strokeNodeData.section) !== null && _b !== void 0 ? _b : 'strokes');
+	                            path.import(strokeNodeData);
+	                            return path;
+	                        case 'text':
+	                            var text = new _text.Text([0, 0], '', (_c = strokeNodeData.section) !== null && _c !== void 0 ? _c : 'strokes');
+	                            text.import(strokeNodeData);
+	                            return text;
+	                        case 'group':
+	                            var group = new _group.GroupNode((_d = strokeNodeData.section) !== null && _d !== void 0 ? _d : 'strokes', []);
+	                            group.import(strokeNodeData);
+	                            return group;
+	                        case 'polygon':
+	                            var polygon = new _polygon.Polygon([], (_e = strokeNodeData.section) !== null && _e !== void 0 ? _e : 'strokes');
+	                            polygon.import(strokeNodeData);
+	                            return polygon;
+	                    }
+	                }));
+	            });
+	        }
+	    }
+	    else {
+	        // legacy deprecated unsafe
+	        data.exportData.forEach(function (strokeExport) {
+	            _this.strokes.push(strokeExport.map(function (strokeNodeData) {
+	                var _a, _b, _c, _d, _e;
+	                switch (strokeNodeData.type) {
+	                    case 'circle':
+	                        var circ = new _circle.Circle([0, 0], 0, (_a = strokeNodeData.section) !== null && _a !== void 0 ? _a : 'strokes');
+	                        circ.importV1(strokeNodeData.data);
+	                        return circ;
+	                    case 'path':
+	                        var path = new _path.Path('', (_b = strokeNodeData.section) !== null && _b !== void 0 ? _b : 'strokes');
+	                        path.importV1(strokeNodeData.data);
+	                        return path;
+	                    case 'text':
+	                        var text = new _text.Text([0, 0], '', (_c = strokeNodeData.section) !== null && _c !== void 0 ? _c : 'strokes');
+	                        text.importV1(strokeNodeData.data);
+	                        return text;
+	                    case 'group':
+	                        var group = new _group.GroupNode((_d = strokeNodeData.section) !== null && _d !== void 0 ? _d : 'strokes', []);
+	                        group.importV1(strokeNodeData.data);
+	                        return group;
+	                    case 'polygon':
+	                        var polygon = new _polygon.Polygon([], (_e = strokeNodeData.section) !== null && _e !== void 0 ? _e : 'strokes');
+	                        polygon.importV1(strokeNodeData.data);
+	                        return polygon;
+	                }
+	            }));
+	        });
+	    }
 	    this._strokeIndex = data.strokeIndex;
 	    for (var i = 0; i <= this._strokeIndex; i++) {
 	        this._display(this.strokes[i]);
@@ -2159,35 +2324,13 @@
 	exports.RealDrawBoard = RealDrawBoard;
 	});
 
-	var renderPreview_1 = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.renderPreview = void 0;
-	/**
-	 * Renders a preview of the given data to a given separate SVG element.
-	 * @param data Data to be rendered (exported by using .export()).
-	 * @param renderTo SVG Element to render to.
-	 */
-	function renderPreview(data, renderTo) {
-	    var exportData = data.exportData, dimensions = data.dimensions;
-	    renderTo.setAttribute('viewBox', "0 0 " + dimensions[0] + " " + dimensions[1]);
-	    exportData.forEach(function (strokeExport) {
-	        strokeExport.forEach(function (strokeNodeData) {
-	            renderTo.innerHTML += strokeNodeData.data;
-	        });
-	    });
-	}
-	exports.renderPreview = renderPreview;
-	});
-
 	var build = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.renderPreview = exports.RealRenderer = exports.RealDrawBoard = void 0;
+	exports.RealRenderer = exports.RealDrawBoard = void 0;
 
 	Object.defineProperty(exports, "RealDrawBoard", { enumerable: true, get: function () { return RealDrawBoard_1.RealDrawBoard; } });
 
 	Object.defineProperty(exports, "RealRenderer", { enumerable: true, get: function () { return RealRenderer_1.RealRenderer; } });
-
-	Object.defineProperty(exports, "renderPreview", { enumerable: true, get: function () { return renderPreview_1.renderPreview; } });
 	});
 
 	var index = /*@__PURE__*/getDefaultExportFromCjs(build);

@@ -1,8 +1,8 @@
-import { Circle } from '../renderers/RealRenderer/strokeNodes/_circle';
-import { GroupNode } from '../renderers/RealRenderer/strokeNodes/_group';
-import { Path } from '../renderers/RealRenderer/strokeNodes/_path';
-import { Polygon } from '../renderers/RealRenderer/strokeNodes/_polygon';
-import { Text } from '../renderers/RealRenderer/strokeNodes/_text/_text';
+import { Circle, ICircleNodeData } from '../renderers/RealRenderer/strokeNodes/_circle';
+import { GroupNode, IGroupNodeData } from '../renderers/RealRenderer/strokeNodes/_group';
+import { IPathNodeData, Path } from '../renderers/RealRenderer/strokeNodes/_path';
+import { IPolygonNodeData, Polygon } from '../renderers/RealRenderer/strokeNodes/_polygon';
+import { ITextNodeData, Text } from '../renderers/RealRenderer/strokeNodes/_text/_text';
 
 /**
  * Dimensions of the graph in the format [width, height].
@@ -26,21 +26,39 @@ export type StrokeNodeType = 'path' | 'circle' | 'text' | 'polygon' | 'group';
  * One stroke is an combination of multiple stroke nodes
  */
 export type Stroke = StrokeNode[];
-export type StrokeNodeData = {
+
+/** @deprecated */
+export type StrokeNodeDataV1 = {
   type: StrokeNodeType;
   data: string;
   section: SVGSection;
 }
-export type StrokeExport = StrokeNodeData[];
+/** @deprecated */
+export type StrokeExportV1 = StrokeNodeDataV1[];
+
+export type StrokeNodeDataV2 = ITextNodeData | ICircleNodeData | IGroupNodeData | IPathNodeData | IPolygonNodeData;
+export type StrokeExportV2 = StrokeNodeDataV2[];
+
 /**
  * Data format for graph data exported  by Real Renderers
+ * @deprecated
  */
-export type RealExport = {
-  exportData: StrokeExport[];
+export interface IRealExportV1 {
+  exportData: StrokeExportV1[];
   strokeIndex: number;
   bgType: BGType;
   dimensions: GraphDimensions;
 }
+
+export interface IRealExportV2 {
+  version: 2;
+  exportData: StrokeExportV2[];
+  strokeIndex: number;
+  bgType: BGType;
+  dimensions: GraphDimensions;
+}
+
+export type RealExport = IRealExportV1 | IRealExportV2;
 
 /**
  * Backround with axes.

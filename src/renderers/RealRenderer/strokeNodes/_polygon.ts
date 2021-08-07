@@ -1,5 +1,10 @@
 import { Coordinate, SVGSection } from '../../../types/RealRendererTypes';
-import { Node } from './_node';
+import { INodeData, Node } from './_node';
+
+export interface IPolygonNodeData extends INodeData {
+  points: string;
+  type: 'polygon';
+}
 
 export class Polygon extends Node<SVGPolygonElement, 'polygon'> {
   constructor(
@@ -32,5 +37,19 @@ export class Polygon extends Node<SVGPolygonElement, 'polygon'> {
 
   addPoint(point: Coordinate) {
     this.node.setAttribute('points', this.node.getAttribute('points') + `${point[0]},${point[1]} `);
+  }
+
+  export(): IPolygonNodeData {
+    return {
+      ...this._exportBasicData(),
+      points: this.node.getAttribute('points'),
+      type: this.strokeNodeType
+    }
+  }
+
+  import(data: IPolygonNodeData) {
+    super.import(data);
+
+    this.node.setAttribute('points', data.points);
   }
 }

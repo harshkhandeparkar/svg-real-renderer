@@ -1,5 +1,10 @@
 import { SVGSection } from '../../../types/RealRendererTypes';
-import { Node } from './_node';
+import { INodeData, Node } from './_node';
+
+export interface IPathNodeData extends INodeData {
+  d: string;
+  type: 'path';
+}
 
 export class Path extends Node<SVGPathElement, 'path'> {
   constructor(
@@ -20,5 +25,19 @@ export class Path extends Node<SVGPathElement, 'path'> {
 
   appendPath(appendD: string) {
     this.node.setAttribute('d', this.node.getAttribute('d') + ' ' + appendD);
+  }
+
+  export(): IPathNodeData {
+    return {
+      ...this._exportBasicData(),
+      d: this.node.getAttribute('d'),
+      type: this.strokeNodeType
+    }
+  }
+
+  import(data: IPathNodeData) {
+    super.import(data);
+
+    this.node.setAttribute('d', data.d);
   }
 }

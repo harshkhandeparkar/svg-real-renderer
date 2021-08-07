@@ -1,5 +1,5 @@
 import { Coordinate, SVGSection } from '../../../../types/RealRendererTypes';
-import { Node } from '../_node';
+import { INodeData, Node } from '../_node';
 import {
   addCursor,
   destroyCursor, moveCursorDown, moveCursorLeft,
@@ -11,6 +11,20 @@ import {
   deleteLastCharacter, _updateBeforeCursorText, deleteNextCharacter, _updateAfterCursorText
 } from './_editing';
 import { newLine, removeLine } from './_newlines';
+
+export interface ITspanData {
+  textContent: string;
+  /** dy attribute */
+  dy: string | null;
+  /** x attribute */
+  x: string | null;
+}
+
+export interface ITextNodeData extends INodeData {
+  tspans: ITspanData[];
+  position: Coordinate;
+  type: 'text';
+}
 
 export class Text extends Node<SVGTextElement, 'text'> {
   tspans: SVGTSpanElement[] = [];
@@ -132,8 +146,9 @@ export class Text extends Node<SVGTextElement, 'text'> {
     this.node.style.fontSize = `${size}px`;
   }
 
-  import(data: string) {
-    super.import(data);
+  /** @deprecated */
+  importV1(data: string) {
+    super.importV1(data);
 
     this.position = [
       Number(this.node.getAttribute('x')),
@@ -153,5 +168,38 @@ export class Text extends Node<SVGTextElement, 'text'> {
     })
 
     this.lineIndexes.sort((a, b) => a - b);
+  }
+
+  import(data: ITextNodeData) {
+    this.tspans = data.tspans.map((tspan) => {
+      const tspan_ = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+
+      tspan_.textContent = tspan.textContent;
+
+      if (tspan.dy !== null) tspan_.setAttribute('dy', tspan.dy);
+      if (tspan.x !== null) tspan_.setAttribute('x', tspan.x);
+
+      this.node.append(tspan_);
+
+      return tspan_;
+    })
+
+    this.position = data.position;
+    this.updateTextBaseline(this.position);
+  }
+
+  export(): ITextNodeData {
+    return {
+      ...this._exportBasicData(),
+      position: this.position,
+      tspans: this.tspans.map((tspan) => {
+        return {
+          x: tspan.hasAttribute('x') ? tspan.getAttribute('x') : null,
+          dy: tspan.hasAttribute('dy') ? tspan.getAttribute('dy') : null,
+          textContent: tspan.textContent
+        }
+      }),
+      type: this.strokeNodeType
+    }
   }
 }
