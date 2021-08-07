@@ -5,6 +5,9 @@ export function _mapKeyToAction(e: KeyboardEvent, _selectedNode: Text) {
     case 'backspace':
       _selectedNode.deleteLastCharacter();
       break;
+    case 'delete':
+      _selectedNode.deleteNextCharacter();
+      break;
     case 'arrowleft':
       _selectedNode.moveCursorLeft();
       break;

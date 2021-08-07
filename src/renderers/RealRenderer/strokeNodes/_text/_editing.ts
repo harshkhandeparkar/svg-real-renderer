@@ -1,10 +1,14 @@
 import { Text } from './_text';
 
-export function _getCurrentSpanText(this: Text) {
+export function _getBeforeCursorText(this: Text) {
   return this.tspans[this.cursorIndex].textContent;
 }
 
-export function _updateText(this: Text, newText: string) {
+export function _getAfterCursorText(this: Text) {
+  return this.tspans[this.cursorIndex + 1].textContent;
+}
+
+export function _updateBeforeCursorText(this: Text, newText: string) {
   this.tspans[this.cursorIndex].textContent = newText;
 
   // workaround: empty svg tspans act like they do not exist
@@ -14,19 +18,27 @@ export function _updateText(this: Text, newText: string) {
   }
 }
 
+export function _updateAfterCursorText(this: Text, newText: string) {
+  this.tspans[this.cursorIndex + 1].textContent = newText;
+}
+
 export function getText(this: Text) {
   return this.tspans.map((tspan) => tspan.textContent).join('');
 }
 
 export function appendText(this: Text, append: string) {
-  this._updateText(this._getCurrentSpanText() + append);
+  this._updateBeforeCursorText(this._getBeforeCursorText() + append);
 }
 
 export function deleteLastCharacter(this: Text) {
-  this._updateText(this._getCurrentSpanText().slice(0, -1));
+  this._updateBeforeCursorText(this._getBeforeCursorText().slice(0, -1));
 
   // end of a newline
-  if (this._getCurrentSpanText() === '' && this.cursorIndex > 0) {
+  if (this._getBeforeCursorText() === '' && this.cursorIndex > 0) {
     this.removeLine();
   }
+}
+
+export function deleteNextCharacter(this: Text) {
+  this._updateAfterCursorText(this._getAfterCursorText().slice(1));
 }

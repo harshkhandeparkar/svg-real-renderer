@@ -7,8 +7,8 @@ import {
 } from './_cursor';
 import {
   appendText,
-  deleteLastCharacter, getText, _getCurrentSpanText,
-  _updateText
+  getText, _getBeforeCursorText, _getAfterCursorText,
+  deleteLastCharacter, _updateBeforeCursorText, deleteNextCharacter, _updateAfterCursorText
 } from './_editing';
 import { newLine, removeLine } from './_newlines';
 
@@ -33,12 +33,16 @@ export class Text extends Node<SVGTextElement, 'text'> {
   public moveCursorDown = moveCursorDown;
   public moveCursorUp = moveCursorUp;
 
-  protected _getCurrentSpanText = _getCurrentSpanText;
-  protected _updateText = _updateText;
+  protected _getBeforeCursorText = _getBeforeCursorText;
+  protected _updateBeforeCursorText = _updateBeforeCursorText;
+
+  protected _getAfterCursorText = _getAfterCursorText;
+  protected _updateAfterCursorText = _updateAfterCursorText;
 
   public getText = getText;
   public appendText = appendText;
   public deleteLastCharacter = deleteLastCharacter;
+  public deleteNextCharacter = deleteNextCharacter;
 
   constructor(
     position: Coordinate,

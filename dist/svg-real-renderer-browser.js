@@ -24,60 +24,6 @@
 		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
 	}
 
-	var eventEmitter = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.EventEmitter = void 0;
-	var EventEmitter = /** @class */ (function () {
-	    function EventEmitter(eventList) {
-	        var _this = this;
-	        this.eventHandlers = {};
-	        eventList.forEach(function (event) {
-	            _this.eventHandlers[event] = new Map();
-	        });
-	    }
-	    EventEmitter.prototype.on = function (eventName, handlerName, handler) {
-	        if (!this.eventHandlers[eventName].has(handlerName))
-	            this.eventHandlers[eventName].set(handlerName, handler);
-	    };
-	    EventEmitter.prototype.off = function (eventName, handlerName) {
-	        this.eventHandlers[eventName].delete(handlerName);
-	    };
-	    EventEmitter.prototype.emit = function (eventName, parameters) {
-	        this.eventHandlers[eventName].forEach(function (handler) {
-	            handler(parameters);
-	        });
-	    };
-	    return EventEmitter;
-	}());
-	exports.EventEmitter = EventEmitter;
-	});
-
-	var RealRendererEvents = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.RealRendererEventList = void 0;
-	exports.RealRendererEventList = [
-	    'start-render',
-	    'stop-render',
-	    'change-scale',
-	    'change-offsets',
-	    'import'
-	];
-	});
-
-	var getRGBColorString_1 = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.getRGBColorString = void 0;
-	/**
-	 *
-	 * @param color Converts a color array to rgb() css color format.
-	 * @returns
-	 */
-	function getRGBColorString(color) {
-	    return "rgb(" + color[0] * 255 + ", " + color[1] * 255 + ", " + color[2] * 255 + ")";
-	}
-	exports.getRGBColorString = getRGBColorString;
-	});
-
 	var _node = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.Node = void 0;
@@ -129,221 +75,6 @@
 	exports.Node = Node;
 	});
 
-	var _path = createCommonjsModule(function (module, exports) {
-	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-	    var extendStatics = function (d, b) {
-	        extendStatics = Object.setPrototypeOf ||
-	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-	        return extendStatics(d, b);
-	    };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.Path = void 0;
-
-	var Path = /** @class */ (function (_super) {
-	    __extends(Path, _super);
-	    function Path(initialD, section) {
-	        var _this = _super.call(this, section, 'path', 'path') || this;
-	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-	        path.setAttribute('d', initialD);
-	        _this.node = path;
-	        _this.section = section;
-	        return _this;
-	    }
-	    Path.prototype.updatePath = function (newD) {
-	        this.node.setAttribute('d', newD);
-	    };
-	    Path.prototype.appendPath = function (appendD) {
-	        this.node.setAttribute('d', this.node.getAttribute('d') + ' ' + appendD);
-	    };
-	    return Path;
-	}(_node.Node));
-	exports.Path = Path;
-	});
-
-	var _polygon = createCommonjsModule(function (module, exports) {
-	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-	    var extendStatics = function (d, b) {
-	        extendStatics = Object.setPrototypeOf ||
-	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-	        return extendStatics(d, b);
-	    };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.Polygon = void 0;
-
-	var Polygon = /** @class */ (function (_super) {
-	    __extends(Polygon, _super);
-	    function Polygon(points, section) {
-	        var _this = _super.call(this, section, 'polygon', 'polygon') || this;
-	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-	        var pointsString = '';
-	        points.forEach(function (point) {
-	            pointsString += point[0] + "," + point[1] + " ";
-	        });
-	        path.setAttribute('points', pointsString);
-	        _this.node = path;
-	        _this.section = section;
-	        return _this;
-	    }
-	    Polygon.prototype.updatePoints = function (newPoints) {
-	        var pointsString = '';
-	        newPoints.forEach(function (point) {
-	            pointsString += point[0] + "," + point[1] + " ";
-	        });
-	        this.node.setAttribute('points', pointsString);
-	    };
-	    Polygon.prototype.addPoint = function (point) {
-	        this.node.setAttribute('points', this.node.getAttribute('points') + (point[0] + "," + point[1] + " "));
-	    };
-	    return Polygon;
-	}(_node.Node));
-	exports.Polygon = Polygon;
-	});
-
-	var blankGraph = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.getBlankGraphPaths = void 0;
-
-
-
-	function getBlankGraphPaths(dimensions, bgColor, bgType) {
-	    var outX = dimensions[0], outY = dimensions[1];
-	    var axesPath = new _path.Path('', 'bg');
-	    switch (bgType.type) {
-	        case 'none':
-	            break;
-	        case 'axes':
-	            var X = Math.floor(outY * (bgType.xOffset / 100));
-	            var Y = Math.floor(outX * (bgType.yOffset / 100));
-	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.axesColor));
-	            axesPath.appendPath("M 0," + Y + " H " + (dimensions[0] - 1));
-	            axesPath.appendPath("M " + X + ",0 V " + (dimensions[1] - 1));
-	            break;
-	        case 'grid':
-	            var xSpacing = dimensions[0] * (bgType.xSpacing / 100);
-	            var ySpacing = dimensions[1] * (bgType.ySpacing / 100);
-	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.lineColor));
-	            // x-axis
-	            for (var x = xSpacing; x < dimensions[0]; x += xSpacing) {
-	                axesPath.appendPath("M " + x + ",0 V " + (dimensions[1] - 1));
-	            }
-	            // y-axis
-	            for (var y = ySpacing; y < dimensions[1]; y += ySpacing) {
-	                axesPath.appendPath("M 0," + y + " H " + (dimensions[0] - 1));
-	            }
-	            break;
-	        case 'ruled':
-	            var perpendicularDimension = bgType.orientation === 'horizontal' ? dimensions[1] : dimensions[0];
-	            var spacing = perpendicularDimension * (bgType.spacing / 100);
-	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.lineColor));
-	            for (var dist = spacing; dist < perpendicularDimension; dist += spacing) {
-	                var d = void 0;
-	                if (bgType.orientation === 'horizontal')
-	                    d = "M 0," + dist + " H " + (dimensions[0] - 1);
-	                else
-	                    d = "M " + dist + ",0 V " + (dimensions[1] - 1);
-	                axesPath.appendPath(d);
-	            }
-	            break;
-	    }
-	    var bgPolygon = new _polygon.Polygon([
-	        [0, 0],
-	        [0, dimensions[1]],
-	        [dimensions[0], dimensions[1]],
-	        [dimensions[0], 0]
-	    ], 'bg');
-	    bgPolygon.setFill(getRGBColorString_1.getRGBColorString(bgColor));
-	    bgPolygon.setStroke(getRGBColorString_1.getRGBColorString(bgColor));
-	    return [bgPolygon, axesPath];
-	}
-	exports.getBlankGraphPaths = getBlankGraphPaths;
-	});
-
-	var RealRendererTypes = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	});
-
-	var RealRendererDefaults = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.RealRendererDefaults = void 0;
-	exports.RealRendererDefaults = {
-	    bgColor: [0, 0, 0],
-	    bgType: {
-	        type: 'axes',
-	        axesColor: [1, 1, 1],
-	        xOffset: 20,
-	        yOffset: 20
-	    },
-	    drawsPerFrame: 1,
-	    timeStep: 1 / 60,
-	    initTime: 0,
-	    scaleFactor: 1
-	};
-	});
-
-	var clamp_1 = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.clamp = void 0;
-	/**
-	 * Clamps a given number between two bounds.
-	 * @param input The number to be clamped.
-	 * @param min Lower bound.
-	 * @param max Upper bound.
-	 */
-	function clamp(input, min, max) {
-	    return Math.min(Math.max(input, min), max);
-	}
-	exports.clamp = clamp;
-	});
-
-	var undo_1 = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.redo = exports.undo = void 0;
-
-	/**
-	 * Undos a certain number of strokes drawn on the graph.
-	 * @param numUndo Number of strokes to undo.
-	 * @returns Self for chaining.
-	 */
-	function undo(numUndo) {
-	    if (numUndo === void 0) { numUndo = 1; }
-	    this._strokeIndex = clamp_1.clamp(this._strokeIndex - numUndo, 0, this.strokes.length - 1);
-	    for (var i = this._strokeIndex + 1; i < this.strokes.length; i++) {
-	        this.strokes[i].forEach(function (strokeNode) { return strokeNode.delete(); });
-	    }
-	    return this;
-	}
-	exports.undo = undo;
-	/**
-	 * Redos a certain number of strokes drawn on the graph.
-	 * @param numRedo Number of strokes to redo.
-	 * @returns Self for chaining.
-	 */
-	function redo(numRedo) {
-	    if (numRedo === void 0) { numRedo = 1; }
-	    var doRedo = clamp_1.clamp(numRedo, numRedo, this.strokes.length - this._strokeIndex - 1);
-	    for (var i = 0; i < doRedo; i++) {
-	        this._strokeIndex++;
-	        this._display(this.strokes[this._strokeIndex]);
-	    }
-	    return this;
-	}
-	exports.redo = redo;
-	});
-
 	var _circle = createCommonjsModule(function (module, exports) {
 	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
 	    var extendStatics = function (d, b) {
@@ -385,835 +116,18 @@
 	exports.Circle = Circle;
 	});
 
-	var _newlines = createCommonjsModule(function (module, exports) {
+	var getRGBColorString_1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.removeLine = exports.newLine = void 0;
-	function newLine() {
-	    if (this.tspans[this.cursorIndex + 1]) {
-	        // if there is a span after the cursor, linebreak the cursor
-	        this._setTspanPositioning(this.cursorSpan, 'lineBreak');
-	        // add a new empty span on that line
-	        this._addTspan('', this.cursorIndex + 1, 'spanBefore');
-	        // increment cursorIndex due to new span
-	        this.cursorIndex++;
-	        this.lineIndexes.push(this.cursorIndex);
-	        this.lineIndexes.sort(function (a, b) { return a - b; });
-	    }
-	}
-	exports.newLine = newLine;
-	function removeLine() {
-	    // remove the cursorIndex line
-	    var removedLine = this.lineIndexes.splice(this.lineIndexes.indexOf(this.cursorIndex), 1)[0];
-	    this.tspans[removedLine].remove();
-	    this.tspans.splice(removedLine, 1);
-	    this.lineIndexes = this.lineIndexes.map(function (i) { return i >= removedLine ? i - 1 : i; });
-	    this.cursorIndex = removedLine - 1;
-	}
-	exports.removeLine = removeLine;
-	});
-
-	var _cursor = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.addCursor = exports.destroyCursor = exports.moveCursorUp = exports.moveCursorDown = exports.moveCursorRight = exports.moveCursorLeft = void 0;
-	var moveOneCharacterLeft = function (_a) {
-	    var str1 = _a[0], str2 = _a[1];
-	    return [str1 + str2[0], str2.slice(1)];
-	};
-	var moveOneCharacterRight = function (_a) {
-	    var str1 = _a[0], str2 = _a[1];
-	    return [str1.slice(0, -1), str1[str1.length - 1] + str2];
-	};
-	var editTspanText = function (_a, textChangeFunc) {
-	    var tspan1 = _a[0], tspan2 = _a[1];
-	    var _b = textChangeFunc([tspan1.textContent, tspan2.textContent]), newTspan1Text = _b[0], newTspan2Text = _b[1];
-	    tspan1.textContent = newTspan1Text;
-	    tspan2.textContent = newTspan2Text;
-	};
-	function moveCursorLeft() {
-	    // if the cursor is in between the line, move the cursor in the text
-	    if (this.tspans[this.cursorIndex].textContent.length > 0) {
-	        editTspanText([this.tspans[this.cursorIndex], this.tspans[this.cursorIndex + 1]], moveOneCharacterRight);
-	        // workaround: empty svg tspans act like they do not exist
-	        if (this.tspans[this.cursorIndex].textContent === '' && this.cursorIndex !== 0) {
-	            this._setTspanPositioning(this.cursorSpan, 'lineBreak');
-	        }
-	    }
-	    // if the cursor is at the beginning of the line, move the cursor up
-	    else if (this.cursorIndex > 0) {
-	        this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'lineBreak');
-	        this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) - 1];
-	        this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'inline');
-	        this.cursorSpan.remove();
-	        this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
-	        this._setTspanPositioning(this.cursorSpan, 'inline');
-	        this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex + 1)] = this.cursorIndex + 2;
-	    }
-	}
-	exports.moveCursorLeft = moveCursorLeft;
-	function moveCursorRight() {
-	    if (this.tspans[this.cursorIndex + 1] && this.tspans[this.cursorIndex + 1].textContent.length > 0) {
-	        editTspanText([this.tspans[this.cursorIndex], this.tspans[this.cursorIndex + 1]], moveOneCharacterLeft);
-	        // workaround: empty svg tspans act like they do not exist
-	        if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) {
-	            this._setTspanPositioning(this.cursorSpan, 'inline');
-	            this._setTspanPositioning(this.tspans[this.cursorIndex], 'lineBreak');
-	        }
-	    }
-	    else if (this.cursorIndex < this.tspans.length - 2) {
-	        this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1] - 1;
-	        this.cursorSpan.remove();
-	        this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
-	        this._setTspanPositioning(this.cursorSpan, 'lineBreak');
-	        this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'inline');
-	        this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex + 1)] = this.cursorIndex;
-	    }
-	}
-	exports.moveCursorRight = moveCursorRight;
-	function moveCursorDown() {
-	    // check if another line exists
-	    var newLineIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1];
-	    if (newLineIndex) {
-	        // merge the current line into a single tspan
-	        var beforeCursorText = this.tspans[this.cursorIndex].textContent;
-	        var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
-	        // put all the text in one tspan
-	        this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText;
-	        // find out how the next line should be split
-	        var newLineText = this.tspans[newLineIndex].textContent;
-	        var newLineLength = newLineText.length;
-	        var splitIndex = Math.min(beforeCursorText.length - 1, newLineLength - 1);
-	        // find the split text
-	        var newSplitText = [
-	            newLineText.slice(0, splitIndex + 1),
-	            newLineText.slice(splitIndex + 1)
-	        ];
-	        // put the text in the right place
-	        this.tspans[newLineIndex - 1].textContent = newSplitText[0];
-	        this.tspans[newLineIndex].textContent = newSplitText[1];
-	        // move the cursor
-	        this.cursorSpan.remove();
-	        this.tspans[newLineIndex - 1].insertAdjacentElement('afterend', this.cursorSpan);
-	        // fix the dy
-	        this._setTspanPositioning(this.tspans[newLineIndex], 'inline');
-	        // workaround: empty svg tspans act like they do not exist
-	        if (newSplitText[0] === '')
-	            this._setTspanPositioning(this.cursorSpan, 'lineBreak');
-	        else
-	            this._setTspanPositioning(this.tspans[newLineIndex - 1], 'lineBreak');
-	        // fix the lineIndex
-	        this.lineIndexes[this.lineIndexes.indexOf(newLineIndex)] = newLineIndex - 1;
-	        this.lineIndexes.sort(function (a, b) { return a - b; });
-	        this.cursorIndex = newLineIndex - 1;
-	    }
-	}
-	exports.moveCursorDown = moveCursorDown;
-	function moveCursorUp() {
-	    // check if another line exists
-	    var newLineIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) - 1];
-	    if (this.lineIndexes.includes(newLineIndex)) {
-	        // merge the current line into a single tspan
-	        var beforeCursorText = this.tspans[this.cursorIndex].textContent;
-	        var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
-	        // put all the text in one tspan
-	        this.tspans[this.cursorIndex + 1].textContent = beforeCursorText + afterCursorText;
-	        // find out how the next line should be split
-	        var newLineText = this.tspans[newLineIndex].textContent;
-	        var newLineLength = newLineText.length;
-	        var splitIndex = Math.min(beforeCursorText.length - 1, newLineLength - 1);
-	        // find the split text
-	        var newSplitText = [
-	            newLineText.slice(0, splitIndex + 1),
-	            newLineText.slice(splitIndex + 1)
-	        ];
-	        // put the text in the right place
-	        this.tspans[newLineIndex].textContent = newSplitText[0];
-	        this.tspans[newLineIndex + 1].textContent = newSplitText[1];
-	        // move the cursor
-	        this.cursorSpan.remove();
-	        this.tspans[newLineIndex].insertAdjacentElement('afterend', this.cursorSpan);
-	        // fix the dy
-	        this._setTspanPositioning(this.tspans[newLineIndex + 1], 'inline');
-	        this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'lineBreak');
-	        // fix the lineIndex
-	        this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex)] = this.cursorIndex + 1;
-	        this.lineIndexes.sort(function (a, b) { return a - b; });
-	        this.cursorIndex = newLineIndex;
-	    }
-	}
-	exports.moveCursorUp = moveCursorUp;
-	function destroyCursor() {
-	    this.cursorSpan.remove();
-	}
-	exports.destroyCursor = destroyCursor;
-	function addCursor() {
-	    this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
-	}
-	exports.addCursor = addCursor;
-	});
-
-	var _editing = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.deleteLastCharacter = exports.appendText = exports.getText = exports._updateText = exports._getCurrentSpanText = void 0;
-	function _getCurrentSpanText() {
-	    return this.tspans[this.cursorIndex].textContent;
-	}
-	exports._getCurrentSpanText = _getCurrentSpanText;
-	function _updateText(newText) {
-	    this.tspans[this.cursorIndex].textContent = newText;
-	    // workaround: empty svg tspans act like they do not exist
-	    if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) {
-	        this._setTspanPositioning(this.cursorSpan, 'inline');
-	        this._setTspanPositioning(this.tspans[this.cursorIndex], 'lineBreak');
-	    }
-	}
-	exports._updateText = _updateText;
-	function getText() {
-	    return this.tspans.map(function (tspan) { return tspan.textContent; }).join('');
-	}
-	exports.getText = getText;
-	function appendText(append) {
-	    this._updateText(this._getCurrentSpanText() + append);
-	}
-	exports.appendText = appendText;
-	function deleteLastCharacter() {
-	    this._updateText(this._getCurrentSpanText().slice(0, -1));
-	    // end of a newline
-	    if (this._getCurrentSpanText() === '' && this.cursorIndex > 0) {
-	        this.removeLine();
-	    }
-	}
-	exports.deleteLastCharacter = deleteLastCharacter;
-	});
-
-	var _text = createCommonjsModule(function (module, exports) {
-	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-	    var extendStatics = function (d, b) {
-	        extendStatics = Object.setPrototypeOf ||
-	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-	        return extendStatics(d, b);
-	    };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || function () {
-	    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-	    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-	        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-	            r[k] = a[j];
-	    return r;
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.Text = void 0;
-
-
-
-
-	var Text = /** @class */ (function (_super) {
-	    __extends(Text, _super);
-	    function Text(position, initialText, section) {
-	        var _this = _super.call(this, section, 'text', 'text') || this;
-	        _this.tspans = [];
-	        /** The text tspan after which the cursor is placed */
-	        _this.cursorIndex = 0;
-	        /** span indexes at which a newLine starts */
-	        _this.lineIndexes = [];
-	        _this.position = [0, 0];
-	        _this.newLine = _newlines.newLine;
-	        _this.removeLine = _newlines.removeLine;
-	        _this.addCursor = _cursor.addCursor;
-	        _this.destroyCursor = _cursor.destroyCursor;
-	        _this.moveCursorLeft = _cursor.moveCursorLeft;
-	        _this.moveCursorRight = _cursor.moveCursorRight;
-	        _this.moveCursorDown = _cursor.moveCursorDown;
-	        _this.moveCursorUp = _cursor.moveCursorUp;
-	        _this._getCurrentSpanText = _editing._getCurrentSpanText;
-	        _this._updateText = _editing._updateText;
-	        _this.getText = _editing.getText;
-	        _this.appendText = _editing.appendText;
-	        _this.deleteLastCharacter = _editing.deleteLastCharacter;
-	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-	        _this.node = path;
-	        _this.section = section;
-	        _this.node.setAttribute('text-anchor', 'middle');
-	        _this._addTspan(initialText);
-	        _this.cursorSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
-	        _this.node.appendChild(_this.cursorSpan);
-	        _this.cursorSpan.classList.add('svg-real-db-text-cursor');
-	        _this.cursorSpan.style.setProperty('position', 'relative');
-	        _this.cursorSpan.textContent = '|';
-	        _this.cursorIndex = 0;
-	        _this._addTspan('', _this.cursorIndex + 1); // span after cursor
-	        _this.lineIndexes.push(0);
-	        _this.position = __spreadArrays(position);
-	        _this.node.setAttribute('x', (_this.position[0]).toString());
-	        _this.node.setAttribute('y', _this.position[1].toString());
-	        return _this;
-	    }
-	    Text.prototype._addTspan = function (text, index, relativeTo) {
-	        if (index === void 0) { index = 0; }
-	        if (relativeTo === void 0) { relativeTo = 'spanAfter'; }
-	        this.lineIndexes = this.lineIndexes.map(function (i) { return i >= index ? i + 1 : i; });
-	        this.tspans.splice(index, 0, document.createElementNS('http://www.w3.org/2000/svg', 'tspan'));
-	        var newTspan = this.tspans[index];
-	        if (relativeTo === 'spanAfter') {
-	            if (this.tspans[index + 1])
-	                this.tspans[index + 1].insertAdjacentElement('beforebegin', newTspan);
-	            else
-	                this.node.insertAdjacentElement('beforeend', newTspan);
-	        }
-	        else {
-	            if (this.tspans[index - 1])
-	                this.tspans[index - 1].insertAdjacentElement('afterend', newTspan);
-	            else
-	                this.node.insertAdjacentElement('afterbegin', newTspan);
-	        }
-	        newTspan.textContent = text;
-	        newTspan.style.setProperty('whiteSpace', 'pre');
-	    };
-	    Text.prototype._setTspanPositioning = function (tspan, positioningType) {
-	        if (positioningType === 'lineBreak') {
-	            tspan.setAttribute('x', this.position[0].toString());
-	            tspan.setAttribute('dy', 1.2 + "em");
-	        }
-	        else if (positioningType === 'inline') {
-	            tspan.removeAttribute('x');
-	            tspan.removeAttribute('dy');
-	        }
-	    };
-	    Text.prototype.updateTextBaseline = function (position) {
-	        this.node.setAttribute('x', position[0].toString());
-	        this.node.setAttribute('y', position[1].toString());
-	        this.tspans.forEach(function (tspan) {
-	            if (tspan.hasAttribute('x'))
-	                tspan.setAttribute('x', position[0].toString());
-	        });
-	    };
-	    Text.prototype.setStyle = function (proprty, value) {
-	        this.node.style[proprty] = value;
-	    };
-	    Text.prototype.setFontSize = function (size) {
-	        this.node.style.fontSize = size + "px";
-	    };
-	    Text.prototype.import = function (data) {
-	        _super.prototype.import.call(this, data);
-	        this.position = [
-	            Number(this.node.getAttribute('x')),
-	            Number(this.node.getAttribute('y'))
-	        ];
-	    };
-	    return Text;
-	}(_node.Node));
-	exports.Text = Text;
-	});
-
-	var _group = createCommonjsModule(function (module, exports) {
-	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-	    var extendStatics = function (d, b) {
-	        extendStatics = Object.setPrototypeOf ||
-	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-	        return extendStatics(d, b);
-	    };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.GroupNode = void 0;
-
-	var GroupNode = /** @class */ (function (_super) {
-	    __extends(GroupNode, _super);
-	    function GroupNode(section, initialInnerNodes) {
-	        var _this = _super.call(this, section, 'group', 'group') || this;
-	        _this.innerNodes = [];
-	        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-	        initialInnerNodes.forEach(function (node) { return g.appendChild(node.node); });
-	        _this.innerNodes = initialInnerNodes;
-	        _this.node = g;
-	        _this.section = section;
-	        return _this;
-	    }
-	    return GroupNode;
-	}(_node.Node));
-	exports.GroupNode = GroupNode;
-	});
-
-	var importExport = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.importData = exports.exportData = void 0;
-
-
-
-
-
+	exports.getRGBColorString = void 0;
 	/**
-	 * Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().
-	 * @returns Data of the graph in a storable and loadable format.
+	 *
+	 * @param color Converts a color array to rgb() css color format.
+	 * @returns
 	 */
-	function exportData() {
-	    var strokeExport = [];
-	    this.strokes.forEach(function (stroke) {
-	        strokeExport.push(stroke.map(function (node) { return node.export(); }));
-	    });
-	    return {
-	        exportData: strokeExport,
-	        strokeIndex: this._strokeIndex,
-	        dimensions: this.dimensions,
-	        bgType: this.bgType
-	    };
+	function getRGBColorString(color) {
+	    return "rgb(" + color[0] * 255 + ", " + color[1] * 255 + ", " + color[2] * 255 + ")";
 	}
-	exports.exportData = exportData;
-	/**
-	 * Import the data exported by .export() method.
-	 * @param data Data exported by .export()
-	 * @returns Self for chaining.
-	 */
-	function importData(data) {
-	    var _this = this;
-	    this.strokes.forEach(function (stroke) {
-	        stroke.forEach(function (node) { return node.delete(); });
-	    });
-	    this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
-	    if (data.bgType)
-	        this.bgType = data.bgType;
-	    this.strokes = [];
-	    data.exportData.forEach(function (strokeExport) {
-	        _this.strokes.push(strokeExport.map(function (strokeNodeData) {
-	            var _a, _b, _c, _d, _e;
-	            switch (strokeNodeData.type) {
-	                case 'circle':
-	                    var circ = new _circle.Circle([0, 0], 0, (_a = strokeNodeData.section) !== null && _a !== void 0 ? _a : 'strokes');
-	                    circ.import(strokeNodeData.data);
-	                    return circ;
-	                case 'path':
-	                    var path = new _path.Path('', (_b = strokeNodeData.section) !== null && _b !== void 0 ? _b : 'strokes');
-	                    path.import(strokeNodeData.data);
-	                    return path;
-	                case 'text':
-	                    var text = new _text.Text([0, 0], '', (_c = strokeNodeData.section) !== null && _c !== void 0 ? _c : 'strokes');
-	                    text.import(strokeNodeData.data);
-	                    return text;
-	                case 'group':
-	                    var group = new _group.GroupNode((_d = strokeNodeData.section) !== null && _d !== void 0 ? _d : 'strokes', []);
-	                    group.import(strokeNodeData.data);
-	                    return group;
-	                case 'polygon':
-	                    var polygon = new _polygon.Polygon([], (_e = strokeNodeData.section) !== null && _e !== void 0 ? _e : 'strokes');
-	                    polygon.import(strokeNodeData.data);
-	                    return polygon;
-	            }
-	        }));
-	    });
-	    this._strokeIndex = data.strokeIndex;
-	    for (var i = 0; i <= this._strokeIndex; i++) {
-	        this._display(this.strokes[i]);
-	    }
-	    this.emit('import', {
-	        import: data
-	    });
-	    return this;
-	}
-	exports.importData = importData;
-	});
-
-	var background = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.normalizeBG = exports.changeBackground = void 0;
-
-
-	/**
-	 * Changes the background of the graph.
-	 * @param newBG New background.
-	 * @returns Self for chaining.
-	 */
-	function changeBackground(newBG) {
-	    this.bgType = newBG;
-	    var newBGStrokes = blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType);
-	    this.normalizeBG();
-	    this.strokes[0].forEach(function (stroke) { return stroke.delete(); });
-	    this.strokes[0] = newBGStrokes;
-	    this._display(this.strokes[0]);
-	    return this;
-	}
-	exports.changeBackground = changeBackground;
-	function normalizeBG() {
-	    switch (this.bgType.type) {
-	        case 'axes':
-	            this.bgType.xOffset = clamp_1.clamp(this.bgType.xOffset, 0, 100); // %age
-	            this.bgType.yOffset = clamp_1.clamp(this.bgType.yOffset, 0, 100); // %age
-	            break;
-	        case 'grid':
-	            this.bgType.xSpacing = clamp_1.clamp(this.bgType.xSpacing, 0, 100); // %age
-	            this.bgType.ySpacing = clamp_1.clamp(this.bgType.ySpacing, 0, 100); // %age
-	            if (this.bgType.xSpacing === 0)
-	                this.bgType.xSpacing = 1;
-	            if (this.bgType.ySpacing === 0)
-	                this.bgType.ySpacing = 1;
-	            break;
-	        case 'ruled':
-	            this.bgType.spacing = clamp_1.clamp(this.bgType.spacing, 0, 100);
-	            if (this.bgType.spacing === 0)
-	                this.bgType.spacing = 1;
-	            break;
-	    }
-	}
-	exports.normalizeBG = normalizeBG;
-	});
-
-	var svgDom = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.attach = exports._setViewBox = exports._setSVG = void 0;
-
-	function _setSVG() {
-	    if (this.svg === undefined) {
-	        throw 'No SVG Element Found';
-	    }
-	    this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
-	    this.svg.setAttribute('preserveAspectRatio', 'none');
-	    this.svgSections = {
-	        bg: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
-	        strokes: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
-	        overlay: document.createElementNS('http://www.w3.org/2000/svg', 'g')
-	    };
-	    this.svg.appendChild(this.svgSections.bg);
-	    this.svg.appendChild(this.svgSections.strokes);
-	    this.svg.appendChild(this.svgSections.overlay);
-	    this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType));
-	    this._display(this.strokes[this._strokeIndex]);
-	    this._doRender = false;
-	}
-	exports._setSVG = _setSVG;
-	function _setViewBox(dimensions, xOffset, yOffset) {
-	    this.svg.setAttribute('viewBox', xOffset + " " + yOffset + " " + dimensions[0] + " " + dimensions[1]);
-	}
-	exports._setViewBox = _setViewBox;
-	/**
-	   * Attaches to a DOM SVG element to render to.
-	   * @param svg The SVG element to attach.
-	   * @param dimensions Dimensions of the graph.
-	   * @returns Self for chaining.
-	   */
-	function attach(svg, dimensions) {
-	    this.dimensions = dimensions;
-	    this.originalDimensions = [
-	        dimensions[0],
-	        dimensions[1]
-	    ];
-	    this.svg = svg;
-	    this._setSVG();
-	    return this;
-	}
-	exports.attach = attach;
-	});
-
-	var svgSettings = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.changeOffsets = exports.scale = void 0;
-
-	/**
-	 * Scale/zoom the graph.
-	 * @param scaleFactor Factor to scale the graph by. Larger number zooms in.
-	 * @returns Self for chaining.
-	 */
-	function scale(scaleFactor) {
-	    var oldScaleFactor = this.scaleFactor;
-	    this.scaleFactor = scaleFactor;
-	    this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
-	    this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
-	    // To clamp the offsets as well
-	    this.changeOffsets(this._offsetX, this._offsetY);
-	    this.emit('change-scale', {
-	        oldScaleFactor: oldScaleFactor,
-	        newScaleFactor: this.scaleFactor
-	    });
-	    return this;
-	}
-	exports.scale = scale;
-	/**
-	 * Change the offsets of the graph (for panning)
-	 * @param xOffset Offset in the x-direction.
-	 * @param yOffset Offset in the y-direction.
-	 * @returns Self for chaining.
-	 */
-	function changeOffsets(xOffset, yOffset) {
-	    var oldOffsets = {
-	        x: this._offsetX,
-	        y: this._offsetY
-	    };
-	    this._offsetX = clamp_1.clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
-	    this._offsetY = clamp_1.clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
-	    this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
-	    this.emit('change-offsets', {
-	        oldOffsets: oldOffsets,
-	        newOffsets: {
-	            x: this._offsetX,
-	            y: this._offsetY
-	        }
-	    });
-	    return this;
-	}
-	exports.changeOffsets = changeOffsets;
-	});
-
-	var draw_1 = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._addStroke = exports._display = exports.draw = exports._draw = exports._drawFunc = void 0;
-	function _drawFunc(time) {
-	    return this;
-	}
-	exports._drawFunc = _drawFunc;
-	function _draw() {
-	    this.time += this.timeStep;
-	    this._drawFunc(this.time);
-	    return this;
-	}
-	exports._draw = _draw;
-	/**
-	 * Draw a certain number of frames.
-	 * @param numDraws Number of frames to draw.
-	 * @returns Self for chaining.
-	 */
-	function draw(numDraws) {
-	    if (numDraws === void 0) { numDraws = 1; }
-	    for (var i = 0; i < numDraws; i++)
-	        this._draw();
-	    return this;
-	}
-	exports.draw = draw;
-	function _display(stroke) {
-	    var _this = this;
-	    stroke.forEach(function (strokeNode) {
-	        if (strokeNode.node.parentElement == null)
-	            _this.svgSections[strokeNode.section].appendChild(strokeNode.node);
-	    });
-	}
-	exports._display = _display;
-	function _addStroke(stroke) {
-	    if (this.strokes.length > this._strokeIndex + 1)
-	        this.strokes.splice(this._strokeIndex + 1, this.strokes.length - this._strokeIndex);
-	    this.strokes[++this._strokeIndex] = stroke;
-	}
-	exports._addStroke = _addStroke;
-	});
-
-	var render = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.toggleRender = exports.stopRender = exports.startRender = exports._render = void 0;
-	function _render() {
-	    var _this = this;
-	    if (this._doRender) {
-	        this.draw(this.drawsPerFrame);
-	        this._display(this.strokes[this._strokeIndex]);
-	        window.requestAnimationFrame(function () { _this._render(); });
-	    }
-	}
-	exports._render = _render;
-	/**
-	 * Start rendering.
-	 * @returns Self for chaining.
-	 */
-	function startRender() {
-	    if (!this._doRender) {
-	        this._doRender = true;
-	        this._render();
-	        this.emit('start-render', {});
-	    }
-	    return this;
-	}
-	exports.startRender = startRender;
-	/**
-	 * Stop rendering.
-	 * @returns Self for chaining.
-	 */
-	function stopRender() {
-	    this._doRender = false;
-	    this.emit('stop-render', {});
-	    return this;
-	}
-	exports.stopRender = stopRender;
-	/**
-	 * Toggle rendering.
-	 * @returns Self for chaining.
-	 */
-	function toggleRender() {
-	    this._doRender = !this._doRender;
-	    if (this._doRender)
-	        this._render();
-	    return this;
-	}
-	exports.toggleRender = toggleRender;
-	});
-
-	var RealRenderer_1 = createCommonjsModule(function (module, exports) {
-	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
-	    var extendStatics = function (d, b) {
-	        extendStatics = Object.setPrototypeOf ||
-	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
-	        return extendStatics(d, b);
-	    };
-	    return function (d, b) {
-	        extendStatics(d, b);
-	        function __() { this.constructor = d; }
-	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	    };
-	})();
-	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
-	    __assign = Object.assign || function(t) {
-	        for (var s, i = 1, n = arguments.length; i < n; i++) {
-	            s = arguments[i];
-	            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-	                t[p] = s[p];
-	        }
-	        return t;
-	    };
-	    return __assign.apply(this, arguments);
-	};
-	var __createBinding = (commonjsGlobal && commonjsGlobal.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-	    if (k2 === undefined) k2 = k;
-	    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-	}) : (function(o, m, k, k2) {
-	    if (k2 === undefined) k2 = k;
-	    o[k2] = m[k];
-	}));
-	var __exportStar = (commonjsGlobal && commonjsGlobal.__exportStar) || function(m, exports) {
-	    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.RealRenderer = exports.RealRendererTypes = void 0;
-
-
-
-	exports.RealRendererTypes = RealRendererTypes;
-
-	__exportStar(RealRendererDefaults, exports);
-
-
-
-
-
-
-
-	/**
-	 * General Real Renderer with no specific purpose. Should be extended to use.
-	 */
-	var RealRenderer = /** @class */ (function (_super) {
-	    __extends(RealRenderer, _super);
-	    /**
-	     *
-	     * @param options
-	     * @param eventList
-	     */
-	    function RealRenderer(options, eventList) {
-	        if (eventList === void 0) { eventList = RealRendererEvents.RealRendererEventList; }
-	        var _this = _super.call(this, eventList) || this;
-	        _this._offsetX = 0;
-	        _this._offsetY = 0;
-	        _this.strokes = [];
-	        _this._strokeIndex = -1;
-	        _this.undo = undo_1.undo;
-	        _this.redo = undo_1.redo;
-	        _this.exportData = importExport.exportData;
-	        _this.importData = importExport.importData;
-	        _this.changeBackground = background.changeBackground;
-	        _this.scale = svgSettings.scale;
-	        _this.changeOffsets = svgSettings.changeOffsets;
-	        _this.attach = svgDom.attach;
-	        _this.draw = draw_1.draw;
-	        _this.startRender = render.startRender;
-	        _this.stopRender = render.stopRender;
-	        _this.toggleRender = render.toggleRender;
-	        _this.normalizeBG = background.normalizeBG;
-	        _this._setSVG = svgDom._setSVG;
-	        _this._setViewBox = svgDom._setViewBox;
-	        _this._drawFunc = draw_1._drawFunc;
-	        _this._draw = draw_1._draw;
-	        /** @internal */
-	        _this._display = draw_1._display;
-	        /** @internal */
-	        _this._addStroke = draw_1._addStroke;
-	        _this._render = render._render;
-	        // *****DEFAULTS*****
-	        _this.settings = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), options);
-	        _this.bgType = _this.settings.bgType;
-	        _this.normalizeBG();
-	        _this.bgColor = _this.settings.bgColor;
-	        _this.drawsPerFrame = _this.settings.drawsPerFrame;
-	        _this.timeStep = _this.settings.timeStep;
-	        _this.time = _this.settings.initTime;
-	        _this.scaleFactor = _this.settings.scaleFactor;
-	        return _this;
-	        // *****DEFAULTS*****
-	    }
-	    /**
-	     * Resets the internal time counter.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.resetTime = function () {
-	        this.time = 0;
-	        return this;
-	    };
-	    /**
-	     * Resets everything regarding the graph.
-	     * @returns Self for chaining.
-	     */
-	    RealRenderer.prototype.reset = function () {
-	        this.strokes = [
-	            blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType)
-	        ];
-	        this._strokeIndex = 0;
-	        this.resetTime();
-	        this._display(this.strokes[this._strokeIndex]);
-	        return this;
-	    };
-	    return RealRenderer;
-	}(eventEmitter.EventEmitter));
-	exports.RealRenderer = RealRenderer;
-	});
-
-	var RealDrawBoardEvents = createCommonjsModule(function (module, exports) {
-	var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || function () {
-	    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-	    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-	        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-	            r[k] = a[j];
-	    return r;
-	};
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.RealDrawBoardEventList = void 0;
-
-	exports.RealDrawBoardEventList = __spreadArrays(RealRendererEvents.RealRendererEventList, [
-	    'tool-change',
-	    'tool-setting-change',
-	    'board-cleared',
-	    'board-reset'
-	]);
-	});
-
-	var _tool = createCommonjsModule(function (module, exports) {
-	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.Tool = void 0;
-	/** @internal */
-	var Tool = /** @class */ (function () {
-	    function Tool(RDB) {
-	        this.RDB = RDB;
-	    }
-	    Tool.prototype._onLoad = function () { };
-	    Tool.prototype._startStroke = function (coords, identifier, target) { };
-	    Tool.prototype._doStroke = function (coords, identifier, target) { };
-	    Tool.prototype._endStroke = function (coords, identifier, target) { };
-	    Tool.prototype._toolPreview = function (coords, identifier, target) { };
-	    Tool.prototype._onScroll = function (scrollDelta, coords, identifier) { };
-	    Tool.prototype._onKey = function (e) { };
-	    return Tool;
-	}());
-	exports.Tool = Tool;
+	exports.getRGBColorString = getRGBColorString;
 	});
 
 	var circle = createCommonjsModule(function (module, exports) {
@@ -1242,10 +156,68 @@
 	exports.getLinePathCommand = getLinePathCommand;
 	});
 
+	var _path = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Path = void 0;
+
+	var Path = /** @class */ (function (_super) {
+	    __extends(Path, _super);
+	    function Path(initialD, section) {
+	        var _this = _super.call(this, section, 'path', 'path') || this;
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+	        path.setAttribute('d', initialD);
+	        _this.node = path;
+	        _this.section = section;
+	        return _this;
+	    }
+	    Path.prototype.updatePath = function (newD) {
+	        this.node.setAttribute('d', newD);
+	    };
+	    Path.prototype.appendPath = function (appendD) {
+	        this.node.setAttribute('d', this.node.getAttribute('d') + ' ' + appendD);
+	    };
+	    return Path;
+	}(_node.Node));
+	exports.Path = Path;
+	});
+
 	var getRadiusFromThickness = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports.getRadiusFromThickness = void 0;
 	exports.getRadiusFromThickness = function (thickness) { return thickness / 2 - 0.5; };
+	});
+
+	var _tool = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Tool = void 0;
+	/** @internal */
+	var Tool = /** @class */ (function () {
+	    function Tool(RDB) {
+	        this.RDB = RDB;
+	    }
+	    Tool.prototype._onLoad = function () { };
+	    Tool.prototype._startStroke = function (coords, identifier, target) { };
+	    Tool.prototype._doStroke = function (coords, identifier, target) { };
+	    Tool.prototype._endStroke = function (coords, identifier, target) { };
+	    Tool.prototype._toolPreview = function (coords, identifier, target) { };
+	    Tool.prototype._onScroll = function (scrollDelta, coords, identifier) { };
+	    Tool.prototype._onKey = function (e) { };
+	    return Tool;
+	}());
+	exports.Tool = Tool;
 	});
 
 	var brush = createCommonjsModule(function (module, exports) {
@@ -1317,7 +289,7 @@
 	    };
 	    Brush.prototype._onScroll = function (scrollDelta, coords, identifier) {
 	        this.RDB.changeToolSetting('brushSize', Math.max(1, this.RDB.toolSettings.brushSize - scrollDelta));
-	        if (this.RDB._previewStroke.get(identifier) && this.RDB._previewStroke.get(identifier).length !== 0) {
+	        if (this.RDB._previewStroke.get(identifier) != null && this.RDB._previewStroke.get(identifier).length !== 0) {
 	            this.RDB._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.brushSize));
 	            this.RDB._display(this.RDB._previewStroke.get(identifier));
 	        }
@@ -1390,7 +362,7 @@
 	    };
 	    Eraser.prototype._onScroll = function (scrollDelta, coords, identifier) {
 	        this.RDB.changeToolSetting('eraserSize', Math.max(1, this.RDB.toolSettings.eraserSize - scrollDelta));
-	        if (this.RDB._previewStroke.get(identifier) && this.RDB._previewStroke.get(identifier).length !== 0) {
+	        if (this.RDB._previewStroke.get(identifier) != null && this.RDB._previewStroke.get(identifier).length !== 0) {
 	            this.RDB._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.eraserSize));
 	            this.RDB._display(this.RDB._previewStroke.get(identifier));
 	        }
@@ -1398,6 +370,40 @@
 	    return Eraser;
 	}(_tool.Tool));
 	exports.Eraser = Eraser;
+	});
+
+	var _group = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.GroupNode = void 0;
+
+	var GroupNode = /** @class */ (function (_super) {
+	    __extends(GroupNode, _super);
+	    function GroupNode(section, initialInnerNodes) {
+	        var _this = _super.call(this, section, 'group', 'group') || this;
+	        _this.innerNodes = [];
+	        var g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+	        initialInnerNodes.forEach(function (node) { return g.appendChild(node.node); });
+	        _this.innerNodes = initialInnerNodes;
+	        _this.node = g;
+	        _this.section = section;
+	        return _this;
+	    }
+	    return GroupNode;
+	}(_node.Node));
+	exports.GroupNode = GroupNode;
 	});
 
 	var line$1 = createCommonjsModule(function (module, exports) {
@@ -1483,7 +489,7 @@
 	    };
 	    Line.prototype._onScroll = function (scrollDelta, coords, identifier) {
 	        this.RDB.changeToolSetting('lineThickness', Math.max(1, this.RDB.toolSettings.lineThickness - scrollDelta));
-	        if (this.RDB._previewStroke.get(identifier) && this.RDB._previewStroke.get(identifier).length !== 0) {
+	        if (this.RDB._previewStroke.get(identifier) != null && this.RDB._previewStroke.get(identifier).length !== 0) {
 	            this.RDB._previewStroke.get(identifier)[0].updateRadius(getRadiusFromThickness.getRadiusFromThickness(this.RDB.toolSettings.lineThickness));
 	            this.RDB._display(this.RDB._previewStroke.get(identifier));
 	        }
@@ -1493,6 +499,435 @@
 	exports.Line = Line;
 	});
 
+	var _polygon = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Polygon = void 0;
+
+	var Polygon = /** @class */ (function (_super) {
+	    __extends(Polygon, _super);
+	    function Polygon(points, section) {
+	        var _this = _super.call(this, section, 'polygon', 'polygon') || this;
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+	        var pointsString = '';
+	        points.forEach(function (point) {
+	            pointsString += point[0] + "," + point[1] + " ";
+	        });
+	        path.setAttribute('points', pointsString);
+	        _this.node = path;
+	        _this.section = section;
+	        return _this;
+	    }
+	    Polygon.prototype.updatePoints = function (newPoints) {
+	        var pointsString = '';
+	        newPoints.forEach(function (point) {
+	            pointsString += point[0] + "," + point[1] + " ";
+	        });
+	        this.node.setAttribute('points', pointsString);
+	    };
+	    Polygon.prototype.addPoint = function (point) {
+	        this.node.setAttribute('points', this.node.getAttribute('points') + (point[0] + "," + point[1] + " "));
+	    };
+	    return Polygon;
+	}(_node.Node));
+	exports.Polygon = Polygon;
+	});
+
+	var _cursor = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.addCursor = exports.destroyCursor = exports.moveCursorUp = exports.moveCursorDown = exports.moveCursorRight = exports.moveCursorLeft = exports._moveCursorTo = exports._addNewLine = void 0;
+	/* TSPANS
+	 * Empty SVG tspans are completely ignored, including the 'dy' attribute and the 'x' attribute
+	 * When a new line break is added:
+	 * 1) if the cursor is at the beginning: the cursor will have to be the line break with the dy since the first tspan will be empty
+	 * 2) if the cursor is not at the beginning: the first tspan of that line will have the dy
+	 *
+	 * When the cursor is moved, accordingly the dy attribute should be moved, either to the tspan or to the cursor form the tspan
+	 *
+	 * Any tspan with a 'dy' attribute will be positioned relative to the previous tspan, including the x-position.
+	 * A newline span therefore needs to have an 'x' attribute equal to that of the parent text node.
+	 *
+	 * These two methods (defined in this file) can be used to do the above:
+	 * 1) _addNewLine(tspanIndex, characterIndex): Line breaks the given tspan at the given character.
+	 * 2) _moveCursorTo(newCursorIndex, characterIndex): Moves the cursor to a given new tspan and at the given character.
+	 */
+	var moveOneCharacterLeft = function (_a) {
+	    var str1 = _a[0], str2 = _a[1];
+	    return [str1 + str2[0], str2.slice(1)];
+	};
+	var moveOneCharacterRight = function (_a) {
+	    var str1 = _a[0], str2 = _a[1];
+	    return [str1.slice(0, -1), str1[str1.length - 1] + str2];
+	};
+	var editTspanText = function (_a, textChangeFunc) {
+	    var tspan1 = _a[0], tspan2 = _a[1];
+	    var _b = textChangeFunc([tspan1.textContent, tspan2.textContent]), newTspan1Text = _b[0], newTspan2Text = _b[1];
+	    tspan1.textContent = newTspan1Text;
+	    tspan2.textContent = newTspan2Text;
+	};
+	function _addNewLine(tspanIndex, characterIndex) {
+	    if (this.tspans[tspanIndex] !== undefined) {
+	        // find text split
+	        var beforeLineText = this.tspans[tspanIndex].textContent.slice(0, characterIndex);
+	        var newLineText = this.tspans[tspanIndex].textContent.slice(characterIndex);
+	        // add a new tspan
+	        this._addTspan(newLineText, tspanIndex + 1, 'spanBefore');
+	        // just set the positioning, if it's empty, handle in _moveCursorTo
+	        this._setTspanPositioning(this.tspans[tspanIndex + 1], 'lineBreak');
+	        this.tspans[tspanIndex].textContent = beforeLineText;
+	    }
+	}
+	exports._addNewLine = _addNewLine;
+	function _moveCursorTo(newCursorIndex, characterIndex) {
+	}
+	exports._moveCursorTo = _moveCursorTo;
+	function moveCursorLeft() {
+	    // if the cursor is in between the line, move the cursor in the text
+	    if (this.tspans[this.cursorIndex].textContent.length > 0) {
+	        editTspanText([this.tspans[this.cursorIndex], this.tspans[this.cursorIndex + 1]], moveOneCharacterRight);
+	        // workaround: empty svg tspans act like they do not exist
+	        if (this.tspans[this.cursorIndex].textContent === '' && this.cursorIndex !== 0) {
+	            this._setTspanPositioning(this.cursorSpan, 'lineBreak');
+	        }
+	    }
+	    // if the cursor is at the beginning of the line, move the cursor up
+	    else if (this.cursorIndex > 0) {
+	        this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'lineBreak');
+	        this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) - 1];
+	        this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'inline');
+	        this.cursorSpan.remove();
+	        this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
+	        this._setTspanPositioning(this.cursorSpan, 'inline');
+	        this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex + 1)] = this.cursorIndex + 2;
+	    }
+	}
+	exports.moveCursorLeft = moveCursorLeft;
+	function moveCursorRight() {
+	    if (this.tspans[this.cursorIndex + 1] !== undefined && this.tspans[this.cursorIndex + 1].textContent.length > 0) {
+	        editTspanText([this.tspans[this.cursorIndex], this.tspans[this.cursorIndex + 1]], moveOneCharacterLeft);
+	        // workaround: empty svg tspans act like they do not exist
+	        if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) {
+	            this._setTspanPositioning(this.cursorSpan, 'inline');
+	            this._setTspanPositioning(this.tspans[this.cursorIndex], 'lineBreak');
+	        }
+	    }
+	    else if (this.cursorIndex < this.tspans.length - 2) {
+	        this.cursorIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1] - 1;
+	        this.cursorSpan.remove();
+	        this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
+	        this._setTspanPositioning(this.cursorSpan, 'lineBreak');
+	        this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'inline');
+	        this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex + 1)] = this.cursorIndex;
+	    }
+	}
+	exports.moveCursorRight = moveCursorRight;
+	function moveCursorDown() {
+	    // check if another line exists
+	    var newLineIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) + 1];
+	    if (newLineIndex !== undefined) {
+	        // merge the current line into a single tspan
+	        var beforeCursorText = this.tspans[this.cursorIndex].textContent;
+	        var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
+	        // put all the text in one tspan
+	        this.tspans[this.cursorIndex].textContent = beforeCursorText + afterCursorText;
+	        // find out how the next line should be split
+	        var newLineText = this.tspans[newLineIndex].textContent;
+	        var newLineLength = newLineText.length;
+	        var splitIndex = Math.min(beforeCursorText.length - 1, newLineLength - 1);
+	        // find the split text
+	        var newSplitText = [
+	            newLineText.slice(0, splitIndex + 1),
+	            newLineText.slice(splitIndex + 1)
+	        ];
+	        // put the text in the right place
+	        this.tspans[newLineIndex - 1].textContent = newSplitText[0];
+	        this.tspans[newLineIndex].textContent = newSplitText[1];
+	        // move the cursor
+	        this.cursorSpan.remove();
+	        this.tspans[newLineIndex - 1].insertAdjacentElement('afterend', this.cursorSpan);
+	        // fix the dy
+	        this._setTspanPositioning(this.tspans[newLineIndex], 'inline');
+	        // workaround: empty svg tspans act like they do not exist
+	        if (newSplitText[0] === '')
+	            this._setTspanPositioning(this.cursorSpan, 'lineBreak');
+	        else
+	            this._setTspanPositioning(this.tspans[newLineIndex - 1], 'lineBreak');
+	        // fix the lineIndex
+	        this.lineIndexes[this.lineIndexes.indexOf(newLineIndex)] = newLineIndex - 1;
+	        this.lineIndexes.sort(function (a, b) { return a - b; });
+	        this.cursorIndex = newLineIndex - 1;
+	    }
+	}
+	exports.moveCursorDown = moveCursorDown;
+	function moveCursorUp() {
+	    // check if another line exists
+	    var newLineIndex = this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex) - 1];
+	    if (this.lineIndexes.includes(newLineIndex)) {
+	        // merge the current line into a single tspan
+	        var beforeCursorText = this.tspans[this.cursorIndex].textContent;
+	        var afterCursorText = this.tspans[this.cursorIndex + 1].textContent;
+	        // put all the text in one tspan
+	        this.tspans[this.cursorIndex + 1].textContent = beforeCursorText + afterCursorText;
+	        // find out how the next line should be split
+	        var newLineText = this.tspans[newLineIndex].textContent;
+	        var newLineLength = newLineText.length;
+	        var splitIndex = Math.min(beforeCursorText.length - 1, newLineLength - 1);
+	        // find the split text
+	        var newSplitText = [
+	            newLineText.slice(0, splitIndex + 1),
+	            newLineText.slice(splitIndex + 1)
+	        ];
+	        // put the text in the right place
+	        this.tspans[newLineIndex].textContent = newSplitText[0];
+	        this.tspans[newLineIndex + 1].textContent = newSplitText[1];
+	        // move the cursor
+	        this.cursorSpan.remove();
+	        this.tspans[newLineIndex].insertAdjacentElement('afterend', this.cursorSpan);
+	        // fix the dy
+	        this._setTspanPositioning(this.tspans[newLineIndex + 1], 'inline');
+	        this._setTspanPositioning(this.tspans[this.cursorIndex + 1], 'lineBreak');
+	        // fix the lineIndex
+	        this.lineIndexes[this.lineIndexes.indexOf(this.cursorIndex)] = this.cursorIndex + 1;
+	        this.lineIndexes.sort(function (a, b) { return a - b; });
+	        this.cursorIndex = newLineIndex;
+	    }
+	}
+	exports.moveCursorUp = moveCursorUp;
+	function destroyCursor() {
+	    this.cursorSpan.remove();
+	}
+	exports.destroyCursor = destroyCursor;
+	function addCursor() {
+	    this.tspans[this.cursorIndex].insertAdjacentElement('afterend', this.cursorSpan);
+	}
+	exports.addCursor = addCursor;
+	});
+
+	var _editing = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.deleteNextCharacter = exports.deleteLastCharacter = exports.appendText = exports.getText = exports._updateAfterCursorText = exports._updateBeforeCursorText = exports._getAfterCursorText = exports._getBeforeCursorText = void 0;
+	function _getBeforeCursorText() {
+	    return this.tspans[this.cursorIndex].textContent;
+	}
+	exports._getBeforeCursorText = _getBeforeCursorText;
+	function _getAfterCursorText() {
+	    return this.tspans[this.cursorIndex + 1].textContent;
+	}
+	exports._getAfterCursorText = _getAfterCursorText;
+	function _updateBeforeCursorText(newText) {
+	    this.tspans[this.cursorIndex].textContent = newText;
+	    // workaround: empty svg tspans act like they do not exist
+	    if (this.tspans[this.cursorIndex].textContent !== '' && this.cursorIndex !== 0) {
+	        this._setTspanPositioning(this.cursorSpan, 'inline');
+	        this._setTspanPositioning(this.tspans[this.cursorIndex], 'lineBreak');
+	    }
+	}
+	exports._updateBeforeCursorText = _updateBeforeCursorText;
+	function _updateAfterCursorText(newText) {
+	    this.tspans[this.cursorIndex + 1].textContent = newText;
+	}
+	exports._updateAfterCursorText = _updateAfterCursorText;
+	function getText() {
+	    return this.tspans.map(function (tspan) { return tspan.textContent; }).join('');
+	}
+	exports.getText = getText;
+	function appendText(append) {
+	    this._updateBeforeCursorText(this._getBeforeCursorText() + append);
+	}
+	exports.appendText = appendText;
+	function deleteLastCharacter() {
+	    this._updateBeforeCursorText(this._getBeforeCursorText().slice(0, -1));
+	    // end of a newline
+	    if (this._getBeforeCursorText() === '' && this.cursorIndex > 0) {
+	        this.removeLine();
+	    }
+	}
+	exports.deleteLastCharacter = deleteLastCharacter;
+	function deleteNextCharacter() {
+	    this._updateAfterCursorText(this._getAfterCursorText().slice(1));
+	}
+	exports.deleteNextCharacter = deleteNextCharacter;
+	});
+
+	var _newlines = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.removeLine = exports.newLine = void 0;
+	function newLine() {
+	    if (this.tspans[this.cursorIndex + 1] !== undefined) {
+	        // if there is a span after the cursor, linebreak the cursor
+	        this._setTspanPositioning(this.cursorSpan, 'lineBreak');
+	        // add a new empty span on that line
+	        this._addTspan('', this.cursorIndex + 1, 'spanBefore');
+	        // increment cursorIndex due to new span
+	        this.cursorIndex++;
+	        this.lineIndexes.push(this.cursorIndex);
+	        this.lineIndexes.sort(function (a, b) { return a - b; });
+	    }
+	}
+	exports.newLine = newLine;
+	function removeLine() {
+	    // remove the cursorIndex line
+	    var removedLine = this.lineIndexes.splice(this.lineIndexes.indexOf(this.cursorIndex), 1)[0];
+	    this.tspans[removedLine].remove();
+	    this.tspans.splice(removedLine, 1);
+	    this.lineIndexes = this.lineIndexes.map(function (i) { return i >= removedLine ? i - 1 : i; });
+	    this.cursorIndex = removedLine - 1;
+	}
+	exports.removeLine = removeLine;
+	});
+
+	var _text = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || function () {
+	    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+	    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+	        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+	            r[k] = a[j];
+	    return r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.Text = void 0;
+
+
+
+
+	var Text = /** @class */ (function (_super) {
+	    __extends(Text, _super);
+	    function Text(position, initialText, section) {
+	        var _this = _super.call(this, section, 'text', 'text') || this;
+	        _this.tspans = [];
+	        /** The text tspan after which the cursor is placed */
+	        _this.cursorIndex = 0;
+	        /** span indexes at which a newLine starts */
+	        _this.lineIndexes = [];
+	        _this.position = [0, 0];
+	        _this.newLine = _newlines.newLine;
+	        _this.removeLine = _newlines.removeLine;
+	        _this.addCursor = _cursor.addCursor;
+	        _this.destroyCursor = _cursor.destroyCursor;
+	        _this.moveCursorLeft = _cursor.moveCursorLeft;
+	        _this.moveCursorRight = _cursor.moveCursorRight;
+	        _this.moveCursorDown = _cursor.moveCursorDown;
+	        _this.moveCursorUp = _cursor.moveCursorUp;
+	        _this._getBeforeCursorText = _editing._getBeforeCursorText;
+	        _this._updateBeforeCursorText = _editing._updateBeforeCursorText;
+	        _this._getAfterCursorText = _editing._getAfterCursorText;
+	        _this._updateAfterCursorText = _editing._updateAfterCursorText;
+	        _this.getText = _editing.getText;
+	        _this.appendText = _editing.appendText;
+	        _this.deleteLastCharacter = _editing.deleteLastCharacter;
+	        _this.deleteNextCharacter = _editing.deleteNextCharacter;
+	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+	        _this.node = path;
+	        _this.section = section;
+	        _this.node.setAttribute('text-anchor', 'middle');
+	        _this._addTspan(initialText);
+	        _this.cursorSpan = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+	        _this.node.appendChild(_this.cursorSpan);
+	        _this.cursorSpan.classList.add('svg-real-db-text-cursor');
+	        _this.cursorSpan.style.setProperty('position', 'relative');
+	        _this.cursorSpan.textContent = '|';
+	        _this.cursorIndex = 0;
+	        _this._addTspan('', _this.cursorIndex + 1); // span after cursor
+	        _this.lineIndexes.push(0);
+	        _this.position = __spreadArrays(position);
+	        _this.node.setAttribute('x', (_this.position[0]).toString());
+	        _this.node.setAttribute('y', _this.position[1].toString());
+	        return _this;
+	    }
+	    Text.prototype._addTspan = function (text, index, relativeTo) {
+	        if (index === void 0) { index = 0; }
+	        if (relativeTo === void 0) { relativeTo = 'spanAfter'; }
+	        this.lineIndexes = this.lineIndexes.map(function (i) { return i >= index ? i + 1 : i; });
+	        this.tspans.splice(index, 0, document.createElementNS('http://www.w3.org/2000/svg', 'tspan'));
+	        var newTspan = this.tspans[index];
+	        if (relativeTo === 'spanAfter') {
+	            if (this.tspans[index + 1] !== undefined)
+	                this.tspans[index + 1].insertAdjacentElement('beforebegin', newTspan);
+	            else
+	                this.node.insertAdjacentElement('beforeend', newTspan);
+	        }
+	        else {
+	            if (this.tspans[index - 1] !== undefined)
+	                this.tspans[index - 1].insertAdjacentElement('afterend', newTspan);
+	            else
+	                this.node.insertAdjacentElement('afterbegin', newTspan);
+	        }
+	        newTspan.textContent = text;
+	        newTspan.style.setProperty('whiteSpace', 'pre');
+	    };
+	    Text.prototype._setTspanPositioning = function (tspan, positioningType) {
+	        if (positioningType === 'lineBreak') {
+	            tspan.setAttribute('x', this.position[0].toString());
+	            tspan.setAttribute('dy', 1.2 + "em");
+	        }
+	        else if (positioningType === 'inline') {
+	            tspan.removeAttribute('x');
+	            tspan.removeAttribute('dy');
+	        }
+	    };
+	    Text.prototype.updateTextBaseline = function (position) {
+	        this.node.setAttribute('x', position[0].toString());
+	        this.node.setAttribute('y', position[1].toString());
+	        this.tspans.forEach(function (tspan) {
+	            if (tspan.hasAttribute('x'))
+	                tspan.setAttribute('x', position[0].toString());
+	        });
+	    };
+	    Text.prototype.setStyle = function (proprty, value) {
+	        this.node.style[proprty] = value;
+	    };
+	    Text.prototype.setFontSize = function (size) {
+	        this.node.style.fontSize = size + "px";
+	    };
+	    Text.prototype.import = function (data) {
+	        var _this = this;
+	        _super.prototype.import.call(this, data);
+	        this.position = [
+	            Number(this.node.getAttribute('x')),
+	            Number(this.node.getAttribute('y'))
+	        ];
+	        this.tspans = [];
+	        this.lineIndexes = [];
+	        this.cursorIndex = 0;
+	        this.node.childNodes.forEach(function (node) {
+	            if (node instanceof SVGTSpanElement) {
+	                var numTspans = _this.tspans.push(node);
+	                if (node.hasAttribute('dy'))
+	                    _this.lineIndexes.push(numTspans - 1);
+	            }
+	        });
+	        this.lineIndexes.sort(function (a, b) { return a - b; });
+	    };
+	    return Text;
+	}(_node.Node));
+	exports.Text = Text;
+	});
+
 	var _mapKeyToAction_1 = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._mapKeyToAction = void 0;
@@ -1500,6 +935,9 @@
 	    switch (e.key.toLowerCase()) {
 	        case 'backspace':
 	            _selectedNode.deleteLastCharacter();
+	            break;
+	        case 'delete':
+	            _selectedNode.deleteNextCharacter();
 	            break;
 	        case 'arrowleft':
 	            _selectedNode.moveCursorLeft();
@@ -1629,7 +1067,7 @@
 	            textPath.setFontSize(this.RDB.toolSettings.fontSize);
 	            this.RDB._addStroke([textPath]);
 	            this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
-	            if (this._selectedNode)
+	            if (this._selectedNode !== null)
 	                this._selectedNode.destroyCursor();
 	            this._selectedNode = textPath;
 	            this.RDB.changeToolSetting('textToolMode', 'edit');
@@ -1694,6 +1132,24 @@
 	Object.defineProperty(exports, "TextTool", { enumerable: true, get: function () { return text_1.TextTool; } });
 	});
 
+	var RealRendererDefaults = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.RealRendererDefaults = void 0;
+	exports.RealRendererDefaults = {
+	    bgColor: [0, 0, 0],
+	    bgType: {
+	        type: 'axes',
+	        axesColor: [1, 1, 1],
+	        xOffset: 20,
+	        yOffset: 20
+	    },
+	    drawsPerFrame: 1,
+	    timeStep: 1 / 60,
+	    initTime: 0,
+	    scaleFactor: 1
+	};
+	});
+
 	var RealDrawBoardDefaults = createCommonjsModule(function (module, exports) {
 	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
 	    __assign = Object.assign || function(t) {
@@ -1713,8 +1169,609 @@
 	exports.RealDrawBoardDefaults = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), { toolSettings: tools.ToolDefaults, allowUndo: false, maxUndos: 10, tool: 'brush' });
 	});
 
-	var RealDrawBoardTypes = createCommonjsModule(function (module, exports) {
+	var RealRendererEvents = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.RealRendererEventList = void 0;
+	exports.RealRendererEventList = [
+	    'start-render',
+	    'stop-render',
+	    'change-scale',
+	    'change-offsets',
+	    'import'
+	];
+	});
+
+	var RealDrawBoardEvents = createCommonjsModule(function (module, exports) {
+	var __spreadArrays = (commonjsGlobal && commonjsGlobal.__spreadArrays) || function () {
+	    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+	    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+	        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+	            r[k] = a[j];
+	    return r;
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.RealDrawBoardEventList = void 0;
+
+	exports.RealDrawBoardEventList = __spreadArrays(RealRendererEvents.RealRendererEventList, [
+	    'tool-change',
+	    'tool-setting-change',
+	    'board-cleared',
+	    'board-reset'
+	]);
+	});
+
+	var blankGraph = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.getBlankGraphPaths = void 0;
+
+
+
+	function getBlankGraphPaths(dimensions, bgColor, bgType) {
+	    var outX = dimensions[0], outY = dimensions[1];
+	    var axesPath = new _path.Path('', 'bg');
+	    switch (bgType.type) {
+	        case 'none':
+	            break;
+	        case 'axes':
+	            var X = Math.floor(outY * (bgType.xOffset / 100));
+	            var Y = Math.floor(outX * (bgType.yOffset / 100));
+	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.axesColor));
+	            axesPath.appendPath("M 0," + Y + " H " + (dimensions[0] - 1));
+	            axesPath.appendPath("M " + X + ",0 V " + (dimensions[1] - 1));
+	            break;
+	        case 'grid':
+	            var xSpacing = dimensions[0] * (bgType.xSpacing / 100);
+	            var ySpacing = dimensions[1] * (bgType.ySpacing / 100);
+	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.lineColor));
+	            // x-axis
+	            for (var x = xSpacing; x < dimensions[0]; x += xSpacing) {
+	                axesPath.appendPath("M " + x + ",0 V " + (dimensions[1] - 1));
+	            }
+	            // y-axis
+	            for (var y = ySpacing; y < dimensions[1]; y += ySpacing) {
+	                axesPath.appendPath("M 0," + y + " H " + (dimensions[0] - 1));
+	            }
+	            break;
+	        case 'ruled':
+	            var perpendicularDimension = bgType.orientation === 'horizontal' ? dimensions[1] : dimensions[0];
+	            var spacing = perpendicularDimension * (bgType.spacing / 100);
+	            axesPath.setStroke(getRGBColorString_1.getRGBColorString(bgType.lineColor));
+	            for (var dist = spacing; dist < perpendicularDimension; dist += spacing) {
+	                var d = void 0;
+	                if (bgType.orientation === 'horizontal')
+	                    d = "M 0," + dist + " H " + (dimensions[0] - 1);
+	                else
+	                    d = "M " + dist + ",0 V " + (dimensions[1] - 1);
+	                axesPath.appendPath(d);
+	            }
+	            break;
+	    }
+	    var bgPolygon = new _polygon.Polygon([
+	        [0, 0],
+	        [0, dimensions[1]],
+	        [dimensions[0], dimensions[1]],
+	        [dimensions[0], 0]
+	    ], 'bg');
+	    bgPolygon.setFill(getRGBColorString_1.getRGBColorString(bgColor));
+	    bgPolygon.setStroke(getRGBColorString_1.getRGBColorString(bgColor));
+	    return [bgPolygon, axesPath];
+	}
+	exports.getBlankGraphPaths = getBlankGraphPaths;
+	});
+
+	var clamp_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.clamp = void 0;
+	/**
+	 * Clamps a given number between two bounds.
+	 * @param input The number to be clamped.
+	 * @param min Lower bound.
+	 * @param max Upper bound.
+	 */
+	function clamp(input, min, max) {
+	    return Math.min(Math.max(input, min), max);
+	}
+	exports.clamp = clamp;
+	});
+
+	var background = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.normalizeBG = exports.changeBackground = void 0;
+
+
+	/**
+	 * Changes the background of the graph.
+	 * @param newBG New background.
+	 * @returns Self for chaining.
+	 */
+	function changeBackground(newBG) {
+	    this.bgType = newBG;
+	    var newBGStrokes = blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType);
+	    this.normalizeBG();
+	    this.strokes[0].forEach(function (stroke) { return stroke.delete(); });
+	    this.strokes[0] = newBGStrokes;
+	    this._display(this.strokes[0]);
+	    return this;
+	}
+	exports.changeBackground = changeBackground;
+	function normalizeBG() {
+	    switch (this.bgType.type) {
+	        case 'axes':
+	            this.bgType.xOffset = clamp_1.clamp(this.bgType.xOffset, 0, 100); // %age
+	            this.bgType.yOffset = clamp_1.clamp(this.bgType.yOffset, 0, 100); // %age
+	            break;
+	        case 'grid':
+	            this.bgType.xSpacing = clamp_1.clamp(this.bgType.xSpacing, 0, 100); // %age
+	            this.bgType.ySpacing = clamp_1.clamp(this.bgType.ySpacing, 0, 100); // %age
+	            if (this.bgType.xSpacing === 0)
+	                this.bgType.xSpacing = 1;
+	            if (this.bgType.ySpacing === 0)
+	                this.bgType.ySpacing = 1;
+	            break;
+	        case 'ruled':
+	            this.bgType.spacing = clamp_1.clamp(this.bgType.spacing, 0, 100);
+	            if (this.bgType.spacing === 0)
+	                this.bgType.spacing = 1;
+	            break;
+	    }
+	}
+	exports.normalizeBG = normalizeBG;
+	});
+
+	var draw_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._addStroke = exports._display = exports.draw = exports._draw = exports._drawFunc = void 0;
+	function _drawFunc(time) {
+	    return this;
+	}
+	exports._drawFunc = _drawFunc;
+	function _draw() {
+	    this.time += this.timeStep;
+	    this._drawFunc(this.time);
+	    return this;
+	}
+	exports._draw = _draw;
+	/**
+	 * Draw a certain number of frames.
+	 * @param numDraws Number of frames to draw.
+	 * @returns Self for chaining.
+	 */
+	function draw(numDraws) {
+	    if (numDraws === void 0) { numDraws = 1; }
+	    for (var i = 0; i < numDraws; i++)
+	        this._draw();
+	    return this;
+	}
+	exports.draw = draw;
+	function _display(stroke) {
+	    var _this = this;
+	    stroke.forEach(function (strokeNode) {
+	        if (strokeNode.node.parentElement == null)
+	            _this.svgSections[strokeNode.section].appendChild(strokeNode.node);
+	    });
+	}
+	exports._display = _display;
+	function _addStroke(stroke) {
+	    if (this.strokes.length > this._strokeIndex + 1)
+	        this.strokes.splice(this._strokeIndex + 1, this.strokes.length - this._strokeIndex);
+	    this.strokes[++this._strokeIndex] = stroke;
+	}
+	exports._addStroke = _addStroke;
+	});
+
+	var render = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.toggleRender = exports.stopRender = exports.startRender = exports._render = void 0;
+	function _render() {
+	    var _this = this;
+	    if (this._doRender) {
+	        this.draw(this.drawsPerFrame);
+	        this._display(this.strokes[this._strokeIndex]);
+	        window.requestAnimationFrame(function () { _this._render(); });
+	    }
+	}
+	exports._render = _render;
+	/**
+	 * Start rendering.
+	 * @returns Self for chaining.
+	 */
+	function startRender() {
+	    if (!this._doRender) {
+	        this._doRender = true;
+	        this._render();
+	        this.emit('start-render', {});
+	    }
+	    return this;
+	}
+	exports.startRender = startRender;
+	/**
+	 * Stop rendering.
+	 * @returns Self for chaining.
+	 */
+	function stopRender() {
+	    this._doRender = false;
+	    this.emit('stop-render', {});
+	    return this;
+	}
+	exports.stopRender = stopRender;
+	/**
+	 * Toggle rendering.
+	 * @returns Self for chaining.
+	 */
+	function toggleRender() {
+	    this._doRender = !this._doRender;
+	    if (this._doRender)
+	        this._render();
+	    return this;
+	}
+	exports.toggleRender = toggleRender;
+	});
+
+	var eventEmitter = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.EventEmitter = void 0;
+	var EventEmitter = /** @class */ (function () {
+	    function EventEmitter(eventList) {
+	        var _this = this;
+	        this.eventHandlers = {};
+	        eventList.forEach(function (event) {
+	            _this.eventHandlers[event] = new Map();
+	        });
+	    }
+	    EventEmitter.prototype.on = function (eventName, handlerName, handler) {
+	        if (!this.eventHandlers[eventName].has(handlerName))
+	            this.eventHandlers[eventName].set(handlerName, handler);
+	    };
+	    EventEmitter.prototype.off = function (eventName, handlerName) {
+	        this.eventHandlers[eventName].delete(handlerName);
+	    };
+	    EventEmitter.prototype.emit = function (eventName, parameters) {
+	        this.eventHandlers[eventName].forEach(function (handler) {
+	            handler(parameters);
+	        });
+	    };
+	    return EventEmitter;
+	}());
+	exports.EventEmitter = EventEmitter;
+	});
+
+	var importExport = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.importData = exports.exportData = void 0;
+
+
+
+
+
+	/**
+	 * Export the data of the graph in a certain format that can be used to load the data later. Load using .importData().
+	 * @returns Data of the graph in a storable and loadable format.
+	 */
+	function exportData() {
+	    var strokeExport = [];
+	    this.strokes.forEach(function (stroke) {
+	        strokeExport.push(stroke.map(function (node) { return node.export(); }));
+	    });
+	    return {
+	        exportData: strokeExport,
+	        strokeIndex: this._strokeIndex,
+	        dimensions: this.dimensions,
+	        bgType: this.bgType
+	    };
+	}
+	exports.exportData = exportData;
+	/**
+	 * Import the data exported by .export() method.
+	 * @param data Data exported by .export()
+	 * @returns Self for chaining.
+	 */
+	function importData(data) {
+	    var _this = this;
+	    var _a;
+	    this.strokes.forEach(function (stroke) {
+	        stroke.forEach(function (node) { return node.delete(); });
+	    });
+	    this.svg.setAttribute('viewBox', "0 0 " + this.dimensions[0] + " " + this.dimensions[1]);
+	    this.bgType = (_a = data.bgType) !== null && _a !== void 0 ? _a : this.bgType;
+	    this.strokes = [];
+	    data.exportData.forEach(function (strokeExport) {
+	        _this.strokes.push(strokeExport.map(function (strokeNodeData) {
+	            var _a, _b, _c, _d, _e;
+	            switch (strokeNodeData.type) {
+	                case 'circle':
+	                    var circ = new _circle.Circle([0, 0], 0, (_a = strokeNodeData.section) !== null && _a !== void 0 ? _a : 'strokes');
+	                    circ.import(strokeNodeData.data);
+	                    return circ;
+	                case 'path':
+	                    var path = new _path.Path('', (_b = strokeNodeData.section) !== null && _b !== void 0 ? _b : 'strokes');
+	                    path.import(strokeNodeData.data);
+	                    return path;
+	                case 'text':
+	                    var text = new _text.Text([0, 0], '', (_c = strokeNodeData.section) !== null && _c !== void 0 ? _c : 'strokes');
+	                    text.import(strokeNodeData.data);
+	                    return text;
+	                case 'group':
+	                    var group = new _group.GroupNode((_d = strokeNodeData.section) !== null && _d !== void 0 ? _d : 'strokes', []);
+	                    group.import(strokeNodeData.data);
+	                    return group;
+	                case 'polygon':
+	                    var polygon = new _polygon.Polygon([], (_e = strokeNodeData.section) !== null && _e !== void 0 ? _e : 'strokes');
+	                    polygon.import(strokeNodeData.data);
+	                    return polygon;
+	            }
+	        }));
+	    });
+	    this._strokeIndex = data.strokeIndex;
+	    for (var i = 0; i <= this._strokeIndex; i++) {
+	        this._display(this.strokes[i]);
+	    }
+	    this.emit('import', {
+	        import: data
+	    });
+	    return this;
+	}
+	exports.importData = importData;
+	});
+
+	var svgDom = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.attach = exports._setViewBox = exports._setSVG = void 0;
+
+	function _setSVG() {
+	    if (this.svg === undefined) {
+	        throw 'No SVG Element Found';
+	    }
+	    this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
+	    this.svg.setAttribute('preserveAspectRatio', 'none');
+	    this.svgSections = {
+	        bg: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+	        strokes: document.createElementNS('http://www.w3.org/2000/svg', 'g'),
+	        overlay: document.createElementNS('http://www.w3.org/2000/svg', 'g')
+	    };
+	    this.svg.appendChild(this.svgSections.bg);
+	    this.svg.appendChild(this.svgSections.strokes);
+	    this.svg.appendChild(this.svgSections.overlay);
+	    this._addStroke(blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType));
+	    this._display(this.strokes[this._strokeIndex]);
+	    this._doRender = false;
+	}
+	exports._setSVG = _setSVG;
+	function _setViewBox(dimensions, xOffset, yOffset) {
+	    this.svg.setAttribute('viewBox', xOffset + " " + yOffset + " " + dimensions[0] + " " + dimensions[1]);
+	}
+	exports._setViewBox = _setViewBox;
+	/**
+	   * Attaches to a DOM SVG element to render to.
+	   * @param svg The SVG element to attach.
+	   * @param dimensions Dimensions of the graph.
+	   * @returns Self for chaining.
+	   */
+	function attach(svg, dimensions) {
+	    this.dimensions = dimensions;
+	    this.originalDimensions = [
+	        dimensions[0],
+	        dimensions[1]
+	    ];
+	    this.svg = svg;
+	    this._setSVG();
+	    return this;
+	}
+	exports.attach = attach;
+	});
+
+	var svgSettings = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.changeOffsets = exports.scale = void 0;
+
+	/**
+	 * Scale/zoom the graph.
+	 * @param scaleFactor Factor to scale the graph by. Larger number zooms in.
+	 * @returns Self for chaining.
+	 */
+	function scale(scaleFactor) {
+	    var oldScaleFactor = this.scaleFactor;
+	    this.scaleFactor = scaleFactor;
+	    this.dimensions[0] = this.originalDimensions[0] / scaleFactor;
+	    this.dimensions[1] = this.originalDimensions[1] / scaleFactor;
+	    // To clamp the offsets as well
+	    this.changeOffsets(this._offsetX, this._offsetY);
+	    this.emit('change-scale', {
+	        oldScaleFactor: oldScaleFactor,
+	        newScaleFactor: this.scaleFactor
+	    });
+	    return this;
+	}
+	exports.scale = scale;
+	/**
+	 * Change the offsets of the graph (for panning)
+	 * @param xOffset Offset in the x-direction.
+	 * @param yOffset Offset in the y-direction.
+	 * @returns Self for chaining.
+	 */
+	function changeOffsets(xOffset, yOffset) {
+	    var oldOffsets = {
+	        x: this._offsetX,
+	        y: this._offsetY
+	    };
+	    this._offsetX = clamp_1.clamp(xOffset, 0, this.originalDimensions[0] - this.dimensions[0]);
+	    this._offsetY = clamp_1.clamp(yOffset, 0, this.originalDimensions[1] - this.dimensions[1]);
+	    this._setViewBox(this.dimensions, this._offsetX, this._offsetY);
+	    this.emit('change-offsets', {
+	        oldOffsets: oldOffsets,
+	        newOffsets: {
+	            x: this._offsetX,
+	            y: this._offsetY
+	        }
+	    });
+	    return this;
+	}
+	exports.changeOffsets = changeOffsets;
+	});
+
+	var undo_1 = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.redo = exports.undo = void 0;
+
+	/**
+	 * Undos a certain number of strokes drawn on the graph.
+	 * @param numUndo Number of strokes to undo.
+	 * @returns Self for chaining.
+	 */
+	function undo(numUndo) {
+	    if (numUndo === void 0) { numUndo = 1; }
+	    this._strokeIndex = clamp_1.clamp(this._strokeIndex - numUndo, 0, this.strokes.length - 1);
+	    for (var i = this._strokeIndex + 1; i < this.strokes.length; i++) {
+	        this.strokes[i].forEach(function (strokeNode) { return strokeNode.delete(); });
+	    }
+	    return this;
+	}
+	exports.undo = undo;
+	/**
+	 * Redos a certain number of strokes drawn on the graph.
+	 * @param numRedo Number of strokes to redo.
+	 * @returns Self for chaining.
+	 */
+	function redo(numRedo) {
+	    if (numRedo === void 0) { numRedo = 1; }
+	    var doRedo = clamp_1.clamp(numRedo, numRedo, this.strokes.length - this._strokeIndex - 1);
+	    for (var i = 0; i < doRedo; i++) {
+	        this._strokeIndex++;
+	        this._display(this.strokes[this._strokeIndex]);
+	    }
+	    return this;
+	}
+	exports.redo = redo;
+	});
+
+	var RealRendererTypes = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	});
+
+	var RealRenderer_1 = createCommonjsModule(function (module, exports) {
+	var __extends = (commonjsGlobal && commonjsGlobal.__extends) || (function () {
+	    var extendStatics = function (d, b) {
+	        extendStatics = Object.setPrototypeOf ||
+	            ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+	            function (d, b) { for (var p in b) if (Object.prototype.hasOwnProperty.call(b, p)) d[p] = b[p]; };
+	        return extendStatics(d, b);
+	    };
+	    return function (d, b) {
+	        extendStatics(d, b);
+	        function __() { this.constructor = d; }
+	        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	    };
+	})();
+	var __assign = (commonjsGlobal && commonjsGlobal.__assign) || function () {
+	    __assign = Object.assign || function(t) {
+	        for (var s, i = 1, n = arguments.length; i < n; i++) {
+	            s = arguments[i];
+	            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+	                t[p] = s[p];
+	        }
+	        return t;
+	    };
+	    return __assign.apply(this, arguments);
+	};
+	var __createBinding = (commonjsGlobal && commonjsGlobal.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+	}) : (function(o, m, k, k2) {
+	    if (k2 === undefined) k2 = k;
+	    o[k2] = m[k];
+	}));
+	var __exportStar = (commonjsGlobal && commonjsGlobal.__exportStar) || function(m, exports) {
+	    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+	};
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.RealRenderer = exports.RealRendererTypes = void 0;
+
+
+
+
+
+
+
+
+
+
+
+	__exportStar(RealRendererDefaults, exports);
+	exports.RealRendererTypes = RealRendererTypes;
+	/**
+	 * General Real Renderer with no specific purpose. Should be extended to use.
+	 */
+	var RealRenderer = /** @class */ (function (_super) {
+	    __extends(RealRenderer, _super);
+	    /**
+	     *
+	     * @param options
+	     * @param eventList
+	     */
+	    function RealRenderer(options, eventList) {
+	        if (eventList === void 0) { eventList = RealRendererEvents.RealRendererEventList; }
+	        var _this = _super.call(this, eventList) || this;
+	        _this._offsetX = 0;
+	        _this._offsetY = 0;
+	        _this.strokes = [];
+	        _this._strokeIndex = -1;
+	        _this.undo = undo_1.undo;
+	        _this.redo = undo_1.redo;
+	        _this.exportData = importExport.exportData;
+	        _this.importData = importExport.importData;
+	        _this.changeBackground = background.changeBackground;
+	        _this.scale = svgSettings.scale;
+	        _this.changeOffsets = svgSettings.changeOffsets;
+	        _this.attach = svgDom.attach;
+	        _this.draw = draw_1.draw;
+	        _this.startRender = render.startRender;
+	        _this.stopRender = render.stopRender;
+	        _this.toggleRender = render.toggleRender;
+	        _this.normalizeBG = background.normalizeBG;
+	        _this._setSVG = svgDom._setSVG;
+	        _this._setViewBox = svgDom._setViewBox;
+	        _this._drawFunc = draw_1._drawFunc;
+	        _this._draw = draw_1._draw;
+	        /** @internal */
+	        _this._display = draw_1._display;
+	        /** @internal */
+	        _this._addStroke = draw_1._addStroke;
+	        _this._render = render._render;
+	        // *****DEFAULTS*****
+	        _this.settings = __assign(__assign({}, RealRendererDefaults.RealRendererDefaults), options);
+	        _this.bgType = _this.settings.bgType;
+	        _this.normalizeBG();
+	        _this.bgColor = _this.settings.bgColor;
+	        _this.drawsPerFrame = _this.settings.drawsPerFrame;
+	        _this.timeStep = _this.settings.timeStep;
+	        _this.time = _this.settings.initTime;
+	        _this.scaleFactor = _this.settings.scaleFactor;
+	        return _this;
+	        // *****DEFAULTS*****
+	    }
+	    /**
+	     * Resets the internal time counter.
+	     * @returns Self for chaining.
+	     */
+	    RealRenderer.prototype.resetTime = function () {
+	        this.time = 0;
+	        return this;
+	    };
+	    /**
+	     * Resets everything regarding the graph.
+	     * @returns Self for chaining.
+	     */
+	    RealRenderer.prototype.reset = function () {
+	        this.strokes = [
+	            blankGraph.getBlankGraphPaths(this.dimensions, this.bgColor, this.bgType)
+	        ];
+	        this._strokeIndex = 0;
+	        this.resetTime();
+	        this._display(this.strokes[this._strokeIndex]);
+	        return this;
+	    };
+	    return RealRenderer;
+	}(eventEmitter.EventEmitter));
+	exports.RealRenderer = RealRenderer;
 	});
 
 	var boardManip = createCommonjsModule(function (module, exports) {
@@ -1821,6 +1878,27 @@
 	exports._resetBoard = _resetBoard;
 	});
 
+	var _coords = createCommonjsModule(function (module, exports) {
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports._getTouchCoords = exports._getMouseCoords = void 0;
+	function _getMouseCoords(e) {
+	    var xScaleFactor = this.dimensions[0] / this.svg.clientWidth;
+	    var yScaleFactor = this.dimensions[1] / this.svg.clientHeight;
+	    var x = e.offsetX * xScaleFactor + this._offsetX;
+	    var y = e.offsetY * yScaleFactor + this._offsetY;
+	    return [x, y]; // In graph coordinates
+	}
+	exports._getMouseCoords = _getMouseCoords;
+	function _getTouchCoords(touch) {
+	    var xScaleFactor = this.dimensions[0] / this.svg.clientWidth;
+	    var yScaleFactor = this.dimensions[1] / this.svg.clientHeight;
+	    var x = (touch.clientX - this.svg.getBoundingClientRect().left + this._offsetY) * xScaleFactor;
+	    var y = (touch.clientY - this.svg.getBoundingClientRect().top + this._offsetY) * yScaleFactor;
+	    return [x, y];
+	}
+	exports._getTouchCoords = _getTouchCoords;
+	});
+
 	var _DOMEvents = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
 	exports._removeDOMEvents = exports._addDOMEvents = void 0;
@@ -1852,25 +1930,8 @@
 	exports._removeDOMEvents = _removeDOMEvents;
 	});
 
-	var _coords = createCommonjsModule(function (module, exports) {
+	var RealDrawBoardTypes = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports._getTouchCoords = exports._getMouseCoords = void 0;
-	function _getMouseCoords(e) {
-	    var xScaleFactor = this.dimensions[0] / this.svg.clientWidth;
-	    var yScaleFactor = this.dimensions[1] / this.svg.clientHeight;
-	    var x = e.offsetX * xScaleFactor + this._offsetX;
-	    var y = e.offsetY * yScaleFactor + this._offsetY;
-	    return [x, y]; // In graph coordinates
-	}
-	exports._getMouseCoords = _getMouseCoords;
-	function _getTouchCoords(touch) {
-	    var xScaleFactor = this.dimensions[0] / this.svg.clientWidth;
-	    var yScaleFactor = this.dimensions[1] / this.svg.clientHeight;
-	    var x = (touch.clientX - this.svg.getBoundingClientRect().left + this._offsetY) * xScaleFactor;
-	    var y = (touch.clientY - this.svg.getBoundingClientRect().top + this._offsetY) * yScaleFactor;
-	    return [x, y];
-	}
-	exports._getTouchCoords = _getTouchCoords;
 	});
 
 	var RealDrawBoard_1 = createCommonjsModule(function (module, exports) {
@@ -1909,17 +1970,17 @@
 	    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 	};
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.RealDrawBoard = exports.RealDrawBoardTypes = exports.RealRendererTypes = void 0;
+	exports.RealDrawBoard = exports.RealRendererTypes = exports.RealDrawBoardTypes = void 0;
 
 
 
-	exports.RealRendererTypes = RealRendererTypes;
-	exports.RealDrawBoardTypes = RealDrawBoardTypes;
+
+
+
+
 	__exportStar(RealDrawBoardDefaults, exports);
-
-
-
-
+	exports.RealDrawBoardTypes = RealDrawBoardTypes;
+	exports.RealRendererTypes = RealRendererTypes;
 	/**
 	 * Drawing board.
 	 */
