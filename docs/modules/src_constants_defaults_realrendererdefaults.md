@@ -14,4 +14,4 @@
 
 • `Const` **RealRendererDefaults**: [*IRealRendererOptionals*](../interfaces/src_types_realrenderertypes.irealrendereroptionals.md)
 
-Defined in: [src/constants/defaults/RealRendererDefaults.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/constants/defaults/RealRendererDefaults.ts#L3)
+Defined in: [src/constants/defaults/RealRendererDefaults.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ef7fb73/src/constants/defaults/RealRendererDefaults.ts#L3)

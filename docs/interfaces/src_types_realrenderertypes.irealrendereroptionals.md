@@ -29,7 +29,7 @@
 
 Background color.
 
-Defined in: [src/types/RealRendererTypes.ts:103](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/types/RealRendererTypes.ts#L103)
+Defined in: [src/types/RealRendererTypes.ts:121](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ef7fb73/src/types/RealRendererTypes.ts#L121)
 
 ___
 
@@ -39,7 +39,7 @@ ___
 
 Type of the background.
 
-Defined in: [src/types/RealRendererTypes.ts:107](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/types/RealRendererTypes.ts#L107)
+Defined in: [src/types/RealRendererTypes.ts:125](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ef7fb73/src/types/RealRendererTypes.ts#L125)
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
 Number of updates to be made to the graph per frame.
 
-Defined in: [src/types/RealRendererTypes.ts:111](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/types/RealRendererTypes.ts#L111)
+Defined in: [src/types/RealRendererTypes.ts:129](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ef7fb73/src/types/RealRendererTypes.ts#L129)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 Initial value of the internal time.
 
-Defined in: [src/types/RealRendererTypes.ts:119](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/types/RealRendererTypes.ts#L119)
+Defined in: [src/types/RealRendererTypes.ts:137](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ef7fb73/src/types/RealRendererTypes.ts#L137)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 Scaling of the graph. Larger number zooms.
 
-Defined in: [src/types/RealRendererTypes.ts:123](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/types/RealRendererTypes.ts#L123)
+Defined in: [src/types/RealRendererTypes.ts:141](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ef7fb73/src/types/RealRendererTypes.ts#L141)
 
 ___
 
@@ -79,4 +79,4 @@ ___
 
 Amount to increment the internal time by each frame.
 
-Defined in: [src/types/RealRendererTypes.ts:115](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/f7a4556/src/types/RealRendererTypes.ts#L115)
+Defined in: [src/types/RealRendererTypes.ts:133](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ef7fb73/src/types/RealRendererTypes.ts#L133)
