@@ -17,7 +17,7 @@
 
 • **brushColor**: [*Color*](../modules/src_types_realrenderertypes.md#color)
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/brush.ts#L13)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/brush.ts#L13)
 
 ___
 
@@ -25,4 +25,4 @@ ___
 
 • **brushSize**: *number*
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/brush.ts#L14)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/brush.ts#L14)

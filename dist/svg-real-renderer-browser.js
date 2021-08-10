@@ -829,8 +829,8 @@
 	                tspan.setAttribute('x', position[0].toString());
 	        });
 	    };
-	    Text.prototype.setStyle = function (proprty, value) {
-	        this.node.style[proprty] = value;
+	    Text.prototype.setStyle = function (property, value) {
+	        this.node.style.setProperty(property, value);
 	    };
 	    Text.prototype.setFontSize = function (size) {
 	        this.node.style.fontSize = size + "px";

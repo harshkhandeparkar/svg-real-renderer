@@ -23,4 +23,4 @@ Name | Type |
 
 **Returns:** *Text*
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/_mapKeyToAction.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/text/_mapKeyToAction.ts#L3)
+Defined in: [src/renderers/RealDrawBoard/tools/text/_mapKeyToAction.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/text/_mapKeyToAction.ts#L3)

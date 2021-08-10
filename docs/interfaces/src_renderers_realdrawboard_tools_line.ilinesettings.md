@@ -17,7 +17,7 @@
 
 • **lineColor**: [*Color*](../modules/src_types_realrenderertypes.md#color)
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:15](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/line.ts#L15)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:15](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/line.ts#L15)
 
 ___
 
@@ -25,4 +25,4 @@ ___
 
 • **lineThickness**: *number*
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/line.ts#L14)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/line.ts#L14)

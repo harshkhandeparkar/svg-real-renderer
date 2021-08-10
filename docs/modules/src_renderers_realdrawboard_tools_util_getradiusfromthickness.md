@@ -22,4 +22,4 @@ Name | Type |
 
 **Returns:** *number*
 
-Defined in: [src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness.ts:1](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness.ts#L1)
+Defined in: [src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness.ts:1](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness.ts#L1)

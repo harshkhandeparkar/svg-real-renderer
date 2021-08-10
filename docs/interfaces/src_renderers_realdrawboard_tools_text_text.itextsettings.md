@@ -18,7 +18,7 @@
 
 • **fontColor**: [*Color*](../modules/src_types_realrenderertypes.md#color)
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/text/text.ts#L12)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/text/text.ts#L12)
 
 ___
 
@@ -26,7 +26,7 @@ ___
 
 • **fontSize**: *number*
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:11](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/text/text.ts#L11)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:11](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/text/text.ts#L11)
 
 ___
 
@@ -34,4 +34,4 @@ ___
 
 • **textToolMode**: *new* \| *edit*
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/text/text.ts#L13)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/text/text.ts#L13)

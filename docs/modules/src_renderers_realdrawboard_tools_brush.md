@@ -27,7 +27,7 @@
 
 Ƭ **BrushOptions**: [*IBrushSettings*](../interfaces/src_renderers_realdrawboard_tools_brush.ibrushsettings.md) \| {}
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:17](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/brush.ts#L17)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:17](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/brush.ts#L17)
 
 ## Variables
 
@@ -35,7 +35,7 @@ Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:17](https://github.com/H
 
 • `Const` **BrushDefaults**: [*IBrushSettings*](../interfaces/src_renderers_realdrawboard_tools_brush.ibrushsettings.md)
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/brush.ts#L19)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/brush.ts#L19)
 
 ___
 
@@ -43,4 +43,4 @@ ___
 
 • `Const` **name**: *brush*= 'brush'
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/brush.ts#L10)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/brush.ts#L10)

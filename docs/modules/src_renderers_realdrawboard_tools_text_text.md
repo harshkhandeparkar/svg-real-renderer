@@ -27,7 +27,7 @@
 
 Ƭ **TextOptions**: [*ITextSettings*](../interfaces/src_renderers_realdrawboard_tools_text_text.itextsettings.md) \| {}
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/text/text.ts#L16)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/text/text.ts#L16)
 
 ## Variables
 
@@ -35,7 +35,7 @@ Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:16](https://github.c
 
 • `Const` **TextDefaults**: [*ITextSettings*](../interfaces/src_renderers_realdrawboard_tools_text_text.itextsettings.md)
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/text/text.ts#L18)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/text/text.ts#L18)
 
 ___
 
@@ -43,4 +43,4 @@ ___
 
 • `Const` **name**: *text*= 'text'
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/text/text.ts#L8)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:8](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/text/text.ts#L8)

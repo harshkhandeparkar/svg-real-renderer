@@ -16,4 +16,4 @@
 
 • **eraserSize**: *number*
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/renderers/RealDrawBoard/tools/eraser.ts#L13)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L13)
