@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.15](../docs.md) / src/constants/defaults/RealDrawBoardDefaults
+[SVG Real Renderer - v0.4.0](../docs.md) / src/constants/defaults/RealDrawBoardDefaults
 
 # Module: src/constants/defaults/RealDrawBoardDefaults
 
@@ -14,4 +14,4 @@
 
 • `Const` **RealDrawBoardDefaults**: [*IRealDrawBoardParametersSettings*](../interfaces/src_types_realdrawboardtypes.irealdrawboardparameterssettings.md)
 
-Defined in: [src/constants/defaults/RealDrawBoardDefaults.ts:5](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ef7fb73/src/constants/defaults/RealDrawBoardDefaults.ts#L5)
+Defined in: [src/constants/defaults/RealDrawBoardDefaults.ts:5](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/constants/defaults/RealDrawBoardDefaults.ts#L5)

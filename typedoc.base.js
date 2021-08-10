@@ -13,6 +13,7 @@ module.exports = {
     'index.ts',
     ...getListOfFiles('src/constants/defaults'),
     ...getListOfFiles('src/constants/events'),
-    ...getListOfFiles('src/types')
+    ...getListOfFiles('src/types'),
+    ...getListOfFiles('src/renderers/RealDrawBoard/tools'),
   ]
 }

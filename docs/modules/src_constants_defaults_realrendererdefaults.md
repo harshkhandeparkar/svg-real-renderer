@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.15](../docs.md) / src/constants/defaults/RealRendererDefaults
+[SVG Real Renderer - v0.4.0](../docs.md) / src/constants/defaults/RealRendererDefaults
 
 # Module: src/constants/defaults/RealRendererDefaults
 
@@ -14,4 +14,4 @@
 
 • `Const` **RealRendererDefaults**: [*IRealRendererOptionals*](../interfaces/src_types_realrenderertypes.irealrendereroptionals.md)
 
-Defined in: [src/constants/defaults/RealRendererDefaults.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/ef7fb73/src/constants/defaults/RealRendererDefaults.ts#L3)
+Defined in: [src/constants/defaults/RealRendererDefaults.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/0a0696f/src/constants/defaults/RealRendererDefaults.ts#L3)

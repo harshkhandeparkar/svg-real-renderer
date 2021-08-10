@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.3.15](../docs.md) / [src/types/RealDrawBoardTypes](../modules/src_types_realdrawboardtypes.md) / IRealDrawBoardNonOptionalOptions
+[SVG Real Renderer - v0.4.0](../docs.md) / [src/types/RealDrawBoardTypes](../modules/src_types_realdrawboardtypes.md) / IRealDrawBoardNonOptionalOptions
 
 # Interface: IRealDrawBoardNonOptionalOptions
 
