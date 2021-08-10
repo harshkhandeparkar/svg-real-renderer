@@ -138,8 +138,8 @@ export class Text extends Node<SVGTextElement, 'text'> {
     })
   }
 
-  setStyle(proprty: string, value: string) {
-    this.node.style[proprty] = value;
+  setStyle(property: string, value: string) {
+    this.node.style.setProperty(property, value);
   }
 
   setFontSize(size: number) {
