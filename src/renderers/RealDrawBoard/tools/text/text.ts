@@ -139,4 +139,8 @@ export class TextTool extends Tool {
       this._selectedNode = _mapKeyToAction(e, this._selectedNode);
     }
   }
+
+  public _onScroll(scrollDelta: number) {
+    this.RDB.changeToolSetting('fontSize', Math.max(1, this.RDB.toolSettings.fontSize - scrollDelta / 5));
+  }
 }

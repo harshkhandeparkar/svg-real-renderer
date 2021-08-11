@@ -1226,6 +1226,9 @@
 	            this._selectedNode = _mapKeyToAction_1._mapKeyToAction(e, this._selectedNode);
 	        }
 	    };
+	    TextTool.prototype._onScroll = function (scrollDelta) {
+	        this.RDB.changeToolSetting('fontSize', Math.max(1, this.RDB.toolSettings.fontSize - scrollDelta / 5));
+	    };
 	    return TextTool;
 	}(_tool.Tool));
 	exports.TextTool = TextTool;
