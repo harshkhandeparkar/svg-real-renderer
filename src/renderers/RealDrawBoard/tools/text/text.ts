@@ -137,6 +137,8 @@ export class TextTool extends Tool {
     if (this.RDB.toolSettings.textToolMode === 'edit' && this._selectedNode !== null) {
       e.preventDefault();
       this._selectedNode = _mapKeyToAction(e, this._selectedNode);
+
+      if (this._selectedNode === null) this.RDB.changeToolSetting('textToolMode', 'new');
     }
   }
 
