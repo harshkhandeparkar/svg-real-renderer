@@ -50,6 +50,12 @@ export class TextTool extends Tool {
         if (settingName === 'fontColor') this._selectedNode.setFill(getRGBColorString(newValue as Color));
         if (settingName === 'fontSize') this._selectedNode.setFontSize(newValue as number);
       }
+      if (settingName === 'textToolMode' && newValue === 'new') {
+        if (this._selectedNode !== null) {
+          this._selectedNode.destroyCursor();
+          this._selectedNode = null;
+        }
+      }
     })
 
     this.RDB.on('board-cleared', 'text-tool-handler', () => {

@@ -1165,6 +1165,12 @@
 	                if (settingName === 'fontSize')
 	                    _this._selectedNode.setFontSize(newValue);
 	            }
+	            if (settingName === 'textToolMode' && newValue === 'new') {
+	                if (_this._selectedNode !== null) {
+	                    _this._selectedNode.destroyCursor();
+	                    _this._selectedNode = null;
+	                }
+	            }
 	        });
 	        this.RDB.on('board-cleared', 'text-tool-handler', function () {
 	            _this.RDB.changeToolSetting('textToolMode', 'edit');
