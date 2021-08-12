@@ -6,7 +6,7 @@ import { changeBackground, normalizeBG } from './background';
 import { draw, _addStroke, _display, _draw, _drawFunc } from './draw/draw';
 import { startRender, stopRender, toggleRender, _render } from './draw/render';
 import { EventEmitter } from './events/eventEmitter';
-import { exportData, importData } from './import-export';
+import { exportData, getExportVersion, importData } from './import-export';
 import { attach, _setSVG, _setViewBox } from './svg/svg-dom';
 import { changeOffsets, scale } from './svg/svg-settings';
 import { redo, undo } from './undo';
@@ -39,6 +39,7 @@ export abstract class RealRenderer<EventTypes extends IRealRendererEvents = IRea
   public redo = redo;
 
   public exportData = exportData;
+  static getExportVersion = getExportVersion;
   protected _beforeExport() {}
   public importData = importData;
   public changeBackground = changeBackground;

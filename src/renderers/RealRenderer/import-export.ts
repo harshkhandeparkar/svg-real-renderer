@@ -131,3 +131,8 @@ export function importData(
 
   return this;
 }
+
+export function getExportVersion(data: RealExport) {
+  if ('version' in data) return data.version;
+  else return 1;
+}

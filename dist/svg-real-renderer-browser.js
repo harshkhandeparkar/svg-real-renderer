@@ -1651,7 +1651,7 @@
 
 	var importExport = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.importData = exports.exportData = void 0;
+	exports.getExportVersion = exports.importData = exports.exportData = void 0;
 
 
 
@@ -1761,6 +1761,13 @@
 	    return this;
 	}
 	exports.importData = importData;
+	function getExportVersion(data) {
+	    if ('version' in data)
+	        return data.version;
+	    else
+	        return 1;
+	}
+	exports.getExportVersion = getExportVersion;
 	});
 
 	var svgDom = createCommonjsModule(function (module, exports) {
@@ -2020,6 +2027,7 @@
 	        this._display(this.strokes[this._strokeIndex]);
 	        return this;
 	    };
+	    RealRenderer.getExportVersion = importExport.getExportVersion;
 	    return RealRenderer;
 	}(eventEmitter.EventEmitter));
 	exports.RealRenderer = RealRenderer;
@@ -2407,7 +2415,6 @@
 	        return this;
 	    };
 	    RealDrawBoard.prototype._beforeExport = function () {
-	        console.log('before export');
 	        this._tools[this.tool]._onUnload();
 	    };
 	    return RealDrawBoard;
