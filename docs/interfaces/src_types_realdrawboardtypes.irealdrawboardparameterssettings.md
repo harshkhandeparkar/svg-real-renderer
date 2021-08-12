@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.1](../docs.md) / [src/types/RealDrawBoardTypes](../modules/src_types_realdrawboardtypes.md) / IRealDrawBoardParametersSettings
+[SVG Real Renderer - v0.4.2](../docs.md) / [src/types/RealDrawBoardTypes](../modules/src_types_realdrawboardtypes.md) / IRealDrawBoardParametersSettings
 
 # Interface: IRealDrawBoardParametersSettings
 
@@ -35,7 +35,7 @@ Wheter undo is allowed.
 
 Inherited from: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[allowUndo](src_types_realdrawboardtypes.irealdrawboardoptionals.md#allowundo)
 
-Defined in: [src/types/RealDrawBoardTypes.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealDrawBoardTypes.ts#L12)
+Defined in: [src/types/RealDrawBoardTypes.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealDrawBoardTypes.ts#L12)
 
 ___
 
@@ -47,7 +47,7 @@ Background color.
 
 Inherited from: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[bgColor](src_types_realdrawboardtypes.irealdrawboardoptionals.md#bgcolor)
 
-Defined in: [src/types/RealRendererTypes.ts:121](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L121)
+Defined in: [src/types/RealRendererTypes.ts:121](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealRendererTypes.ts#L121)
 
 ___
 
@@ -59,7 +59,7 @@ Type of the background.
 
 Inherited from: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[bgType](src_types_realdrawboardtypes.irealdrawboardoptionals.md#bgtype)
 
-Defined in: [src/types/RealRendererTypes.ts:125](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L125)
+Defined in: [src/types/RealRendererTypes.ts:125](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealRendererTypes.ts#L125)
 
 ___
 
@@ -71,7 +71,7 @@ Number of updates to be made to the graph per frame.
 
 Inherited from: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[drawsPerFrame](src_types_realdrawboardtypes.irealdrawboardoptionals.md#drawsperframe)
 
-Defined in: [src/types/RealRendererTypes.ts:129](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L129)
+Defined in: [src/types/RealRendererTypes.ts:129](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealRendererTypes.ts#L129)
 
 ___
 
@@ -83,7 +83,7 @@ Initial value of the internal time.
 
 Inherited from: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[initTime](src_types_realdrawboardtypes.irealdrawboardoptionals.md#inittime)
 
-Defined in: [src/types/RealRendererTypes.ts:137](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L137)
+Defined in: [src/types/RealRendererTypes.ts:137](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealRendererTypes.ts#L137)
 
 ___
 
@@ -95,7 +95,7 @@ Maximum number of possible undos. Use a smaller number to save memory.
 
 Inherited from: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[maxUndos](src_types_realdrawboardtypes.irealdrawboardoptionals.md#maxundos)
 
-Defined in: [src/types/RealDrawBoardTypes.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealDrawBoardTypes.ts#L16)
+Defined in: [src/types/RealDrawBoardTypes.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealDrawBoardTypes.ts#L16)
 
 ___
 
@@ -107,7 +107,7 @@ Scaling of the graph. Larger number zooms.
 
 Inherited from: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[scaleFactor](src_types_realdrawboardtypes.irealdrawboardoptionals.md#scalefactor)
 
-Defined in: [src/types/RealRendererTypes.ts:141](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L141)
+Defined in: [src/types/RealRendererTypes.ts:141](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealRendererTypes.ts#L141)
 
 ___
 
@@ -119,7 +119,7 @@ Amount to increment the internal time by each frame.
 
 Inherited from: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[timeStep](src_types_realdrawboardtypes.irealdrawboardoptionals.md#timestep)
 
-Defined in: [src/types/RealRendererTypes.ts:133](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L133)
+Defined in: [src/types/RealRendererTypes.ts:133](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealRendererTypes.ts#L133)
 
 ___
 
@@ -131,7 +131,7 @@ Initially selected tool.
 
 Inherited from: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[tool](src_types_realdrawboardtypes.irealdrawboardoptionals.md#tool)
 
-Defined in: [src/types/RealDrawBoardTypes.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealDrawBoardTypes.ts#L20)
+Defined in: [src/types/RealDrawBoardTypes.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealDrawBoardTypes.ts#L20)
 
 ___
 
@@ -143,4 +143,4 @@ Initial values for the tool settings.
 
 Overrides: [IRealDrawBoardOptionals](src_types_realdrawboardtypes.irealdrawboardoptionals.md).[toolSettings](src_types_realdrawboardtypes.irealdrawboardoptionals.md#toolsettings)
 
-Defined in: [src/types/RealDrawBoardTypes.ts:33](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealDrawBoardTypes.ts#L33)
+Defined in: [src/types/RealDrawBoardTypes.ts:33](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/types/RealDrawBoardTypes.ts#L33)

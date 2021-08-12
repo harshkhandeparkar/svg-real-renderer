@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.1](../docs.md) / src/renderers/RealDrawBoard/tools/brush
+[SVG Real Renderer - v0.4.2](../docs.md) / src/renderers/RealDrawBoard/tools/brush
 
 # Module: src/renderers/RealDrawBoard/tools/brush
 
@@ -27,7 +27,7 @@
 
 Ƭ **BrushOptions**: [*IBrushSettings*](../interfaces/src_renderers_realdrawboard_tools_brush.ibrushsettings.md) \| {}
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:17](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/brush.ts#L17)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:17](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/brush.ts#L17)
 
 ## Variables
 
@@ -35,7 +35,7 @@ Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:17](https://github.com/H
 
 • `Const` **BrushDefaults**: [*IBrushSettings*](../interfaces/src_renderers_realdrawboard_tools_brush.ibrushsettings.md)
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/brush.ts#L19)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:19](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/brush.ts#L19)
 
 ___
 
@@ -43,4 +43,4 @@ ___
 
 • `Const` **name**: *brush*= 'brush'
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/brush.ts#L10)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/brush.ts#L10)

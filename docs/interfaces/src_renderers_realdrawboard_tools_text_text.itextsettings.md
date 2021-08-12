@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.1](../docs.md) / [src/renderers/RealDrawBoard/tools/text/text](../modules/src_renderers_realdrawboard_tools_text_text.md) / ITextSettings
+[SVG Real Renderer - v0.4.2](../docs.md) / [src/renderers/RealDrawBoard/tools/text/text](../modules/src_renderers_realdrawboard_tools_text_text.md) / ITextSettings
 
 # Interface: ITextSettings
 
@@ -21,7 +21,7 @@
 
 • **bold**: *boolean*
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/text/text.ts#L16)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L16)
 
 ___
 
@@ -29,7 +29,7 @@ ___
 
 • **fontColor**: [*Color*](../modules/src_types_realrenderertypes.md#color)
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/text/text.ts#L13)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L13)
 
 ___
 
@@ -37,7 +37,7 @@ ___
 
 • **fontSize**: *number*
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/text/text.ts#L12)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L12)
 
 ___
 
@@ -45,7 +45,7 @@ ___
 
 • **italic**: *boolean*
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:15](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/text/text.ts#L15)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:15](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L15)
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 • **textToolMode**: *new* \| *edit*
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/text/text.ts#L14)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L14)
 
 ___
 
@@ -61,4 +61,4 @@ ___
 
 • **underline**: *boolean*
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:17](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/text/text.ts#L17)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:17](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L17)

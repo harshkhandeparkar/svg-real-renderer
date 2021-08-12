@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.1](../docs.md) / src/renderers/RealDrawBoard/tools/text/text
+[SVG Real Renderer - v0.4.2](../docs.md) / src/renderers/RealDrawBoard/tools/text/text
 
 # Module: src/renderers/RealDrawBoard/tools/text/text
 
@@ -27,7 +27,7 @@
 
 Ƭ **TextOptions**: [*ITextSettings*](../interfaces/src_renderers_realdrawboard_tools_text_text.itextsettings.md) \| {}
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/text/text.ts#L20)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L20)
 
 ## Variables
 
@@ -35,7 +35,7 @@ Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:20](https://github.c
 
 • `Const` **TextDefaults**: [*ITextSettings*](../interfaces/src_renderers_realdrawboard_tools_text_text.itextsettings.md)
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:22](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/text/text.ts#L22)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:22](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L22)
 
 ___
 
@@ -43,4 +43,4 @@ ___
 
 • `Const` **name**: *text*= 'text'
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/text/text.ts#L9)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:9](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L9)

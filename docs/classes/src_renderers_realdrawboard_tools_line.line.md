@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.1](../docs.md) / [src/renderers/RealDrawBoard/tools/line](../modules/src_renderers_realdrawboard_tools_line.md) / Line
+[SVG Real Renderer - v0.4.2](../docs.md) / [src/renderers/RealDrawBoard/tools/line](../modules/src_renderers_realdrawboard_tools_line.md) / Line
 
 # Class: Line
 
@@ -47,7 +47,7 @@ Name | Type |
 
 Inherited from: Tool.constructor
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
 
 ## Properties
 
@@ -57,7 +57,7 @@ Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/Ha
 
 Inherited from: Tool.RDB
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
 
 ## Methods
 
@@ -77,7 +77,7 @@ Name | Type |
 
 Overrides: Tool._doStroke
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:87](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/line.ts#L87)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:87](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/line.ts#L87)
 
 ___
 
@@ -97,7 +97,7 @@ Name | Type |
 
 Overrides: Tool._endStroke
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:67](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/line.ts#L67)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:67](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/line.ts#L67)
 
 ___
 
@@ -115,7 +115,7 @@ Name | Type |
 
 Inherited from: Tool._onKey
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:46](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L46)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:46](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/_tool.ts#L46)
 
 ___
 
@@ -127,7 +127,7 @@ ___
 
 Inherited from: Tool._onLoad
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L12)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/_tool.ts#L12)
 
 ___
 
@@ -147,7 +147,7 @@ Name | Type |
 
 Overrides: Tool._onScroll
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:131](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/line.ts#L131)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:131](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/line.ts#L131)
 
 ___
 
@@ -159,7 +159,7 @@ ___
 
 Inherited from: Tool._onUnload
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L14)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/_tool.ts#L14)
 
 ___
 
@@ -179,7 +179,7 @@ Name | Type |
 
 Overrides: Tool._startStroke
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/line.ts#L31)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:31](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/line.ts#L31)
 
 ___
 
@@ -199,4 +199,4 @@ Name | Type |
 
 Overrides: Tool._toolPreview
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:104](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/line.ts#L104)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:104](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/line.ts#L104)

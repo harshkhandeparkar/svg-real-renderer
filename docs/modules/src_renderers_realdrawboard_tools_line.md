@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.1](../docs.md) / src/renderers/RealDrawBoard/tools/line
+[SVG Real Renderer - v0.4.2](../docs.md) / src/renderers/RealDrawBoard/tools/line
 
 # Module: src/renderers/RealDrawBoard/tools/line
 
@@ -27,7 +27,7 @@
 
 Ƭ **LineOptions**: [*ILineSettings*](../interfaces/src_renderers_realdrawboard_tools_line.ilinesettings.md) \| {}
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/line.ts#L18)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/line.ts#L18)
 
 ## Variables
 
@@ -35,7 +35,7 @@ Defined in: [src/renderers/RealDrawBoard/tools/line.ts:18](https://github.com/Ha
 
 • `Const` **LineDefaults**: [*ILineSettings*](../interfaces/src_renderers_realdrawboard_tools_line.ilinesettings.md)
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/line.ts#L20)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:20](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/line.ts#L20)
 
 ___
 
@@ -43,4 +43,4 @@ ___
 
 • `Const` **name**: *line*= 'line'
 
-Defined in: [src/renderers/RealDrawBoard/tools/line.ts:11](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/line.ts#L11)
+Defined in: [src/renderers/RealDrawBoard/tools/line.ts:11](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/line.ts#L11)

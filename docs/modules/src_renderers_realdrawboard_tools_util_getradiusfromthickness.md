@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.1](../docs.md) / src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness
+[SVG Real Renderer - v0.4.2](../docs.md) / src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness
 
 # Module: src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness
 
@@ -22,4 +22,4 @@ Name | Type |
 
 **Returns:** *number*
 
-Defined in: [src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness.ts:1](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness.ts#L1)
+Defined in: [src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness.ts:1](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/util/getRadiusFromThickness.ts#L1)
