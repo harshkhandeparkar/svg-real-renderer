@@ -1,6 +1,6 @@
 import { Text } from '../../../RealRenderer/strokeNodes/_text/_text';
 
-export function _mapKeyToAction(e: KeyboardEvent, _selectedNode: Text) {
+export function _mapKeyToAction(e: KeyboardEvent, _selectedNode: Text): [_selectedNode: Text, doPrevent: boolean] {
   switch(e.key.toLowerCase()) {
     case 'backspace':
       _selectedNode.deleteLastCharacter();
@@ -24,7 +24,7 @@ export function _mapKeyToAction(e: KeyboardEvent, _selectedNode: Text) {
       if (e.shiftKey) _selectedNode.newLine();
       else {
         _selectedNode.destroyCursor();
-        return null;
+        return [null, true];
       }
       break;
     case 'shift': case 'control': case 'alt': case 'altgraph':
@@ -32,11 +32,12 @@ export function _mapKeyToAction(e: KeyboardEvent, _selectedNode: Text) {
     case 'pageup': case 'pagedown': case 'escape': case 'insert':
     case 'f1': case 'f2': case 'f3': case 'f4': case 'f5': case 'f6':
     case 'f7': case 'f8': case 'f9': case 'f10': case 'f11': case 'f12':
-      break;
+      return [_selectedNode, false];
     default:
-      _selectedNode.appendText(e.key);
+      if (!e.ctrlKey) _selectedNode.appendText(e.key);
+      else return [_selectedNode, false];
       break;
   }
 
-  return _selectedNode;
+  return [_selectedNode, true];
 }

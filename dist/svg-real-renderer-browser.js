@@ -1087,7 +1087,7 @@
 	                _selectedNode.newLine();
 	            else {
 	                _selectedNode.destroyCursor();
-	                return null;
+	                return [null, true];
 	            }
 	            break;
 	        case 'shift':
@@ -1100,12 +1100,29 @@
 	        case 'end':
 	        case 'pageup':
 	        case 'pagedown':
-	            break;
+	        case 'escape':
+	        case 'insert':
+	        case 'f1':
+	        case 'f2':
+	        case 'f3':
+	        case 'f4':
+	        case 'f5':
+	        case 'f6':
+	        case 'f7':
+	        case 'f8':
+	        case 'f9':
+	        case 'f10':
+	        case 'f11':
+	        case 'f12':
+	            return [_selectedNode, false];
 	        default:
-	            _selectedNode.appendText(e.key);
+	            if (!e.ctrlKey)
+	                _selectedNode.appendText(e.key);
+	            else
+	                return [_selectedNode, false];
 	            break;
 	    }
-	    return _selectedNode;
+	    return [_selectedNode, true];
 	}
 	exports._mapKeyToAction = _mapKeyToAction;
 	});
@@ -1240,8 +1257,10 @@
 	    };
 	    TextTool.prototype._onKey = function (e) {
 	        if (this.RDB.toolSettings.textToolMode === 'edit' && this._selectedNode !== null) {
-	            e.preventDefault();
-	            this._selectedNode = _mapKeyToAction_1._mapKeyToAction(e, this._selectedNode);
+	            var _a = _mapKeyToAction_1._mapKeyToAction(e, this._selectedNode), _selectedNode = _a[0], doPrevent = _a[1];
+	            if (doPrevent)
+	                e.preventDefault();
+	            this._selectedNode = _selectedNode;
 	            if (this._selectedNode === null)
 	                this.RDB.changeToolSetting('textToolMode', 'new');
 	        }

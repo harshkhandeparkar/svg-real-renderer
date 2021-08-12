@@ -145,8 +145,10 @@ export class TextTool extends Tool {
 
   public _onKey(e: KeyboardEvent) {
     if (this.RDB.toolSettings.textToolMode === 'edit' && this._selectedNode !== null) {
-      e.preventDefault();
-      this._selectedNode = _mapKeyToAction(e, this._selectedNode);
+      const [_selectedNode, doPrevent] = _mapKeyToAction(e, this._selectedNode);
+
+      if (doPrevent) e.preventDefault();
+      this._selectedNode = _selectedNode;
 
       if (this._selectedNode === null) this.RDB.changeToolSetting('textToolMode', 'new');
     }
