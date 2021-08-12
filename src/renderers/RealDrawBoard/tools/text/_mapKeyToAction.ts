@@ -27,8 +27,11 @@ export function _mapKeyToAction(e: KeyboardEvent, _selectedNode: Text) {
         return null;
       }
       break;
-    case 'shift':
-    case 'control':
+    case 'shift': case 'control': case 'alt': case 'altgraph':
+    case 'command': case 'tab': case 'home': case 'end':
+    case 'pageup': case 'pagedown': case 'escape': case 'insert':
+    case 'f1': case 'f2': case 'f3': case 'f4': case 'f5': case 'f6':
+    case 'f7': case 'f8': case 'f9': case 'f10': case 'f11': case 'f12':
       break;
     default:
       _selectedNode.appendText(e.key);

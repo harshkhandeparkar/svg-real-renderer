@@ -1092,6 +1092,14 @@
 	            break;
 	        case 'shift':
 	        case 'control':
+	        case 'alt':
+	        case 'altgraph':
+	        case 'command':
+	        case 'tab':
+	        case 'home':
+	        case 'end':
+	        case 'pageup':
+	        case 'pagedown':
 	            break;
 	        default:
 	            _selectedNode.appendText(e.key);
