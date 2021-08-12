@@ -11,6 +11,8 @@ import { Text } from './strokeNodes/_text/_text';
  * @returns Data of the graph in a storable and loadable format.
  */
 export function exportData(this: RealRenderer): IRealExportV2 {
+  this._beforeExport();
+
   const strokeExport: StrokeExportV2[] = [];
 
   this.strokes.forEach((stroke) => {

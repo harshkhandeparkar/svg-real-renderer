@@ -39,6 +39,7 @@ export abstract class RealRenderer<EventTypes extends IRealRendererEvents = IRea
   public redo = redo;
 
   public exportData = exportData;
+  protected _beforeExport() {}
   public importData = importData;
   public changeBackground = changeBackground;
 

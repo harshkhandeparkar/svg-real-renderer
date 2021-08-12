@@ -874,6 +874,7 @@
 	            }
 	        });
 	        this.lineIndexes.sort(function (a, b) { return a - b; });
+	        this.destroyCursor();
 	    };
 	    Text.prototype.import = function (data) {
 	        var _this = this;
@@ -890,6 +891,7 @@
 	        });
 	        this.position = data.position;
 	        this.updateTextBaseline(this.position);
+	        this.destroyCursor();
 	    };
 	    Text.prototype.export = function () {
 	        return __assign(__assign({}, this._exportBasicData()), { position: this.position, tspans: this.tspans.map(function (tspan) {
@@ -1660,6 +1662,7 @@
 	 * @returns Data of the graph in a storable and loadable format.
 	 */
 	function exportData() {
+	    this._beforeExport();
 	    var strokeExport = [];
 	    this.strokes.forEach(function (stroke) {
 	        strokeExport.push(stroke.map(function (node) { return node.export(); }));
@@ -1995,6 +1998,7 @@
 	        return _this;
 	        // *****DEFAULTS*****
 	    }
+	    RealRenderer.prototype._beforeExport = function () { };
 	    /**
 	     * Resets the internal time counter.
 	     * @returns Self for chaining.
@@ -2401,6 +2405,10 @@
 	        this._resetBoard();
 	        _super.prototype.reset.call(this);
 	        return this;
+	    };
+	    RealDrawBoard.prototype._beforeExport = function () {
+	        console.log('before export');
+	        this._tools[this.tool]._onUnload();
 	    };
 	    return RealDrawBoard;
 	}(RealRenderer_1.RealRenderer));

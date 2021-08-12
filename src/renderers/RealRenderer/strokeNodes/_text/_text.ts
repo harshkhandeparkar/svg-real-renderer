@@ -172,6 +172,8 @@ export class Text extends Node<SVGTextElement, 'text'> {
     })
 
     this.lineIndexes.sort((a, b) => a - b);
+
+    this.destroyCursor();
   }
 
   import(data: ITextNodeData) {
@@ -192,6 +194,8 @@ export class Text extends Node<SVGTextElement, 'text'> {
 
     this.position = data.position;
     this.updateTextBaseline(this.position);
+
+    this.destroyCursor();
   }
 
   export(): ITextNodeData {

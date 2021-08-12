@@ -269,4 +269,8 @@ export class RealDrawBoard extends RealRenderer<IRealDrawBoardEvents> {
 
     return this;
   }
+
+  protected _beforeExport() {
+    this._tools[this.tool]._onUnload();
+  }
 }
