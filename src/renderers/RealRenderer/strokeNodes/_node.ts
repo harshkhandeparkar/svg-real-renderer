@@ -10,6 +10,7 @@ export interface INodeData {
   dashed: false | {dashColor: string};
   id: string | null;
   class: string | null;
+  style: string | null;
   type: StrokeNodeType;
   section: SVGSection;
 }
@@ -39,6 +40,7 @@ export class Node<NodeType extends SVGElement, StrokeNodeT extends StrokeNodeTyp
       dashed: this.node.hasAttribute('stroke-dasharray') ? {dashColor: this.node.getAttribute('stroke')} : false,
       id: this.node.hasAttribute('id') ? this.node.getAttribute('id') : null,
       class: this.node.hasAttribute('class') ? this.node.getAttribute('class') : null,
+      style: this.node.hasAttribute('style') ? this.node.getAttribute('style') : null,
       type: this.strokeNodeType,
       section: this.section
     }
@@ -61,6 +63,7 @@ export class Node<NodeType extends SVGElement, StrokeNodeT extends StrokeNodeTyp
     if (data.dashed !== false) this.setDashed(data.dashed.dashColor);
     if (data.id !== null) this.setId(data.id);
     if (data.class !== null) this.node.setAttribute('class', data.class);
+    if (data.style !== null) this.node.setAttribute('style', data.style);
   }
 
   setStroke(stroke: string) {

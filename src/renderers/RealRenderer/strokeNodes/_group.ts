@@ -36,6 +36,8 @@ export class GroupNode extends Node<SVGGElement, 'group'> {
   }
 
   import(data: IGroupNodeData) {
+    super.import(data);
+
     this.innerNodes = data.innerNodes.map((strokeNodeData) => {
       switch(strokeNodeData.type) {
         case 'circle':

@@ -42,6 +42,8 @@ export class Circle extends Node<SVGCircleElement, 'circle'> {
   }
 
   import(data: ICircleNodeData) {
+    super.import(data);
+
     this.node.setAttribute('cx', data.center[0]);
     this.node.setAttribute('cy', data.center[1]);
 

@@ -171,6 +171,8 @@ export class Text extends Node<SVGTextElement, 'text'> {
   }
 
   import(data: ITextNodeData) {
+    super.import(data);
+
     this.tspans = data.tspans.map((tspan) => {
       const tspan_ = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
 
