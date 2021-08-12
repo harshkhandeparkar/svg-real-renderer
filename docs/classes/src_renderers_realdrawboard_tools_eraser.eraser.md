@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.0](../docs.md) / [src/renderers/RealDrawBoard/tools/eraser](../modules/src_renderers_realdrawboard_tools_eraser.md) / Eraser
+[SVG Real Renderer - v0.4.1](../docs.md) / [src/renderers/RealDrawBoard/tools/eraser](../modules/src_renderers_realdrawboard_tools_eraser.md) / Eraser
 
 # Class: Eraser
 
@@ -27,6 +27,7 @@
 - [\_onKey](src_renderers_realdrawboard_tools_eraser.eraser.md#_onkey)
 - [\_onLoad](src_renderers_realdrawboard_tools_eraser.eraser.md#_onload)
 - [\_onScroll](src_renderers_realdrawboard_tools_eraser.eraser.md#_onscroll)
+- [\_onUnload](src_renderers_realdrawboard_tools_eraser.eraser.md#_onunload)
 - [\_startStroke](src_renderers_realdrawboard_tools_eraser.eraser.md#_startstroke)
 - [\_toolPreview](src_renderers_realdrawboard_tools_eraser.eraser.md#_toolpreview)
 
@@ -46,7 +47,7 @@ Name | Type |
 
 Inherited from: Tool.constructor
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
 
 ## Properties
 
@@ -56,7 +57,7 @@ Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/Ha
 
 Inherited from: Tool.RDB
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
 
 ## Methods
 
@@ -76,7 +77,7 @@ Name | Type |
 
 Overrides: Tool._doStroke
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:62](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L62)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:62](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/eraser.ts#L62)
 
 ___
 
@@ -96,7 +97,7 @@ Name | Type |
 
 Overrides: Tool._endStroke
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:45](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L45)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:45](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/eraser.ts#L45)
 
 ___
 
@@ -114,7 +115,7 @@ Name | Type |
 
 Inherited from: Tool._onKey
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:44](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/_tool.ts#L44)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:46](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L46)
 
 ___
 
@@ -126,7 +127,7 @@ ___
 
 Inherited from: Tool._onLoad
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/_tool.ts#L12)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:12](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L12)
 
 ___
 
@@ -146,7 +147,19 @@ Name | Type |
 
 Overrides: Tool._onScroll
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:110](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L110)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:110](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/eraser.ts#L110)
+
+___
+
+### \_onUnload
+
+▸ **_onUnload**(): *void*
+
+**Returns:** *void*
+
+Inherited from: Tool._onUnload
+
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/_tool.ts#L14)
 
 ___
 
@@ -166,7 +179,7 @@ Name | Type |
 
 Overrides: Tool._startStroke
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:23](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L23)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:23](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/eraser.ts#L23)
 
 ___
 
@@ -186,4 +199,4 @@ Name | Type |
 
 Overrides: Tool._toolPreview
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:84](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L84)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:84](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/eraser.ts#L84)

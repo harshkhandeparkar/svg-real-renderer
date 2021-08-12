@@ -1,6 +1,6 @@
-SVG Real Renderer - v0.4.0
+SVG Real Renderer - v0.4.1
 
-# SVG Real Renderer - v0.4.0
+# SVG Real Renderer - v0.4.1
 
 ## Table of contents
 

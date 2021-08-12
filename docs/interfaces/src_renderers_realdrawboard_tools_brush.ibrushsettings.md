@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.0](../docs.md) / [src/renderers/RealDrawBoard/tools/brush](../modules/src_renderers_realdrawboard_tools_brush.md) / IBrushSettings
+[SVG Real Renderer - v0.4.1](../docs.md) / [src/renderers/RealDrawBoard/tools/brush](../modules/src_renderers_realdrawboard_tools_brush.md) / IBrushSettings
 
 # Interface: IBrushSettings
 
@@ -17,7 +17,7 @@
 
 • **brushColor**: [*Color*](../modules/src_types_realrenderertypes.md#color)
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/brush.ts#L13)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/brush.ts#L13)
 
 ___
 
@@ -25,4 +25,4 @@ ___
 
 • **brushSize**: *number*
 
-Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/brush.ts#L14)
+Defined in: [src/renderers/RealDrawBoard/tools/brush.ts:14](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/brush.ts#L14)

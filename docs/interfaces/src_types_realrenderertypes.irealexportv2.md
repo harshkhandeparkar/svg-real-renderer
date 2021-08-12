@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.0](../docs.md) / [src/types/RealRendererTypes](../modules/src_types_realrenderertypes.md) / IRealExportV2
+[SVG Real Renderer - v0.4.1](../docs.md) / [src/types/RealRendererTypes](../modules/src_types_realrenderertypes.md) / IRealExportV2
 
 # Interface: IRealExportV2
 
@@ -20,7 +20,7 @@
 
 • **bgType**: [*BGType*](../modules/src_types_realrenderertypes.md#bgtype)
 
-Defined in: [src/types/RealRendererTypes.ts:57](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/types/RealRendererTypes.ts#L57)
+Defined in: [src/types/RealRendererTypes.ts:57](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L57)
 
 ___
 
@@ -28,7 +28,7 @@ ___
 
 • **dimensions**: [*GraphDimensions*](../modules/src_types_realrenderertypes.md#graphdimensions)
 
-Defined in: [src/types/RealRendererTypes.ts:58](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/types/RealRendererTypes.ts#L58)
+Defined in: [src/types/RealRendererTypes.ts:58](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L58)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 • **exportData**: [*StrokeExportV2*](../modules/src_types_realrenderertypes.md#strokeexportv2)[]
 
-Defined in: [src/types/RealRendererTypes.ts:55](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/types/RealRendererTypes.ts#L55)
+Defined in: [src/types/RealRendererTypes.ts:55](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L55)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 • **strokeIndex**: *number*
 
-Defined in: [src/types/RealRendererTypes.ts:56](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/types/RealRendererTypes.ts#L56)
+Defined in: [src/types/RealRendererTypes.ts:56](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L56)
 
 ___
 
@@ -52,4 +52,4 @@ ___
 
 • **version**: *2*
 
-Defined in: [src/types/RealRendererTypes.ts:54](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/types/RealRendererTypes.ts#L54)
+Defined in: [src/types/RealRendererTypes.ts:54](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/types/RealRendererTypes.ts#L54)

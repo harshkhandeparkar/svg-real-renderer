@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.0](../docs.md) / src/renderers/RealDrawBoard/tools/tools
+[SVG Real Renderer - v0.4.1](../docs.md) / src/renderers/RealDrawBoard/tools/tools
 
 # Module: src/renderers/RealDrawBoard/tools/tools
 
@@ -52,7 +52,7 @@ Re-exports: [TextTool](../classes/src_renderers_realdrawboard_tools_text_text.te
 
 Ƭ **Tool**: *typeof* [*name*](src_renderers_realdrawboard_tools_brush.md#name) \| *typeof* [*name*](src_renderers_realdrawboard_tools_eraser.md#name) \| *typeof* [*name*](src_renderers_realdrawboard_tools_line.md#name) \| *typeof* [*name*](src_renderers_realdrawboard_tools_text_text.md#name)
 
-Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/tools.ts#L13)
+Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/tools.ts#L13)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 Ƭ **ToolOptions**: [*BrushOptions*](src_renderers_realdrawboard_tools_brush.md#brushoptions) & [*EraserOptions*](src_renderers_realdrawboard_tools_eraser.md#eraseroptions) & [*LineOptions*](src_renderers_realdrawboard_tools_line.md#lineoptions) & [*TextOptions*](src_renderers_realdrawboard_tools_text_text.md#textoptions)
 
-Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:24](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/tools.ts#L24)
+Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:24](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/tools.ts#L24)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 Ƭ **ToolSettings**: [*IBrushSettings*](../interfaces/src_renderers_realdrawboard_tools_brush.ibrushsettings.md) & [*IEraserSettings*](../interfaces/src_renderers_realdrawboard_tools_eraser.ierasersettings.md) & [*ILineSettings*](../interfaces/src_renderers_realdrawboard_tools_line.ilinesettings.md) & [*ITextSettings*](../interfaces/src_renderers_realdrawboard_tools_text_text.itextsettings.md)
 
-Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:15](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/tools.ts#L15)
+Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:15](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/tools.ts#L15)
 
 ___
 
@@ -85,7 +85,7 @@ Name | Type |
 `line` | [*Line*](../classes/src_renderers_realdrawboard_tools_line.line.md) |
 `text` | [*TextTool*](../classes/src_renderers_realdrawboard_tools_text_text.texttool.md) |
 
-Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/tools.ts#L6)
+Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/tools.ts#L6)
 
 ## Variables
 
@@ -93,4 +93,4 @@ Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:6](https://github.com/Ha
 
 • `Const` **ToolDefaults**: [*ToolSettings*](src_renderers_realdrawboard_tools_tools.md#toolsettings)
 
-Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/tools.ts#L16)
+Defined in: [src/renderers/RealDrawBoard/tools/tools.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/tools.ts#L16)

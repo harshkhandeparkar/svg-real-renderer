@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.0](../docs.md) / src/renderers/RealDrawBoard/tools/eraser
+[SVG Real Renderer - v0.4.1](../docs.md) / src/renderers/RealDrawBoard/tools/eraser
 
 # Module: src/renderers/RealDrawBoard/tools/eraser
 
@@ -27,7 +27,7 @@
 
 Ƭ **EraserOptions**: [*IEraserSettings*](../interfaces/src_renderers_realdrawboard_tools_eraser.ierasersettings.md) \| {}
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L16)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:16](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/eraser.ts#L16)
 
 ## Variables
 
@@ -35,7 +35,7 @@ Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:16](https://github.com/
 
 • `Const` **EraserDefaults**: [*IEraserSettings*](../interfaces/src_renderers_realdrawboard_tools_eraser.ierasersettings.md)
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L18)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:18](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/eraser.ts#L18)
 
 ___
 
@@ -43,4 +43,4 @@ ___
 
 • `Const` **name**: *eraser*= 'eraser'
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L10)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:10](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/eraser.ts#L10)

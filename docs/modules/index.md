@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.0](../docs.md) / index
+[SVG Real Renderer - v0.4.1](../docs.md) / index
 
 # Module: index
 

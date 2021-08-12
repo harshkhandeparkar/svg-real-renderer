@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.0](../docs.md) / [src/renderers/RealDrawBoard/tools/eraser](../modules/src_renderers_realdrawboard_tools_eraser.md) / IEraserSettings
+[SVG Real Renderer - v0.4.1](../docs.md) / [src/renderers/RealDrawBoard/tools/eraser](../modules/src_renderers_realdrawboard_tools_eraser.md) / IEraserSettings
 
 # Interface: IEraserSettings
 
@@ -16,4 +16,4 @@
 
 • **eraserSize**: *number*
 
-Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/e0bef37/src/renderers/RealDrawBoard/tools/eraser.ts#L13)
+Defined in: [src/renderers/RealDrawBoard/tools/eraser.ts:13](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/9463376/src/renderers/RealDrawBoard/tools/eraser.ts#L13)
