@@ -42,6 +42,7 @@
 	            dashed: this.node.hasAttribute('stroke-dasharray') ? { dashColor: this.node.getAttribute('stroke') } : false,
 	            id: this.node.hasAttribute('id') ? this.node.getAttribute('id') : null,
 	            class: this.node.hasAttribute('class') ? this.node.getAttribute('class') : null,
+	            style: this.node.hasAttribute('style') ? this.node.getAttribute('style') : null,
 	            type: this.strokeNodeType,
 	            section: this.section
 	        };
@@ -67,6 +68,8 @@
 	            this.setId(data.id);
 	        if (data.class !== null)
 	            this.node.setAttribute('class', data.class);
+	        if (data.style !== null)
+	            this.node.setAttribute('style', data.style);
 	    };
 	    Node.prototype.setStroke = function (stroke) {
 	        this.node.setAttribute('stroke', stroke);
@@ -146,6 +149,7 @@
 	        return __assign(__assign({}, this._exportBasicData()), { center: [this.node.getAttribute('cx'), this.node.getAttribute('cy')], radius: this.node.getAttribute('radius'), type: this.strokeNodeType });
 	    };
 	    Circle.prototype.import = function (data) {
+	        _super.prototype.import.call(this, data);
 	        this.node.setAttribute('cx', data.center[0]);
 	        this.node.setAttribute('cy', data.center[1]);
 	        this.node.setAttribute('r', data.radius);
@@ -638,7 +642,7 @@
 
 	var _editing = createCommonjsModule(function (module, exports) {
 	Object.defineProperty(exports, "__esModule", { value: true });
-	exports.deleteNextCharacter = exports.deleteLastCharacter = exports.appendText = exports.getText = exports._updateAfterCursorText = exports._updateBeforeCursorText = exports._getAfterCursorText = exports._getBeforeCursorText = void 0;
+	exports.setUnderline = exports.setItalic = exports.setBold = exports.deleteNextCharacter = exports.deleteLastCharacter = exports.appendText = exports.getText = exports._updateAfterCursorText = exports._updateBeforeCursorText = exports._getAfterCursorText = exports._getBeforeCursorText = void 0;
 	function _getBeforeCursorText() {
 	    return this.tspans[this.cursorIndex].textContent;
 	}
@@ -680,6 +684,18 @@
 	    this._updateAfterCursorText(this._getAfterCursorText().slice(1));
 	}
 	exports.deleteNextCharacter = deleteNextCharacter;
+	function setBold(bold) {
+	    this.setStyle('font-weight', bold ? 'bold' : 'normal');
+	}
+	exports.setBold = setBold;
+	function setItalic(italic) {
+	    this.setStyle('font-style', italic ? 'italic' : 'normal');
+	}
+	exports.setItalic = setItalic;
+	function setUnderline(underline) {
+	    this.setStyle('text-decoration', underline ? 'underline' : 'none');
+	}
+	exports.setUnderline = setUnderline;
 	});
 
 	var _newlines = createCommonjsModule(function (module, exports) {
@@ -773,6 +789,9 @@
 	        _this.appendText = _editing.appendText;
 	        _this.deleteLastCharacter = _editing.deleteLastCharacter;
 	        _this.deleteNextCharacter = _editing.deleteNextCharacter;
+	        _this.setBold = _editing.setBold;
+	        _this.setItalic = _editing.setItalic;
+	        _this.setUnderline = _editing.setUnderline;
 	        var path = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 	        _this.node = path;
 	        _this.section = section;
@@ -858,6 +877,7 @@
 	    };
 	    Text.prototype.import = function (data) {
 	        var _this = this;
+	        _super.prototype.import.call(this, data);
 	        this.tspans = data.tspans.map(function (tspan) {
 	            var tspan_ = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
 	            tspan_.textContent = tspan.textContent;
@@ -934,6 +954,7 @@
 	    };
 	    GroupNode.prototype.import = function (data) {
 	        var _this = this;
+	        _super.prototype.import.call(this, data);
 	        this.innerNodes = data.innerNodes.map(function (strokeNodeData) {
 	            var _a, _b, _c, _d, _e;
 	            switch (strokeNodeData.type) {
@@ -1152,7 +1173,10 @@
 	exports.TextDefaults = {
 	    fontSize: 10,
 	    fontColor: [1, 1, 1],
-	    textToolMode: 'new'
+	    textToolMode: 'new',
+	    bold: false,
+	    italic: false,
+	    underline: false
 	};
 	/**
 	 * Text Tool
@@ -1186,10 +1210,23 @@
 	        this.RDB.on('tool-setting-change', 'text-tool-handler', function (_a) {
 	            var settingName = _a.settingName, newValue = _a.newValue;
 	            if (_this.RDB.toolSettings.textToolMode === 'edit' && _this._selectedNode !== null) {
-	                if (settingName === 'fontColor')
-	                    _this._selectedNode.setFill(getRGBColorString_1.getRGBColorString(newValue));
-	                if (settingName === 'fontSize')
-	                    _this._selectedNode.setFontSize(newValue);
+	                switch (settingName) {
+	                    case 'fontColor':
+	                        _this._selectedNode.setFill(getRGBColorString_1.getRGBColorString(newValue));
+	                        break;
+	                    case 'fontSize':
+	                        _this._selectedNode.setFontSize(newValue);
+	                        break;
+	                    case 'bold':
+	                        _this._selectedNode.setBold(newValue);
+	                        break;
+	                    case 'italic':
+	                        _this._selectedNode.setItalic(newValue);
+	                        break;
+	                    case 'underline':
+	                        _this._selectedNode.setUnderline(newValue);
+	                        break;
+	                }
 	            }
 	            if (settingName === 'textToolMode' && newValue === 'new') {
 	                if (_this._selectedNode !== null) {
@@ -1230,6 +1267,9 @@
 	            var textPath = new _text.Text(baselineCoords, 'Enter Text', 'strokes');
 	            textPath.setFill(getRGBColorString_1.getRGBColorString(this.RDB.toolSettings.fontColor));
 	            textPath.setFontSize(this.RDB.toolSettings.fontSize);
+	            textPath.setBold(this.RDB.toolSettings.bold);
+	            textPath.setItalic(this.RDB.toolSettings.italic);
+	            textPath.setUnderline(this.RDB.toolSettings.underline);
 	            this.RDB._addStroke([textPath]);
 	            this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);
 	            if (this._selectedNode !== null)

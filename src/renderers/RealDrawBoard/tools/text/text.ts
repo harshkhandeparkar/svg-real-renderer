@@ -2,6 +2,7 @@ import { Color, Coordinate } from '../../../../types/RealRendererTypes';
 import { getRGBColorString } from '../../../../util/getRGBColorString';
 import { Polygon } from '../../../RealRenderer/strokeNodes/_polygon';
 import { Text } from '../../../RealRenderer/strokeNodes/_text/_text';
+import { ToolSettings } from '../tools';
 import { Tool } from '../_tool';
 import { _mapKeyToAction } from './_mapKeyToAction';
 
@@ -11,6 +12,9 @@ export interface ITextSettings {
   fontSize: number;
   fontColor: Color;
   textToolMode: 'new' | 'edit';
+  italic: boolean;
+  bold: boolean;
+  underline: boolean;
 }
 
 export type TextOptions = ITextSettings | {};
@@ -18,7 +22,10 @@ export type TextOptions = ITextSettings | {};
 export const TextDefaults: ITextSettings = {
   fontSize: 10,
   fontColor: [1, 1, 1],
-  textToolMode: 'new'
+  textToolMode: 'new',
+  bold: false,
+  italic: false,
+  underline: false
 }
 
 /**
@@ -47,8 +54,23 @@ export class TextTool extends Tool {
   public _onLoad() {
     this.RDB.on('tool-setting-change', 'text-tool-handler', ({settingName, newValue}) => {
       if (this.RDB.toolSettings.textToolMode === 'edit' && this._selectedNode !== null) {
-        if (settingName === 'fontColor') this._selectedNode.setFill(getRGBColorString(newValue as Color));
-        if (settingName === 'fontSize') this._selectedNode.setFontSize(newValue as number);
+        switch (settingName) {
+          case 'fontColor':
+            this._selectedNode.setFill(getRGBColorString(newValue as Color));
+            break;
+          case 'fontSize':
+            this._selectedNode.setFontSize(newValue as number);
+            break;
+          case 'bold':
+            this._selectedNode.setBold(newValue as boolean);
+            break;
+          case 'italic':
+            this._selectedNode.setItalic(newValue as boolean);
+            break;
+          case 'underline':
+            this._selectedNode.setUnderline(newValue as boolean);
+            break;
+        }
       }
       if (settingName === 'textToolMode' && newValue === 'new') {
         if (this._selectedNode !== null) {
@@ -107,6 +129,10 @@ export class TextTool extends Tool {
 
       textPath.setFill(getRGBColorString(this.RDB.toolSettings.fontColor));
       textPath.setFontSize(this.RDB.toolSettings.fontSize);
+
+      textPath.setBold(this.RDB.toolSettings.bold);
+      textPath.setItalic(this.RDB.toolSettings.italic);
+      textPath.setUnderline(this.RDB.toolSettings.underline);
 
       this.RDB._addStroke([textPath]);
       this.RDB._strokeIdentifierMap.set(identifier, this.RDB._strokeIndex);

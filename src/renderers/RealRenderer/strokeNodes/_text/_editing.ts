@@ -42,3 +42,15 @@ export function deleteLastCharacter(this: Text) {
 export function deleteNextCharacter(this: Text) {
   this._updateAfterCursorText(this._getAfterCursorText().slice(1));
 }
+
+export function setBold(this: Text, bold: boolean) {
+  this.setStyle('font-weight', bold ? 'bold' : 'normal');
+}
+
+export function setItalic(this: Text, italic: boolean) {
+  this.setStyle('font-style', italic ? 'italic' : 'normal');
+}
+
+export function setUnderline(this: Text, underline: boolean) {
+  this.setStyle('text-decoration', underline ? 'underline' : 'none');
+}

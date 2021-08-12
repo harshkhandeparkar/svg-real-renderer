@@ -8,7 +8,7 @@ import {
 import {
   appendText,
   getText, _getBeforeCursorText, _getAfterCursorText,
-  deleteLastCharacter, _updateBeforeCursorText, deleteNextCharacter, _updateAfterCursorText
+  deleteLastCharacter, _updateBeforeCursorText, deleteNextCharacter, _updateAfterCursorText, setBold, setItalic, setUnderline
 } from './_editing';
 import { newLine, removeLine } from './_newlines';
 
@@ -57,6 +57,10 @@ export class Text extends Node<SVGTextElement, 'text'> {
   public appendText = appendText;
   public deleteLastCharacter = deleteLastCharacter;
   public deleteNextCharacter = deleteNextCharacter;
+
+  public setBold = setBold;
+  public setItalic = setItalic;
+  public setUnderline = setUnderline;
 
   constructor(
     position: Coordinate,
