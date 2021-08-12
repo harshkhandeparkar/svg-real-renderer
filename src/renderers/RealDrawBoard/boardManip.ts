@@ -8,6 +8,8 @@ import { Tool, ToolDefaults, ToolSettings } from './tools/tools';
  * @returns Self for chaining.
  */
 export function changeTool(this: RealDrawBoard, newTool: Tool) {
+  this._tools[this.tool]._onUnload();
+
   const oldTool = this.tool;
   this.tool = newTool;
 

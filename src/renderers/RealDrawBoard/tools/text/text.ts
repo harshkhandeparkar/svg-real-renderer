@@ -63,6 +63,10 @@ export class TextTool extends Tool {
     })
   }
 
+  _onUnload() {
+    this.RDB.changeToolSetting('textToolMode', 'new');
+  }
+
   public _startStroke(
     coords: Coordinate,
     identifier: string,

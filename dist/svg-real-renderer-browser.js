@@ -266,6 +266,7 @@
 	        this.RDB = RDB;
 	    }
 	    Tool.prototype._onLoad = function () { };
+	    Tool.prototype._onUnload = function () { };
 	    Tool.prototype._startStroke = function (coords, identifier, target) { };
 	    Tool.prototype._doStroke = function (coords, identifier, target) { };
 	    Tool.prototype._endStroke = function (coords, identifier, target) { };
@@ -1176,6 +1177,9 @@
 	            _this.RDB.changeToolSetting('textToolMode', 'edit');
 	        });
 	    };
+	    TextTool.prototype._onUnload = function () {
+	        this.RDB.changeToolSetting('textToolMode', 'new');
+	    };
 	    TextTool.prototype._startStroke = function (coords, identifier, target) {
 	        if (this.RDB.toolSettings.textToolMode === 'new') {
 	            if (this.RDB._previewStroke.has(identifier)) {
@@ -1972,6 +1976,7 @@
 	 * @returns Self for chaining.
 	 */
 	function changeTool(newTool) {
+	    this._tools[this.tool]._onUnload();
 	    var oldTool = this.tool;
 	    this.tool = newTool;
 	    this._previewStroke.forEach(function (stroke) {

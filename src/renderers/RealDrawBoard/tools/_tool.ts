@@ -2,7 +2,7 @@ import { Coordinate } from '../../../types/RealRendererTypes';
 import { RealDrawBoard } from '../RealDrawBoard';
 
 /** @internal */
-export class Tool {
+export abstract class Tool {
   RDB: RealDrawBoard;
 
   constructor(RDB: RealDrawBoard) {
@@ -10,6 +10,8 @@ export class Tool {
   }
 
   public _onLoad() {}
+
+  public _onUnload() {}
 
   public _startStroke(
     coords: Coordinate,

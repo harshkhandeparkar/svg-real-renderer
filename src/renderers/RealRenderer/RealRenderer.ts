@@ -17,7 +17,7 @@ export * as RealRendererTypes from '../../types/RealRendererTypes';
 /**
  * General Real Renderer with no specific purpose. Should be extended to use.
  */
-export class RealRenderer<EventTypes extends IRealRendererEvents = IRealRendererEvents> extends EventEmitter<EventTypes> {
+export abstract class RealRenderer<EventTypes extends IRealRendererEvents = IRealRendererEvents> extends EventEmitter<EventTypes> {
   svg: SVGSVGElement;
   svgSections: SVGSections;
   dimensions: GraphDimensions;
