@@ -36,7 +36,7 @@ export class Circle extends Node<SVGCircleElement, 'circle'> {
     return {
       ...this._exportBasicData(),
       center: [this.node.getAttribute('cx'), this.node.getAttribute('cy')],
-      radius: this.node.getAttribute('radius'),
+      radius: this.node.getAttribute('r'),
       type: this.strokeNodeType
     }
   }
