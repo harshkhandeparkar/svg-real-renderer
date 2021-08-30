@@ -146,7 +146,7 @@
 	        this.node.setAttribute('cy', newCenter[1].toString());
 	    };
 	    Circle.prototype.export = function () {
-	        return __assign(__assign({}, this._exportBasicData()), { center: [this.node.getAttribute('cx'), this.node.getAttribute('cy')], radius: this.node.getAttribute('radius'), type: this.strokeNodeType });
+	        return __assign(__assign({}, this._exportBasicData()), { center: [this.node.getAttribute('cx'), this.node.getAttribute('cy')], radius: this.node.getAttribute('r'), type: this.strokeNodeType });
 	    };
 	    Circle.prototype.import = function (data) {
 	        _super.prototype.import.call(this, data);

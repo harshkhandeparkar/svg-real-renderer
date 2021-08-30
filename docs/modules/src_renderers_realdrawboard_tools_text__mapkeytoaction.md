@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.2](../docs.md) / src/renderers/RealDrawBoard/tools/text/_mapKeyToAction
+[SVG Real Renderer - v0.4.3](../docs.md) / src/renderers/RealDrawBoard/tools/text/_mapKeyToAction
 
 # Module: src/renderers/RealDrawBoard/tools/text/\_mapKeyToAction
 
@@ -23,4 +23,4 @@ Name | Type |
 
 **Returns:** [\_selectedNode: Text, doPrevent: boolean]
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/_mapKeyToAction.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/_mapKeyToAction.ts#L3)
+Defined in: [src/renderers/RealDrawBoard/tools/text/_mapKeyToAction.ts:3](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/_mapKeyToAction.ts#L3)

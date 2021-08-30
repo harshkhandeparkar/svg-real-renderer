@@ -1,4 +1,4 @@
-[SVG Real Renderer - v0.4.2](../docs.md) / [src/renderers/RealDrawBoard/tools/text/text](../modules/src_renderers_realdrawboard_tools_text_text.md) / TextTool
+[SVG Real Renderer - v0.4.3](../docs.md) / [src/renderers/RealDrawBoard/tools/text/text](../modules/src_renderers_realdrawboard_tools_text_text.md) / TextTool
 
 # Class: TextTool
 
@@ -64,7 +64,7 @@ Name | Type |
 
 Inherited from: Tool.constructor
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
 
 ## Properties
 
@@ -74,7 +74,7 @@ Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/Ha
 
 Inherited from: Tool.RDB
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:6](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/_tool.ts#L6)
 
 ___
 
@@ -82,7 +82,7 @@ ___
 
 • **\_selectedNode**: *Text*= null
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:52](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L52)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:52](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/text.ts#L52)
 
 ___
 
@@ -93,7 +93,7 @@ ___
 key -> identifier, value -> coordinate
  For mouse, the key is 'mouse', for touches, stringified identifier -> https://developer.mozilla.org/en-US/docs/Web/API/Touch/identifier
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:51](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L51)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:51](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/text.ts#L51)
 
 ## Methods
 
@@ -113,7 +113,7 @@ Name | Type |
 
 Overrides: Tool._doStroke
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:153](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L153)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:153](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/text.ts#L153)
 
 ___
 
@@ -133,7 +133,7 @@ Name | Type |
 
 Overrides: Tool._endStroke
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:114](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L114)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:114](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/text.ts#L114)
 
 ___
 
@@ -151,7 +151,7 @@ Name | Type |
 
 Overrides: Tool._onKey
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:172](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L172)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:172](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/text.ts#L172)
 
 ___
 
@@ -163,7 +163,7 @@ ___
 
 Overrides: Tool._onLoad
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:54](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L54)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:54](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/text.ts#L54)
 
 ___
 
@@ -181,7 +181,7 @@ Name | Type |
 
 Overrides: Tool._onScroll
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:183](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L183)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:183](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/text.ts#L183)
 
 ___
 
@@ -193,7 +193,7 @@ ___
 
 Overrides: Tool._onUnload
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:88](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L88)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:88](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/text.ts#L88)
 
 ___
 
@@ -213,7 +213,7 @@ Name | Type |
 
 Overrides: Tool._startStroke
 
-Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:92](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/text/text.ts#L92)
+Defined in: [src/renderers/RealDrawBoard/tools/text/text.ts:92](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/text/text.ts#L92)
 
 ___
 
@@ -233,4 +233,4 @@ Name | Type |
 
 Inherited from: Tool._toolPreview
 
-Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/2797013/src/renderers/RealDrawBoard/tools/_tool.ts#L34)
+Defined in: [src/renderers/RealDrawBoard/tools/_tool.ts:34](https://github.com/HarshKhandeparkar/svg-real-renderer/blob/606fa79/src/renderers/RealDrawBoard/tools/_tool.ts#L34)
